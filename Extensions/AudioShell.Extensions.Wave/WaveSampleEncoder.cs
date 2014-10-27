@@ -1,0 +1,160 @@
+﻿/*
+ * Copyright © 2014 Jeremy Herbison
+ * 
+ * This file is part of AudioShell.
+ * 
+ * AudioShell is free software: you can redistribute it and/or modify it under the terms of the GNU Lesser General
+ * Public License as published by the Free Software Foundation, either version 3 of the License, or (at your option)
+ * any later version.
+ * 
+ * AudioShell is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied
+ * warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU Lesser General Public License for more
+ * details.
+ * 
+ * You should have received a copy of the GNU Lesser General Public License along with AudioShell.  If not, see
+ * <http://www.gnu.org/licenses/>.
+ */
+
+using System;
+using System.Collections.Generic;
+using System.Diagnostics.Contracts;
+using System.IO;
+
+namespace AudioShell.Extensions.Wave
+{
+    [SampleEncoderExport("Wave")]
+    public class WaveSampleEncoder : ISampleEncoder, IDisposable
+    {
+        readonly byte[] _buffer = new byte[4];
+        RiffWriter _writer;
+        int _channels;
+        int _bytesPerSample;
+        float _multiplier;
+
+        public string Extension
+        {
+            get { return ".wav"; }
+        }
+
+        public SettingsDictionary DefaultSettings
+        {
+            get
+            {
+                Contract.Ensures(Contract.Result<SettingsDictionary>() != null);
+
+                return new SettingsDictionary();
+            }
+        }
+
+        public IReadOnlyCollection<string> AvailableSettings
+        {
+            get
+            {
+                Contract.Ensures(Contract.Result<IReadOnlyCollection<string>>() != null);
+
+                return new List<string>(0).AsReadOnly();
+            }
+        }
+
+        public void Initialize(Stream stream, AudioInfo audioInfo, MetadataDictionary metadata, SettingsDictionary settings)
+        {
+            Contract.Ensures(_writer != null);
+            Contract.Ensures(_writer.BaseStream == stream);
+            Contract.Ensures(_channels == audioInfo.Channels);
+            Contract.Ensures(_bytesPerSample > 0);
+            Contract.Ensures(_multiplier > 0);
+
+            _writer = new RiffWriter(stream, "WAVE");
+            _channels = audioInfo.Channels;
+            _bytesPerSample = (int)Math.Ceiling(audioInfo.BitsPerSample / (double)8);
+            _multiplier = (float)Math.Pow(2, audioInfo.BitsPerSample - 1);
+
+            _writer.Initialize();
+
+            _writer.BeginChunk("fmt ", 16);
+            _writer.Write((ushort)1);
+            _writer.Write((ushort)audioInfo.Channels);
+            _writer.Write((uint)audioInfo.SampleRate);
+            _writer.Write((uint)(_bytesPerSample * audioInfo.Channels * audioInfo.SampleRate));
+            _writer.Write((ushort)(_bytesPerSample * audioInfo.Channels));
+            _writer.Write((ushort)audioInfo.BitsPerSample);
+            _writer.FinishChunk();
+
+            _writer.BeginChunk("data");
+        }
+
+        public bool ManuallyFreesSamples
+        {
+            get { return false; }
+        }
+
+        public void Submit(SampleCollection samples)
+        {
+            if (!samples.IsLast)
+            {
+                if (_bytesPerSample == 1)
+                {
+                    // 1-8 bit samples are unsigned:
+                    for (long sample = 0; sample < samples.SampleCount; sample++)
+                        for (int channel = 0; channel < _channels; channel++)
+                            _writer.Write((byte)Math.Round(samples[channel][sample] * _multiplier + 128));
+                }
+                else
+                {
+                    for (long sample = 0; sample < samples.SampleCount; sample++)
+                        for (int channel = 0; channel < _channels; channel++)
+                        {
+                            // Optimization - BitConverter wastes memory because you can't reuse the array:
+                            int int32Value = (int)Math.Round(samples[channel][sample] * _multiplier);
+                            ConvertInt32ToBytes(int32Value, _buffer);
+                            _writer.Write(_buffer, 0, _bytesPerSample);
+                        }
+                }
+            }
+            else
+            {
+                // Finish the data and RIFF chunks:
+                _writer.FinishChunk();
+                _writer.FinishChunk();
+            }
+        }
+
+        public void Dispose()
+        {
+            Dispose(true);
+            GC.SuppressFinalize(this);
+        }
+
+        protected virtual void Dispose(bool disposing)
+        {
+            if (disposing && _writer != null)
+            {
+                try
+                {
+                    _writer.Dispose();
+                }
+                catch (ObjectDisposedException)
+                {
+                }
+            }
+        }
+
+        [ContractInvariantMethod]
+        void ObjectInvariant()
+        {
+            Contract.Invariant(_buffer != null);
+            Contract.Invariant(_buffer.Length == 4);
+        }
+
+        static void ConvertInt32ToBytes(int value, byte[] buffer)
+        {
+            Contract.Requires(buffer != null);
+            Contract.Requires(buffer.Length == 4);
+
+            buffer[0] = (byte)value;
+            buffer[1] = (byte)(value >> 8);
+            buffer[2] = (byte)(value >> 16);
+            buffer[3] = (byte)(value >> 24);
+        }
+    }
+}

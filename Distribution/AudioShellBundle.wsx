@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+
+Copyright © 2014 Jeremy Herbison
+
+This file is part of AudioShell.
+
+AudioShell is free software: you can redistribute it and/or modify it under the terms of the GNU Lesser General
+Public License as published by the Free Software Foundation, either version 3 of the License, or (at your option)
+any later version.
+
+AudioShell is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied
+warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU Lesser General Public License for more
+details.
+
+You should have received a copy of the GNU Lesser General Public License along with AudioShell.  If not, see
+<http://www.gnu.org/licenses/>.
+
+-->
+<Wix xmlns="http://schemas.microsoft.com/wix/2006/wi"
+     xmlns:bal="http://schemas.microsoft.com/wix/BalExtension"
+     xmlns:util="http://schemas.microsoft.com/wix/UtilExtension"
+     xmlns:netfx="http://schemas.microsoft.com/wix/NetFxExtension">
+  <Bundle Name="AudioShell" Manufacturer="Jeremy Herbison" Version="0.9.0" UpgradeCode="{7D38656D-6BE6-4972-A9DB-7B4AF7BCC880}">
+
+    <BootstrapperApplicationRef Id="WixStandardBootstrapperApplication.RtfLargeLicense">
+      <bal:WixStandardBootstrapperApplication LicenseFile="Distribution\License.rtf" ShowVersion="yes" SuppressOptionsUI="yes"/>
+    </BootstrapperApplicationRef>
+
+    <bal:Condition Message="This application is only supported on Windows 7, 8.1, Server 2008 R2, Server 2012 R2, or higher.">
+      <![CDATA[Installed OR (VersionNT = v6.1) OR (VersionNT >= v6.3)]]>
+    </bal:Condition>
+
+    <util:RegistrySearch Id="PSVersion" Variable="PSVersion" Root="HKLM" Key="SOFTWARE\Microsoft\PowerShell\3\PowerShellEngine" Value="PowerShellVersion" Result="value"/>
+    
+    <Chain>
+
+      <!-- Upgrade to .NET Framework 4.5.2 -->
+      <PackageGroupRef Id="NetFx452Web"/>
+
+      <!-- Upgrade to PowerShell 4.0 on Windows 7 / Server 2008 R2 -->
+      <MsuPackage DisplayName="Windows Management Framework 4.0"
+                  KB="KB2819745"
+                  InstallCondition="VersionNT=v6.1 AND VersionNT64"
+                  DetectCondition="PSVersion&gt;=v4.0"
+                  Permanent="yes"
+                  SourceFile="Prerequisites\Windows6.1-KB2819745-x64-MultiPkg.msu"/>
+      <MsuPackage DisplayName="Windows Management Framework 4.0"
+                  KB="KB2819745"
+                  InstallCondition="VersionNT=v6.1 AND NOT VersionNT64"
+                  DetectCondition="PSVersion&gt;=v4.0"
+                  Permanent="yes"
+                  SourceFile="Prerequisites\Windows6.1-KB2819745-x86-MultiPkg.msu"/>
+      
+      <MsiPackage SourceFile="AudioShell.msi"/>
+      <MsiPackage SourceFile="AudioShell64.msi" InstallCondition="VersionNT64"/>
+      
+    </Chain>
+    
+  </Bundle>
+</Wix>

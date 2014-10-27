@@ -1,0 +1,66 @@
+Index,FileName,Encoder,Settings,ExpectedHash
+0,LPCM 8-bit 8000Hz Stereo.wav,Wave,,81-8E-E6-CB-F1-6F-76-F9-23-D3-36-50-E7-A5-27-08
+1,LPCM 16-bit 44100Hz Stereo.wav,Wave,,5D-4B-86-9C-D7-2B-E2-08-BC-7B-47-F3-5E-13-BE-9A
+2,LPCM 16-bit 44100Hz Mono.wav,Wave,,50-9B-83-82-8F-13-94-5E-41-21-E4-C4-89-7A-86-49
+3,LPCM 16-bit 48000Hz Stereo.wav,Wave,,EF-BC-44-B9-FA-9C-04-44-9D-67-EC-D1-6C-B7-F3-D8
+4,LPCM 24-bit 96000Hz Stereo.wav,Wave,,D5-5B-D1-98-76-76-A7-D6-C2-A0-4B-F0-9C-10-F6-4F
+5,FLAC 8-bit 8000Hz Stereo.flac,Wave,,81-8E-E6-CB-F1-6F-76-F9-23-D3-36-50-E7-A5-27-08
+6,FLAC 16-bit 44100Hz Stereo.flac,Wave,,5D-4B-86-9C-D7-2B-E2-08-BC-7B-47-F3-5E-13-BE-9A
+7,FLAC 16-bit 44100Hz Mono.flac,Wave,,50-9B-83-82-8F-13-94-5E-41-21-E4-C4-89-7A-86-49
+8,FLAC 16-bit 48000Hz Stereo.flac,Wave,,EF-BC-44-B9-FA-9C-04-44-9D-67-EC-D1-6C-B7-F3-D8
+9,FLAC 24-bit 96000Hz Stereo.flac,Wave,,D5-5B-D1-98-76-76-A7-D6-C2-A0-4B-F0-9C-10-F6-4F
+10,ALAC 16-bit 44100Hz Stereo.m4a,Wave,,5D-4B-86-9C-D7-2B-E2-08-BC-7B-47-F3-5E-13-BE-9A
+11,ALAC 16-bit 44100Hz Mono.m4a,Wave,,50-9B-83-82-8F-13-94-5E-41-21-E4-C4-89-7A-86-49
+12,ALAC 16-bit 48000Hz Stereo.m4a,Wave,,EF-BC-44-B9-FA-9C-04-44-9D-67-EC-D1-6C-B7-F3-D8
+13,ALAC 24-bit 96000Hz Stereo.m4a,Wave,,D5-5B-D1-98-76-76-A7-D6-C2-A0-4B-F0-9C-10-F6-4F
+14,LPCM 8-bit 8000Hz Stereo.wav,FLAC,,C8-53-1E-C2-1E-F3-11-7F-61-7B-BB-22-BB-D2-CF-81
+15,LPCM 16-bit 44100Hz Stereo.wav,FLAC,,F5-9B-62-47-1E-27-04-A1-7B-9C-24-87-05-82-FD-5C
+16,LPCM 16-bit 44100Hz Mono.wav,FLAC,,24-F0-52-78-9C-EC-2B-B4-45-6D-6A-FF-EF-C4-06-38
+17,LPCM 16-bit 48000Hz Stereo.wav,FLAC,,DD-27-D7-D5-B9-AA-CD-1D-AD-37-F8-4D-F6-FC-89-95
+18,LPCM 24-bit 96000Hz Stereo.wav,FLAC,,94-B2-D4-B3-AD-43-A7-27-B9-BE-17-05-49-FA-B2-C1
+19,LPCM 16-bit 44100Hz Stereo.wav,FLAC,CompressionLevel=5;AddMetadata=True;SeekPointInterval=10,F5-9B-62-47-1E-27-04-A1-7B-9C-24-87-05-82-FD-5C
+20,LPCM 16-bit 44100Hz Stereo.wav,FLAC,CompressionLevel=0,D1-26-4A-83-DC-2F-4B-70-4F-3F-E5-98-78-F6-93-32
+21,LPCM 16-bit 44100Hz Stereo.wav,FLAC,AddMetadata=False,54-2A-A4-2B-93-5F-48-B2-3A-04-EF-27-6D-82-FB-1E
+22,LPCM 16-bit 44100Hz Stereo.wav,FLAC,SeekPointInterval=0,54-AE-09-BD-D8-A0-88-3A-5F-78-17-46-83-22-AD-D4
+23,LPCM 16-bit 44100Hz Stereo.wav,FLAC,SeekPointInterval=1,E3-DB-F7-52-BD-19-71-E3-01-8B-F2-25-09-EF-6F-1A
+24,LPCM 8-bit 8000Hz Stereo.wav,Lame MP3,,F7-99-98-46-6C-DC-8E-60-B3-06-B4-AB-68-CE-05-11
+25,LPCM 16-bit 44100Hz Stereo.wav,Lame MP3,,81-D9-6C-E4-77-CE-F4-0C-F4-AC-DB-BE-1F-F1-D8-EC
+26,LPCM 16-bit 44100Hz Mono.wav,Lame MP3,,BD-FE-BD-08-49-95-30-40-8D-3B-60-FE-FC-F7-5F-F9
+27,LPCM 16-bit 48000Hz Stereo.wav,Lame MP3,,FB-BC-41-88-5D-62-F7-FF-88-73-31-4D-CB-65-01-2A
+28,LPCM 24-bit 96000Hz Stereo.wav,Lame MP3,,AC-79-5F-D4-41-2A-27-44-81-BA-58-00-2B-7B-3E-62
+29,LPCM 16-bit 44100Hz Stereo.wav,Lame MP3,AddMetadata=True;ApplyGain=False;Quality=3;VBRQuality=2;AddSoundCheck=False;ID3Version=2.3;PaddingSize=0;UsePadding=False,81-D9-6C-E4-77-CE-F4-0C-F4-AC-DB-BE-1F-F1-D8-EC
+30,LPCM 16-bit 44100Hz Stereo.wav,Lame MP3,AddMetadata=False,E7-CE-BD-CC-18-5B-EF-4C-8C-14-E5-FF-9B-AF-B8-86
+31,LPCM 16-bit 44100Hz Stereo.wav,Lame MP3,Quality=9,2D-05-F6-84-76-60-C8-AD-E4-FF-20-88-07-B3-39-28
+32,LPCM 16-bit 44100Hz Stereo.wav,Lame MP3,VBRQuality=9.999,D5-3F-5F-36-22-1D-EF-70-23-F3-84-EE-2A-E9-9F-97
+33,LPCM 16-bit 44100Hz Stereo.wav,Lame MP3,ID3Version=2.4,DA-90-0D-DD-7D-B6-CB-15-C1-C6-47-01-0A-51-73-D1
+34,LPCM 16-bit 44100Hz Stereo.wav,Lame MP3,PaddingSize=1024,6A-17-57-D5-C3-52-73-99-E7-21-CB-A8-37-A2-D3-3C
+35,LPCM 16-bit 44100Hz Stereo.wav,Lame MP3,BitRate=8,DF-06-52-08-78-19-25-76-FF-FD-6E-D0-C2-4A-DC-CC
+36,LPCM 16-bit 44100Hz Stereo.wav,Lame MP3,BitRate=8;ForceCBR=True,5B-FE-76-F8-D9-48-90-65-0E-32-0F-A9-D2-3E-49-BC
+37,LPCM 8-bit 8000Hz Stereo.wav,Apple AAC,CreationTime=2014-01-01 12:00:00 AM,2C-4B-73-48-5A-BC-E9-7D-29-53-B4-27-E4-53-54-57
+38,LPCM 16-bit 44100Hz Stereo.wav,Apple AAC,CreationTime=2014-01-01 12:00:00 AM,58-1E-6F-22-02-FB-49-C8-55-68-26-20-9D-42-42-54
+39,LPCM 16-bit 44100Hz Mono.wav,Apple AAC,CreationTime=2014-01-01 12:00:00 AM,B6-FC-DC-AD-5B-60-C8-8B-D0-76-72-E1-89-B1-3E-EF
+40,LPCM 16-bit 48000Hz Stereo.wav,Apple AAC,CreationTime=2014-01-01 12:00:00 AM,57-9C-8B-71-AD-47-87-7D-68-31-C1-A0-B7-D6-DC-58
+41,LPCM 24-bit 96000Hz Stereo.wav,Apple AAC,CreationTime=2014-01-01 12:00:00 AM,88-F7-2F-3A-D4-6D-78-B0-5D-2B-47-A0-E7-AC-1D-68
+42,LPCM 16-bit 44100Hz Stereo.wav,Apple AAC,CreationTime=2014-01-01 12:00:00 AM;ControlMode=Variable;Quality=High;VBRQuality=9;AddMetadata=True;AddSoundCheck=False,58-1E-6F-22-02-FB-49-C8-55-68-26-20-9D-42-42-54
+43,LPCM 16-bit 44100Hz Stereo.wav,Apple AAC,CreationTime=2014-01-01 12:00:00 AM;Quality=Low,D9-CF-46-15-3D-4B-19-D1-10-C8-3E-CF-FB-88-0D-39
+44,LPCM 16-bit 44100Hz Stereo.wav,Apple AAC,CreationTime=2014-01-01 12:00:00 AM;VBRQuality=14,AD-01-BD-05-48-FC-62-C1-8B-66-27-46-0F-A9-E7-45
+45,LPCM 16-bit 44100Hz Stereo.wav,Apple AAC,CreationTime=2014-01-01 12:00:00 AM;AddMetadata=False,DB-2C-A6-C5-7E-B5-27-19-5E-CF-AF-D3-4C-88-33-57
+46,LPCM 16-bit 44100Hz Stereo.wav,Apple AAC,CreationTime=2014-01-01 12:00:00 AM;BitRate=64,5E-58-B6-8D-0F-53-B4-25-5E-6D-84-A1-AF-25-9E-50
+47,LPCM 16-bit 44100Hz Stereo.wav,Apple AAC,CreationTime=2014-01-01 12:00:00 AM;BitRate=64;ControlMode=Constrained,5E-58-B6-8D-0F-53-B4-25-5E-6D-84-A1-AF-25-9E-50
+48,LPCM 16-bit 44100Hz Stereo.wav,Apple AAC,CreationTime=2014-01-01 12:00:00 AM;BitRate=64;ControlMode=Constant,90-5F-78-39-CA-F8-6E-80-B7-6A-DA-8B-52-7F-07-92
+49,LPCM 16-bit 44100Hz Stereo.wav,Apple Lossless,CreationTime=2014-01-01 12:00:00 AM,DD-DB-A3-C3-8B-EA-A4-F9-32-07-9D-8C-86-C0-51-BE
+50,LPCM 16-bit 44100Hz Mono.wav,Apple Lossless,CreationTime=2014-01-01 12:00:00 AM,81-D1-C9-6C-0E-F7-B0-44-2E-D1-86-11-42-BA-7F-A3
+51,LPCM 16-bit 48000Hz Stereo.wav,Apple Lossless,CreationTime=2014-01-01 12:00:00 AM,6D-12-21-6B-BB-17-01-7B-43-9E-54-E0-77-43-B6-24
+52,LPCM 24-bit 96000Hz Stereo.wav,Apple Lossless,CreationTime=2014-01-01 12:00:00 AM,8F-A9-71-E0-19-D3-F1-C3-AE-50-7A-9A-1B-05-30-1C
+53,LPCM 16-bit 44100Hz Stereo.wav,Apple Lossless,CreationTime=2014-01-01 12:00:00 AM;AddMetadata=True;AddSoundCheck=False,DD-DB-A3-C3-8B-EA-A4-F9-32-07-9D-8C-86-C0-51-BE
+54,LPCM 16-bit 44100Hz Stereo.wav,Apple Lossless,CreationTime=2014-01-01 12:00:00 AM;AddMetadata=False,42-17-BA-C7-E0-E1-28-C8-27-1D-C3-DF-37-70-72-FF
+55,LPCM 8-bit 8000Hz Stereo.wav,Ogg Vorbis,SerialNumber=1,83-C2-62-96-A3-D3-FE-82-1C-3D-9A-88-B7-54-22-24
+56,LPCM 16-bit 44100Hz Stereo.wav,Ogg Vorbis,SerialNumber=1,04-13-96-50-CE-90-41-D5-58-8C-42-BE-F0-71-24-AF
+57,LPCM 16-bit 44100Hz Mono.wav,Ogg Vorbis,SerialNumber=1,02-35-F2-8D-71-06-DE-1D-19-CD-B3-77-F9-57-66-E5
+58,LPCM 16-bit 48000Hz Stereo.wav,Ogg Vorbis,SerialNumber=1,D2-A4-D6-D5-34-71-FA-00-CF-D7-1A-3B-0F-34-9E-0D
+59,LPCM 24-bit 96000Hz Stereo.wav,Ogg Vorbis,SerialNumber=1,22-E7-7C-6C-2D-A7-73-E8-67-30-1C-07-9A-E2-54-05
+60,LPCM 16-bit 44100Hz Stereo.wav,Ogg Vorbis,SerialNumber=1;AddMetadata=True;ControlMode=Variable;VBRQuality=5,04-13-96-50-CE-90-41-D5-58-8C-42-BE-F0-71-24-AF
+61,LPCM 16-bit 44100Hz Stereo.wav,Ogg Vorbis,SerialNumber=1;AddMetadata=False,C5-F9-6A-75-5F-F3-C1-2B-81-55-28-C6-A3-9D-44-F7
+62,LPCM 16-bit 44100Hz Stereo.wav,Ogg Vorbis,SerialNumber=1;VBRQuality=-1,AD-C0-18-B7-6A-9D-57-2D-B3-CC-47-0C-5F-72-B3-E7
+63,LPCM 16-bit 44100Hz Stereo.wav,Ogg Vorbis,SerialNumber=1;BitRate=32,2A-FF-CC-FF-D2-9A-78-89-D3-D7-66-2E-1B-0F-5F-BA
+64,LPCM 16-bit 44100Hz Stereo.wav,Ogg Vorbis,SerialNumber=1;BitRate=32;ControlMode=Constant,97-05-F5-43-96-E2-B1-22-7D-3F-79-82-5D-9D-A8-75

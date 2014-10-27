@@ -1,0 +1,201 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<root>
+  <!-- 
+    Microsoft ResX Schema 
+    
+    Version 2.0
+    
+    The primary goals of this format is to allow a simple XML format 
+    that is mostly human readable. The generation and parsing of the 
+    various data types are done through the TypeConverter classes 
+    associated with the data types.
+    
+    Example:
+    
+    ... ado.net/XML headers & schema ...
+    <resheader name="resmimetype">text/microsoft-resx</resheader>
+    <resheader name="version">2.0</resheader>
+    <resheader name="reader">System.Resources.ResXResourceReader, System.Windows.Forms, ...</resheader>
+    <resheader name="writer">System.Resources.ResXResourceWriter, System.Windows.Forms, ...</resheader>
+    <data name="Name1"><value>this is my long string</value><comment>this is a comment</comment></data>
+    <data name="Color1" type="System.Drawing.Color, System.Drawing">Blue</data>
+    <data name="Bitmap1" mimetype="application/x-microsoft.net.object.binary.base64">
+        <value>[base64 mime encoded serialized .NET Framework object]</value>
+    </data>
+    <data name="Icon1" type="System.Drawing.Icon, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
+        <value>[base64 mime encoded string representing a byte array form of the .NET Framework object]</value>
+        <comment>This is a comment</comment>
+    </data>
+                
+    There are any number of "resheader" rows that contain simple 
+    name/value pairs.
+    
+    Each data row contains a name, and value. The row also contains a 
+    type or mimetype. Type corresponds to a .NET class that support 
+    text/value conversion through the TypeConverter architecture. 
+    Classes that don't support this are serialized and stored with the 
+    mimetype set.
+    
+    The mimetype is used for serialized objects, and tells the 
+    ResXResourceReader how to depersist the object. This is currently not 
+    extensible. For a given mimetype the value must be set accordingly:
+    
+    Note - application/x-microsoft.net.object.binary.base64 is the format 
+    that the ResXResourceWriter will generate, however the reader can 
+    read any of the formats listed below.
+    
+    mimetype: application/x-microsoft.net.object.binary.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Binary.BinaryFormatter
+            : and then encoded with base64 encoding.
+    
+    mimetype: application/x-microsoft.net.object.soap.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Soap.SoapFormatter
+            : and then encoded with base64 encoding.
+
+    mimetype: application/x-microsoft.net.object.bytearray.base64
+    value   : The object must be serialized into a byte array 
+            : using a System.ComponentModel.TypeConverter
+            : and then encoded with base64 encoding.
+    -->
+  <xsd:schema id="root" xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
+    <xsd:import namespace="http://www.w3.org/XML/1998/namespace" />
+    <xsd:element name="root" msdata:IsDataSet="true">
+      <xsd:complexType>
+        <xsd:choice maxOccurs="unbounded">
+          <xsd:element name="metadata">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" />
+              </xsd:sequence>
+              <xsd:attribute name="name" use="required" type="xsd:string" />
+              <xsd:attribute name="type" type="xsd:string" />
+              <xsd:attribute name="mimetype" type="xsd:string" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="assembly">
+            <xsd:complexType>
+              <xsd:attribute name="alias" type="xsd:string" />
+              <xsd:attribute name="name" type="xsd:string" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="data">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+                <xsd:element name="comment" type="xsd:string" minOccurs="0" msdata:Ordinal="2" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" msdata:Ordinal="1" />
+              <xsd:attribute name="type" type="xsd:string" msdata:Ordinal="3" />
+              <xsd:attribute name="mimetype" type="xsd:string" msdata:Ordinal="4" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="resheader">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" />
+            </xsd:complexType>
+          </xsd:element>
+        </xsd:choice>
+      </xsd:complexType>
+    </xsd:element>
+  </xsd:schema>
+  <resheader name="resmimetype">
+    <value>text/microsoft-resx</value>
+  </resheader>
+  <resheader name="version">
+    <value>2.0</value>
+  </resheader>
+  <resheader name="reader">
+    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <resheader name="writer">
+    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <data name="EndOfStreamError" xml:space="preserve">
+    <value>The end of the ogg stream was unexpectedly reached</value>
+  </data>
+  <data name="MetadataEncoderHeaderOutError" xml:space="preserve">
+    <value>Vorbis encountered an error while creating a new comment packet</value>
+  </data>
+  <data name="NativeOggStreamInitializationError" xml:space="preserve">
+    <value>Ogg encountered an error while initializing the Ogg stream</value>
+  </data>
+  <data name="NativeOggStreamPacketInError" xml:space="preserve">
+    <value>Ogg encountered an error while reading a packet</value>
+  </data>
+  <data name="NativeOggStreamPageInError" xml:space="preserve">
+    <value>Ogg encountered an error while reading a page</value>
+  </data>
+  <data name="NativeOggSyncInitializationError" xml:space="preserve">
+    <value>Ogg encountered an error while initializing the Ogg sync</value>
+  </data>
+  <data name="NativeOggSyncWroteError" xml:space="preserve">
+    <value>Ogg encountered an error while writing</value>
+  </data>
+  <data name="NativeVorbisDecoderHeaderInError" xml:space="preserve">
+    <value>Vorbis encountered an error while reading the header: {0}</value>
+  </data>
+  <data name="NativeVorbisDecoderNotVorbisError" xml:space="preserve">
+    <value>Not a Vorbis header packet</value>
+  </data>
+  <data name="NativeVorbisEncoderAddBlockError" xml:space="preserve">
+    <value>Vorbis encountered an error while adding a block: {0}</value>
+  </data>
+  <data name="NativeVorbisEncoderAnalysisError" xml:space="preserve">
+    <value>Vorbis encountered an error while analyzing a block: {0}</value>
+  </data>
+  <data name="NativeVorbisEncoderAnalysisInitialize" xml:space="preserve">
+    <value>An unknown error occurred while initializing the DSP state</value>
+  </data>
+  <data name="NativeVorbisEncoderBlockInitialize" xml:space="preserve">
+    <value>An error occurred while initializing a Vorbis block</value>
+  </data>
+  <data name="NativeVorbisEncoderBlockOutError" xml:space="preserve">
+    <value>Vorbis encountered an error while reading a block: {0}</value>
+  </data>
+  <data name="NativeVorbisEncoderControlError" xml:space="preserve">
+    <value>Vorbis encountered an error while controlling the encoder: {0}</value>
+  </data>
+  <data name="NativeVorbisEncoderFlushPacketError" xml:space="preserve">
+    <value>Vorbis encountered an error while flushing a packet: {0}</value>
+  </data>
+  <data name="NativeVorbisEncoderHeaderOutError" xml:space="preserve">
+    <value>Vorbis encountered an error while reading the header: {0}</value>
+  </data>
+  <data name="NativeVorbisEncoderInitializationError" xml:space="preserve">
+    <value>Vorbis encountered an error while initializing the encoder: {0}</value>
+  </data>
+  <data name="NativeVorbisEncoderSetupError" xml:space="preserve">
+    <value>Vorbis encountered an error while setting up the encoder: {0}</value>
+  </data>
+  <data name="NativeVorbisEncoderWroteError" xml:space="preserve">
+    <value>Vorbis encountered an error while writing to the encoder: {0}</value>
+  </data>
+  <data name="ReadError" xml:space="preserve">
+    <value>The end of the file was unexpectedly reached</value>
+  </data>
+  <data name="SampleEncoderBadAddMetadata" xml:space="preserve">
+    <value>Unrecognized AddMetadata value '{0}'. Specify 'True' or 'False'. Default is 'True'</value>
+  </data>
+  <data name="SampleEncoderBadBitRate" xml:space="preserve">
+    <value>Unrecognized BitRate value '{0}'. Specify a value between '32' and '500'</value>
+  </data>
+  <data name="SampleEncoderBadBitRateControlMode" xml:space="preserve">
+    <value>Unrecognized ControlMode value '{0}' in conjunction with BitRate. Specify 'Variable', 'Average' or 'Constant'. Default is 'Variable'</value>
+  </data>
+  <data name="SampleEncoderBadQualityControlMode" xml:space="preserve">
+    <value>Unrecognized ControlMode value '{0}' in conjunction with VBRQuality. Default is 'Variable'</value>
+  </data>
+  <data name="SampleEncoderBadSerialNumber" xml:space="preserve">
+    <value>Unrecognized SerialNumber value '{0}'. Specify a non-negative integer value. Default is random</value>
+  </data>
+  <data name="SampleEncoderBadVbrQuality" xml:space="preserve">
+    <value>Unrecognized VBRQuality value '{0}'. Specify a value between '-1' (low) and '10' (high). Default is '5'</value>
+  </data>
+</root>

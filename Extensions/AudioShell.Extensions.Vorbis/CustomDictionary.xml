@@ -1,0 +1,16 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<Dictionary>
+  <Words>
+    <Recognized>
+      <Word>Ogg</Word>
+      <Word>Vorbis</Word>
+    </Recognized>
+    <Compound>
+      <Term CompoundAlternate="AddMetadata">addmetadata</Term>
+      <Term CompoundAlternate="BitRate">bitrate</Term>
+      <Term CompoundAlternate="ControlMode">controlmode</Term>
+      <Term CompoundAlternate="SerialNumber">serialnumber</Term>
+      <Term CompoundAlternate="VBRQuality">vbrquality</Term>
+    </Compound>
+  </Words>
+</Dictionary>

@@ -1,0 +1,19 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<Dictionary>
+  <Words>
+    <Recognized>
+      <Word>aac</Word>
+    </Recognized>
+    <Compound>
+      <Term CompoundAlternate="AddMetadata">addmetadata</Term>
+      <Term CompoundAlternate="BitRate">bitrate</Term>
+      <Term CompoundAlternate="ControlMode">controlmode</Term>
+      <Term CompoundAlternate="VBRQuality">vbrquality</Term>
+    </Compound>
+  </Words>
+  <Acronyms>
+    <CasingExceptions>
+      <Acronym>AAC</Acronym>
+    </CasingExceptions>
+  </Acronyms>
+</Dictionary>

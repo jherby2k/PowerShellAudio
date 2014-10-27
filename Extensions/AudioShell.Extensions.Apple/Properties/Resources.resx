@@ -1,0 +1,192 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<root>
+  <!-- 
+    Microsoft ResX Schema 
+    
+    Version 2.0
+    
+    The primary goals of this format is to allow a simple XML format 
+    that is mostly human readable. The generation and parsing of the 
+    various data types are done through the TypeConverter classes 
+    associated with the data types.
+    
+    Example:
+    
+    ... ado.net/XML headers & schema ...
+    <resheader name="resmimetype">text/microsoft-resx</resheader>
+    <resheader name="version">2.0</resheader>
+    <resheader name="reader">System.Resources.ResXResourceReader, System.Windows.Forms, ...</resheader>
+    <resheader name="writer">System.Resources.ResXResourceWriter, System.Windows.Forms, ...</resheader>
+    <data name="Name1"><value>this is my long string</value><comment>this is a comment</comment></data>
+    <data name="Color1" type="System.Drawing.Color, System.Drawing">Blue</data>
+    <data name="Bitmap1" mimetype="application/x-microsoft.net.object.binary.base64">
+        <value>[base64 mime encoded serialized .NET Framework object]</value>
+    </data>
+    <data name="Icon1" type="System.Drawing.Icon, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
+        <value>[base64 mime encoded string representing a byte array form of the .NET Framework object]</value>
+        <comment>This is a comment</comment>
+    </data>
+                
+    There are any number of "resheader" rows that contain simple 
+    name/value pairs.
+    
+    Each data row contains a name, and value. The row also contains a 
+    type or mimetype. Type corresponds to a .NET class that support 
+    text/value conversion through the TypeConverter architecture. 
+    Classes that don't support this are serialized and stored with the 
+    mimetype set.
+    
+    The mimetype is used for serialized objects, and tells the 
+    ResXResourceReader how to depersist the object. This is currently not 
+    extensible. For a given mimetype the value must be set accordingly:
+    
+    Note - application/x-microsoft.net.object.binary.base64 is the format 
+    that the ResXResourceWriter will generate, however the reader can 
+    read any of the formats listed below.
+    
+    mimetype: application/x-microsoft.net.object.binary.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Binary.BinaryFormatter
+            : and then encoded with base64 encoding.
+    
+    mimetype: application/x-microsoft.net.object.soap.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Soap.SoapFormatter
+            : and then encoded with base64 encoding.
+
+    mimetype: application/x-microsoft.net.object.bytearray.base64
+    value   : The object must be serialized into a byte array 
+            : using a System.ComponentModel.TypeConverter
+            : and then encoded with base64 encoding.
+    -->
+  <xsd:schema id="root" xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
+    <xsd:import namespace="http://www.w3.org/XML/1998/namespace" />
+    <xsd:element name="root" msdata:IsDataSet="true">
+      <xsd:complexType>
+        <xsd:choice maxOccurs="unbounded">
+          <xsd:element name="metadata">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" />
+              </xsd:sequence>
+              <xsd:attribute name="name" use="required" type="xsd:string" />
+              <xsd:attribute name="type" type="xsd:string" />
+              <xsd:attribute name="mimetype" type="xsd:string" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="assembly">
+            <xsd:complexType>
+              <xsd:attribute name="alias" type="xsd:string" />
+              <xsd:attribute name="name" type="xsd:string" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="data">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+                <xsd:element name="comment" type="xsd:string" minOccurs="0" msdata:Ordinal="2" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" msdata:Ordinal="1" />
+              <xsd:attribute name="type" type="xsd:string" msdata:Ordinal="3" />
+              <xsd:attribute name="mimetype" type="xsd:string" msdata:Ordinal="4" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="resheader">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" />
+            </xsd:complexType>
+          </xsd:element>
+        </xsd:choice>
+      </xsd:complexType>
+    </xsd:element>
+  </xsd:schema>
+  <resheader name="resmimetype">
+    <value>text/microsoft-resx</value>
+  </resheader>
+  <resheader name="version">
+    <value>2.0</value>
+  </resheader>
+  <resheader name="reader">
+    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <resheader name="writer">
+    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <data name="AacSampleEncoderBadBitRate" xml:space="preserve">
+    <value>Unrecognized BitRate value '{0}'. Specify a value between '{1}' and '{2}'</value>
+  </data>
+  <data name="AacSampleEncoderBadBitRateControlMode" xml:space="preserve">
+    <value>Unrecognized ControlMode value '{0}' in conjunction with BitRate. Specify 'Constrained', 'Average' or 'Constant'. Default is 'Constrained'</value>
+  </data>
+  <data name="AacSampleEncoderBadQuality" xml:space="preserve">
+    <value>Unrecognized Quality value '{0}'. Specify 'Low', 'Medium', or 'High'. Default is 'High'</value>
+  </data>
+  <data name="AacSampleEncoderBadQualityControlMode" xml:space="preserve">
+    <value>A ControlMode other than 'Variable' must be used in conjunction with the BitRate setting</value>
+  </data>
+  <data name="AacSampleEncoderBadVbrQuality" xml:space="preserve">
+    <value>Unrecognized VBRQuality value '{0}'. Specify a value between '0' (low) and '14' (high). Default is '9'</value>
+  </data>
+  <data name="LosslessSampleDecoderFillBufferError" xml:space="preserve">
+    <value>Audio Converter Services encountered an error converting samples: {0}</value>
+  </data>
+  <data name="LosslessSampleDecoderFlagsError" xml:space="preserve">
+    <value>Unrecognized flags value '{0}'</value>
+  </data>
+  <data name="LosslessSampleDecoderFormatError" xml:space="preserve">
+    <value>Not an Apple Lossless file</value>
+  </data>
+  <data name="LosslessSampleDecoderGetCookieInfoError" xml:space="preserve">
+    <value>Audio File Services encountered an error while retrieving information about the magic cookie: {0}</value>
+  </data>
+  <data name="LosslessSampleDecoderSetCookieError" xml:space="preserve">
+    <value>Audio Converter Services encountered an error while setting the magic cookie: {0}</value>
+  </data>
+  <data name="LosslessSampleEncoderBadAddMetadata" xml:space="preserve">
+    <value>Unrecognized AddMetadata value '{0}'. Specify 'True' or 'False'. Default is 'True'</value>
+  </data>
+  <data name="LosslessSampleEncoderBitRateError" xml:space="preserve">
+    <value>Apple Lossless does not support {0} bits per second input</value>
+  </data>
+  <data name="NativeAudioConverterInitializationError" xml:space="preserve">
+    <value>Audio Converter Services encountered an error while initializing the converter: {0}</value>
+  </data>
+  <data name="NativeAudioConverterReadError" xml:space="preserve">
+    <value>Audio File Services encountered an error while reading packets: {0}</value>
+  </data>
+  <data name="NativeAudioFileInitializationError" xml:space="preserve">
+    <value>Audio File Services encountered an error while initializing the audio file: {0}</value>
+  </data>
+  <data name="NativeExtendedAudioFileInitializationError" xml:space="preserve">
+    <value>Extended Audio File Services encountered an error while initializing the audio file: {0}</value>
+  </data>
+  <data name="SafeNativeMethods64BitError" xml:space="preserve">
+    <value>The Apple extension cannot be accessed from a 64-bit process</value>
+  </data>
+  <data name="SafeNativeMethodsDllsMissing" xml:space="preserve">
+    <value>Apple Application Support (included with iTunes) is not installed</value>
+  </data>
+  <data name="SampleEncoderConverterBitRateError" xml:space="preserve">
+    <value>Audio Converter Services encountered an error while setting the bit rate: {0}</value>
+  </data>
+  <data name="SampleEncoderConverterControlModeError" xml:space="preserve">
+    <value>Audio Converter Services encountered an error while setting the control mode: {0}</value>
+  </data>
+  <data name="SampleEncoderConverterError" xml:space="preserve">
+    <value>Extended Audio File Services encountered an error while saving the converter configuration: {0}</value>
+  </data>
+  <data name="SampleEncoderConverterQualityError" xml:space="preserve">
+    <value>Audio Converter Services encountered an error while setting the quality: {0}</value>
+  </data>
+  <data name="SampleEncoderInitializationError" xml:space="preserve">
+    <value>Extended Audio File Services encountered an error while initializing the audio file: {0}</value>
+  </data>
+  <data name="SampleEncoderWriteError" xml:space="preserve">
+    <value>Extended Audio File Services encountered an error while writing a packet: {0}</value>
+  </data>
+</root>

@@ -1,0 +1,19 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<Dictionary>
+  <Words>
+    <Recognized>
+      <Word>flac</Word>
+      <Word>vorbis</Word>
+    </Recognized>
+    <Compound>
+      <Term CompoundAlternate="AddMetadata">addmetadata</Term>
+      <Term CompoundAlternate="CompressionLevel">compressionlevel</Term>
+      <Term CompoundAlternate="SeekPointInterval">seekpointinterval</Term>
+    </Compound>
+  </Words>
+  <Acronyms>
+    <CasingExceptions>
+      <Acronym>FLAC</Acronym>
+    </CasingExceptions>
+  </Acronyms>
+</Dictionary>

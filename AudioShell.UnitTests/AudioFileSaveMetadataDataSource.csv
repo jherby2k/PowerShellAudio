@@ -1,0 +1,17 @@
+Index,FileName,Settings,Metadata,ExpectedHash
+0,FLAC 16-bit 44100Hz Stereo.flac,,,54-2A-A4-2B-93-5F-48-B2-3A-04-EF-27-6D-82-FB-1E
+1,FLAC 16-bit 44100Hz Stereo.flac,,Comment=Test Sample,F5-9B-62-47-1E-27-04-A1-7B-9C-24-87-05-82-FD-5C
+2,FLAC 16-bit 44100Hz Stereo.flac,UsePadding=False,Comment=Test Sample,F5-9B-62-47-1E-27-04-A1-7B-9C-24-87-05-82-FD-5C
+3,MP3 213kbps 44100Hz Stereo.mp3,,,E7-CE-BD-CC-18-5B-EF-4C-8C-14-E5-FF-9B-AF-B8-86
+4,MP3 213kbps 44100Hz Stereo.mp3,,Comment=Test Sample,81-D9-6C-E4-77-CE-F4-0C-F4-AC-DB-BE-1F-F1-D8-EC
+5,MP3 213kbps 44100Hz Stereo.mp3,AddSoundCheck=False;ID3Version=2.3;PaddingSize=0;UsePadding=False,Comment=Test Sample,81-D9-6C-E4-77-CE-F4-0C-F4-AC-DB-BE-1F-F1-D8-EC
+6,MP3 213kbps 44100Hz Stereo.mp3,ID3Version=2.4,Comment=Test Sample,DA-90-0D-DD-7D-B6-CB-15-C1-C6-47-01-0A-51-73-D1
+7,MP3 213kbps 44100Hz Stereo.mp3,PaddingSize=1024,Comment=Test Sample,6A-17-57-D5-C3-52-73-99-E7-21-CB-A8-37-A2-D3-3C
+8,ALAC 16-bit 44100Hz Stereo.m4a,,,42-17-BA-C7-E0-E1-28-C8-27-1D-C3-DF-37-70-72-FF
+9,ALAC 16-bit 44100Hz Stereo.m4a,,Comment=Test Sample,DD-DB-A3-C3-8B-EA-A4-F9-32-07-9D-8C-86-C0-51-BE
+10,ALAC 16-bit 44100Hz Stereo.m4a,CreationTime=2014-01-01 12:00:00 AM;AddMetadata=True;AddSoundCheck=False,Comment=Test Sample,DD-DB-A3-C3-8B-EA-A4-F9-32-07-9D-8C-86-C0-51-BE
+11,AAC 153 kbps 44100Hz Stereo.m4a,,,DB-2C-A6-C5-7E-B5-27-19-5E-CF-AF-D3-4C-88-33-57
+12,AAC 153 kbps 44100Hz Stereo.m4a,,Comment=Test Sample,58-1E-6F-22-02-FB-49-C8-55-68-26-20-9D-42-42-54
+13,AAC 153 kbps 44100Hz Stereo.m4a,CreationTime=2014-01-01 12:00:00 AM;AddMetadata=True;AddSoundCheck=False,Comment=Test Sample,58-1E-6F-22-02-FB-49-C8-55-68-26-20-9D-42-42-54
+14,Vorbis 160kbps 44100Hz Stereo.ogg,,,C5-F9-6A-75-5F-F3-C1-2B-81-55-28-C6-A3-9D-44-F7
+15,Vorbis 160kbps 44100Hz Stereo.ogg,,Comment=Test Sample,04-13-96-50-CE-90-41-D5-58-8C-42-BE-F0-71-24-AF

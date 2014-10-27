@@ -1,0 +1,17 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<Dictionary>
+  <Words>
+    <Recognized>
+      <Word>itunes</Word>
+      <Word>mp</Word>
+    </Recognized>
+  </Words>
+  <Compound>
+    <Term CompoundAlternate="AddSoundCheck">addsoundcheck</Term>
+  </Compound>
+  <Acronyms>
+    <CasingExceptions>
+      <Acronym>MP</Acronym>
+    </CasingExceptions>
+  </Acronyms>
+</Dictionary>
