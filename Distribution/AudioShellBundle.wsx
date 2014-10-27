@@ -44,13 +44,13 @@ You should have received a copy of the GNU Lesser General Public License along w
                   InstallCondition="VersionNT=v6.1 AND VersionNT64"
                   DetectCondition="PSVersion&gt;=v4.0"
                   Permanent="yes"
-                  SourceFile="Prerequisites\Windows6.1-KB2819745-x64-MultiPkg.msu"/>
+                  SourceFile="Distribution\Prerequisites\Windows6.1-KB2819745-x64-MultiPkg.msu"/>
       <MsuPackage DisplayName="Windows Management Framework 4.0"
                   KB="KB2819745"
                   InstallCondition="VersionNT=v6.1 AND NOT VersionNT64"
                   DetectCondition="PSVersion&gt;=v4.0"
                   Permanent="yes"
-                  SourceFile="Prerequisites\Windows6.1-KB2819745-x86-MultiPkg.msu"/>
+                  SourceFile="Distribution\Prerequisites\Windows6.1-KB2819745-x86-MultiPkg.msu"/>
       
       <MsiPackage SourceFile="AudioShell.msi"/>
       <MsiPackage SourceFile="AudioShell64.msi" InstallCondition="VersionNT64"/>

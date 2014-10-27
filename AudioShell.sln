@@ -77,6 +77,12 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Distribution", "Distributio
 		Distribution\License.rtf = Distribution\License.rtf
 	EndProjectSection
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Prerequisites", "Prerequisites", "{17494B6A-415F-4BCC-B288-570B2E583849}"
+	ProjectSection(SolutionItems) = preProject
+		Distribution\Prerequisites\Windows6.1-KB2819745-x64-MultiPkg.msu = Distribution\Prerequisites\Windows6.1-KB2819745-x64-MultiPkg.msu
+		Distribution\Prerequisites\Windows6.1-KB2819745-x86-MultiPkg.msu = Distribution\Prerequisites\Windows6.1-KB2819745-x86-MultiPkg.msu
+	EndProjectSection
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -154,5 +160,6 @@ Global
 		{F5CD5FCE-2E46-4C2D-A9E9-075E427FF2E5} = {190E3FA0-597A-458E-9C24-E58596629D16}
 		{E0F122AE-2811-4D7D-B59D-3105F237B56B} = {190E3FA0-597A-458E-9C24-E58596629D16}
 		{82ABED08-8698-49F6-842B-D681ADC63F40} = {7A43876E-3E89-4E8C-9267-C9B88B662866}
+		{17494B6A-415F-4BCC-B288-570B2E583849} = {82ABED08-8698-49F6-842B-D681ADC63F40}
 	EndGlobalSection
 EndGlobal
