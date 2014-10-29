@@ -50,9 +50,10 @@ namespace AudioShell.Extensions.Lame
                 result.Add("VBRQuality", "2");
 
                 // Call the external ID3 encoder:
-                var metadataEncoderFactory = ExtensionProvider<IMetadataEncoder>.Instance.Factories.Where(factory => string.Compare((string)factory.Metadata["Extension"], Extension, StringComparison.OrdinalIgnoreCase) == 0).Single();
-                using (ExportLifetimeContext<IMetadataEncoder> metadataEncoderLifetime = metadataEncoderFactory.CreateExport())
-                    metadataEncoderLifetime.Value.DefaultSettings.CopyTo(result);
+                var metadataEncoderFactory = ExtensionProvider<IMetadataEncoder>.Instance.Factories.Where(factory => string.Compare((string)factory.Metadata["Extension"], Extension, StringComparison.OrdinalIgnoreCase) == 0).SingleOrDefault();
+                if (metadataEncoderFactory != null)
+                    using (ExportLifetimeContext<IMetadataEncoder> metadataEncoderLifetime = metadataEncoderFactory.CreateExport())
+                        metadataEncoderLifetime.Value.DefaultSettings.CopyTo(result);
 
                 return result;
             }
@@ -64,7 +65,7 @@ namespace AudioShell.Extensions.Lame
             {
                 Contract.Ensures(Contract.Result<IReadOnlyCollection<string>>() != null);
 
-                var partialResult = new List<string>(6);
+                var partialResult = new List<string>();
 
                 partialResult.Add("AddMetadata");
                 partialResult.Add("ApplyGain");
@@ -74,9 +75,12 @@ namespace AudioShell.Extensions.Lame
                 partialResult.Add("VBRQuality");
 
                 // Call the external ID3 encoder:
-                var metadataEncoderFactory = ExtensionProvider<IMetadataEncoder>.Instance.Factories.Where(factory => string.Compare((string)factory.Metadata["Extension"], Extension, StringComparison.OrdinalIgnoreCase) == 0).Single();
-                using (ExportLifetimeContext<IMetadataEncoder> metadataEncoderLifetime = metadataEncoderFactory.CreateExport())
-                    return partialResult.Concat(metadataEncoderLifetime.Value.AvailableSettings).ToList().AsReadOnly();
+                var metadataEncoderFactory = ExtensionProvider<IMetadataEncoder>.Instance.Factories.Where(factory => string.Compare((string)factory.Metadata["Extension"], Extension, StringComparison.OrdinalIgnoreCase) == 0).SingleOrDefault();
+                if (metadataEncoderFactory != null)
+                    using (ExportLifetimeContext<IMetadataEncoder> metadataEncoderLifetime = metadataEncoderFactory.CreateExport())
+                        partialResult = partialResult.Concat(metadataEncoderLifetime.Value.AvailableSettings).ToList();
+
+                return partialResult.AsReadOnly();
             }
         }
 

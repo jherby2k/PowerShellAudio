@@ -70,7 +70,7 @@ namespace AudioShell.Extensions.Vorbis
             {
                 Contract.Ensures(Contract.Result<IReadOnlyCollection<string>>() != null);
 
-                var partialResult = new List<string>(5);
+                var partialResult = new List<string>();
 
                 partialResult.Add("AddMetadata");
                 partialResult.Add("BitRate");

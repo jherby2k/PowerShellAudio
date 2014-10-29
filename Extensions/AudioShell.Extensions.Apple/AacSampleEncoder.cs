@@ -64,9 +64,10 @@ namespace AudioShell.Extensions.Apple
                         replayGainFilterLifetime.Value.DefaultSettings.CopyTo(result);
 
                 // Call the external MP4 encoder for writing iTunes-compatible atoms:
-                var metadataEncoderFactory = ExtensionProvider<IMetadataEncoder>.Instance.Factories.Where(factory => string.Compare((string)factory.Metadata["Extension"], Extension, StringComparison.OrdinalIgnoreCase) == 0).Single();
-                using (ExportLifetimeContext<IMetadataEncoder> metadataEncoderLifetime = metadataEncoderFactory.CreateExport())
-                    metadataEncoderLifetime.Value.DefaultSettings.CopyTo(result);
+                var metadataEncoderFactory = ExtensionProvider<IMetadataEncoder>.Instance.Factories.Where(factory => string.Compare((string)factory.Metadata["Extension"], Extension, StringComparison.OrdinalIgnoreCase) == 0).SingleOrDefault();
+                if (metadataEncoderFactory != null)
+                    using (ExportLifetimeContext<IMetadataEncoder> metadataEncoderLifetime = metadataEncoderFactory.CreateExport())
+                        metadataEncoderLifetime.Value.DefaultSettings.CopyTo(result);
 
                 return result;
             }
@@ -78,7 +79,7 @@ namespace AudioShell.Extensions.Apple
             {
                 Contract.Ensures(Contract.Result<IReadOnlyCollection<string>>() != null);
 
-                var partialResult = new List<string>(4);
+                var partialResult = new List<string>();
 
                 partialResult.Add("BitRate");
                 partialResult.Add("ControlMode");
@@ -92,9 +93,12 @@ namespace AudioShell.Extensions.Apple
                         partialResult = partialResult.Concat(replayGainFilterLifetime.Value.AvailableSettings).ToList();
 
                 // Call the external MP4 encoder for writing iTunes-compatible atoms:
-                var metadataEncoderFactory = ExtensionProvider<IMetadataEncoder>.Instance.Factories.Where(factory => string.Compare((string)factory.Metadata["Extension"], Extension, StringComparison.OrdinalIgnoreCase) == 0).Single();
-                using (ExportLifetimeContext<IMetadataEncoder> metadataEncoderLifetime = metadataEncoderFactory.CreateExport())
-                    return partialResult.Concat(metadataEncoderLifetime.Value.AvailableSettings).ToList().AsReadOnly();
+                var metadataEncoderFactory = ExtensionProvider<IMetadataEncoder>.Instance.Factories.Where(factory => string.Compare((string)factory.Metadata["Extension"], Extension, StringComparison.OrdinalIgnoreCase) == 0).SingleOrDefault();
+                if (metadataEncoderFactory != null)
+                    using (ExportLifetimeContext<IMetadataEncoder> metadataEncoderLifetime = metadataEncoderFactory.CreateExport())
+                        partialResult = partialResult.Concat(metadataEncoderLifetime.Value.AvailableSettings).ToList();
+
+                return partialResult.AsReadOnly();
             }
         }
 
