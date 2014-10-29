@@ -290,6 +290,9 @@ You should have received a copy of the GNU Lesser General Public License along w
           <ComponentRef Id="AudioShell.Extensions.Vorbis.Contracts.dll"/>
           <ComponentRef Id="libogg.dll"/>
           <ComponentRef Id="libvorbis.dll"/>
+          <ComponentRef Id="AudioShell.Extensions.ReplayGain.dll"/>
+          <ComponentRef Id="AudioShell.Extensions.ReplayGain.Contracts.dll"/>
+          <ComponentRef Id="System.Threading.Tasks.Dataflow.dll"/>
         </Feature>
 
         <Feature Id="MP3" Title="MPEG Audio Layer 3 (MP3)" Description="Enables the editing of ID3v2 metadata, and high-quality encoding via Lame." AllowAdvertise="no">
@@ -309,6 +312,9 @@ You should have received a copy of the GNU Lesser General Public License along w
           <ComponentRef Id="AudioShell.Extensions.Mp4.Contracts.dll"/>
           <ComponentRef Id="AudioShell.Extensions.Apple.dll"/>
           <ComponentRef Id="AudioShell.Extensions.Apple.Contracts.dll"/>
+          <ComponentRef Id="AudioShell.Extensions.ReplayGain.dll"/>
+          <ComponentRef Id="AudioShell.Extensions.ReplayGain.Contracts.dll"/>
+          <ComponentRef Id="System.Threading.Tasks.Dataflow.dll"/>
         </Feature>
         
       </Feature>

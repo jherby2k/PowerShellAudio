@@ -18,9 +18,11 @@
 using AudioShell.Extensions.Vorbis.Properties;
 using System;
 using System.Collections.Generic;
+using System.ComponentModel.Composition;
 using System.Diagnostics.Contracts;
 using System.Globalization;
 using System.IO;
+using System.Linq;
 using System.Runtime.InteropServices;
 using System.Text;
 
@@ -30,6 +32,7 @@ namespace AudioShell.Extensions.Vorbis
     public class VorbisSampleEncoder : ISampleEncoder, IDisposable
     {
         readonly NativeVorbisEncoder _encoder = new NativeVorbisEncoder();
+        ExportLifetimeContext<ISampleFilter> _replayGainFilterLifetime;
         NativeOggStream _oggStream;
         byte[] _buffer = new byte[4096];
         Stream _output;
@@ -51,6 +54,12 @@ namespace AudioShell.Extensions.Vorbis
                 result.Add("ControlMode", "Variable");
                 result.Add("VBRQuality", "5");
 
+                // Call the external ReplayGain filter for scaling the input:
+                var replayGainFilterFactory = ExtensionProvider<ISampleFilter>.Instance.Factories.Where(factory => string.Compare((string)factory.Metadata["Name"], "ReplayGain", StringComparison.OrdinalIgnoreCase) == 0).SingleOrDefault();
+                if (replayGainFilterFactory != null)
+                    using (ExportLifetimeContext<ISampleFilter> replayGainFilterLifetime = replayGainFilterFactory.CreateExport())
+                        replayGainFilterLifetime.Value.DefaultSettings.CopyTo(result);
+
                 return result;
             }
         }
@@ -61,15 +70,21 @@ namespace AudioShell.Extensions.Vorbis
             {
                 Contract.Ensures(Contract.Result<IReadOnlyCollection<string>>() != null);
 
-                var result = new List<string>(5);
+                var partialResult = new List<string>(5);
 
-                result.Add("AddMetadata");
-                result.Add("BitRate");
-                result.Add("ControlMode");
-                result.Add("SerialNumber");
-                result.Add("VBRQuality");
+                partialResult.Add("AddMetadata");
+                partialResult.Add("BitRate");
+                partialResult.Add("ControlMode");
+                partialResult.Add("SerialNumber");
+                partialResult.Add("VBRQuality");
 
-                return result.AsReadOnly();
+                // Call the external ReplayGain filter for scaling the input:
+                var replayGainFilterFactory = ExtensionProvider<ISampleFilter>.Instance.Factories.Where(factory => string.Compare((string)factory.Metadata["Name"], "ReplayGain", StringComparison.OrdinalIgnoreCase) == 0).SingleOrDefault();
+                if (replayGainFilterFactory != null)
+                    using (ExportLifetimeContext<ISampleFilter> replayGainFilterLifetime = replayGainFilterFactory.CreateExport())
+                        partialResult = partialResult.Concat(replayGainFilterLifetime.Value.AvailableSettings).ToList();
+
+                return partialResult.AsReadOnly();
             }
         }
 
@@ -81,6 +96,13 @@ namespace AudioShell.Extensions.Vorbis
         public void Initialize(Stream stream, AudioInfo audioInfo, MetadataDictionary metadata, SettingsDictionary settings)
         {
             _output = stream;
+
+            // Load the external gain filter:
+            var sampleFilterFactory = ExtensionProvider<ISampleFilter>.Instance.Factories.Where(factory => string.Compare((string)factory.Metadata["Name"], "ReplayGain", StringComparison.OrdinalIgnoreCase) == 0).SingleOrDefault();
+            if (sampleFilterFactory == null)
+                throw new ExtensionInitializationException(Resources.SampleEncoderReplayGainFilterError);
+            _replayGainFilterLifetime = sampleFilterFactory.CreateExport();
+            _replayGainFilterLifetime.Value.Initialize(metadata, settings);
 
             int serialNumber;
             if (string.IsNullOrEmpty(settings["SerialNumber"]))
@@ -132,6 +154,9 @@ namespace AudioShell.Extensions.Vorbis
         {
             if (!samples.IsLast)
             {
+                // Filter by ReplayGain, depending on settings:
+                _replayGainFilterLifetime.Value.Submit(samples);
+
                 // Request an unmanaged buffer, then copy the samples to it:
                 IntPtr[] buffers = new IntPtr[samples.Channels];
                 Marshal.Copy(_encoder.GetBuffer(samples.SampleCount), buffers, 0, buffers.Length);
@@ -170,6 +195,8 @@ namespace AudioShell.Extensions.Vorbis
             if (disposing)
             {
                 _encoder.Dispose();
+                if (_replayGainFilterLifetime != null)
+                    _replayGainFilterLifetime.Dispose();
                 if (_oggStream != null)
                     _oggStream.Dispose();
             }

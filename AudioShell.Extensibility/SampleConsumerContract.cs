@@ -23,11 +23,6 @@ namespace AudioShell
     [ContractClassFor(typeof(ISampleConsumer))]
     abstract class SampleConsumerContract : ISampleConsumer
     {
-        public bool ManuallyFreesSamples
-        {
-            get { return default(bool); }
-        }
-
         public void Submit(SampleCollection samples)
         {
             Contract.Requires<ArgumentNullException>(samples != null);

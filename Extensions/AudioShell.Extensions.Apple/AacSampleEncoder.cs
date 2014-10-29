@@ -24,6 +24,7 @@ using System.Globalization;
 using System.IO;
 using System.Linq;
 using System.Runtime.InteropServices;
+using AudioShell;
 
 namespace AudioShell.Extensions.Apple
 {
@@ -33,6 +34,7 @@ namespace AudioShell.Extensions.Apple
         static readonly uint[] _vbrQualities = new uint[] { 0, 5, 14, 23, 32, 41, 50, 59, 69, 78, 87, 96, 105, 114, 123 };
 
         Stream _stream;
+        ExportLifetimeContext<ISampleFilter> _replayGainFilterLifetime;
         MetadataDictionary _metadata;
         SettingsDictionary _settings;
         NativeExtendedAudioFile _audioFile;
@@ -54,6 +56,12 @@ namespace AudioShell.Extensions.Apple
                 result.Add("ControlMode", "Variable");
                 result.Add("Quality", "High");
                 result.Add("VBRQuality", "9");
+
+                // Call the external ReplayGain filter for scaling the input:
+                var replayGainFilterFactory = ExtensionProvider<ISampleFilter>.Instance.Factories.Where(factory => string.Compare((string)factory.Metadata["Name"], "ReplayGain", StringComparison.OrdinalIgnoreCase) == 0).SingleOrDefault();
+                if (replayGainFilterFactory != null)
+                    using (ExportLifetimeContext<ISampleFilter> replayGainFilterLifetime = replayGainFilterFactory.CreateExport())
+                        replayGainFilterLifetime.Value.DefaultSettings.CopyTo(result);
 
                 // Call the external MP4 encoder for writing iTunes-compatible atoms:
                 var metadataEncoderFactory = ExtensionProvider<IMetadataEncoder>.Instance.Factories.Where(factory => string.Compare((string)factory.Metadata["Extension"], Extension, StringComparison.OrdinalIgnoreCase) == 0).Single();
@@ -77,6 +85,12 @@ namespace AudioShell.Extensions.Apple
                 partialResult.Add("Quality");
                 partialResult.Add("VBRQuality");
 
+                // Call the external ReplayGain filter for scaling the input:
+                var replayGainFilterFactory = ExtensionProvider<ISampleFilter>.Instance.Factories.Where(factory => string.Compare((string)factory.Metadata["Name"], "ReplayGain", StringComparison.OrdinalIgnoreCase) == 0).SingleOrDefault();
+                if (replayGainFilterFactory != null)
+                    using (ExportLifetimeContext<ISampleFilter> replayGainFilterLifetime = replayGainFilterFactory.CreateExport())
+                        partialResult = partialResult.Concat(replayGainFilterLifetime.Value.AvailableSettings).ToList();
+
                 // Call the external MP4 encoder for writing iTunes-compatible atoms:
                 var metadataEncoderFactory = ExtensionProvider<IMetadataEncoder>.Instance.Factories.Where(factory => string.Compare((string)factory.Metadata["Extension"], Extension, StringComparison.OrdinalIgnoreCase) == 0).Single();
                 using (ExportLifetimeContext<IMetadataEncoder> metadataEncoderLifetime = metadataEncoderFactory.CreateExport())
@@ -97,6 +111,13 @@ namespace AudioShell.Extensions.Apple
             _stream = stream;
             _metadata = metadata;
             _settings = settings;
+
+            // Load the external gain filter:
+            var sampleFilterFactory = ExtensionProvider<ISampleFilter>.Instance.Factories.Where(factory => string.Compare((string)factory.Metadata["Name"], "ReplayGain", StringComparison.OrdinalIgnoreCase) == 0).SingleOrDefault();
+            if (sampleFilterFactory == null)
+                throw new ExtensionInitializationException(Resources.AacSampleEncoderReplayGainFilterError);
+            _replayGainFilterLifetime = sampleFilterFactory.CreateExport();
+            _replayGainFilterLifetime.Value.Initialize(metadata, settings);
 
             AudioStreamBasicDescription inputDescription = GetInputDescription(audioInfo);
             AudioStreamBasicDescription outputDescription = GetOutputDescription(inputDescription);
@@ -139,6 +160,9 @@ namespace AudioShell.Extensions.Apple
 
             if (!samples.IsLast)
             {
+                // Filter by ReplayGain, depending on settings:
+                _replayGainFilterLifetime.Value.Submit(samples);
+
                 int index = 0;
                 for (int sample = 0; sample < samples.SampleCount; sample++)
                     for (int channel = 0; channel < samples.Channels; channel++)
@@ -183,8 +207,13 @@ namespace AudioShell.Extensions.Apple
 
         protected virtual void Dispose(bool disposing)
         {
-            if (disposing && _audioFile != null)
-                _audioFile.Dispose();
+            if (disposing)
+            {
+                if (_replayGainFilterLifetime != null)
+                    _replayGainFilterLifetime.Dispose();
+                if (_audioFile != null)
+                    _audioFile.Dispose();
+            }
         }
 
         static AudioStreamBasicDescription GetInputDescription(AudioInfo audioInfo)

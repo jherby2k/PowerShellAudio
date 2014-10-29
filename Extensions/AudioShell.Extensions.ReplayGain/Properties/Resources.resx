@@ -120,4 +120,19 @@
   <data name="EqualLoudnessFilterSampleRateError" xml:space="preserve">
     <value>ReplayGain does not support a sample rate of {0} Hz</value>
   </data>
+  <data name="ReplayGainSampleFilterBadApplyGain" xml:space="preserve">
+    <value>Unrecognized ApplyGain value '{0}'. Specify 'Album', 'Track' or 'False'. Default is 'False'</value>
+  </data>
+  <data name="ReplayGainSampleFilterMissingAlbumGain" xml:space="preserve">
+    <value>The metadata does not contain an AlbumGain value</value>
+  </data>
+  <data name="ReplayGainSampleFilterMissingAlbumPeak" xml:space="preserve">
+    <value>The metadata does not contain an AlbumPeak value</value>
+  </data>
+  <data name="ReplayGainSampleFilterMissingTrackGain" xml:space="preserve">
+    <value>The metadata does not contain a TrackGain value</value>
+  </data>
+  <data name="ReplayGainSampleFilterMissingTrackPeak" xml:space="preserve">
+    <value>The metadata does not contain a TrackPeak value</value>
+  </data>
 </root>

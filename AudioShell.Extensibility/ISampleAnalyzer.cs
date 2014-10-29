@@ -28,7 +28,7 @@ namespace AudioShell
     /// with the <see cref="SampleAnalyzerExportAttribute"/> attribute so that it can be discovered at runtime.
     /// </remarks>
     [ContractClass(typeof(SampleAnalyzerContract))]
-    public interface ISampleAnalyzer : ISampleConsumer
+    public interface ISampleAnalyzer : IFinalSampleConsumer
     {
         /// <summary>
         /// Initializes the analyzer.

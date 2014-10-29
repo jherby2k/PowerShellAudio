@@ -132,6 +132,9 @@
   <data name="AacSampleEncoderBadVbrQuality" xml:space="preserve">
     <value>Unrecognized VBRQuality value '{0}'. Specify a value between '0' (low) and '14' (high). Default is '9'</value>
   </data>
+  <data name="AacSampleEncoderReplayGainFilterError" xml:space="preserve">
+    <value>There is no sample filter named 'ReplayGain' installed</value>
+  </data>
   <data name="LosslessSampleDecoderFillBufferError" xml:space="preserve">
     <value>Audio Converter Services encountered an error converting samples: {0}</value>
   </data>

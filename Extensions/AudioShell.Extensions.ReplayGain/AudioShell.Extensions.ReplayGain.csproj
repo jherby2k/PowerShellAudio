@@ -122,6 +122,7 @@
     <Compile Include="ButterworthFilter.cs" />
     <Compile Include="EqualLoudnessFilter.cs" />
     <Compile Include="AlbumComponent.cs" />
+    <Compile Include="ReplayGainFilter.cs" />
     <Compile Include="GlobalSuppressions.cs" />
     <Compile Include="Properties\Resources.Designer.cs">
       <AutoGen>True</AutoGen>

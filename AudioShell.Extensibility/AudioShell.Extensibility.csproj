@@ -120,7 +120,11 @@
     <Compile Include="AudioInfoDecoderContract.cs" />
     <Compile Include="AudioInfoDecoderExportAttribute.cs" />
     <Compile Include="ExtensionProvider.cs" />
+    <Compile Include="IFinalSampleConsumer.cs" />
     <Compile Include="ISampleConsumer.cs" />
+    <Compile Include="ISampleFilter.cs" />
+    <Compile Include="FinalSampleConsumerContract.cs" />
+    <Compile Include="SampleFilterExportAttribute.cs" />
     <Compile Include="SampleConsumerContract.cs" />
     <Compile Include="SampleEncoderContract.cs" />
     <Compile Include="IAudioInfoDecoder.cs" />
@@ -139,6 +143,7 @@
     <Compile Include="SampleDecoderContract.cs" />
     <Compile Include="SampleAnalyzerExportAttribute.cs" />
     <Compile Include="SampleDecoderExportAttribute.cs" />
+    <Compile Include="SampleFilterContract.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\AudioShell.Common\AudioShell.Common.csproj">

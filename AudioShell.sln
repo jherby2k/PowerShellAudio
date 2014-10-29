@@ -42,10 +42,14 @@ EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AudioShell.Extensions.Mp4", "Extensions\AudioShell.Extensions.Mp4\AudioShell.Extensions.Mp4.csproj", "{7D89FD61-1B43-4055-90CF-ED8B12259B49}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AudioShell.Extensions.Vorbis", "Extensions\AudioShell.Extensions.Vorbis\AudioShell.Extensions.Vorbis.csproj", "{F5CD5FCE-2E46-4C2D-A9E9-075E427FF2E5}"
+	ProjectSection(ProjectDependencies) = postProject
+		{4277BEBB-073A-4A27-946F-09ADEDCE98C9} = {4277BEBB-073A-4A27-946F-09ADEDCE98C9}
+	EndProjectSection
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AudioShell.Extensions.Apple", "Extensions\AudioShell.Extensions.Apple\AudioShell.Extensions.Apple.csproj", "{E0F122AE-2811-4D7D-B59D-3105F237B56B}"
 	ProjectSection(ProjectDependencies) = postProject
 		{7D89FD61-1B43-4055-90CF-ED8B12259B49} = {7D89FD61-1B43-4055-90CF-ED8B12259B49}
+		{4277BEBB-073A-4A27-946F-09ADEDCE98C9} = {4277BEBB-073A-4A27-946F-09ADEDCE98C9}
 	EndProjectSection
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AudioShell.UnitTests", "AudioShell.UnitTests\AudioShell.UnitTests.csproj", "{38A38F5C-D59D-4976-AAE6-F0B95C51DA1A}"

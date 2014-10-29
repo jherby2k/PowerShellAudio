@@ -17,29 +17,19 @@
 
 using System.Collections.Generic;
 using System.Diagnostics.Contracts;
-using System.IO;
 
 namespace AudioShell
 {
     /// <summary>
-    /// Represents an extension capable of encoding a complete audio stream.
+    /// Represents an extension capable of adjusting samples.
     /// </summary>
     /// <remarks>
-    /// To add support for encoding to a new audio format, an extension should implement this class, then decorate
-    /// their implementation with the <see cref="SampleEncoderExportAttribute"/> attribute so that it can be discovered
-    /// at runtime.
+    /// To add support for a new filter, an extension should implement this class, then decorate their implementation
+    /// with the <see cref="SampleFilterExportAttribute"/> attribute so that it can be discovered at runtime.
     /// </remarks>
-    [ContractClass(typeof(SampleEncoderContract))]
-    public interface ISampleEncoder : IFinalSampleConsumer
+    [ContractClass(typeof(SampleFilterContract))]
+    public interface ISampleFilter : ISampleConsumer
     {
-        /// <summary>
-        /// Gets the file extension used by this audio format.
-        /// </summary>
-        /// <value>
-        /// The file extension.
-        /// </value>
-        string Extension { get; }
-
         /// <summary>
         /// Gets the default settings.
         /// </summary>
@@ -57,12 +47,10 @@ namespace AudioShell
         IReadOnlyCollection<string> AvailableSettings { get; }
 
         /// <summary>
-        /// Initializes the encoder.
+        /// Initializes the sample filter using the specified metadata and settings.
         /// </summary>
-        /// <param name="stream">The stream for writing.</param>
-        /// <param name="audioInfo">The audio information.</param>
         /// <param name="metadata">The metadata.</param>
         /// <param name="settings">The settings.</param>
-        void Initialize(Stream stream, AudioInfo audioInfo, MetadataDictionary metadata, SettingsDictionary settings);
+        void Initialize(MetadataDictionary metadata, SettingsDictionary settings);
     }
 }

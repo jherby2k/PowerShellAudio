@@ -19,16 +19,14 @@ using System.Diagnostics.Contracts;
 
 namespace AudioShell
 {
-    /// <summary>
-    /// Represents any extension that consumes <see cref="SampleCollection"/>s.
-    /// </summary>
-    [ContractClass(typeof(SampleConsumerContract))]
-    public interface ISampleConsumer
+    [ContractClassFor(typeof(IFinalSampleConsumer))]
+    abstract class FinalSampleConsumerContract : IFinalSampleConsumer
     {
-        /// <summary>
-        /// Submits the specified samples for processing.
-        /// </summary>
-        /// <param name="samples">The samples.</param>
-        void Submit(SampleCollection samples);
+        public bool ManuallyFreesSamples
+        {
+            get { return default(bool); }
+        }
+
+        public abstract void Submit(SampleCollection samples);
     }
 }
