@@ -104,48 +104,12 @@ namespace AudioShell.Extensions.Vorbis
             _replayGainFilterLifetime = sampleFilterFactory.CreateExport();
             _replayGainFilterLifetime.Value.Initialize(metadata, settings);
 
-            int serialNumber;
-            if (string.IsNullOrEmpty(settings["SerialNumber"]))
-                serialNumber = new Random().Next();
-            else if (!int.TryParse(settings["SerialNumber"], out serialNumber) || serialNumber < 0)
-                throw new InvalidSettingException(string.Format(CultureInfo.CurrentCulture, Resources.SampleEncoderBadSerialNumber, settings["SerialNumber"]));
-
-            _oggStream = new NativeOggStream(serialNumber);
+            _oggStream = IntializeOggStream(settings);
 
             if (!string.IsNullOrEmpty(settings["BitRate"]))
-            {
-                int bitRate;
-                if (!int.TryParse(settings["BitRate"], out bitRate) || bitRate < 32 || bitRate > 500)
-                    throw new InvalidSettingException(string.Format(CultureInfo.CurrentCulture, Resources.SampleEncoderBadBitRate, settings["BitRate"]));
-
-                if (string.IsNullOrEmpty(settings["ControlMode"]) || string.Compare(settings["ControlMode"], "Variable", StringComparison.OrdinalIgnoreCase) == 0)
-                {
-                    // Configure the nominal bitrate, but then disable bitrate management:
-                    _encoder.SetupManaged(audioInfo.Channels, audioInfo.SampleRate, -1, bitRate * 1000, -1);
-                    _encoder.Control(0x15, IntPtr.Zero); // OV_ECTL_RATEMANAGE2_SET
-                    _encoder.SetupInitialize();
-                }
-                else if (string.Compare(settings["ControlMode"], "Average", StringComparison.OrdinalIgnoreCase) == 0)
-                    _encoder.Initialize(audioInfo.Channels, audioInfo.SampleRate, -1, bitRate * 1000, -1);
-                else if (string.Compare(settings["ControlMode"], "Constant", StringComparison.OrdinalIgnoreCase) == 0)
-                    _encoder.Initialize(audioInfo.Channels, audioInfo.SampleRate, bitRate, bitRate * 1000, bitRate);
-                else
-                    throw new InvalidSettingException(string.Format(CultureInfo.CurrentCulture, Resources.SampleEncoderBadBitRateControlMode, settings["ControlMode"]));
-            }
+                ConfigureEncoderForBitRate(settings, audioInfo, _encoder);
             else
-            {
-                if (!string.IsNullOrEmpty(settings["ControlMode"]) && string.Compare(settings["ControlMode"], "Variable", StringComparison.OrdinalIgnoreCase) != 0)
-                    throw new InvalidSettingException(string.Format(CultureInfo.CurrentCulture, Resources.SampleEncoderBadQualityControlMode, settings["ControlMode"]));
-
-                // Set the quality if specified, otherwise select "5":
-                float quality;
-                if (string.IsNullOrEmpty(settings["VBRQuality"]))
-                    quality = 5;
-                else if (!float.TryParse(settings["VBRQuality"], out quality) || quality < -1 || quality > 10)
-                    throw new InvalidSettingException(string.Format(CultureInfo.CurrentCulture, Resources.SampleEncoderBadVbrQuality, settings["VBRQuality"]));
-
-                _encoder.Initialize(audioInfo.Channels, audioInfo.SampleRate, quality / 10);
-            }
+                ConfigureEncoderForQuality(settings, audioInfo, _encoder);
 
             WriteHeader(metadata, settings, stream);
         }
@@ -250,7 +214,6 @@ namespace AudioShell.Extensions.Vorbis
                 WritePage(page, stream);
         }
 
-
         void WritePage(OggPage page, Stream stream)
         {
             Contract.Requires(stream != null);
@@ -281,6 +244,63 @@ namespace AudioShell.Extensions.Vorbis
         {
             Contract.Invariant(_encoder != null);
             Contract.Invariant(_buffer != null);
+        }
+
+        static NativeOggStream IntializeOggStream(SettingsDictionary settings)
+        {
+            Contract.Requires(settings != null);
+
+            int serialNumber;
+            if (string.IsNullOrEmpty(settings["SerialNumber"]))
+                serialNumber = new Random().Next();
+            else if (!int.TryParse(settings["SerialNumber"], out serialNumber) || serialNumber < 0)
+                throw new InvalidSettingException(string.Format(CultureInfo.CurrentCulture, Resources.SampleEncoderBadSerialNumber, settings["SerialNumber"]));
+
+            return new NativeOggStream(serialNumber);
+        }
+
+        static void ConfigureEncoderForBitRate(SettingsDictionary settings, AudioInfo audioInfo, NativeVorbisEncoder encoder)
+        {
+            Contract.Requires(settings != null);
+            Contract.Requires(audioInfo != null);
+            Contract.Requires(encoder != null);
+
+            int bitRate;
+            if (!int.TryParse(settings["BitRate"], out bitRate) || bitRate < 32 || bitRate > 500)
+                throw new InvalidSettingException(string.Format(CultureInfo.CurrentCulture, Resources.SampleEncoderBadBitRate, settings["BitRate"]));
+
+            if (string.IsNullOrEmpty(settings["ControlMode"]) || string.Compare(settings["ControlMode"], "Variable", StringComparison.OrdinalIgnoreCase) == 0)
+            {
+                // Configure the nominal bitrate, but then disable bitrate management:
+                encoder.SetupManaged(audioInfo.Channels, audioInfo.SampleRate, -1, bitRate * 1000, -1);
+                encoder.Control(0x15, IntPtr.Zero); // OV_ECTL_RATEMANAGE2_SET
+                encoder.SetupInitialize();
+            }
+            else if (string.Compare(settings["ControlMode"], "Average", StringComparison.OrdinalIgnoreCase) == 0)
+                encoder.Initialize(audioInfo.Channels, audioInfo.SampleRate, -1, bitRate * 1000, -1);
+            else if (string.Compare(settings["ControlMode"], "Constant", StringComparison.OrdinalIgnoreCase) == 0)
+                encoder.Initialize(audioInfo.Channels, audioInfo.SampleRate, bitRate, bitRate * 1000, bitRate);
+            else
+                throw new InvalidSettingException(string.Format(CultureInfo.CurrentCulture, Resources.SampleEncoderBadBitRateControlMode, settings["ControlMode"]));
+        }
+
+        static void ConfigureEncoderForQuality(SettingsDictionary settings, AudioInfo audioInfo, NativeVorbisEncoder encoder)
+        {
+            Contract.Requires(settings != null);
+            Contract.Requires(audioInfo != null);
+            Contract.Requires(encoder != null);
+
+            if (!string.IsNullOrEmpty(settings["ControlMode"]) && string.Compare(settings["ControlMode"], "Variable", StringComparison.OrdinalIgnoreCase) != 0)
+                throw new InvalidSettingException(string.Format(CultureInfo.CurrentCulture, Resources.SampleEncoderBadQualityControlMode, settings["ControlMode"]));
+
+            // Set the quality if specified, otherwise select "5":
+            float quality;
+            if (string.IsNullOrEmpty(settings["VBRQuality"]))
+                quality = 5;
+            else if (!float.TryParse(settings["VBRQuality"], out quality) || quality < -1 || quality > 10)
+                throw new InvalidSettingException(string.Format(CultureInfo.CurrentCulture, Resources.SampleEncoderBadVbrQuality, settings["VBRQuality"]));
+
+            encoder.Initialize(audioInfo.Channels, audioInfo.SampleRate, quality / 10);
         }
     }
 }

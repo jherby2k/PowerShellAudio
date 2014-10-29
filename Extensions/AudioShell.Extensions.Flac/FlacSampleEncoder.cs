@@ -73,10 +73,10 @@ namespace AudioShell.Extensions.Flac
         {
             Contract.Ensures(_encoder != null);
             Contract.Ensures(_encoder.GetState() == EncoderState.OK);
+            Contract.Ensures(_multiplier > 0);
 
-            _encoder = new NativeStreamEncoder(stream);
-
-            InitializeAudioInfo(audioInfo);
+            _encoder = InitializeEncoder(audioInfo, stream);
+            _multiplier = (float)Math.Pow(2, audioInfo.BitsPerSample - 1);
 
             uint compressionLevel;
             if (string.IsNullOrEmpty(settings["CompressionLevel"]))
@@ -174,19 +174,6 @@ namespace AudioShell.Extensions.Flac
             }
         }
 
-        void InitializeAudioInfo(AudioInfo audioInfo)
-        {
-            Contract.Requires(audioInfo != null);
-            Contract.Ensures(_multiplier > 0);
-
-            _multiplier = (float)Math.Pow(2, audioInfo.BitsPerSample - 1);
-
-            _encoder.SetChannels((uint)audioInfo.Channels);
-            _encoder.SetBitsPerSample((uint)audioInfo.BitsPerSample);
-            _encoder.SetSampleRate((uint)audioInfo.SampleRate);
-            _encoder.SetTotalSamplesEstimate((ulong)audioInfo.SampleCount);
-        }
-
         [ContractInvariantMethod]
         void ObjectInvariant()
         {
@@ -194,5 +181,21 @@ namespace AudioShell.Extensions.Flac
             Contract.Invariant(_multiplier >= 0);
         }
 
+        static NativeStreamEncoder InitializeEncoder(AudioInfo audioInfo, Stream output)
+        {
+            Contract.Requires(audioInfo != null);
+            Contract.Requires(output != null);
+            Contract.Requires(output.CanWrite);
+            Contract.Requires(output.CanSeek);
+
+            var result = new NativeStreamEncoder(output);
+
+            result.SetChannels((uint)audioInfo.Channels);
+            result.SetBitsPerSample((uint)audioInfo.BitsPerSample);
+            result.SetSampleRate((uint)audioInfo.SampleRate);
+            result.SetTotalSamplesEstimate((ulong)audioInfo.SampleCount);
+
+            return result;
+        }
     }
 }

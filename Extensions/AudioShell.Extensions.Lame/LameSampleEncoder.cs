@@ -88,10 +88,6 @@ namespace AudioShell.Extensions.Lame
         {
             Contract.Ensures(_encoder != null);
 
-            _encoder = new NativeEncoder(stream);
-            InitializeAudioInfo(audioInfo);
-            InitializeSettings(settings, metadata);
-
             if (string.IsNullOrEmpty(settings["AddMetadata"]) || string.Compare(settings["AddMetadata"], bool.TrueString, StringComparison.OrdinalIgnoreCase) == 0)
             {
                 // Call the external ID3 encoder:
@@ -102,6 +98,8 @@ namespace AudioShell.Extensions.Lame
             else if (string.Compare(settings["AddMetadata"], bool.FalseString, StringComparison.OrdinalIgnoreCase) != 0)
                 throw new InvalidSettingException(string.Format(CultureInfo.CurrentCulture, Resources.SampleEncoderBadAddMetadata, settings["AddMetadata"]));
 
+            _encoder = InitializeEncoder(audioInfo, stream);
+            ConfigureEncoder(settings, metadata, _encoder);
             if (_encoder.InitializeParams() != 0)
                 throw new IOException(Resources.SampleEncoderFailedToInitialize);
         }
@@ -138,18 +136,28 @@ namespace AudioShell.Extensions.Lame
                 _encoder.Dispose();
         }
 
-        void InitializeAudioInfo(AudioInfo audioInfo)
+        static NativeEncoder InitializeEncoder(AudioInfo audioInfo, Stream output)
         {
             Contract.Requires(audioInfo != null);
+            Contract.Requires(output != null);
+            Contract.Requires(output.CanWrite);
+            Contract.Requires(output.CanSeek);
+            Contract.Ensures(Contract.Result<NativeEncoder>() != null);
 
-            _encoder.SetSampleCount((uint)audioInfo.SampleCount);
-            _encoder.SetSampleRate(audioInfo.SampleRate);
-            _encoder.SetChannels(audioInfo.Channels);
+            var result = new NativeEncoder(output);
+
+            result.SetSampleCount((uint)audioInfo.SampleCount);
+            result.SetSampleRate(audioInfo.SampleRate);
+            result.SetChannels(audioInfo.Channels);
+
+            return result;
         }
 
-        void InitializeSettings(SettingsDictionary settings, MetadataDictionary metadata)
+        static void ConfigureEncoder(SettingsDictionary settings, MetadataDictionary metadata, NativeEncoder encoder)
         {
             Contract.Requires(settings != null);
+            Contract.Requires(metadata != null);
+            Contract.Requires(encoder != null);
 
             // Set the quality if specified, otherwise select "3":
             uint quality;
@@ -157,41 +165,13 @@ namespace AudioShell.Extensions.Lame
                 quality = 3;
             else if (!uint.TryParse(settings["Quality"], out quality) || quality > 9)
                 throw new InvalidSettingException(string.Format(CultureInfo.CurrentCulture, Resources.SampleEncoderBadQuality, settings["Quality"]));
-            _encoder.SetQuality((int)quality);
+            encoder.SetQuality((int)quality);
 
             // Set a bitrate only if specified. Otherwise, default to a variable bitrate:
             if (!string.IsNullOrEmpty(settings["BitRate"]))
-            {
-                uint bitRate;
-                if (!uint.TryParse(settings["BitRate"], out bitRate) || bitRate < 8 || bitRate > 320)
-                    throw new InvalidSettingException(string.Format(CultureInfo.CurrentCulture, Resources.SampleEncoderBadBitRate, settings["BitRate"]));
-
-                // Default to an average bitrate, unless a constant bitrate is specified:
-                if (string.IsNullOrEmpty(settings["ForceCBR"]) || string.Compare(settings["ForceCBR"], bool.FalseString, StringComparison.OrdinalIgnoreCase) == 0)
-                {
-                    _encoder.SetVbr(VbrMode.Abr);
-                    _encoder.SetMeanBitRate((int)bitRate);
-                }
-                else if (string.Compare(settings["ForceCBR"], bool.TrueString, StringComparison.OrdinalIgnoreCase) == 0)
-                    _encoder.SetBitRate((int)bitRate);
-                else
-                    throw new InvalidSettingException(string.Format(CultureInfo.CurrentCulture, Resources.SampleEncoderBadForceCBR, settings["ForceCBR"]));
-            }
+                ConfigureEncoderForBitRate(settings, encoder);
             else
-            {
-                _encoder.SetVbr(VbrMode.Mtrh);
-
-                if (!string.IsNullOrEmpty(settings["ForceCBR"]))
-                    throw new InvalidSettingException(Resources.SampleEncoderUnexpectedForceCBR);
-
-                float vbrQuality;
-                if (string.IsNullOrEmpty(settings["VBRQuality"]))
-                    vbrQuality = 2;
-                else if (!float.TryParse(settings["VBRQuality"], out vbrQuality) || vbrQuality < 0 || vbrQuality >= 10)
-                    throw new InvalidSettingException(string.Format(CultureInfo.CurrentCulture, Resources.SampleEncoderBadVBRQuality, settings["VBRQuality"]));
-
-                _encoder.SetVbrQuality(vbrQuality);
-            }
+                ConfigureEncoderForQuality(settings, encoder);
 
             if (!string.IsNullOrEmpty(settings["ApplyGain"]) && string.Compare(settings["ApplyGain"], bool.FalseString, StringComparison.OrdinalIgnoreCase) != 0)
             {
@@ -218,7 +198,7 @@ namespace AudioShell.Extensions.Lame
                 else
                     throw new InvalidSettingException(string.Format(CultureInfo.CurrentCulture, Resources.SampleEncoderBadApplyGain, settings["ApplyGain"]));
 
-                _encoder.SetScale(scale);
+                encoder.SetScale(scale);
 
                 // Adjust the metadata so that it remains valid:
                 metadata["AlbumGain"] = AdjustGain(metadata["AlbumGain"], scale);
@@ -226,6 +206,46 @@ namespace AudioShell.Extensions.Lame
                 metadata["AlbumPeak"] = AdjustPeak(metadata["AlbumPeak"], scale);
                 metadata["TrackPeak"] = AdjustPeak(metadata["TrackPeak"], scale);
             }
+        }
+
+        static void ConfigureEncoderForBitRate(SettingsDictionary settings, NativeEncoder encoder)
+        {
+            Contract.Requires(settings != null);
+            Contract.Requires(encoder != null);
+
+            uint bitRate;
+            if (!uint.TryParse(settings["BitRate"], out bitRate) || bitRate < 8 || bitRate > 320)
+                throw new InvalidSettingException(string.Format(CultureInfo.CurrentCulture, Resources.SampleEncoderBadBitRate, settings["BitRate"]));
+
+            // Default to an average bitrate, unless a constant bitrate is specified:
+            if (string.IsNullOrEmpty(settings["ForceCBR"]) || string.Compare(settings["ForceCBR"], bool.FalseString, StringComparison.OrdinalIgnoreCase) == 0)
+            {
+                encoder.SetVbr(VbrMode.Abr);
+                encoder.SetMeanBitRate((int)bitRate);
+            }
+            else if (string.Compare(settings["ForceCBR"], bool.TrueString, StringComparison.OrdinalIgnoreCase) == 0)
+                encoder.SetBitRate((int)bitRate);
+            else
+                throw new InvalidSettingException(string.Format(CultureInfo.CurrentCulture, Resources.SampleEncoderBadForceCBR, settings["ForceCBR"]));
+        }
+
+        static void ConfigureEncoderForQuality(SettingsDictionary settings, NativeEncoder encoder)
+        {
+            Contract.Requires(settings != null);
+            Contract.Requires(encoder != null);
+
+            encoder.SetVbr(VbrMode.Mtrh);
+
+            if (!string.IsNullOrEmpty(settings["ForceCBR"]))
+                throw new InvalidSettingException(Resources.SampleEncoderUnexpectedForceCBR);
+
+            float vbrQuality;
+            if (string.IsNullOrEmpty(settings["VBRQuality"]))
+                vbrQuality = 2;
+            else if (!float.TryParse(settings["VBRQuality"], out vbrQuality) || vbrQuality < 0 || vbrQuality >= 10)
+                throw new InvalidSettingException(string.Format(CultureInfo.CurrentCulture, Resources.SampleEncoderBadVBRQuality, settings["VBRQuality"]));
+
+            encoder.SetVbrQuality(vbrQuality);
         }
 
         static float CalculateScale(string gain, string peak)

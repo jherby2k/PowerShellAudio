@@ -70,16 +70,7 @@ namespace AudioShell.Extensions.Wave
             _multiplier = (float)Math.Pow(2, audioInfo.BitsPerSample - 1);
 
             _writer.Initialize();
-
-            _writer.BeginChunk("fmt ", 16);
-            _writer.Write((ushort)1);
-            _writer.Write((ushort)audioInfo.Channels);
-            _writer.Write((uint)audioInfo.SampleRate);
-            _writer.Write((uint)(_bytesPerSample * audioInfo.Channels * audioInfo.SampleRate));
-            _writer.Write((ushort)(_bytesPerSample * audioInfo.Channels));
-            _writer.Write((ushort)audioInfo.BitsPerSample);
-            _writer.FinishChunk();
-
+            WriteFmtChunk(_writer, audioInfo, _bytesPerSample);
             _writer.BeginChunk("data");
         }
 
@@ -144,6 +135,22 @@ namespace AudioShell.Extensions.Wave
         {
             Contract.Invariant(_buffer != null);
             Contract.Invariant(_buffer.Length == 4);
+        }
+
+        static void WriteFmtChunk(RiffWriter writer, AudioInfo audioInfo, int bytesPerSample)
+        {
+            Contract.Requires(writer != null);
+            Contract.Requires(audioInfo != null);
+            Contract.Requires(bytesPerSample > 0);
+
+            writer.BeginChunk("fmt ", 16);
+            writer.Write((ushort)1);
+            writer.Write((ushort)audioInfo.Channels);
+            writer.Write((uint)audioInfo.SampleRate);
+            writer.Write((uint)(bytesPerSample * audioInfo.Channels * audioInfo.SampleRate));
+            writer.Write((ushort)(bytesPerSample * audioInfo.Channels));
+            writer.Write((ushort)audioInfo.BitsPerSample);
+            writer.FinishChunk();
         }
 
         static void ConvertInt32ToBytes(int value, byte[] buffer)

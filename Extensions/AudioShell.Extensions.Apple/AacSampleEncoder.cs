@@ -135,7 +135,7 @@ namespace AudioShell.Extensions.Apple
                     throw new IOException(string.Format(CultureInfo.CurrentCulture, Resources.SampleEncoderInitializationError, status));
 
                 // Configure the audio converter:
-                InitializeSettings(settings, audioInfo.Channels, _audioFile.GetProperty<IntPtr>(ExtendedAudioFilePropertyID.AudioConverter));
+                ConfigureConverter(settings, audioInfo.Channels, _audioFile.GetProperty<IntPtr>(ExtendedAudioFilePropertyID.AudioConverter));
 
                 // Setting the ConverterConfig property to null resynchronizes the converter settings:
                 ExtendedAudioFileStatus fileStatus = _audioFile.SetProperty<IntPtr>(ExtendedAudioFilePropertyID.ConverterConfig, IntPtr.Zero);
@@ -265,7 +265,7 @@ namespace AudioShell.Extensions.Apple
             return result;
         }
 
-        static void InitializeSettings(SettingsDictionary settings, int channels, IntPtr converter)
+        static void ConfigureConverter(SettingsDictionary settings, int channels, IntPtr converter)
         {
             Contract.Requires(settings != null);
             Contract.Requires(converter != IntPtr.Zero);
@@ -287,13 +287,16 @@ namespace AudioShell.Extensions.Apple
 
             // Set a bitrate only if specified. Otherwise, default to a variable bitrate:
             if (!string.IsNullOrEmpty(settings["BitRate"]))
-                InitializeBitRateSettings(settings, channels, converter);
+                ConfigureConverterForBitRate(settings, channels, converter);
             else
-                InitializeQualitySettings(settings, converter);
+                ConfigureConverterForQuality(settings, converter);
         }
 
-        static void InitializeBitRateSettings(SettingsDictionary settings, int channels, IntPtr converter)
+        static void ConfigureConverterForBitRate(SettingsDictionary settings, int channels, IntPtr converter)
         {
+            Contract.Requires(settings != null);
+            Contract.Requires(converter != IntPtr.Zero);
+
             uint minBitRate = channels == 1 ? 32u : 64u;
             uint maxBitRate = channels == 1 ? 256u : 320u;
 
@@ -320,8 +323,11 @@ namespace AudioShell.Extensions.Apple
                 throw new InvalidSettingException(string.Format(CultureInfo.CurrentCulture, Resources.SampleEncoderConverterControlModeError, status));
         }
 
-        static void InitializeQualitySettings(SettingsDictionary settings, IntPtr converter)
+        static void ConfigureConverterForQuality(SettingsDictionary settings, IntPtr converter)
         {
+            Contract.Requires(settings != null);
+            Contract.Requires(converter != IntPtr.Zero);
+
             if (!string.IsNullOrEmpty(settings["ControlMode"]) && string.Compare(settings["ControlMode"], "Variable", StringComparison.OrdinalIgnoreCase) != 0)
                 throw new InvalidSettingException(Resources.AacSampleEncoderBadQualityControlMode);
 
