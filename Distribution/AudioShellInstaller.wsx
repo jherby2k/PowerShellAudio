@@ -21,7 +21,7 @@ You should have received a copy of the GNU Lesser General Public License along w
      xmlns:bal="http://schemas.microsoft.com/wix/BalExtension"
      xmlns:util="http://schemas.microsoft.com/wix/UtilExtension"
      xmlns:netfx="http://schemas.microsoft.com/wix/NetFxExtension">
-  <Bundle Name="AudioShell" Manufacturer="Jeremy Herbison" Version="0.9.1" UpgradeCode="{7D38656D-6BE6-4972-A9DB-7B4AF7BCC880}">
+  <Bundle Name="AudioShell" Manufacturer="Jeremy Herbison" Version="0.9.2" UpgradeCode="{7D38656D-6BE6-4972-A9DB-7B4AF7BCC880}">
 
     <BootstrapperApplicationRef Id="WixStandardBootstrapperApplication.RtfLargeLicense">
       <bal:WixStandardBootstrapperApplication LicenseFile="Distribution\License.rtf" ShowVersion="yes" SuppressOptionsUI="yes"/>

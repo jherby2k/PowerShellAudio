@@ -18,7 +18,7 @@ You should have received a copy of the GNU Lesser General Public License along w
 
 -->
 <Wix xmlns="http://schemas.microsoft.com/wix/2006/wi">
-  <Product Name="AudioShell" Manufacturer="Jeremy Herbison" Version="0.9.1" Language="1033" Id="*" UpgradeCode="{2597CDCD-6C10-4151-8314-0EEE87AD563D}">
+  <Product Name="AudioShell" Manufacturer="Jeremy Herbison" Version="0.9.2" Language="1033" Id="*" UpgradeCode="{2597CDCD-6C10-4151-8314-0EEE87AD563D}">
     <Package InstallerVersion="405" Compressed="yes" InstallScope="perMachine"/>
     <MajorUpgrade DowngradeErrorMessage="A later version of [ProductName] is already installed. Setup will now exit."/>
     <Media Id="1" Cabinet="AudioShell.cab" EmbedCab="yes"/>
