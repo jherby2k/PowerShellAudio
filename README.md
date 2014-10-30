@@ -4,13 +4,28 @@ AudioShell
 An extensible, multi-format audio conversion and tagging module for Windows PowerShell
 
 ## Getting Help
-Because AudioShell is a Windows PowerShell module, help is integrated. Simply launch PowerShell, then use one or more of the following to get started:
-
-> Get-Help Get-AudioFile -Full
-
+Because AudioShell is a Windows PowerShell module, help is integrated. Simply launch PowerShell, then use the Get-Help cmdlet. For example:
 > Get-Help Export-AudioFile -Full
 
-> Get-Help Measure-AudioFile -Full
+## Examples
+
+This command simply converts a folder full of FLAC files into MP3s:
+> Get-AudioFile *.flac  | Export-AudioFile "Lame MP3" -Directory C:\Output
+
+The Lame encoder uses VBR quality level 3 by default. To list the defaults:
+> Get-AudioEncoderDefaultSettingList "Lame MP3"
+
+To get all the available settings for Lame:
+> Get-AudioEncoderAvailableSettingList "Lame MP3"
+
+Add ReplayGain to your entire FLAC library, treating each directory as a separate album:
+> Get-ChildItem C:\Users\Myself\Music -Directory -Recurse | % { $_ | Get-ChildItem -File -Filter *.flac | Measure-AudioFile ReplayGain -PassThru | Save-AudioMetadata }
+
+Convert your whole FLAC library to VBR AAC, with SoundCheck tags calculated from album ReplayGain information:
+> Get-ChildItem C:\Users\Myself\Music -Filter *.flac -Recurse | Get-AudioFile | Export-AudioFile "Apple AAC" -Directory "C:\Output\{Artist}\{Album}" -Setting @{AddSoundCheck = "Album"} -Name "{TrackNumber} - {Title}"
+
+Convert your whole FLAC library to VBR MP3, with ReplayGain directly applied to the resulting volume levels:
+> Get-ChildItem C:\Users\Myself\Music -Filter *.flac -Recurse | Get-AudioFile | Export-AudioFile "Lame MP3" -Directory "C:\Output\{Artist}\{Album}" -Setting @{ApplyGain = "Album"} -Name "{TrackNumber} - {Title}"
 
 ## Prerequisites for Building
 1. Windows 7 or Windows 8.1.
