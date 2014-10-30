@@ -159,5 +159,7 @@ $RECYCLE.BIN/
 # Deployment files
 # =========================
 
+*.wixobj
+*.wixpdb
 *.msi
 *.exe
