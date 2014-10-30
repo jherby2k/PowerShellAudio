@@ -76,7 +76,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Distribution", "Distributio
 	ProjectSection(SolutionItems) = preProject
 		Distribution\AudioShell.wsx = Distribution\AudioShell.wsx
 		Distribution\AudioShell64.wsx = Distribution\AudioShell64.wsx
-		Distribution\AudioShellBundle.wsx = Distribution\AudioShellBundle.wsx
+		Distribution\AudioShellInstaller.wsx = Distribution\AudioShellInstaller.wsx
 		Distribution\Compile.cmd = Distribution\Compile.cmd
 		Distribution\License.rtf = Distribution\License.rtf
 	EndProjectSection
