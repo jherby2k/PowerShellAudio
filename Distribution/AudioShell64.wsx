@@ -58,6 +58,9 @@ You should have received a copy of the GNU Lesser General Public License along w
                 <Directory Id="EXTID3DIR" Name="Id3">
                   <Directory Id="EXTID3CONTRACTSDIR" Name="CodeContracts"/>
                 </Directory>
+                <Directory Id="EXTAPPLEDIR" Name="Apple">
+                  <Directory Id="EXTAPPLECONTRACTSDIR" Name="CodeContracts"/>
+                </Directory>
                 <Directory Id="EXTMP4DIR" Name="Mp4">
                   <Directory Id="EXTMP4CONTRACTSDIR" Name="CodeContracts"/>
                 </Directory>
@@ -232,6 +235,18 @@ You should have received a copy of the GNU Lesser General Public License along w
       </Component>
     </DirectoryRef>
 
+    <!-- Apple Components -->
+    <DirectoryRef Id="EXTAPPLEDIR">
+      <Component Guid="{41696625-E4CF-478A-BCA2-58879FEB0CAA}">
+        <File Source="Extensions\bin\Release\Apple\AudioShell.Extensions.Apple.dll" KeyPath="yes" Checksum="yes"/>
+      </Component>
+    </DirectoryRef>
+    <DirectoryRef Id="EXTAPPLECONTRACTSDIR">
+      <Component Guid="{D738BA7D-B7D2-4850-AAEB-21E603720BC1}">
+        <File Source="Extensions\bin\Release\Apple\CodeContracts\AudioShell.Extensions.Apple.Contracts.dll" KeyPath="yes" Checksum="yes"/>
+      </Component>
+    </DirectoryRef>
+
     <!-- Define Features -->
     <Feature Id="Common" Title="Core Components" Absent="disallow" Display="expand" AllowAdvertise="no">
 
@@ -292,6 +307,11 @@ You should have received a copy of the GNU Lesser General Public License along w
         <Feature Id="MP4" Title="MPEG 4 Audio" Description="Enables the editing of iTunes-compatible metadata." AllowAdvertise="no">
           <ComponentRef Id="AudioShell.Extensions.Mp4.dll"/>
           <ComponentRef Id="AudioShell.Extensions.Mp4.Contracts.dll"/>
+          <ComponentRef Id="AudioShell.Extensions.Apple.dll"/>
+          <ComponentRef Id="AudioShell.Extensions.Apple.Contracts.dll"/>
+          <ComponentRef Id="AudioShell.Extensions.ReplayGain.dll"/>
+          <ComponentRef Id="AudioShell.Extensions.ReplayGain.Contracts.dll"/>
+          <ComponentRef Id="System.Threading.Tasks.Dataflow.dll"/>
         </Feature>
 
       </Feature>
