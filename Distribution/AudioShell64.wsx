@@ -112,6 +112,20 @@ You should have received a copy of the GNU Lesser General Public License along w
       </Component>
     </DirectoryRef>
 
+    <ComponentGroup Id="Common">
+      <ComponentRef Id="AudioShell.psd1"/>
+      <ComponentRef Id="AudioShell.Commands.dll_Help.xml"/>
+      <ComponentRef Id="COPYING"/>
+      <ComponentRef Id="COPYING.LESSER"/>
+      <ComponentRef Id="AudioShell.Api.dll"/>
+      <ComponentRef Id="AudioShell.Commands.dll"/>
+      <ComponentRef Id="AudioShell.Common.dll"/>
+      <ComponentRef Id="AudioShell.Extensibility.dll"/>
+      <ComponentRef Id="AudioShell.Api.Contracts.dll"/>
+      <ComponentRef Id="AudioShell.Common.Contracts.dll"/>
+      <ComponentRef Id="AudioShell.Extensibility.Contracts.dll"/>
+    </ComponentGroup>
+
     <!-- ReplayGain Components -->
     <DirectoryRef Id="EXTREPLAYGAINDIR">
       <Component Guid="{D08F7839-11F2-41F4-93BF-0EABF75B319B}">
@@ -127,6 +141,12 @@ You should have received a copy of the GNU Lesser General Public License along w
       </Component>
     </DirectoryRef>
 
+    <ComponentGroup Id="ReplayGain">
+      <ComponentRef Id="AudioShell.Extensions.ReplayGain.dll"/>
+      <ComponentRef Id="AudioShell.Extensions.ReplayGain.Contracts.dll"/>
+      <ComponentRef Id="System.Threading.Tasks.Dataflow.dll"/>
+    </ComponentGroup>
+
     <!-- Wave Components -->
     <DirectoryRef Id="EXTWAVEDIR">
       <Component Guid="{28D26879-E556-4927-9515-A650F26477E7}">
@@ -138,6 +158,11 @@ You should have received a copy of the GNU Lesser General Public License along w
         <File Source="Extensions\bin\Release\Wave\CodeContracts\AudioShell.Extensions.Wave.Contracts.dll" KeyPath="yes" Checksum="yes"/>
       </Component>
     </DirectoryRef>
+
+    <ComponentGroup Id="Wave">
+      <ComponentRef Id="AudioShell.Extensions.Wave.dll"/>
+      <ComponentRef Id="AudioShell.Extensions.Wave.Contracts.dll"/>
+    </ComponentGroup>
 
     <!-- FLAC Components -->
     <DirectoryRef Id="EXTFLACDIR">
@@ -155,6 +180,12 @@ You should have received a copy of the GNU Lesser General Public License along w
         <File Source="Extensions\bin\Release\Flac\x64\libFLAC.dll" KeyPath="yes" Checksum="yes"/>
       </Component>
     </DirectoryRef>
+
+    <ComponentGroup Id="FLAC">
+      <ComponentRef Id="AudioShell.Extensions.Flac.dll"/>
+      <ComponentRef Id="AudioShell.Extensions.Flac.Contracts.dll"/>
+      <ComponentRef Id="libFLAC.dll"/>
+    </ComponentGroup>
 
     <!-- Vorbis Components -->
     <DirectoryRef Id="EXTVORBISDIR">
@@ -176,6 +207,13 @@ You should have received a copy of the GNU Lesser General Public License along w
       </Component>
     </DirectoryRef>
 
+    <ComponentGroup Id="Vorbis">
+      <ComponentRef Id="AudioShell.Extensions.Vorbis.dll"/>
+      <ComponentRef Id="AudioShell.Extensions.Vorbis.Contracts.dll"/>
+      <ComponentRef Id="libogg.dll"/>
+      <ComponentRef Id="libvorbis.dll"/>
+    </ComponentGroup>
+
     <!-- MP3 Components -->
     <DirectoryRef Id="EXTMP3DIR">
       <Component Guid="{D351296D-CC59-40FC-BA68-E6983CCB392B}">
@@ -187,6 +225,11 @@ You should have received a copy of the GNU Lesser General Public License along w
         <File Source="Extensions\bin\Release\Mp3\CodeContracts\AudioShell.Extensions.Mp3.Contracts.dll" KeyPath="yes" Checksum="yes"/>
       </Component>
     </DirectoryRef>
+
+    <ComponentGroup Id="MP3">
+      <ComponentRef Id="AudioShell.Extensions.Mp3.dll"/>
+      <ComponentRef Id="AudioShell.Extensions.Mp3.Contracts.dll"/>
+    </ComponentGroup>
 
     <!-- ID3 Components -->
     <DirectoryRef Id="EXTID3DIR">
@@ -206,6 +249,13 @@ You should have received a copy of the GNU Lesser General Public License along w
       </Component>
     </DirectoryRef>
 
+    <ComponentGroup Id="ID3">
+      <ComponentRef Id="AudioShell.Extensions.Id3.dll"/>
+      <ComponentRef Id="AudioShell.Extensions.Id3.Contracts.dll"/>
+      <ComponentRef Id="Id3Lib.dll"/>
+      <ComponentRef Id="ICSharpCode.SharpZipLib.dll"/>
+    </ComponentGroup>
+
     <!-- Lame Components -->
     <DirectoryRef Id="EXTLAMEDIR">
       <Component Guid="{47A670AC-DE77-4573-8DAE-91959FC57742}">
@@ -223,6 +273,12 @@ You should have received a copy of the GNU Lesser General Public License along w
       </Component>
     </DirectoryRef>
 
+    <ComponentGroup Id="Lame">
+      <ComponentRef Id="AudioShell.Extensions.Lame.dll"/>
+      <ComponentRef Id="AudioShell.Extensions.Lame.Contracts.dll"/>
+      <ComponentRef Id="libmp3lame.dll"/>
+    </ComponentGroup>
+
     <!-- MP4 Components -->
     <DirectoryRef Id="EXTMP4DIR">
       <Component Guid="{3584A660-5EDB-47CE-BFA3-D1D8164B06A2}">
@@ -234,6 +290,11 @@ You should have received a copy of the GNU Lesser General Public License along w
         <File Source="Extensions\bin\Release\Mp4\CodeContracts\AudioShell.Extensions.Mp4.Contracts.dll" KeyPath="yes" Checksum="yes"/>
       </Component>
     </DirectoryRef>
+
+    <ComponentGroup Id="MP4">
+      <ComponentRef Id="AudioShell.Extensions.Mp4.dll"/>
+      <ComponentRef Id="AudioShell.Extensions.Mp4.Contracts.dll"/>
+    </ComponentGroup>
 
     <!-- Apple Components -->
     <DirectoryRef Id="EXTAPPLEDIR">
@@ -247,75 +308,42 @@ You should have received a copy of the GNU Lesser General Public License along w
       </Component>
     </DirectoryRef>
 
+    <ComponentGroup Id="Apple">
+      <ComponentRef Id="AudioShell.Extensions.Apple.dll"/>
+      <ComponentRef Id="AudioShell.Extensions.Apple.Contracts.dll"/>
+    </ComponentGroup>
+
     <!-- Define Features -->
     <Feature Id="Common" Title="Core Components" Absent="disallow" Display="expand" AllowAdvertise="no">
-
-      <ComponentRef Id="AudioShell.psd1"/>
-      <ComponentRef Id="AudioShell.Commands.dll_Help.xml"/>
-      <ComponentRef Id="COPYING"/>
-      <ComponentRef Id="COPYING.LESSER"/>
-      <ComponentRef Id="AudioShell.Api.dll"/>
-      <ComponentRef Id="AudioShell.Commands.dll"/>
-      <ComponentRef Id="AudioShell.Common.dll"/>
-      <ComponentRef Id="AudioShell.Extensibility.dll"/>
-      <ComponentRef Id="AudioShell.Api.Contracts.dll"/>
-      <ComponentRef Id="AudioShell.Common.Contracts.dll"/>
-      <ComponentRef Id="AudioShell.Extensibility.Contracts.dll"/>
-
+      <ComponentGroupRef Id="Common"/>
       <Feature Id="Analyzers" Title="Audio Analyzers" Display="expand" AllowAdvertise="no">
-
         <Feature Id="ReplayGain" Title="ReplayGain" Description="An algorithm for measuring volume based on perceived loudness" AllowAdvertise="no">
-          <ComponentRef Id="AudioShell.Extensions.ReplayGain.dll"/>
-          <ComponentRef Id="AudioShell.Extensions.ReplayGain.Contracts.dll"/>
-          <ComponentRef Id="System.Threading.Tasks.Dataflow.dll"/>
+          <ComponentGroupRef Id="ReplayGain"/>
         </Feature>
-        
       </Feature>
-
       <Feature Id="Formats" Title="Audio Formats" Display="expand" AllowAdvertise="no">
-
         <Feature Id="Wave" Title="Wave" Description="Enables encoding to and decoding from the Wave format" AllowAdvertise="no">
-          <ComponentRef Id="AudioShell.Extensions.Wave.dll"/>
-          <ComponentRef Id="AudioShell.Extensions.Wave.Contracts.dll"/>
+          <ComponentGroupRef Id="Wave"/>
         </Feature>
-
         <Feature Id="Flac" Title="FLAC" Description="Enables full support for the Free Lossless Audio Codec." AllowAdvertise="no">
-          <ComponentRef Id="AudioShell.Extensions.Flac.dll"/>
-          <ComponentRef Id="AudioShell.Extensions.Flac.Contracts.dll"/>
-          <ComponentRef Id="libFLAC.dll"/>
+          <ComponentGroupRef Id="FLAC"/>
         </Feature>
-
         <Feature Id="Vorbis" Title="Ogg Vorbis" Description="Enables the editing of Vorbis comment metadata, and AoTuV-optimized encoding." AllowAdvertise="no">
-          <ComponentRef Id="AudioShell.Extensions.Vorbis.dll"/>
-          <ComponentRef Id="AudioShell.Extensions.Vorbis.Contracts.dll"/>
-          <ComponentRef Id="libogg.dll"/>
-          <ComponentRef Id="libvorbis.dll"/>
+          <ComponentGroupRef Id="ReplayGain"/>
+          <ComponentGroupRef Id="Vorbis"/>
         </Feature>
-
         <Feature Id="MP3" Title="MPEG Audio Layer 3 (MP3)" Description="Enables the editing of ID3v2 metadata, and high-quality encoding via Lame." AllowAdvertise="no">
-          <ComponentRef Id="AudioShell.Extensions.Mp3.dll"/>
-          <ComponentRef Id="AudioShell.Extensions.Mp3.Contracts.dll"/>
-          <ComponentRef Id="AudioShell.Extensions.Id3.dll"/>
-          <ComponentRef Id="AudioShell.Extensions.Id3.Contracts.dll"/>
-          <ComponentRef Id="Id3Lib.dll"/>
-          <ComponentRef Id="ICSharpCode.SharpZipLib.dll"/>
-          <ComponentRef Id="AudioShell.Extensions.Lame.dll"/>
-          <ComponentRef Id="AudioShell.Extensions.Lame.Contracts.dll"/>
-          <ComponentRef Id="libmp3lame.dll"/>
+          <ComponentGroupRef Id="MP3"/>
+          <ComponentGroupRef Id="ID3"/>
+          <ComponentGroupRef Id="Lame"/>
         </Feature>
-
         <Feature Id="MP4" Title="MPEG 4 Audio" Description="Enables the editing of iTunes-compatible metadata." AllowAdvertise="no">
-          <ComponentRef Id="AudioShell.Extensions.Mp4.dll"/>
-          <ComponentRef Id="AudioShell.Extensions.Mp4.Contracts.dll"/>
-          <ComponentRef Id="AudioShell.Extensions.Apple.dll"/>
-          <ComponentRef Id="AudioShell.Extensions.Apple.Contracts.dll"/>
-          <ComponentRef Id="AudioShell.Extensions.ReplayGain.dll"/>
-          <ComponentRef Id="AudioShell.Extensions.ReplayGain.Contracts.dll"/>
-          <ComponentRef Id="System.Threading.Tasks.Dataflow.dll"/>
+          <ComponentGroupRef Id="MP4"/>
+          <ComponentGroupRef Id="ReplayGain"/>
+          <ComponentGroupRef Id="Apple"/>
         </Feature>
-
       </Feature>
-
     </Feature>
+    
   </Product>
 </Wix>
