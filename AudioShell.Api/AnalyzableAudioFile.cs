@@ -114,38 +114,45 @@ namespace AudioShell
                 throw new ArgumentException(string.Format(CultureInfo.CurrentCulture, Resources.AnalyzableAudioFileFactoryError, analyzer), "analyzer");
 
             using (var analyzerLifetime = analyzerFactory.CreateExport())
+                DoAnalyze(analyzerLifetime.Value, cancelToken, groupToken);
+        }
+
+        void DoAnalyze(ISampleAnalyzer sampleAnalyzer, CancellationToken cancelToken, GroupToken groupToken)
+        {
+            Contract.Requires(sampleAnalyzer != null);
+            Contract.Requires(groupToken != null);
+            Contract.Requires(FileInfo != null);
+            Contract.Requires(AudioInfo != null);
+            Contract.Requires(Metadata != null);
+
+            sampleAnalyzer.Initialize(AudioInfo, groupToken);
+
+            using (FileStream fileStream = FileInfo.OpenRead())
             {
-                ISampleAnalyzer sampleAnalyzer = analyzerLifetime.Value;
-
-                sampleAnalyzer.Initialize(AudioInfo, groupToken);
-
-                using (FileStream fileStream = FileInfo.OpenRead())
+                // Try each decoder that supports this file extension:
+                foreach (var decoderFactory in ExtensionProvider<ISampleDecoder>.Instance.Factories.Where(factory => string.Compare((string)factory.Metadata["Extension"], FileInfo.Extension, StringComparison.OrdinalIgnoreCase) == 0))
                 {
-                    // Try each decoder that supports this file extension:
-                    foreach (var decoderFactory in ExtensionProvider<ISampleDecoder>.Instance.Factories.Where(factory => string.Compare((string)factory.Metadata["Extension"], FileInfo.Extension, StringComparison.OrdinalIgnoreCase) == 0))
+                    try
                     {
-                        try
+                        using (var decoderLifetime = decoderFactory.CreateExport())
                         {
-                            using (var decoderLifetime = decoderFactory.CreateExport())
-                            {
-                                ISampleDecoder sampleDecoder = decoderLifetime.Value;
+                            ISampleDecoder sampleDecoder = decoderLifetime.Value;
 
-                                sampleDecoder.Initialize(fileStream);
-                                sampleDecoder.ReadWriteParallel(sampleAnalyzer, cancelToken, sampleAnalyzer.ManuallyFreesSamples);
-                                sampleAnalyzer.GetResult().CopyTo(Metadata);
-                                return;
-                            }
-                        }
-                        catch (UnsupportedAudioException)
-                        {
-                            // If a decoder wasn't supported, rewind the stream and try another:
-                            fileStream.Position = 0;
+                            sampleDecoder.Initialize(fileStream);
+                            sampleDecoder.ReadWriteParallel(sampleAnalyzer, cancelToken, sampleAnalyzer.ManuallyFreesSamples);
+                            sampleAnalyzer.GetResult().CopyTo(Metadata);
+                            return;
                         }
                     }
+                    catch (UnsupportedAudioException)
+                    {
+                        // If a decoder wasn't supported, rewind the stream and try another:
+                        fileStream.Position = 0;
+                    }
                 }
-
-                throw new UnsupportedAudioException(Resources.AudioFileDecodeError);
             }
+
+            throw new UnsupportedAudioException(Resources.AudioFileDecodeError);
         }
     }
 }

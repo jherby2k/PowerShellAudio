@@ -122,83 +122,94 @@ namespace AudioShell
 
             ExportLifetimeContext<ISampleEncoder> encoderLifetime = null;
             FileInfo outputFileInfo = null;
+            FileInfo finalOutputFileInfo = null;
+            FileStream outputStream = null;
 
             try
             {
-                encoderLifetime = encoderFactory.CreateExport();
+                try
+                {
+                    encoderLifetime = encoderFactory.CreateExport();
 
-                ISampleEncoder sampleEncoder = encoderLifetime.Value;
+                    ValidateSettings(settings, encoderLifetime.Value);
 
-                ValidateSettings(settings, sampleEncoder);
+                    outputFileInfo = finalOutputFileInfo = GetOutputFileInfo(FileInfo, outputDirectory, outputFileName, encoderLifetime.Value);
 
-                outputFileInfo = GetOutputFileInfo(FileInfo, outputDirectory, outputFileName, sampleEncoder);
-
-                // If the output file is going to replace this one, write to a temporary file first:
-                bool isTemporary = false;
-                if (outputFileInfo.FullName.Equals(FileInfo.FullName, StringComparison.OrdinalIgnoreCase))
-                    if (replaceExisting)
+                    // If the output file already exists, write to a temporary file first:
+                    if (outputFileInfo.Exists)
                     {
                         outputFileInfo = new FileInfo(Path.Combine(outputFileInfo.DirectoryName, Path.GetRandomFileName()));
-                        isTemporary = true;
+
+                        if (!replaceExisting)
+                            throw new IOException(string.Format(CultureInfo.CurrentCulture, Resources.ExportableAudioFileFileExistsError, finalOutputFileInfo.FullName));
                     }
-                    else
-                        throw new IOException(string.Format(CultureInfo.CurrentCulture, Resources.ExportableAudioFileFileExistsError, outputFileInfo.FullName));
 
-                using (FileStream outputStream = new FileStream(outputFileInfo.FullName, replaceExisting ? FileMode.Create : FileMode.CreateNew, FileAccess.ReadWrite))
-                {
-                    sampleEncoder.Initialize(outputStream, AudioInfo, Metadata, settings);
+                    outputStream = new FileStream(outputFileInfo.FullName, replaceExisting ? FileMode.Create : FileMode.CreateNew, FileAccess.ReadWrite);
 
-                    using (FileStream fileStream = FileInfo.OpenRead())
-                    {
-                        // Try each decoder that supports this file extension:
-                        foreach (var decoderFactory in ExtensionProvider<ISampleDecoder>.Instance.Factories.Where(factory => string.Compare((string)factory.Metadata["Extension"], FileInfo.Extension, StringComparison.OrdinalIgnoreCase) == 0))
-                        {
-                            try
-                            {
-                                using (var decoderLifetime = decoderFactory.CreateExport())
-                                {
-                                    ISampleDecoder sampleDecoder = decoderLifetime.Value;
-
-                                    sampleDecoder.Initialize(fileStream);
-                                    sampleDecoder.ReadWriteParallel(sampleEncoder, cancelToken, sampleEncoder.ManuallyFreesSamples);
-
-                                    encoderLifetime.Dispose();
-                                    encoderLifetime = null;
-                                    break;
-                                }
-                            }
-                            catch (UnsupportedAudioException)
-                            {
-                                // If a decoder wasn't supported, rewind the stream and try another:
-                                fileStream.Position = 0;
-                            }
-                        }
-                    }
+                    DoExport(encoderLifetime.Value, outputStream, settings, cancelToken);
                 }
-
-                if (isTemporary)
+                finally
                 {
-                    FileInfo.Delete();
-                    outputFileInfo.MoveTo(FileInfo.FullName);
+                    // Dispose the encoder before closing the output stream:
+                    if (encoderLifetime != null)
+                        encoderLifetime.Dispose();
+                    if (outputStream != null)
+                        outputStream.Dispose();
                 }
-
-                if (encoderLifetime == null)
-                    return new ExportableAudioFile(outputFileInfo);
-
-                throw new UnsupportedAudioException(Resources.AudioFileDecodeError);
             }
             catch (Exception)
             {
-                // Delete any partial output on failure:
-                if (outputFileInfo != null)
-                    outputFileInfo.Delete();
-
+                outputFileInfo.Delete();
                 throw;
             }
-            finally
+
+            // If using a temporary file, replace the original:
+            if (outputFileInfo != finalOutputFileInfo)
             {
-                if (encoderLifetime != null)
-                    encoderLifetime.Dispose();
+                finalOutputFileInfo.Delete();
+                outputFileInfo.MoveTo(finalOutputFileInfo.FullName);
+            }
+
+            outputFileInfo.Refresh();
+            return new ExportableAudioFile(outputFileInfo);
+        }
+
+        void DoExport(ISampleEncoder encoder, Stream outputStream, SettingsDictionary settings, CancellationToken cancelToken)
+        {
+            Contract.Requires(encoder != null);
+            Contract.Requires(outputStream != null);
+            Contract.Requires(settings != null);
+            Contract.Requires(FileInfo != null);
+            Contract.Requires(AudioInfo != null);
+            Contract.Requires(Metadata != null);
+
+            encoder.Initialize(outputStream, AudioInfo, Metadata, settings);
+
+            using (FileStream inputStream = FileInfo.OpenRead())
+            {
+                // Try each decoder that supports this file extension:
+                foreach (var decoderFactory in ExtensionProvider<ISampleDecoder>.Instance.Factories.Where(factory => string.Compare((string)factory.Metadata["Extension"], FileInfo.Extension, StringComparison.OrdinalIgnoreCase) == 0))
+                {
+                    try
+                    {
+                        using (var decoderLifetime = decoderFactory.CreateExport())
+                        {
+                            ISampleDecoder sampleDecoder = decoderLifetime.Value;
+
+                            sampleDecoder.Initialize(inputStream);
+                            sampleDecoder.ReadWriteParallel(encoder, cancelToken, encoder.ManuallyFreesSamples);
+
+                            return;
+                        }
+                    }
+                    catch (UnsupportedAudioException)
+                    {
+                        // If a decoder wasn't supported, rewind the stream and try another:
+                        inputStream.Position = 0;
+                    }
+                }
+
+                throw new UnsupportedAudioException(Resources.AudioFileDecodeError);
             }
         }
 
