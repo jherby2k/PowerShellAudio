@@ -120,6 +120,7 @@
     <Compile Include="AnalyzableAudioFile.cs" />
     <Compile Include="AudioFile.cs" />
     <Compile Include="ExportableAudioFile.cs" />
+    <Compile Include="GlobalSuppressions.cs" />
     <Compile Include="Properties\Resources.Designer.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
