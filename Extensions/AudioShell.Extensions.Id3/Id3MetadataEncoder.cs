@@ -18,10 +18,13 @@
 using AudioShell.Extensions.Id3.Properties;
 using Id3Lib;
 using Id3Lib.Exceptions;
+using Id3Lib.Frames;
+using System;
 using System.Collections.Generic;
 using System.Diagnostics.Contracts;
 using System.Globalization;
 using System.IO;
+using System.Linq;
 
 namespace AudioShell.Extensions.Id3
 {
@@ -67,7 +70,7 @@ namespace AudioShell.Extensions.Id3
             TagModel currentTag = GetCurrentTag(stream);
             uint currentTagSizeWithPadding = currentTag != null ? currentTag.Header.TagSizeWithHeaderFooter: 0;
 
-            TagModel newTag = GetNewTag(metadata, settings, currentTag != null ? currentTag.Header.Version : (byte)3);
+            TagModel newTag = GetNewTag(currentTag, metadata, settings);
             if (newTag != null)
             {
                 uint newTagSizeWithPadding = newTag.Header.TagSizeWithHeaderFooter + newTag.Header.PaddingSize;
@@ -129,17 +132,30 @@ namespace AudioShell.Extensions.Id3
             }
         }
 
-        static TagModel GetNewTag(MetadataDictionary metadata, SettingsDictionary settings, byte existingTagVersion)
+        static TagModel GetNewTag(TagModel currentTag, MetadataDictionary metadata, SettingsDictionary settings)
         {
             Contract.Requires(metadata != null);
             Contract.Requires(settings != null);
 
             var result = new MetadataToTagModelAdapter(metadata, settings);
+
+            // Preserve an existing iTunNORM frame if a new one isn't provided, and AddSoundCheck isn't explicitly False:
+            FrameBase currentSoundCheckFrame = currentTag == null ? null : currentTag.SingleOrDefault(frame =>
+            {
+                var fullTextFrame = frame as FrameFullText;
+                if (fullTextFrame != null && fullTextFrame.Description == "iTunNORM")
+                    return true;
+                return false;
+            });
+            if (currentSoundCheckFrame != null && !result.IncludesSoundCheck && string.Compare(settings["AddSoundCheck"], bool.FalseString, StringComparison.OrdinalIgnoreCase) != 0)
+                result.Add(currentSoundCheckFrame);
+
             if (result.Count == 0)
                 return null;
 
+            // If there is no current tag, and no requested ID3 version, default to 2.3:
             if (string.IsNullOrEmpty(settings["ID3Version"]))
-                result.Header.Version = existingTagVersion;
+                result.Header.Version = currentTag != null ? currentTag.Header.Version : (byte)3;
             else
             {
                 switch (settings["ID3Version"])

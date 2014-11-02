@@ -22,6 +22,7 @@ using System;
 using System.Collections.Generic;
 using System.Diagnostics.Contracts;
 using System.Globalization;
+using System.Linq;
 
 namespace AudioShell.Extensions.Id3
 {
@@ -137,6 +138,20 @@ namespace AudioShell.Extensions.Id3
                 }
                 else
                     throw new InvalidSettingException(string.Format(CultureInfo.CurrentCulture, Resources.MetadataToTagModelAdapterBadAddSoundCheck, settings["AddSoundCheck"]));
+            }
+        }
+
+        internal bool IncludesSoundCheck
+        {
+            get
+            {
+                return this.Any(frame =>
+                {
+                    var fullTextFrame = frame as FrameFullText;
+                    if (fullTextFrame != null && fullTextFrame.Description == "iTunNORM")
+                        return true;
+                    return false;
+                });
             }
         }
     }
