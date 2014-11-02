@@ -20,6 +20,7 @@ using System;
 using System.Collections.Generic;
 using System.Diagnostics.Contracts;
 using System.Globalization;
+using System.Linq;
 
 namespace AudioShell.Extensions.Mp4
 {
@@ -90,7 +91,8 @@ namespace AudioShell.Extensions.Mp4
                     if (string.IsNullOrEmpty(albumSoundCheckAtom.Peak))
                         throw new InvalidSettingException(Resources.MetadataToAtomAdapterMissingAlbumPeak);
 
-                    Add(albumSoundCheckAtom);
+                    // Place this atom at the beginning:
+                    Insert(0, albumSoundCheckAtom);
                 }
                 else if (string.Compare(settings["AddSoundCheck"], "Track", StringComparison.OrdinalIgnoreCase) == 0)
                 {
@@ -99,11 +101,22 @@ namespace AudioShell.Extensions.Mp4
                     if (string.IsNullOrEmpty(trackSoundCheckAtom.Peak))
                         throw new InvalidSettingException(Resources.MetadataToAtomAdapterMissingTrackPeak);
 
-                    Add(trackSoundCheckAtom);
+                    // Place this atom at the beginning:
+                    Insert(0, trackSoundCheckAtom);
                 }
                 else
                     throw new InvalidSettingException(string.Format(CultureInfo.CurrentCulture, Resources.MetadataToAtomAdapterBadAddSoundCheck, settings["AddSoundCheck"]));
             }
+        }
+
+        internal bool IncludesSoundCheck
+        {
+            get { return this.Any(atom => atom is SoundCheckAtom); }
+        }
+
+        internal byte[] GetBytes()
+        {
+            return this.SelectMany(x => x.GetBytes()).ToArray();
         }
     }
 }

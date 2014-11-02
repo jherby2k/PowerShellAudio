@@ -22,6 +22,7 @@ using System.Diagnostics.Contracts;
 using System.Globalization;
 using System.IO;
 using System.Linq;
+using System.Text;
 
 namespace AudioShell.Extensions.Mp4
 {
@@ -73,27 +74,17 @@ namespace AudioShell.Extensions.Mp4
                 originalMp4.CopyAtom(topAtoms.Single(atom => atom.FourCC == "ftyp"), tempStream);
                 originalMp4.CopyAtom(topAtoms.Single(atom => atom.FourCC == "moov"), tempStream);
 
-                // If there is metadata to write, append the atoms:
-                if (string.IsNullOrEmpty(settings["AddMetadata"]) || string.Compare(settings["AddMetadata"], bool.TrueString, StringComparison.OrdinalIgnoreCase) == 0)
-                {
-                    var adaptedMetadata = new MetadataToAtomAdapter(metadata, settings);
-                    if (adaptedMetadata.Count > 0)
-                    {
-                        tempMp4.DescendToAtom("moov", "udta", "meta", "ilst");
+                // Move to the start of the list atom:
+                originalMp4.DescendToAtom("moov", "udta", "meta", "ilst");
+                tempMp4.DescendToAtom("moov", "udta", "meta", "ilst");
 
-                        tempStream.Position = tempMp4.CurrentAtom.End;
+                // Remove any copied ilst atoms, then generate new ones:
+                tempStream.SetLength(stream.Position);
+                byte[] ilstData = GenerateIlst(originalMp4, metadata, settings);
+                tempStream.Write(ilstData, 0, ilstData.Length);
 
-                        foreach (var item in adaptedMetadata)
-                        {
-                            byte[] atomData = item.GetBytes();
-                            tempStream.Write(atomData, 0, atomData.Length);
-                        }
-
-                        tempMp4.UpdateAtomSizes((uint)tempStream.Length - tempMp4.CurrentAtom.End);
-                    }
-                }
-                else if (string.Compare(settings["AddMetadata"], bool.FalseString, StringComparison.OrdinalIgnoreCase) != 0)
-                    throw new InvalidSettingException(string.Format(CultureInfo.CurrentCulture, Resources.MetadataEncoderBadAddMetadata, settings["AddMetadata"]));
+                // Update the ilst and parent atom sizes:
+                tempMp4.UpdateAtomSizes((uint)tempStream.Length - tempMp4.CurrentAtom.End);
 
                 // Update the creation times if they're being set explicitly:
                 DateTime creationTime;
@@ -116,6 +107,49 @@ namespace AudioShell.Extensions.Mp4
                 stream.Position = 0;
                 tempStream.Position = 0;
                 tempStream.CopyTo(stream);
+            }
+        }
+
+        static byte[] GenerateIlst(Mp4 originalMp4, MetadataDictionary metadata, SettingsDictionary settings)
+        {
+            using (var resultStream = new MemoryStream())
+            {
+                var adaptedMetadata = new MetadataToAtomAdapter(metadata, settings);
+
+                // "Reverse DNS" atoms may need to be preserved:
+                foreach (AtomInfo listAtom in originalMp4.GetChildAtomInfo())
+                {
+                    if (listAtom.FourCC == "----")
+                    {
+                        var reverseDnsAtom = new ReverseDnsAtom(originalMp4.ReadAtom(listAtom));
+                        switch (reverseDnsAtom.Name)
+                        {
+                            // Always preserve the iTunSMPB (gapless playback) atom:
+                            case "iTunSMPB":
+                                resultStream.Write(reverseDnsAtom.GetBytes(), 0, reverseDnsAtom.GetBytes().Length);
+                                break;
+
+                            // Preserve the existing iTunNORM atom if a new one isn't provided, and AddSoundCheck isn't explicitly False:
+                            case "iTunNORM":
+                                if (!adaptedMetadata.IncludesSoundCheck && string.Compare(settings["AddSoundCheck"], bool.FalseString, StringComparison.OrdinalIgnoreCase) != 0)
+                                    resultStream.Write(reverseDnsAtom.GetBytes(), 0, reverseDnsAtom.GetBytes().Length);
+                                break;
+                            default:
+                                break;
+                        }
+                    }
+                }
+
+                // If there is metadata to write, append the atoms:
+                if (string.IsNullOrEmpty(settings["AddMetadata"]) || string.Compare(settings["AddMetadata"], bool.TrueString, StringComparison.OrdinalIgnoreCase) == 0)
+                {
+                    byte[] atomData = adaptedMetadata.GetBytes();
+                    resultStream.Write(atomData, 0, atomData.Length);
+                }
+                else if (string.Compare(settings["AddMetadata"], bool.FalseString, StringComparison.OrdinalIgnoreCase) != 0)
+                    throw new InvalidSettingException(string.Format(CultureInfo.CurrentCulture, Resources.MetadataEncoderBadAddMetadata, settings["AddMetadata"]));
+
+                return resultStream.ToArray();
             }
         }
 

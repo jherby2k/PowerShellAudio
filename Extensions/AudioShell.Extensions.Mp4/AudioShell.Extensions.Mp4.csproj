@@ -138,6 +138,7 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>Resources.resx</DependentUpon>
     </Compile>
+    <Compile Include="ReverseDnsAtom.cs" />
     <Compile Include="SoundCheckAtom.cs" />
     <Compile Include="SttsAtom.cs" />
     <Compile Include="TextAtom.cs" />
