@@ -18,10 +18,11 @@
 using System;
 using System.Collections.Generic;
 using System.Diagnostics.Contracts;
+using System.Globalization;
 
 namespace AudioShell.Extensions.Mp4
 {
-    class AtomToMetadataAdapter : Dictionary<string, AtomInfo>
+    class AtomToMetadataAdapter : MetadataDictionary
     {
         static readonly Dictionary<string, string> _map = new Dictionary<string, string>(StringComparer.OrdinalIgnoreCase) {
             { "©alb", "Album"       },
@@ -29,19 +30,31 @@ namespace AudioShell.Extensions.Mp4
             { "©cmt", "Comment"     },
             { "©gen", "Genre"       },
             { "©nam", "Title"       },
-            { "trkn", "TrackNumber" },
             { "©day", "Year"        }
         };
 
-        internal AtomToMetadataAdapter(AtomInfo[] atoms)
+        internal AtomToMetadataAdapter(Mp4 mp4, AtomInfo[] atoms)
         {
+            Contract.Requires(mp4 != null);
             Contract.Requires(atoms != null);
 
             foreach (AtomInfo atom in atoms)
             {
-                string mappedKey;
-                if (_map.TryGetValue(atom.FourCC, out mappedKey))
-                    base[mappedKey] = atom;
+                byte[] atomData = mp4.ReadAtom(atom);
+
+                if (atom.FourCC == "trkn")
+                {
+                    var trackNumberAtom = new TrackNumberAtom(atomData);
+                    Add("TrackNumber", trackNumberAtom.TrackNumber.ToString(CultureInfo.InvariantCulture));
+                    if (trackNumberAtom.TrackCount > 0)
+                        Add("TrackCount", trackNumberAtom.TrackCount.ToString(CultureInfo.InvariantCulture));
+                }
+                else
+                {
+                    string mappedKey;
+                    if (_map.TryGetValue(atom.FourCC, out mappedKey))
+                        base[mappedKey] = new TextAtom(atomData).Value;
+                }
             }
         }
     }

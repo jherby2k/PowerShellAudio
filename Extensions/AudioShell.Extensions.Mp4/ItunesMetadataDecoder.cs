@@ -15,13 +15,7 @@
  * <http://www.gnu.org/licenses/>.
  */
 
-using System;
-using System.Collections.Generic;
-using System.Globalization;
 using System.IO;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace AudioShell.Extensions.Mp4
 {
@@ -30,23 +24,10 @@ namespace AudioShell.Extensions.Mp4
     {
         public MetadataDictionary ReadMetadata(Stream stream)
         {
-            var result = new MetadataDictionary();
-
             var mp4 = new Mp4(stream);
             mp4.DescendToAtom("moov", "udta", "meta", "ilst");
 
-            var adaptedMetadata = new AtomToMetadataAdapter(mp4.GetChildAtomInfo());
-            foreach (var item in adaptedMetadata)
-            {
-                byte[] atomData = mp4.ReadAtom(item.Value);
-
-                if (item.Key == "TrackNumber")
-                    result.Add(item.Key, new TrackNumberAtom(atomData).TrackNumber.ToString(CultureInfo.InvariantCulture));
-                else
-                    result.Add(item.Key, new TextAtom(atomData).Value);
-            }
-
-            return result;
+            return new AtomToMetadataAdapter(mp4, mp4.GetChildAtomInfo());
         }
     }
 }
