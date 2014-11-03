@@ -7,6 +7,9 @@ An extensible, multi-format audio conversion and tagging module for Windows Powe
 Because AudioShell is a Windows PowerShell module, help is integrated. Simply launch PowerShell, then use the Get-Help cmdlet. For example:
 > Get-Help Export-AudioFile -Full
 
+If you are new to Windows PowerShell, here is a quick primer to get you up and running:
+https://github.com/jherby2k/AudioShell/wiki/PowerShell-Primer
+
 ## Examples
 
 This command simply converts a folder full of FLAC files into MP3s:
