@@ -27,8 +27,8 @@ namespace AudioShell.Extensions.Flac
     [SampleEncoderExport("FLAC")]
     public class FlacSampleEncoder : ISampleEncoder, IDisposable
     {
-        readonly List<NativeMetadataBlock> _metadataBlocks = new List<NativeMetadataBlock>(2);
         NativeStreamEncoder _encoder;
+        List<NativeMetadataBlock> _metadataBlocks;
         float _multiplier;
         int[] _buffer;
 
@@ -76,6 +76,7 @@ namespace AudioShell.Extensions.Flac
             Contract.Ensures(_multiplier > 0);
 
             _encoder = InitializeEncoder(audioInfo, stream);
+            _metadataBlocks = new List<NativeMetadataBlock>(2);
             _multiplier = (float)Math.Pow(2, audioInfo.BitsPerSample - 1);
 
             uint compressionLevel;
@@ -177,7 +178,6 @@ namespace AudioShell.Extensions.Flac
         [ContractInvariantMethod]
         void ObjectInvariant()
         {
-            Contract.Invariant(_metadataBlocks != null);
             Contract.Invariant(_multiplier >= 0);
         }
 

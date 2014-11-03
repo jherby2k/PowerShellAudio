@@ -31,7 +31,7 @@ namespace AudioShell.Extensions.Vorbis
     [SampleEncoderExport("Ogg Vorbis")]
     public class VorbisSampleEncoder : ISampleEncoder, IDisposable
     {
-        readonly NativeVorbisEncoder _encoder = new NativeVorbisEncoder();
+        NativeVorbisEncoder _encoder;
         ExportLifetimeContext<ISampleFilter> _replayGainFilterLifetime;
         NativeOggStream _oggStream;
         byte[] _buffer = new byte[4096];
@@ -95,6 +95,7 @@ namespace AudioShell.Extensions.Vorbis
 
         public void Initialize(Stream stream, AudioInfo audioInfo, MetadataDictionary metadata, SettingsDictionary settings)
         {
+            _encoder = new NativeVorbisEncoder();
             _output = stream;
 
             // Load the external gain filter:
@@ -242,7 +243,6 @@ namespace AudioShell.Extensions.Vorbis
         [ContractInvariantMethod]
         void ObjectInvariant()
         {
-            Contract.Invariant(_encoder != null);
             Contract.Invariant(_buffer != null);
         }
 
