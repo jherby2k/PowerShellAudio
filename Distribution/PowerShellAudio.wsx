@@ -27,7 +27,6 @@ You should have received a copy of the GNU Lesser General Public License along w
 
     <!-- Define the directory structure -->
     <Directory Id="TARGETDIR" Name="SourceDir">
-      
       <Directory Id="ProgramFilesFolder">
         <Directory Id="WindowsPowerShell" Name="WindowsPowerShell">
           <Directory Id="MODULESDIR" Name="Modules">
@@ -71,6 +70,11 @@ You should have received a copy of the GNU Lesser General Public License along w
         </Directory>
       </Directory>
     </Directory>
+
+    <!-- Merge Modules -->
+    <DirectoryRef Id="TARGETDIR">
+      <Merge Id="VCRedist" SourceFile="Distribution\Prerequisites\Microsoft_VC120_CRT_x86.msm" DiskId="1" Language="0"/>
+    </DirectoryRef>
 
     <!-- Common Components -->
     <DirectoryRef Id="INSTALLDIR">
@@ -332,6 +336,7 @@ You should have received a copy of the GNU Lesser General Public License along w
         <Feature Id="Vorbis" Title="Ogg Vorbis" Description="Enables the editing of Vorbis comment metadata, and AoTuV-optimized encoding." AllowAdvertise="no">
           <ComponentGroupRef Id="ReplayGain"/>
           <ComponentGroupRef Id="Vorbis"/>
+          <MergeRef Id="VCRedist"/>
         </Feature>
         <Feature Id="MP3" Title="MPEG Audio Layer 3 (MP3)" Description="Enables the editing of ID3v2 metadata, and high-quality encoding via Lame." AllowAdvertise="no">
           <ComponentGroupRef Id="MP3"/>

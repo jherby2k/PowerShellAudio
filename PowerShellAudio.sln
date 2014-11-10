@@ -74,15 +74,17 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution 
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Distribution", "Distribution", "{82ABED08-8698-49F6-842B-D681ADC63F40}"
 	ProjectSection(SolutionItems) = preProject
+		Distribution\Compile.cmd = Distribution\Compile.cmd
+		Distribution\License.rtf = Distribution\License.rtf
 		Distribution\PowerShellAudio.wsx = Distribution\PowerShellAudio.wsx
 		Distribution\PowerShellAudio64.wsx = Distribution\PowerShellAudio64.wsx
 		Distribution\PowerShellAudioInstaller.wsx = Distribution\PowerShellAudioInstaller.wsx
-		Distribution\Compile.cmd = Distribution\Compile.cmd
-		Distribution\License.rtf = Distribution\License.rtf
 	EndProjectSection
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Prerequisites", "Prerequisites", "{17494B6A-415F-4BCC-B288-570B2E583849}"
 	ProjectSection(SolutionItems) = preProject
+		Distribution\Prerequisites\Microsoft_VC120_CRT_x64.msm = Distribution\Prerequisites\Microsoft_VC120_CRT_x64.msm
+		Distribution\Prerequisites\Microsoft_VC120_CRT_x86.msm = Distribution\Prerequisites\Microsoft_VC120_CRT_x86.msm
 		Distribution\Prerequisites\Windows6.1-KB2819745-x64-MultiPkg.msu = Distribution\Prerequisites\Windows6.1-KB2819745-x64-MultiPkg.msu
 		Distribution\Prerequisites\Windows6.1-KB2819745-x86-MultiPkg.msu = Distribution\Prerequisites\Windows6.1-KB2819745-x86-MultiPkg.msu
 	EndProjectSection
