@@ -1,14 +1,14 @@
-AudioShell
+PowerShell Audio
 ==========
 
 An extensible, multi-format audio conversion and tagging module for Windows PowerShell
 
 ## Getting Help
-Because AudioShell is a Windows PowerShell module, help is integrated. Simply launch PowerShell, then use the Get-Help cmdlet. For example:
+Because PowerShell Audio is a Windows PowerShell module, help is integrated. Simply launch PowerShell, then use the Get-Help cmdlet. For example:
 > Get-Help Export-AudioFile -Full
 
 If you are new to Windows PowerShell, here is a quick primer to get you up and running:
-https://github.com/jherby2k/AudioShell/wiki/PowerShell-Primer
+https://github.com/jherby2k/PowerShellAudio/wiki/PowerShell-Primer
 
 ## Examples
 
