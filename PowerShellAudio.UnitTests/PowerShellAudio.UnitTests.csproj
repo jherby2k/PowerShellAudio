@@ -66,7 +66,7 @@
       <Project>{b122f71f-58ca-4cdb-91f0-ed91db6fe3fb}</Project>
       <Name>PowerShellAudio.Api</Name>
     </ProjectReference>
-    <ProjectReference Include="..\AudioShell.Common\PowerShellAudio.Common.csproj">
+    <ProjectReference Include="..\PowerShellAudio.Common\PowerShellAudio.Common.csproj">
       <Project>{805811ed-7986-4691-bacb-00fffee65fa7}</Project>
       <Name>PowerShellAudio.Common</Name>
     </ProjectReference>
