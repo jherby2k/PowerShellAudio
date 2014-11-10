@@ -3,17 +3,17 @@
 
 Copyright © 2014 Jeremy Herbison
 
-This file is part of AudioShell.
+This file is part of PowerShell Audio.
 
-AudioShell is free software: you can redistribute it and/or modify it under the terms of the GNU Lesser General
-Public License as published by the Free Software Foundation, either version 3 of the License, or (at your option)
-any later version.
+PowerShell Audio is free software: you can redistribute it and/or modify it under the terms of the GNU Lesser General
+Public License as published by the Free Software Foundation, either version 3 of the License, or (at your option) any
+later version.
 
-AudioShell is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied
+PowerShell Audio is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied
 warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU Lesser General Public License for more
 details.
 
-You should have received a copy of the GNU Lesser General Public License along with AudioShell.  If not, see
+You should have received a copy of the GNU Lesser General Public License along with PowerShell Audio.  If not, see
 <http://www.gnu.org/licenses/>.
 
 -->
@@ -21,7 +21,7 @@ You should have received a copy of the GNU Lesser General Public License along w
      xmlns:bal="http://schemas.microsoft.com/wix/BalExtension"
      xmlns:util="http://schemas.microsoft.com/wix/UtilExtension"
      xmlns:netfx="http://schemas.microsoft.com/wix/NetFxExtension">
-  <Bundle Name="AudioShell" Manufacturer="Jeremy Herbison" Version="0.9.3" UpgradeCode="{7D38656D-6BE6-4972-A9DB-7B4AF7BCC880}">
+  <Bundle Name="PowerShell Audio" Manufacturer="Jeremy Herbison" Version="0.9.3" UpgradeCode="{7D38656D-6BE6-4972-A9DB-7B4AF7BCC880}">
 
     <BootstrapperApplicationRef Id="WixStandardBootstrapperApplication.RtfLargeLicense">
       <bal:WixStandardBootstrapperApplication LicenseFile="Distribution\License.rtf" ShowVersion="yes" SuppressOptionsUI="yes"/>
@@ -52,8 +52,8 @@ You should have received a copy of the GNU Lesser General Public License along w
                   Permanent="yes"
                   SourceFile="Distribution\Prerequisites\Windows6.1-KB2819745-x86-MultiPkg.msu"/>
       
-      <MsiPackage SourceFile="AudioShell.msi"/>
-      <MsiPackage SourceFile="AudioShell64.msi" InstallCondition="VersionNT64"/>
+      <MsiPackage SourceFile="PowerShellAudio.msi"/>
+      <MsiPackage SourceFile="PowerShellAudio64.msi" InstallCondition="VersionNT64"/>
       
     </Chain>
     

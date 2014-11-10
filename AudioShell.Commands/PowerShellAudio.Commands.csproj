@@ -7,8 +7,8 @@
     <ProjectGuid>{A49041D4-6C2B-48B8-A3AD-F9607B09D357}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>AudioShell.Commands</RootNamespace>
-    <AssemblyName>AudioShell.Commands</AssemblyName>
+    <RootNamespace>PowerShellAudio.Commands</RootNamespace>
+    <AssemblyName>PowerShellAudio.Commands</AssemblyName>
     <TargetFrameworkVersion>v4.5.1</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <CodeContractsAssemblyMode>1</CodeContractsAssemblyMode>
@@ -142,22 +142,22 @@
     <Compile Include="ExtensionMethods.cs" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\AudioShell.Api\PowerShellAudio.Api.csproj">
+    <ProjectReference Include="..\PowerShellAudio.Api\PowerShellAudio.Api.csproj">
       <Project>{b122f71f-58ca-4cdb-91f0-ed91db6fe3fb}</Project>
       <Name>PowerShellAudio.Api</Name>
     </ProjectReference>
-    <ProjectReference Include="..\AudioShell.Common\PowerShellAudio.Common.csproj">
+    <ProjectReference Include="..\PowerShellAudio.Common\PowerShellAudio.Common.csproj">
       <Project>{805811ed-7986-4691-bacb-00fffee65fa7}</Project>
       <Name>PowerShellAudio.Common</Name>
     </ProjectReference>
-    <ProjectReference Include="..\AudioShell.Extensibility\PowerShellAudio.Extensibility.csproj">
+    <ProjectReference Include="..\PowerShellAudio.Extensibility\PowerShellAudio.Extensibility.csproj">
       <Project>{53a553d8-f413-4ca0-a958-dedc9d0e83f1}</Project>
       <Name>PowerShellAudio.Extensibility</Name>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
-    <None Include="AudioShell.Help.pshproj" />
-    <None Include="AudioShell.psd1">
+    <None Include="PowerShellAudio.Help.pshproj" />
+    <None Include="PowerShellAudio.psd1">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
     <None Include="COPYING">
@@ -178,7 +178,7 @@
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>
-    <None Include="en-US\AudioShell.Commands.dll-Help.xml">
+    <None Include="en-US\PowerShellAudio.Commands.dll-Help.xml">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
   </ItemGroup>

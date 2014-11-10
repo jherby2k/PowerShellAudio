@@ -7,8 +7,8 @@
     <ProjectGuid>{F5CD5FCE-2E46-4C2D-A9E9-075E427FF2E5}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>AudioShell.Extensions.Vorbis</RootNamespace>
-    <AssemblyName>AudioShell.Extensions.Vorbis</AssemblyName>
+    <RootNamespace>PowerShellAudio.Extensions.Vorbis</RootNamespace>
+    <AssemblyName>PowerShellAudio.Extensions.Vorbis</AssemblyName>
     <TargetFrameworkVersion>v4.5.1</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <CodeContractsAssemblyMode>1</CodeContractsAssemblyMode>

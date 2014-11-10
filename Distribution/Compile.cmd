@@ -2,28 +2,28 @@
 
 PUSHD ..
 
-"%ProgramFiles(x86)%\WiX Toolset v3.9\bin\candle.exe" "%~dp0AudioShell.wsx"
+"%ProgramFiles(x86)%\WiX Toolset v3.9\bin\candle.exe" "%~dp0PowerShellAudio.wsx"
 IF %ERRORLEVEL% NEQ 0 GOTO Finish
 
-"%ProgramFiles(x86)%\WiX Toolset v3.9\bin\light.exe" -ext WixUIExtension -cultures:en-us AudioShell.wixobj
+"%ProgramFiles(x86)%\WiX Toolset v3.9\bin\light.exe" -ext WixUIExtension -cultures:en-us PowerShellAudio.wixobj
 IF %ERRORLEVEL% NEQ 0 GOTO Finish
 
-"%ProgramFiles(x86)%\WiX Toolset v3.9\bin\candle.exe" -arch x64 "%~dp0AudioShell64.wsx"
+"%ProgramFiles(x86)%\WiX Toolset v3.9\bin\candle.exe" -arch x64 "%~dp0PowerShellAudio64.wsx"
 IF %ERRORLEVEL% NEQ 0 GOTO Finish
 
-"%ProgramFiles(x86)%\WiX Toolset v3.9\bin\light.exe" -ext WixUIExtension -cultures:en-us AudioShell64.wixobj
+"%ProgramFiles(x86)%\WiX Toolset v3.9\bin\light.exe" -ext WixUIExtension -cultures:en-us PowerShellAudio64.wixobj
 IF %ERRORLEVEL% NEQ 0 GOTO Finish
 
-"%ProgramFiles(x86)%\WiX Toolset v3.9\bin\candle.exe" -ext WixBalExtension -ext WixUtilExtension -ext WixNetFxExtension "%~dp0AudioShellInstaller.wsx"
+"%ProgramFiles(x86)%\WiX Toolset v3.9\bin\candle.exe" -ext WixBalExtension -ext WixUtilExtension -ext WixNetFxExtension "%~dp0PowerShellAudioInstaller.wsx"
 IF %ERRORLEVEL% NEQ 0 GOTO Finish
 
-"%ProgramFiles(x86)%\WiX Toolset v3.9\bin\light.exe" -ext WixBalExtension -ext WixUtilExtension -ext WixNetFxExtension AudioShellInstaller.wixobj
+"%ProgramFiles(x86)%\WiX Toolset v3.9\bin\light.exe" -ext WixBalExtension -ext WixUtilExtension -ext WixNetFxExtension PowerShellAudioInstaller.wixobj
 
 :Finish
-DEL AudioShell.wixobj
-DEL AudioShell.wixpdb
-DEL AudioShell64.wixobj
-DEL AudioShell64.wixpdb
-DEL AudioShellInstaller.wixobj
-DEL AudioShellInstaller.wixpdb
+DEL PowerShellAudio.wixobj
+DEL PowerShellAudio.wixpdb
+DEL PowerShellAudio64.wixobj
+DEL PowerShellAudio64.wixpdb
+DEL PowerShellAudioInstaller.wixobj
+DEL PowerShellAudioInstaller.wixpdb
 POPD

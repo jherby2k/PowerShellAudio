@@ -7,8 +7,8 @@
     <ProjectGuid>{E58F1E1C-72BC-4379-B491-CFA5E48E8605}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>AudioShell.Extensions.Lame</RootNamespace>
-    <AssemblyName>AudioShell.Extensions.Lame</AssemblyName>
+    <RootNamespace>PowerShellAudio.Extensions.Lame</RootNamespace>
+    <AssemblyName>PowerShellAudio.Extensions.Lame</AssemblyName>
     <TargetFrameworkVersion>v4.5.1</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <CodeContractsAssemblyMode>1</CodeContractsAssemblyMode>
@@ -21,7 +21,7 @@
     <DefineConstants>DEBUG;TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
-    <CodeAnalysisRuleSet>..\AudioShell.Extensions.Id3\CustomRules.ruleset</CodeAnalysisRuleSet>
+    <CodeAnalysisRuleSet>..\PowerShellAudio.Extensions.Id3\CustomRules.ruleset</CodeAnalysisRuleSet>
     <RunCodeAnalysis>true</RunCodeAnalysis>
     <CodeContractsEnableRuntimeChecking>True</CodeContractsEnableRuntimeChecking>
     <CodeContractsRuntimeOnlyPublicSurface>False</CodeContractsRuntimeOnlyPublicSurface>

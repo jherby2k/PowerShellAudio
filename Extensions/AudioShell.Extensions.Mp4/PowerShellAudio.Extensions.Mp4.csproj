@@ -7,8 +7,8 @@
     <ProjectGuid>{7D89FD61-1B43-4055-90CF-ED8B12259B49}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>AudioShell.Extensions.Mp4</RootNamespace>
-    <AssemblyName>AudioShell.Extensions.Mp4</AssemblyName>
+    <RootNamespace>PowerShellAudio.Extensions.Mp4</RootNamespace>
+    <AssemblyName>PowerShellAudio.Extensions.Mp4</AssemblyName>
     <TargetFrameworkVersion>v4.5.1</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <CodeContractsAssemblyMode>1</CodeContractsAssemblyMode>

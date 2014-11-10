@@ -7,8 +7,8 @@
     <ProjectGuid>{E0F122AE-2811-4D7D-B59D-3105F237B56B}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>AudioShell.Extensions.Apple</RootNamespace>
-    <AssemblyName>AudioShell.Extensions.Apple</AssemblyName>
+    <RootNamespace>PowerShellAudio.Extensions.Apple</RootNamespace>
+    <AssemblyName>PowerShellAudio.Extensions.Apple</AssemblyName>
     <TargetFrameworkVersion>v4.5.1</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <CodeContractsAssemblyMode>1</CodeContractsAssemblyMode>

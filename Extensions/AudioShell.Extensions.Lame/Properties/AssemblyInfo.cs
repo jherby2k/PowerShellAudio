@@ -7,11 +7,11 @@ using System.Resources;
 // General Information about an assembly is controlled through the following 
 // set of attributes. Change these attribute values to modify the information
 // associated with an assembly.
-[assembly: AssemblyTitle("AudioShell.Extensions.Lame")]
+[assembly: AssemblyTitle("PowerShellAudio.Extensions.Lame")]
 [assembly: AssemblyDescription("")]
 [assembly: AssemblyConfiguration("")]
 [assembly: AssemblyCompany("")]
-[assembly: AssemblyProduct("AudioShell")]
+[assembly: AssemblyProduct("PowerShellAudio")]
 [assembly: AssemblyCopyright("Copyright © 2014 Jeremy Herbison")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]

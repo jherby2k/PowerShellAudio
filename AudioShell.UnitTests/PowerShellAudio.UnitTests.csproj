@@ -6,8 +6,8 @@
     <ProjectGuid>{38A38F5C-D59D-4976-AAE6-F0B95C51DA1A}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>AudioShell.UnitTests</RootNamespace>
-    <AssemblyName>AudioShell.UnitTests</AssemblyName>
+    <RootNamespace>PowerShellAudio.UnitTests</RootNamespace>
+    <AssemblyName>PowerShellAudio.UnitTests</AssemblyName>
     <TargetFrameworkVersion>v4.5.1</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <ProjectTypeGuids>{3AC096D0-A1C2-E12C-1390-A8335801FDAB};{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</ProjectTypeGuids>
@@ -62,7 +62,7 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\AudioShell.Api\PowerShellAudio.Api.csproj">
+    <ProjectReference Include="..\PowerShellAudio.Api\PowerShellAudio.Api.csproj">
       <Project>{b122f71f-58ca-4cdb-91f0-ed91db6fe3fb}</Project>
       <Name>PowerShellAudio.Api</Name>
     </ProjectReference>

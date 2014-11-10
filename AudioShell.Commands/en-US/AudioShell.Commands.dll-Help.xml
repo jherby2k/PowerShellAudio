@@ -1839,7 +1839,7 @@
 		<dev:version />
 	</command:details>
 	<maml:description>
-		<maml:para>The Get-AudioAnalyzerList cmdlet lists all available analyzers currently loaded by AudioShell. These analyzers can be used with Measure-AudioFile&#39;s Analyzer property.</maml:para>
+		<maml:para>The Get-AudioAnalyzerList cmdlet lists all available analyzers currently loaded by PowerShellAudio. These analyzers can be used with Measure-AudioFile&#39;s Analyzer property.</maml:para>
 	</maml:description>
 	<command:syntax>
 		<command:syntaxItem>
@@ -2061,7 +2061,7 @@
 		<dev:version />
 	</command:details>
 	<maml:description>
-		<maml:para>The Get-AudioEncoderList cmdlet lists all available encoders currently loaded by AudioShell. These encoders can be used with Export-AudioFile&#39;s Encoder property.</maml:para>
+		<maml:para>The Get-AudioEncoderList cmdlet lists all available encoders currently loaded by PowerShellAudio. These encoders can be used with Export-AudioFile&#39;s Encoder property.</maml:para>
 	</maml:description>
 	<command:syntax>
 		<command:syntaxItem>

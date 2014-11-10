@@ -3,25 +3,25 @@
 
 Copyright © 2014 Jeremy Herbison
 
-This file is part of AudioShell.
+This file is part of PowerShell Audio.
 
-AudioShell is free software: you can redistribute it and/or modify it under the terms of the GNU Lesser General
-Public License as published by the Free Software Foundation, either version 3 of the License, or (at your option)
-any later version.
+PowerShell Audio is free software: you can redistribute it and/or modify it under the terms of the GNU Lesser General
+Public License as published by the Free Software Foundation, either version 3 of the License, or (at your option) any
+later version.
 
-AudioShell is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied
+PowerShell Audio is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied
 warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU Lesser General Public License for more
 details.
 
-You should have received a copy of the GNU Lesser General Public License along with AudioShell.  If not, see
+You should have received a copy of the GNU Lesser General Public License along with PowerShell Audio.  If not, see
 <http://www.gnu.org/licenses/>.
 
 -->
 <Wix xmlns="http://schemas.microsoft.com/wix/2006/wi">
-  <Product Name="AudioShell (64-bit)" Manufacturer="Jeremy Herbison" Version="0.9.3" Language="1033" Id="*" UpgradeCode="{70C2487F-D144-4CDF-94DF-FCD85336CCA5}">
+  <Product Name="PowerShell Audio (64-bit)" Manufacturer="Jeremy Herbison" Version="0.9.3" Language="1033" Id="*" UpgradeCode="{70C2487F-D144-4CDF-94DF-FCD85336CCA5}">
     <Package InstallerVersion="405" Compressed="yes" InstallScope="perMachine"/>
     <MajorUpgrade DowngradeErrorMessage="A later version of [ProductName] is already installed. Setup will now exit."/>
-    <Media Id="1" Cabinet="AudioShell.cab" EmbedCab="yes"/>
+    <Media Id="1" Cabinet="PowerShellAudio.cab" EmbedCab="yes"/>
     <UIRef Id="WixUI_FeatureTree"/>
     <WixVariable Id="WixUILicenseRtf" Value="Distribution\License.rtf"/>
 
@@ -30,7 +30,7 @@ You should have received a copy of the GNU Lesser General Public License along w
       <Directory Id="ProgramFiles64Folder">
         <Directory Id="WINPSDIR" Name="WindowsPowerShell">
           <Directory Id="MODULESDIR" Name="Modules">
-            <Directory Id="INSTALLDIR" Name="AudioShell">
+            <Directory Id="INSTALLDIR" Name="PowerShellAudio">
               <Directory Id="CONTRACTSDIR" Name="CodeContracts"/>
               <Directory Id="LANGEN_USDIR" Name="en-US"/>
               <Directory Id="EXTENSIONSDIR" Name="Extensions">
@@ -74,62 +74,62 @@ You should have received a copy of the GNU Lesser General Public License along w
     <!-- Common Components -->
     <DirectoryRef Id="INSTALLDIR">
       <Component Guid="{C5D77ED9-E1B4-466C-9019-D1EB443ED105}">
-        <File Source="AudioShell.Commands\bin\Release\AudioShell.psd1" KeyPath="yes"/>
+        <File Source="PowerShellAudio.Commands\bin\Release\PowerShellAudio.psd1" KeyPath="yes"/>
       </Component>
       <Component Guid="{2CC2C516-30E1-4155-96F0-5BC618D05C09}">
-        <File Source="AudioShell.Api\bin\Release\AudioShell.Api.dll" KeyPath="yes" Checksum="yes"/>
+        <File Source="PowerShellAudio.Api\bin\Release\PowerShellAudio.Api.dll" KeyPath="yes" Checksum="yes"/>
       </Component>
       <Component Guid="{C6DBC4A5-FCAC-416A-AA01-268FB2C85005}">
-        <File Source="AudioShell.Commands\bin\Release\AudioShell.Commands.dll" KeyPath="yes" Checksum="yes"/>
+        <File Source="PowerShellAudio.Commands\bin\Release\PowerShellAudio.Commands.dll" KeyPath="yes" Checksum="yes"/>
       </Component>
       <Component Guid="{45761C87-1E50-4287-958B-05FF7DA36CD3}">
-        <File Source="AudioShell.Common\bin\Release\AudioShell.Common.dll" KeyPath="yes" Checksum="yes"/>
+        <File Source="PowerShellAudio.Common\bin\Release\PowerShellAudio.Common.dll" KeyPath="yes" Checksum="yes"/>
       </Component>
       <Component Guid="{25E99F2E-CA4F-4D03-AFFF-E755F78F8D10}">
-        <File Source="AudioShell.Extensibility\bin\Release\AudioShell.Extensibility.dll" KeyPath="yes" Checksum="yes"/>
+        <File Source="PowerShellAudio.Extensibility\bin\Release\PowerShellAudio.Extensibility.dll" KeyPath="yes" Checksum="yes"/>
       </Component>
       <Component Guid="{47A3E0F1-2EBB-4C8B-A733-0020B8B0EE63}">
-        <File Source="AudioShell.Commands\bin\Release\COPYING" KeyPath="yes"/>
+        <File Source="PowerShellAudio.Commands\bin\Release\COPYING" KeyPath="yes"/>
       </Component>
       <Component Guid="{C8B22812-F444-41FB-B614-044BC0C6EF69}">
-        <File Source="AudioShell.Commands\bin\Release\COPYING.LESSER" KeyPath="yes"/>
+        <File Source="PowerShellAudio.Commands\bin\Release\COPYING.LESSER" KeyPath="yes"/>
       </Component>
     </DirectoryRef>
     <DirectoryRef Id="CONTRACTSDIR">
       <Component Guid="{DDE98111-29F2-4148-9C25-4253B511AF3B}">
-        <File Source="AudioShell.Api\bin\Release\CodeContracts\AudioShell.Api.Contracts.dll" KeyPath="yes" Checksum="yes"/>
+        <File Source="PowerShellAudio.Api\bin\Release\CodeContracts\PowerShellAudio.Api.Contracts.dll" KeyPath="yes" Checksum="yes"/>
       </Component>
       <Component Guid="{5DAE31D8-B1D0-4309-8AC0-1D39B4A87E60}">
-        <File Source="AudioShell.Common\bin\Release\CodeContracts\AudioShell.Common.Contracts.dll" KeyPath="yes" Checksum="yes"/>
+        <File Source="PowerShellAudio.Common\bin\Release\CodeContracts\PowerShellAudio.Common.Contracts.dll" KeyPath="yes" Checksum="yes"/>
       </Component>
       <Component Guid="{546075C4-1BCA-4DA1-9DF7-1A19024DFFE7}">
-        <File Source="AudioShell.Extensibility\bin\Release\CodeContracts\AudioShell.Extensibility.Contracts.dll" KeyPath="yes" Checksum="yes"/>
+        <File Source="PowerShellAudio.Extensibility\bin\Release\CodeContracts\PowerShellAudio.Extensibility.Contracts.dll" KeyPath="yes" Checksum="yes"/>
       </Component>
     </DirectoryRef>
     <DirectoryRef Id="LANGEN_USDIR">
       <Component Guid="{230EC615-1CFE-485C-87F5-D1352FE07089}">
-        <File Id="AudioShell.Commands.dll_Help.xml" Source="AudioShell.Commands\bin\Release\en-US\AudioShell.Commands.dll-Help.xml" KeyPath="yes" Checksum="yes"/>
+        <File Id="PowerShellAudio.Commands.dll_Help.xml" Source="PowerShellAudio.Commands\bin\Release\en-US\PowerShellAudio.Commands.dll-Help.xml" KeyPath="yes" Checksum="yes"/>
       </Component>
     </DirectoryRef>
 
     <ComponentGroup Id="Common">
-      <ComponentRef Id="AudioShell.psd1"/>
-      <ComponentRef Id="AudioShell.Commands.dll_Help.xml"/>
+      <ComponentRef Id="PowerShellAudio.psd1"/>
+      <ComponentRef Id="PowerShellAudio.Commands.dll_Help.xml"/>
       <ComponentRef Id="COPYING"/>
       <ComponentRef Id="COPYING.LESSER"/>
-      <ComponentRef Id="AudioShell.Api.dll"/>
-      <ComponentRef Id="AudioShell.Commands.dll"/>
-      <ComponentRef Id="AudioShell.Common.dll"/>
-      <ComponentRef Id="AudioShell.Extensibility.dll"/>
-      <ComponentRef Id="AudioShell.Api.Contracts.dll"/>
-      <ComponentRef Id="AudioShell.Common.Contracts.dll"/>
-      <ComponentRef Id="AudioShell.Extensibility.Contracts.dll"/>
+      <ComponentRef Id="PowerShellAudio.Api.dll"/>
+      <ComponentRef Id="PowerShellAudio.Commands.dll"/>
+      <ComponentRef Id="PowerShellAudio.Common.dll"/>
+      <ComponentRef Id="PowerShellAudio.Extensibility.dll"/>
+      <ComponentRef Id="PowerShellAudio.Api.Contracts.dll"/>
+      <ComponentRef Id="PowerShellAudio.Common.Contracts.dll"/>
+      <ComponentRef Id="PowerShellAudio.Extensibility.Contracts.dll"/>
     </ComponentGroup>
 
     <!-- ReplayGain Components -->
     <DirectoryRef Id="EXTREPLAYGAINDIR">
       <Component Guid="{D08F7839-11F2-41F4-93BF-0EABF75B319B}">
-        <File Source="Extensions\bin\Release\ReplayGain\AudioShell.Extensions.ReplayGain.dll" KeyPath="yes" Checksum="yes"/>
+        <File Source="Extensions\bin\Release\ReplayGain\PowerShellAudio.Extensions.ReplayGain.dll" KeyPath="yes" Checksum="yes"/>
       </Component>
       <Component Guid="{54E1540E-5511-4039-BC5A-0253880ABC62}">
         <File Source="Extensions\bin\Release\ReplayGain\System.Threading.Tasks.Dataflow.dll" KeyPath="yes" Checksum="yes"/>
@@ -137,42 +137,42 @@ You should have received a copy of the GNU Lesser General Public License along w
     </DirectoryRef>
     <DirectoryRef Id="EXTREPLAYGAINCONTRACTSDIR">
       <Component Guid="{87CC8C9A-3574-4774-9898-7FC4F2DBE3D3}">
-        <File Source="Extensions\bin\Release\ReplayGain\CodeContracts\AudioShell.Extensions.ReplayGain.Contracts.dll" KeyPath="yes" Checksum="yes"/>
+        <File Source="Extensions\bin\Release\ReplayGain\CodeContracts\PowerShellAudio.Extensions.ReplayGain.Contracts.dll" KeyPath="yes" Checksum="yes"/>
       </Component>
     </DirectoryRef>
 
     <ComponentGroup Id="ReplayGain">
-      <ComponentRef Id="AudioShell.Extensions.ReplayGain.dll"/>
-      <ComponentRef Id="AudioShell.Extensions.ReplayGain.Contracts.dll"/>
+      <ComponentRef Id="PowerShellAudio.Extensions.ReplayGain.dll"/>
+      <ComponentRef Id="PowerShellAudio.Extensions.ReplayGain.Contracts.dll"/>
       <ComponentRef Id="System.Threading.Tasks.Dataflow.dll"/>
     </ComponentGroup>
 
     <!-- Wave Components -->
     <DirectoryRef Id="EXTWAVEDIR">
       <Component Guid="{28D26879-E556-4927-9515-A650F26477E7}">
-        <File Source="Extensions\bin\Release\Wave\AudioShell.Extensions.Wave.dll" KeyPath="yes" Checksum="yes"/>
+        <File Source="Extensions\bin\Release\Wave\PowerShellAudio.Extensions.Wave.dll" KeyPath="yes" Checksum="yes"/>
       </Component>
     </DirectoryRef>
     <DirectoryRef Id="EXTWAVECONTRACTSDIR">
       <Component Guid="{302D4AC0-8DDB-4969-99D0-45FB9F7BC06C}">
-        <File Source="Extensions\bin\Release\Wave\CodeContracts\AudioShell.Extensions.Wave.Contracts.dll" KeyPath="yes" Checksum="yes"/>
+        <File Source="Extensions\bin\Release\Wave\CodeContracts\PowerShellAudio.Extensions.Wave.Contracts.dll" KeyPath="yes" Checksum="yes"/>
       </Component>
     </DirectoryRef>
 
     <ComponentGroup Id="Wave">
-      <ComponentRef Id="AudioShell.Extensions.Wave.dll"/>
-      <ComponentRef Id="AudioShell.Extensions.Wave.Contracts.dll"/>
+      <ComponentRef Id="PowerShellAudio.Extensions.Wave.dll"/>
+      <ComponentRef Id="PowerShellAudio.Extensions.Wave.Contracts.dll"/>
     </ComponentGroup>
 
     <!-- FLAC Components -->
     <DirectoryRef Id="EXTFLACDIR">
       <Component Guid="{4E31F5DF-4826-434A-B0AC-53E50B327F71}">
-        <File Source="Extensions\bin\Release\Flac\AudioShell.Extensions.Flac.dll" KeyPath="yes" Checksum="yes"/>
+        <File Source="Extensions\bin\Release\Flac\PowerShellAudio.Extensions.Flac.dll" KeyPath="yes" Checksum="yes"/>
       </Component>
     </DirectoryRef>
     <DirectoryRef Id="EXTFLACCONTRACTSDIR">
       <Component Guid="{0398EA5E-B1DD-42E3-9848-6E5C627488BC}">
-        <File Source="Extensions\bin\Release\Flac\CodeContracts\AudioShell.Extensions.Flac.Contracts.dll" KeyPath="yes" Checksum="yes"/>
+        <File Source="Extensions\bin\Release\Flac\CodeContracts\PowerShellAudio.Extensions.Flac.Contracts.dll" KeyPath="yes" Checksum="yes"/>
       </Component>
     </DirectoryRef>
     <DirectoryRef Id="EXTFLACX64DIR">
@@ -182,20 +182,20 @@ You should have received a copy of the GNU Lesser General Public License along w
     </DirectoryRef>
 
     <ComponentGroup Id="FLAC">
-      <ComponentRef Id="AudioShell.Extensions.Flac.dll"/>
-      <ComponentRef Id="AudioShell.Extensions.Flac.Contracts.dll"/>
+      <ComponentRef Id="PowerShellAudio.Extensions.Flac.dll"/>
+      <ComponentRef Id="PowerShellAudio.Extensions.Flac.Contracts.dll"/>
       <ComponentRef Id="libFLAC.dll"/>
     </ComponentGroup>
 
     <!-- Vorbis Components -->
     <DirectoryRef Id="EXTVORBISDIR">
       <Component Guid="{7932EB72-D0C8-4840-8B43-D3DE9AAEAB35}">
-        <File Source="Extensions\bin\Release\Vorbis\AudioShell.Extensions.Vorbis.dll" KeyPath="yes" Checksum="yes"/>
+        <File Source="Extensions\bin\Release\Vorbis\PowerShellAudio.Extensions.Vorbis.dll" KeyPath="yes" Checksum="yes"/>
       </Component>
     </DirectoryRef>
     <DirectoryRef Id="EXTVORBISCONTRACTSDIR">
       <Component Guid="{9EE2F45B-44DE-4376-AADC-270703D49313}">
-        <File Source="Extensions\bin\Release\Vorbis\CodeContracts\AudioShell.Extensions.Vorbis.Contracts.dll" KeyPath="yes" Checksum="yes"/>
+        <File Source="Extensions\bin\Release\Vorbis\CodeContracts\PowerShellAudio.Extensions.Vorbis.Contracts.dll" KeyPath="yes" Checksum="yes"/>
       </Component>
     </DirectoryRef>
     <DirectoryRef Id="EXTVORBISX64DIR">
@@ -208,8 +208,8 @@ You should have received a copy of the GNU Lesser General Public License along w
     </DirectoryRef>
 
     <ComponentGroup Id="Vorbis">
-      <ComponentRef Id="AudioShell.Extensions.Vorbis.dll"/>
-      <ComponentRef Id="AudioShell.Extensions.Vorbis.Contracts.dll"/>
+      <ComponentRef Id="PowerShellAudio.Extensions.Vorbis.dll"/>
+      <ComponentRef Id="PowerShellAudio.Extensions.Vorbis.Contracts.dll"/>
       <ComponentRef Id="libogg.dll"/>
       <ComponentRef Id="libvorbis.dll"/>
     </ComponentGroup>
@@ -217,24 +217,24 @@ You should have received a copy of the GNU Lesser General Public License along w
     <!-- MP3 Components -->
     <DirectoryRef Id="EXTMP3DIR">
       <Component Guid="{D351296D-CC59-40FC-BA68-E6983CCB392B}">
-        <File Source="Extensions\bin\Release\Mp3\AudioShell.Extensions.Mp3.dll" KeyPath="yes" Checksum="yes"/>
+        <File Source="Extensions\bin\Release\Mp3\PowerShellAudio.Extensions.Mp3.dll" KeyPath="yes" Checksum="yes"/>
       </Component>
     </DirectoryRef>
     <DirectoryRef Id="EXTMP3CONTRACTSDIR">
       <Component Guid="{12F0BB83-D7D9-4AA8-8E77-71F1E4CA56E8}">
-        <File Source="Extensions\bin\Release\Mp3\CodeContracts\AudioShell.Extensions.Mp3.Contracts.dll" KeyPath="yes" Checksum="yes"/>
+        <File Source="Extensions\bin\Release\Mp3\CodeContracts\PowerShellAudio.Extensions.Mp3.Contracts.dll" KeyPath="yes" Checksum="yes"/>
       </Component>
     </DirectoryRef>
 
     <ComponentGroup Id="MP3">
-      <ComponentRef Id="AudioShell.Extensions.Mp3.dll"/>
-      <ComponentRef Id="AudioShell.Extensions.Mp3.Contracts.dll"/>
+      <ComponentRef Id="PowerShellAudio.Extensions.Mp3.dll"/>
+      <ComponentRef Id="PowerShellAudio.Extensions.Mp3.Contracts.dll"/>
     </ComponentGroup>
 
     <!-- ID3 Components -->
     <DirectoryRef Id="EXTID3DIR">
       <Component Guid="{E41B900A-20B1-46BB-804A-414CAFDF6AE8}">
-        <File Source="Extensions\bin\Release\Id3\AudioShell.Extensions.Id3.dll" KeyPath="yes" Checksum="yes"/>
+        <File Source="Extensions\bin\Release\Id3\PowerShellAudio.Extensions.Id3.dll" KeyPath="yes" Checksum="yes"/>
       </Component>
       <Component Guid="{9E974501-2ED6-4B58-BC75-82A983D6129F}">
         <File Source="Extensions\bin\Release\Id3\Id3Lib.dll" KeyPath="yes" Checksum="yes"/>
@@ -245,13 +245,13 @@ You should have received a copy of the GNU Lesser General Public License along w
     </DirectoryRef>
     <DirectoryRef Id="EXTID3CONTRACTSDIR">
       <Component Guid="{CAD003EE-7DD1-4E01-B765-6229DB67FF61}">
-        <File Source="Extensions\bin\Release\Id3\CodeContracts\AudioShell.Extensions.Id3.Contracts.dll" KeyPath="yes" Checksum="yes"/>
+        <File Source="Extensions\bin\Release\Id3\CodeContracts\PowerShellAudio.Extensions.Id3.Contracts.dll" KeyPath="yes" Checksum="yes"/>
       </Component>
     </DirectoryRef>
 
     <ComponentGroup Id="ID3">
-      <ComponentRef Id="AudioShell.Extensions.Id3.dll"/>
-      <ComponentRef Id="AudioShell.Extensions.Id3.Contracts.dll"/>
+      <ComponentRef Id="PowerShellAudio.Extensions.Id3.dll"/>
+      <ComponentRef Id="PowerShellAudio.Extensions.Id3.Contracts.dll"/>
       <ComponentRef Id="Id3Lib.dll"/>
       <ComponentRef Id="ICSharpCode.SharpZipLib.dll"/>
     </ComponentGroup>
@@ -259,12 +259,12 @@ You should have received a copy of the GNU Lesser General Public License along w
     <!-- Lame Components -->
     <DirectoryRef Id="EXTLAMEDIR">
       <Component Guid="{47A670AC-DE77-4573-8DAE-91959FC57742}">
-        <File Source="Extensions\bin\Release\Lame\AudioShell.Extensions.Lame.dll" KeyPath="yes" Checksum="yes"/>
+        <File Source="Extensions\bin\Release\Lame\PowerShellAudio.Extensions.Lame.dll" KeyPath="yes" Checksum="yes"/>
       </Component>
     </DirectoryRef>
     <DirectoryRef Id="EXTLAMECONTRACTSDIR">
       <Component Guid="{67AB7E3D-FE85-402C-887A-47A018954AA4}">
-        <File Source="Extensions\bin\Release\Lame\CodeContracts\AudioShell.Extensions.Lame.Contracts.dll" KeyPath="yes" Checksum="yes"/>
+        <File Source="Extensions\bin\Release\Lame\CodeContracts\PowerShellAudio.Extensions.Lame.Contracts.dll" KeyPath="yes" Checksum="yes"/>
       </Component>
     </DirectoryRef>
     <DirectoryRef Id="EXTLAMEX64DIR">
@@ -274,43 +274,43 @@ You should have received a copy of the GNU Lesser General Public License along w
     </DirectoryRef>
 
     <ComponentGroup Id="Lame">
-      <ComponentRef Id="AudioShell.Extensions.Lame.dll"/>
-      <ComponentRef Id="AudioShell.Extensions.Lame.Contracts.dll"/>
+      <ComponentRef Id="PowerShellAudio.Extensions.Lame.dll"/>
+      <ComponentRef Id="PowerShellAudio.Extensions.Lame.Contracts.dll"/>
       <ComponentRef Id="libmp3lame.dll"/>
     </ComponentGroup>
 
     <!-- MP4 Components -->
     <DirectoryRef Id="EXTMP4DIR">
       <Component Guid="{3584A660-5EDB-47CE-BFA3-D1D8164B06A2}">
-        <File Source="Extensions\bin\Release\Mp4\AudioShell.Extensions.Mp4.dll" KeyPath="yes" Checksum="yes"/>
+        <File Source="Extensions\bin\Release\Mp4\PowerShellAudio.Extensions.Mp4.dll" KeyPath="yes" Checksum="yes"/>
       </Component>
     </DirectoryRef>
     <DirectoryRef Id="EXTMP4CONTRACTSDIR">
       <Component Guid="{FE5DF3F9-81DD-4DE0-81A1-699CC3330A5E}">
-        <File Source="Extensions\bin\Release\Mp4\CodeContracts\AudioShell.Extensions.Mp4.Contracts.dll" KeyPath="yes" Checksum="yes"/>
+        <File Source="Extensions\bin\Release\Mp4\CodeContracts\PowerShellAudio.Extensions.Mp4.Contracts.dll" KeyPath="yes" Checksum="yes"/>
       </Component>
     </DirectoryRef>
 
     <ComponentGroup Id="MP4">
-      <ComponentRef Id="AudioShell.Extensions.Mp4.dll"/>
-      <ComponentRef Id="AudioShell.Extensions.Mp4.Contracts.dll"/>
+      <ComponentRef Id="PowerShellAudio.Extensions.Mp4.dll"/>
+      <ComponentRef Id="PowerShellAudio.Extensions.Mp4.Contracts.dll"/>
     </ComponentGroup>
 
     <!-- Apple Components -->
     <DirectoryRef Id="EXTAPPLEDIR">
       <Component Guid="{41696625-E4CF-478A-BCA2-58879FEB0CAA}">
-        <File Source="Extensions\bin\Release\Apple\AudioShell.Extensions.Apple.dll" KeyPath="yes" Checksum="yes"/>
+        <File Source="Extensions\bin\Release\Apple\PowerShellAudio.Extensions.Apple.dll" KeyPath="yes" Checksum="yes"/>
       </Component>
     </DirectoryRef>
     <DirectoryRef Id="EXTAPPLECONTRACTSDIR">
       <Component Guid="{D738BA7D-B7D2-4850-AAEB-21E603720BC1}">
-        <File Source="Extensions\bin\Release\Apple\CodeContracts\AudioShell.Extensions.Apple.Contracts.dll" KeyPath="yes" Checksum="yes"/>
+        <File Source="Extensions\bin\Release\Apple\CodeContracts\PowerShellAudio.Extensions.Apple.Contracts.dll" KeyPath="yes" Checksum="yes"/>
       </Component>
     </DirectoryRef>
 
     <ComponentGroup Id="Apple">
-      <ComponentRef Id="AudioShell.Extensions.Apple.dll"/>
-      <ComponentRef Id="AudioShell.Extensions.Apple.Contracts.dll"/>
+      <ComponentRef Id="PowerShellAudio.Extensions.Apple.dll"/>
+      <ComponentRef Id="PowerShellAudio.Extensions.Apple.Contracts.dll"/>
     </ComponentGroup>
 
     <!-- Define Features -->

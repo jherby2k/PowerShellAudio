@@ -7,8 +7,8 @@
     <ProjectGuid>{BCE18F0D-F650-40DB-9092-2ADADBF113E3}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>AudioShell.Extensions.Flac</RootNamespace>
-    <AssemblyName>AudioShell.Extensions.Flac</AssemblyName>
+    <RootNamespace>PowerShellAudio.Extensions.Flac</RootNamespace>
+    <AssemblyName>PowerShellAudio.Extensions.Flac</AssemblyName>
     <TargetFrameworkVersion>v4.5.1</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <CodeContractsAssemblyMode>1</CodeContractsAssemblyMode>

@@ -7,8 +7,8 @@
     <ProjectGuid>{B122F71F-58CA-4CDB-91F0-ED91DB6FE3FB}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>AudioShell</RootNamespace>
-    <AssemblyName>AudioShell.Api</AssemblyName>
+    <RootNamespace>PowerShellAudio</RootNamespace>
+    <AssemblyName>PowerShellAudio.Api</AssemblyName>
     <TargetFrameworkVersion>v4.5.1</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <CodeContractsAssemblyMode>1</CodeContractsAssemblyMode>
@@ -57,7 +57,7 @@
     <CodeContractsAnalysisWarningLevel>0</CodeContractsAnalysisWarningLevel>
     <RunCodeAnalysis>true</RunCodeAnalysis>
     <CodeAnalysisRuleSet>CustomRules.ruleset</CodeAnalysisRuleSet>
-    <DocumentationFile>bin\Debug\AudioShell.Api.XML</DocumentationFile>
+    <DocumentationFile>bin\Debug\PowerShellAudio.Api.XML</DocumentationFile>
     <CodeContractsSuggestReadonly>True</CodeContractsSuggestReadonly>
     <CodeContractsBeingOptimisticOnExternal>True</CodeContractsBeingOptimisticOnExternal>
   </PropertyGroup>
@@ -102,7 +102,7 @@
     <CodeContractsRuntimeCheckingLevel>ReleaseRequires</CodeContractsRuntimeCheckingLevel>
     <CodeContractsReferenceAssembly>Build</CodeContractsReferenceAssembly>
     <CodeContractsAnalysisWarningLevel>0</CodeContractsAnalysisWarningLevel>
-    <DocumentationFile>bin\Release\AudioShell.Api.XML</DocumentationFile>
+    <DocumentationFile>bin\Release\PowerShellAudio.Api.XML</DocumentationFile>
     <CodeContractsSuggestReadonly>True</CodeContractsSuggestReadonly>
     <CodeContractsBeingOptimisticOnExternal>True</CodeContractsBeingOptimisticOnExternal>
   </PropertyGroup>

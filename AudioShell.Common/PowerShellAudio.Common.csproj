@@ -7,8 +7,8 @@
     <ProjectGuid>{805811ED-7986-4691-BACB-00FFFEE65FA7}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>AudioShell</RootNamespace>
-    <AssemblyName>AudioShell.Common</AssemblyName>
+    <RootNamespace>PowerShellAudio</RootNamespace>
+    <AssemblyName>PowerShellAudio.Common</AssemblyName>
     <TargetFrameworkVersion>v4.5.1</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <CodeContractsAssemblyMode>1</CodeContractsAssemblyMode>
@@ -57,7 +57,7 @@
     <CodeContractsAnalysisWarningLevel>0</CodeContractsAnalysisWarningLevel>
     <RunCodeAnalysis>true</RunCodeAnalysis>
     <CodeAnalysisRuleSet>CustomRules.ruleset</CodeAnalysisRuleSet>
-    <DocumentationFile>bin\Debug\AudioShell.Common.XML</DocumentationFile>
+    <DocumentationFile>bin\Debug\PowerShellAudio.Common.XML</DocumentationFile>
     <CodeContractsSuggestReadonly>True</CodeContractsSuggestReadonly>
     <CodeContractsBeingOptimisticOnExternal>True</CodeContractsBeingOptimisticOnExternal>
   </PropertyGroup>
@@ -103,7 +103,7 @@
     <CodeContractsReferenceAssembly>Build</CodeContractsReferenceAssembly>
     <CodeContractsAnalysisWarningLevel>0</CodeContractsAnalysisWarningLevel>
     <CodeAnalysisRuleSet>MinimumRecommendedRules.ruleset</CodeAnalysisRuleSet>
-    <DocumentationFile>bin\Release\AudioShell.Common.XML</DocumentationFile>
+    <DocumentationFile>bin\Release\PowerShellAudio.Common.XML</DocumentationFile>
     <CodeContractsSuggestReadonly>True</CodeContractsSuggestReadonly>
     <CodeContractsBeingOptimisticOnExternal>True</CodeContractsBeingOptimisticOnExternal>
   </PropertyGroup>

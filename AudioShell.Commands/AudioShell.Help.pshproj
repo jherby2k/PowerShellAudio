@@ -1,6 +1,6 @@
 <?xml version="1.0"?>
 <ModuleObject xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" fVersion="1.1" type="Binary" mclass="Module" useSupports="false">
-  <Name>AudioShell</Name>
+  <Name>PowerShellAudio</Name>
   <Version>0.9.0</Version>
   <Description>An extensible, multi-format audio conversion and tagging module</Description>
   <HasManifest>true</HasManifest>
@@ -845,7 +845,7 @@ The resulting file name(s) and/or directory can be generated from metadata by sp
       <Name>Get-AudioAnalyzerList</Name>
       <GeneralHelp>
         <Synopsis>Gets a list of analyzers available for measurement.</Synopsis>
-        <Description>The Get-AudioAnalyzerList cmdlet lists all available analyzers currently loaded by AudioShell. These analyzers can be used with Measure-AudioFile's Analyzer property.</Description>
+        <Description>The Get-AudioAnalyzerList cmdlet lists all available analyzers currently loaded by PowerShellAudio. These analyzers can be used with Measure-AudioFile's Analyzer property.</Description>
         <Notes />
         <InputType />
         <InputUrl />
@@ -953,7 +953,7 @@ To get a list of available encoders, use Get-AudioEncoderList.</Description>
       <Name>Get-AudioEncoderList</Name>
       <GeneralHelp>
         <Synopsis>Gets a list of encoders available for export.</Synopsis>
-        <Description>The Get-AudioEncoderList cmdlet lists all available encoders currently loaded by AudioShell. These encoders can be used with Export-AudioFile's Encoder property.</Description>
+        <Description>The Get-AudioEncoderList cmdlet lists all available encoders currently loaded by PowerShellAudio. These encoders can be used with Export-AudioFile's Encoder property.</Description>
         <Notes />
         <InputType />
         <InputUrl />

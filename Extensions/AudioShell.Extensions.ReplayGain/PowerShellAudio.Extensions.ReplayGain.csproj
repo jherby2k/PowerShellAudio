@@ -7,8 +7,8 @@
     <ProjectGuid>{4277BEBB-073A-4A27-946F-09ADEDCE98C9}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>AudioShell.Extensions.ReplayGain</RootNamespace>
-    <AssemblyName>AudioShell.Extensions.ReplayGain</AssemblyName>
+    <RootNamespace>PowerShellAudio.Extensions.ReplayGain</RootNamespace>
+    <AssemblyName>PowerShellAudio.Extensions.ReplayGain</AssemblyName>
     <TargetFrameworkVersion>v4.5.1</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <CodeContractsAssemblyMode>1</CodeContractsAssemblyMode>
