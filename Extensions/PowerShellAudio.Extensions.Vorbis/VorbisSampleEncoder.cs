@@ -159,7 +159,8 @@ namespace PowerShellAudio.Extensions.Vorbis
         {
             if (disposing)
             {
-                _encoder.Dispose();
+                if (_encoder != null)
+                    _encoder.Dispose();
                 if (_replayGainFilterLifetime != null)
                     _replayGainFilterLifetime.Dispose();
                 if (_oggStream != null)
