@@ -114,9 +114,6 @@ namespace PowerShellAudio.Extensions.ReplayGain
 
         static string AdjustGain(string gain, float scale)
         {
-            Contract.Requires(!string.IsNullOrEmpty(gain));
-            Contract.Ensures(!string.IsNullOrEmpty(Contract.Result<string>()));
-
             if (!string.IsNullOrEmpty(gain))
                 return string.Format(CultureInfo.InvariantCulture, "{0:0.00} dB", float.Parse(gain.Replace(" dB", string.Empty), CultureInfo.InvariantCulture) - Math.Log10(scale) * 20);
             return string.Empty;
@@ -124,9 +121,6 @@ namespace PowerShellAudio.Extensions.ReplayGain
 
         static string AdjustPeak(string peak, float scale)
         {
-            Contract.Requires(!string.IsNullOrEmpty(peak));
-            Contract.Ensures(!string.IsNullOrEmpty(Contract.Result<string>()));
-
             if (!string.IsNullOrEmpty(peak))
                 return string.Format(CultureInfo.InvariantCulture, "{0:0.000000}", float.Parse(peak, CultureInfo.InvariantCulture) * scale);
             return string.Empty;
