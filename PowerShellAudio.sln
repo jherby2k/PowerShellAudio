@@ -3,21 +3,21 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Express 2013 for Windows Desktop
 VisualStudioVersion = 12.0.30723.0
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AudioShell.Api", "AudioShell.Api\AudioShell.Api.csproj", "{B122F71F-58CA-4CDB-91F0-ED91DB6FE3FB}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PowerShellAudio.Api", "AudioShell.Api\PowerShellAudio.Api.csproj", "{B122F71F-58CA-4CDB-91F0-ED91DB6FE3FB}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Extensions", "Extensions", "{190E3FA0-597A-458E-9C24-E58596629D16}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AudioShell.Extensions.Wave", "Extensions\AudioShell.Extensions.Wave\AudioShell.Extensions.Wave.csproj", "{0A130488-A419-4133-B8D8-0F637B490089}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PowerShellAudio.Extensions.Wave", "Extensions\AudioShell.Extensions.Wave\PowerShellAudio.Extensions.Wave.csproj", "{0A130488-A419-4133-B8D8-0F637B490089}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AudioShell.Extensions.Flac", "Extensions\AudioShell.Extensions.Flac\AudioShell.Extensions.Flac.csproj", "{BCE18F0D-F650-40DB-9092-2ADADBF113E3}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PowerShellAudio.Extensions.Flac", "Extensions\AudioShell.Extensions.Flac\PowerShellAudio.Extensions.Flac.csproj", "{BCE18F0D-F650-40DB-9092-2ADADBF113E3}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AudioShell.Common", "AudioShell.Common\AudioShell.Common.csproj", "{805811ED-7986-4691-BACB-00FFFEE65FA7}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PowerShellAudio.Common", "AudioShell.Common\PowerShellAudio.Common.csproj", "{805811ED-7986-4691-BACB-00FFFEE65FA7}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AudioShell.Extensibility", "AudioShell.Extensibility\AudioShell.Extensibility.csproj", "{53A553D8-F413-4CA0-A958-DEDC9D0E83F1}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PowerShellAudio.Extensibility", "AudioShell.Extensibility\PowerShellAudio.Extensibility.csproj", "{53A553D8-F413-4CA0-A958-DEDC9D0E83F1}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AudioShell.Extensions.ReplayGain", "Extensions\AudioShell.Extensions.ReplayGain\AudioShell.Extensions.ReplayGain.csproj", "{4277BEBB-073A-4A27-946F-09ADEDCE98C9}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PowerShellAudio.Extensions.ReplayGain", "Extensions\AudioShell.Extensions.ReplayGain\PowerShellAudio.Extensions.ReplayGain.csproj", "{4277BEBB-073A-4A27-946F-09ADEDCE98C9}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AudioShell.Commands", "AudioShell.Commands\AudioShell.Commands.csproj", "{A49041D4-6C2B-48B8-A3AD-F9607B09D357}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PowerShellAudio.Commands", "AudioShell.Commands\PowerShellAudio.Commands.csproj", "{A49041D4-6C2B-48B8-A3AD-F9607B09D357}"
 	ProjectSection(ProjectDependencies) = postProject
 		{BCE18F0D-F650-40DB-9092-2ADADBF113E3} = {BCE18F0D-F650-40DB-9092-2ADADBF113E3}
 		{F6E7E018-9CAA-44B5-9E77-F90DBC954170} = {F6E7E018-9CAA-44B5-9E77-F90DBC954170}
@@ -30,29 +30,29 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AudioShell.Commands", "Audi
 		{F5CD5FCE-2E46-4C2D-A9E9-075E427FF2E5} = {F5CD5FCE-2E46-4C2D-A9E9-075E427FF2E5}
 	EndProjectSection
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AudioShell.Extensions.Mp3", "Extensions\AudioShell.Extensions.Mp3\AudioShell.Extensions.Mp3.csproj", "{F6E7E018-9CAA-44B5-9E77-F90DBC954170}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PowerShellAudio.Extensions.Mp3", "Extensions\AudioShell.Extensions.Mp3\PowerShellAudio.Extensions.Mp3.csproj", "{F6E7E018-9CAA-44B5-9E77-F90DBC954170}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AudioShell.Extensions.Id3", "Extensions\AudioShell.Extensions.Id3\AudioShell.Extensions.Id3.csproj", "{9C6B94A7-05FF-4BC4-8FF8-BCC808F240AB}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PowerShellAudio.Extensions.Id3", "Extensions\AudioShell.Extensions.Id3\PowerShellAudio.Extensions.Id3.csproj", "{9C6B94A7-05FF-4BC4-8FF8-BCC808F240AB}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AudioShell.Extensions.Lame", "Extensions\AudioShell.Extensions.Lame\AudioShell.Extensions.Lame.csproj", "{E58F1E1C-72BC-4379-B491-CFA5E48E8605}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PowerShellAudio.Extensions.Lame", "Extensions\AudioShell.Extensions.Lame\PowerShellAudio.Extensions.Lame.csproj", "{E58F1E1C-72BC-4379-B491-CFA5E48E8605}"
 	ProjectSection(ProjectDependencies) = postProject
 		{9C6B94A7-05FF-4BC4-8FF8-BCC808F240AB} = {9C6B94A7-05FF-4BC4-8FF8-BCC808F240AB}
 	EndProjectSection
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AudioShell.Extensions.Mp4", "Extensions\AudioShell.Extensions.Mp4\AudioShell.Extensions.Mp4.csproj", "{7D89FD61-1B43-4055-90CF-ED8B12259B49}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PowerShellAudio.Extensions.Mp4", "Extensions\AudioShell.Extensions.Mp4\PowerShellAudio.Extensions.Mp4.csproj", "{7D89FD61-1B43-4055-90CF-ED8B12259B49}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AudioShell.Extensions.Vorbis", "Extensions\AudioShell.Extensions.Vorbis\AudioShell.Extensions.Vorbis.csproj", "{F5CD5FCE-2E46-4C2D-A9E9-075E427FF2E5}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PowerShellAudio.Extensions.Vorbis", "Extensions\AudioShell.Extensions.Vorbis\PowerShellAudio.Extensions.Vorbis.csproj", "{F5CD5FCE-2E46-4C2D-A9E9-075E427FF2E5}"
 	ProjectSection(ProjectDependencies) = postProject
 		{4277BEBB-073A-4A27-946F-09ADEDCE98C9} = {4277BEBB-073A-4A27-946F-09ADEDCE98C9}
 	EndProjectSection
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AudioShell.Extensions.Apple", "Extensions\AudioShell.Extensions.Apple\AudioShell.Extensions.Apple.csproj", "{E0F122AE-2811-4D7D-B59D-3105F237B56B}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PowerShellAudio.Extensions.Apple", "Extensions\AudioShell.Extensions.Apple\PowerShellAudio.Extensions.Apple.csproj", "{E0F122AE-2811-4D7D-B59D-3105F237B56B}"
 	ProjectSection(ProjectDependencies) = postProject
 		{7D89FD61-1B43-4055-90CF-ED8B12259B49} = {7D89FD61-1B43-4055-90CF-ED8B12259B49}
 		{4277BEBB-073A-4A27-946F-09ADEDCE98C9} = {4277BEBB-073A-4A27-946F-09ADEDCE98C9}
 	EndProjectSection
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AudioShell.UnitTests", "AudioShell.UnitTests\AudioShell.UnitTests.csproj", "{38A38F5C-D59D-4976-AAE6-F0B95C51DA1A}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PowerShellAudio.UnitTests", "AudioShell.UnitTests\PowerShellAudio.UnitTests.csproj", "{38A38F5C-D59D-4976-AAE6-F0B95C51DA1A}"
 	ProjectSection(ProjectDependencies) = postProject
 		{BCE18F0D-F650-40DB-9092-2ADADBF113E3} = {BCE18F0D-F650-40DB-9092-2ADADBF113E3}
 		{F6E7E018-9CAA-44B5-9E77-F90DBC954170} = {F6E7E018-9CAA-44B5-9E77-F90DBC954170}

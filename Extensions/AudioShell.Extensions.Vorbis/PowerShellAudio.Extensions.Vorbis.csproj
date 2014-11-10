@@ -157,14 +157,14 @@
     <None Include="StrongName.snk" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\..\AudioShell.Common\AudioShell.Common.csproj">
+    <ProjectReference Include="..\..\AudioShell.Common\PowerShellAudio.Common.csproj">
       <Project>{805811ed-7986-4691-bacb-00fffee65fa7}</Project>
-      <Name>AudioShell.Common</Name>
+      <Name>PowerShellAudio.Common</Name>
       <Private>False</Private>
     </ProjectReference>
-    <ProjectReference Include="..\..\AudioShell.Extensibility\AudioShell.Extensibility.csproj">
+    <ProjectReference Include="..\..\AudioShell.Extensibility\PowerShellAudio.Extensibility.csproj">
       <Project>{53a553d8-f413-4ca0-a958-dedc9d0e83f1}</Project>
-      <Name>AudioShell.Extensibility</Name>
+      <Name>PowerShellAudio.Extensibility</Name>
       <Private>False</Private>
     </ProjectReference>
   </ItemGroup>

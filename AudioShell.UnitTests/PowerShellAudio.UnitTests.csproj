@@ -62,13 +62,13 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\AudioShell.Api\AudioShell.Api.csproj">
+    <ProjectReference Include="..\AudioShell.Api\PowerShellAudio.Api.csproj">
       <Project>{b122f71f-58ca-4cdb-91f0-ed91db6fe3fb}</Project>
-      <Name>AudioShell.Api</Name>
+      <Name>PowerShellAudio.Api</Name>
     </ProjectReference>
-    <ProjectReference Include="..\AudioShell.Common\AudioShell.Common.csproj">
+    <ProjectReference Include="..\AudioShell.Common\PowerShellAudio.Common.csproj">
       <Project>{805811ed-7986-4691-bacb-00fffee65fa7}</Project>
-      <Name>AudioShell.Common</Name>
+      <Name>PowerShellAudio.Common</Name>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
