@@ -69,14 +69,23 @@ namespace PowerShellAudio
             get { return base[key]; }
             set
             {
-                foreach (var item in _acceptedKeys)
-                    if (string.Compare(key, item.Key, StringComparison.OrdinalIgnoreCase) == 0)
-                    {
-                        base[item.Key] = item.Value(value);
-                        return;
-                    }
+                if (string.IsNullOrEmpty(key))
+                    throw new ArgumentNullException("key");
+
+                if (!string.IsNullOrEmpty(value))
+                {
+                    foreach (var item in _acceptedKeys)
+                        if (string.Compare(key, item.Key, StringComparison.OrdinalIgnoreCase) == 0)
+                        {
+                            base[item.Key] = item.Value(value);
+                            return;
+                        }
+
+                    throw new ArgumentException(string.Format(CultureInfo.CurrentCulture, "Unsupported key '{0}'", key));
+                }
                 
-                throw new ArgumentException(string.Format(CultureInfo.CurrentCulture, "Unsupported key '{0}'", key));
+                // If the value is null or empty:
+                Remove(key);
             }
         }
 

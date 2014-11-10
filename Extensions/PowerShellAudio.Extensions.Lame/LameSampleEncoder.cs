@@ -262,7 +262,9 @@ namespace PowerShellAudio.Extensions.Lame
             Contract.Requires(!string.IsNullOrEmpty(gain));
             Contract.Ensures(!string.IsNullOrEmpty(Contract.Result<string>()));
 
-            return string.Format(CultureInfo.InvariantCulture, "{0:0.00} dB", float.Parse(gain.Replace(" dB", string.Empty), CultureInfo.InvariantCulture) - Math.Log10(scale) * 20);
+            if (!string.IsNullOrEmpty(gain))
+                return string.Format(CultureInfo.InvariantCulture, "{0:0.00} dB", float.Parse(gain.Replace(" dB", string.Empty), CultureInfo.InvariantCulture) - Math.Log10(scale) * 20);
+            return string.Empty;
         }
 
         static string AdjustPeak(string peak, float scale)
@@ -270,7 +272,9 @@ namespace PowerShellAudio.Extensions.Lame
             Contract.Requires(!string.IsNullOrEmpty(peak));
             Contract.Ensures(!string.IsNullOrEmpty(Contract.Result<string>()));
 
-            return string.Format(CultureInfo.InvariantCulture, "{0:0.000000}", float.Parse(peak, CultureInfo.InvariantCulture) * scale);
+            if (!string.IsNullOrEmpty(peak))
+                return string.Format(CultureInfo.InvariantCulture, "{0:0.000000}", float.Parse(peak, CultureInfo.InvariantCulture) * scale);
+            return string.Empty;
         }
     }
 }
