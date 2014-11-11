@@ -37,6 +37,7 @@ EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PowerShellAudio.Extensions.Lame", "Extensions\PowerShellAudio.Extensions.Lame\PowerShellAudio.Extensions.Lame.csproj", "{E58F1E1C-72BC-4379-B491-CFA5E48E8605}"
 	ProjectSection(ProjectDependencies) = postProject
 		{9C6B94A7-05FF-4BC4-8FF8-BCC808F240AB} = {9C6B94A7-05FF-4BC4-8FF8-BCC808F240AB}
+		{4277BEBB-073A-4A27-946F-09ADEDCE98C9} = {4277BEBB-073A-4A27-946F-09ADEDCE98C9}
 	EndProjectSection
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PowerShellAudio.Extensions.Mp4", "Extensions\PowerShellAudio.Extensions.Mp4\PowerShellAudio.Extensions.Mp4.csproj", "{7D89FD61-1B43-4055-90CF-ED8B12259B49}"

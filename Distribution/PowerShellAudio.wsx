@@ -341,6 +341,7 @@ You should have received a copy of the GNU Lesser General Public License along w
         <Feature Id="MP3" Title="MPEG Audio Layer 3 (MP3)" Description="Enables the editing of ID3v2 metadata, and high-quality encoding via Lame." AllowAdvertise="no">
           <ComponentGroupRef Id="MP3"/>
           <ComponentGroupRef Id="ID3"/>
+          <ComponentGroupRef Id="ReplayGain"/>
           <ComponentGroupRef Id="Lame"/>
         </Feature>
         <Feature Id="MP4" Title="MPEG 4 Audio" Description="Enables the editing of iTunes-compatible metadata, high-quality AAC and Apple Lossless encoding, and Apple Lossless decoding." AllowAdvertise="no">

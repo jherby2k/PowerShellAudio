@@ -30,12 +30,12 @@ Index,FileName,Encoder,Settings,Metadata,ExpectedHash
 28,LPCM 16-bit 48000Hz Stereo.wav,Lame MP3,,Comment=Test Sample,FB-BC-41-88-5D-62-F7-FF-88-73-31-4D-CB-65-01-2A
 29,LPCM 24-bit 96000Hz Stereo.wav,Lame MP3,,Comment=Test Sample,AC-79-5F-D4-41-2A-27-44-81-BA-58-00-2B-7B-3E-62
 30,LPCM 16-bit 44100Hz Stereo.wav,Lame MP3,,,E7-CE-BD-CC-18-5B-EF-4C-8C-14-E5-FF-9B-AF-B8-86
-31,LPCM 16-bit 44100Hz Stereo.wav,Lame MP3,AddMetadata=True;ApplyGain=False;Quality=3;VBRQuality=2;AddSoundCheck=False;ID3Version=2.3;PaddingSize=0;UsePadding=False,Comment=Test Sample,81-D9-6C-E4-77-CE-F4-0C-F4-AC-DB-BE-1F-F1-D8-EC
+31,LPCM 16-bit 44100Hz Stereo.wav,Lame MP3,AddMetadata=True;Quality=3;VBRQuality=2;ApplyGain=False;AddSoundCheck=False;ID3Version=2.3;PaddingSize=0;UsePadding=False,Comment=Test Sample,81-D9-6C-E4-77-CE-F4-0C-F4-AC-DB-BE-1F-F1-D8-EC
 32,LPCM 16-bit 44100Hz Stereo.wav,Lame MP3,AddMetadata=False,Comment=Test Sample,E7-CE-BD-CC-18-5B-EF-4C-8C-14-E5-FF-9B-AF-B8-86
-33,LPCM 16-bit 44100Hz Stereo.wav,Lame MP3,ApplyGain=Track,Comment=Test Sample;TrackPeak=1.000000;TrackGain=-6.58 dB,C6-4A-C6-F1-BA-1F-6E-2C-31-BC-F5-64-1F-A8-77-AB
-34,LPCM 16-bit 44100Hz Stereo.wav,Lame MP3,ApplyGain=Album,Comment=Test Sample;AlbumPeak=1.000000;AlbumGain=-6.58 dB,8D-23-64-9E-37-B8-4E-A5-5B-91-BF-A3-92-DB-3F-73
-35,LPCM 16-bit 44100Hz Stereo.wav,Lame MP3,Quality=9,Comment=Test Sample,2D-05-F6-84-76-60-C8-AD-E4-FF-20-88-07-B3-39-28
-36,LPCM 16-bit 44100Hz Stereo.wav,Lame MP3,VBRQuality=9.999,Comment=Test Sample,D5-3F-5F-36-22-1D-EF-70-23-F3-84-EE-2A-E9-9F-97
+33,LPCM 16-bit 44100Hz Stereo.wav,Lame MP3,Quality=9,Comment=Test Sample,2D-05-F6-84-76-60-C8-AD-E4-FF-20-88-07-B3-39-28
+34,LPCM 16-bit 44100Hz Stereo.wav,Lame MP3,VBRQuality=9.999,Comment=Test Sample,D5-3F-5F-36-22-1D-EF-70-23-F3-84-EE-2A-E9-9F-97
+35,LPCM 16-bit 44100Hz Stereo.wav,Lame MP3,ApplyGain=Track,Comment=Test Sample;TrackPeak=1.000000;TrackGain=-6.58 dB,8D-56-6F-32-5E-E2-DD-67-2D-A9-46-42-22-B6-81-45
+36,LPCM 16-bit 44100Hz Stereo.wav,Lame MP3,ApplyGain=Album,Comment=Test Sample;AlbumPeak=1.000000;AlbumGain=-6.58 dB,41-87-3A-F4-8E-A9-9C-DD-66-28-26-D6-EB-0C-EB-DC
 37,LPCM 16-bit 44100Hz Stereo.wav,Lame MP3,AddSoundCheck=Track,Comment=Test Sample;TrackPeak=1.000000;TrackGain=-6.58 dB,FB-6C-B8-07-7A-92-5F-7A-52-46-0D-63-02-D8-60-C9
 38,LPCM 16-bit 44100Hz Stereo.wav,Lame MP3,AddSoundCheck=Album,Comment=Test Sample;AlbumPeak=1.000000;AlbumGain=-6.58 dB,AD-08-7C-13-3F-8E-DD-64-41-F3-D8-F7-42-44-43-11
 39,LPCM 16-bit 44100Hz Stereo.wav,Lame MP3,ID3Version=2.4,Comment=Test Sample,DA-90-0D-DD-7D-B6-CB-15-C1-C6-47-01-0A-51-73-D1

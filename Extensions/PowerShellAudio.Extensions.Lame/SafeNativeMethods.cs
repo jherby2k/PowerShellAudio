@@ -58,9 +58,6 @@ namespace PowerShellAudio.Extensions.Lame
         [DllImport(_lameLibrary, EntryPoint = "lame_set_brate", CallingConvention = CallingConvention.Cdecl)]
         internal static extern void SetBitRate(NativeEncoderHandle handle, int bitRate);
 
-        [DllImport(_lameLibrary, EntryPoint = "lame_set_scale", CallingConvention = CallingConvention.Cdecl)]
-        internal static extern void SetScale(NativeEncoderHandle handle, float scale);
-
         [DllImport(_lameLibrary, EntryPoint = "lame_set_VBR", CallingConvention = CallingConvention.Cdecl)]
         internal static extern void SetVbr(NativeEncoderHandle handle, VbrMode vbrMode);
 

@@ -129,9 +129,6 @@
   <data name="SampleEncoderBadAddMetadata" xml:space="preserve">
     <value>Unrecognized AddMetadata value '{0}'. Specify 'True' or 'False'. Default is 'True'</value>
   </data>
-  <data name="SampleEncoderBadApplyGain" xml:space="preserve">
-    <value>Unrecognized ApplyGain value '{0}'. Specify 'Album', 'Track' or 'False'. Default is 'False'</value>
-  </data>
   <data name="SampleEncoderBadBitRate" xml:space="preserve">
     <value>Unrecognized BitRate value '{0}'. Specify a value between '8' and '320'</value>
   </data>
@@ -147,17 +144,8 @@
   <data name="SampleEncoderFailedToInitialize" xml:space="preserve">
     <value>Lame failed to initialize the encoder using the specified settings</value>
   </data>
-  <data name="SampleEncoderMissingAlbumGain" xml:space="preserve">
-    <value>The metadata does not contain an AlbumGain value</value>
-  </data>
-  <data name="SampleEncoderMissingAlbumPeak" xml:space="preserve">
-    <value>The metadata does not contain an AlbumPeak value</value>
-  </data>
-  <data name="SampleEncoderMissingTrackGain" xml:space="preserve">
-    <value>The metadata does not contain a TrackGain value</value>
-  </data>
-  <data name="SampleEncoderMissingTrackPeak" xml:space="preserve">
-    <value>The metadata does not contain a TrackPeak value</value>
+  <data name="SampleEncoderReplayGainFilterError" xml:space="preserve">
+    <value>There is no sample filter named 'ReplayGain' installed</value>
   </data>
   <data name="SampleEncoderUnexpectedForceCBR" xml:space="preserve">
     <value>The ForceCBR switch must be used in conjunction with the BitRate setting</value>

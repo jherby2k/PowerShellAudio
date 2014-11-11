@@ -30,6 +30,7 @@ namespace PowerShellAudio.Extensions.Lame
     public class LameSampleEncoder : ISampleEncoder, IDisposable
     {
         NativeEncoder _encoder;
+        ExportLifetimeContext<ISampleFilter> _replayGainFilterLifetime;
 
         public string Extension
         {
@@ -45,9 +46,14 @@ namespace PowerShellAudio.Extensions.Lame
                 var result = new SettingsDictionary();
 
                 result.Add("AddMetadata", bool.TrueString);
-                result.Add("ApplyGain", bool.FalseString);
                 result.Add("Quality", "3");
                 result.Add("VBRQuality", "2");
+
+                // Call the external ReplayGain filter for scaling the input:
+                var replayGainFilterFactory = ExtensionProvider<ISampleFilter>.Instance.Factories.Where(factory => string.Compare((string)factory.Metadata["Name"], "ReplayGain", StringComparison.OrdinalIgnoreCase) == 0).SingleOrDefault();
+                if (replayGainFilterFactory != null)
+                    using (ExportLifetimeContext<ISampleFilter> replayGainFilterLifetime = replayGainFilterFactory.CreateExport())
+                        replayGainFilterLifetime.Value.DefaultSettings.CopyTo(result);
 
                 // Call the external ID3 encoder:
                 var metadataEncoderFactory = ExtensionProvider<IMetadataEncoder>.Instance.Factories.Where(factory => string.Compare((string)factory.Metadata["Extension"], Extension, StringComparison.OrdinalIgnoreCase) == 0).SingleOrDefault();
@@ -68,11 +74,16 @@ namespace PowerShellAudio.Extensions.Lame
                 var partialResult = new List<string>();
 
                 partialResult.Add("AddMetadata");
-                partialResult.Add("ApplyGain");
                 partialResult.Add("BitRate");
                 partialResult.Add("ForceCBR");
                 partialResult.Add("Quality");
                 partialResult.Add("VBRQuality");
+
+                // Call the external ReplayGain filter for scaling the input:
+                var replayGainFilterFactory = ExtensionProvider<ISampleFilter>.Instance.Factories.Where(factory => string.Compare((string)factory.Metadata["Name"], "ReplayGain", StringComparison.OrdinalIgnoreCase) == 0).SingleOrDefault();
+                if (replayGainFilterFactory != null)
+                    using (ExportLifetimeContext<ISampleFilter> replayGainFilterLifetime = replayGainFilterFactory.CreateExport())
+                        partialResult = partialResult.Concat(replayGainFilterLifetime.Value.AvailableSettings).ToList();
 
                 // Call the external ID3 encoder:
                 var metadataEncoderFactory = ExtensionProvider<IMetadataEncoder>.Instance.Factories.Where(factory => string.Compare((string)factory.Metadata["Extension"], Extension, StringComparison.OrdinalIgnoreCase) == 0).SingleOrDefault();
@@ -87,6 +98,13 @@ namespace PowerShellAudio.Extensions.Lame
         public void Initialize(Stream stream, AudioInfo audioInfo, MetadataDictionary metadata, SettingsDictionary settings)
         {
             Contract.Ensures(_encoder != null);
+
+            // Load the external gain filter:
+            var sampleFilterFactory = ExtensionProvider<ISampleFilter>.Instance.Factories.Where(factory => string.Compare((string)factory.Metadata["Name"], "ReplayGain", StringComparison.OrdinalIgnoreCase) == 0).SingleOrDefault();
+            if (sampleFilterFactory == null)
+                throw new ExtensionInitializationException(Resources.SampleEncoderReplayGainFilterError);
+            _replayGainFilterLifetime = sampleFilterFactory.CreateExport();
+            _replayGainFilterLifetime.Value.Initialize(metadata, settings);
 
             if (string.IsNullOrEmpty(settings["AddMetadata"]) || string.Compare(settings["AddMetadata"], bool.TrueString, StringComparison.OrdinalIgnoreCase) == 0)
             {
@@ -113,6 +131,9 @@ namespace PowerShellAudio.Extensions.Lame
         {
             if (!samples.IsLast)
             {
+                // Filter by ReplayGain, depending on settings:
+                _replayGainFilterLifetime.Value.Submit(samples);
+
                 // If there is only one channel, set the right channel to null:
                 float[] rightSamples = samples.Channels == 1 ? null : rightSamples = samples[1];
                 _encoder.Encode(samples[0], rightSamples);
@@ -132,8 +153,13 @@ namespace PowerShellAudio.Extensions.Lame
 
         protected virtual void Dispose(bool disposing)
         {
-            if (disposing && _encoder != null)
-                _encoder.Dispose();
+            if (disposing)
+            {
+                if (_encoder != null)
+                    _encoder.Dispose();
+                if (_replayGainFilterLifetime != null)
+                    _replayGainFilterLifetime.Dispose();
+            }
         }
 
         static NativeEncoder InitializeEncoder(AudioInfo audioInfo, Stream output)
@@ -172,40 +198,6 @@ namespace PowerShellAudio.Extensions.Lame
                 ConfigureEncoderForBitRate(settings, encoder);
             else
                 ConfigureEncoderForQuality(settings, encoder);
-
-            if (!string.IsNullOrEmpty(settings["ApplyGain"]) && string.Compare(settings["ApplyGain"], bool.FalseString, StringComparison.OrdinalIgnoreCase) != 0)
-            {
-                float scale;
-
-                if (string.Compare(settings["ApplyGain"], "Album", StringComparison.OrdinalIgnoreCase) == 0)
-                {
-                    if (string.IsNullOrEmpty(metadata["AlbumGain"]))
-                        throw new InvalidSettingException(Resources.SampleEncoderMissingAlbumGain);
-                    if (string.IsNullOrEmpty(metadata["AlbumPeak"]))
-                        throw new InvalidSettingException(Resources.SampleEncoderMissingAlbumPeak);
-
-                    scale = CalculateScale(metadata["AlbumGain"], metadata["AlbumPeak"]);
-                }
-                else if (string.Compare(settings["ApplyGain"], "Track", StringComparison.OrdinalIgnoreCase) == 0)
-                {
-                    if (string.IsNullOrEmpty(metadata["TrackGain"]))
-                        throw new InvalidSettingException(Resources.SampleEncoderMissingTrackGain);
-                    if (string.IsNullOrEmpty(metadata["TrackPeak"]))
-                        throw new InvalidSettingException(Resources.SampleEncoderMissingTrackPeak);
-
-                    scale = CalculateScale(metadata["TrackGain"], metadata["TrackPeak"]);
-                }
-                else
-                    throw new InvalidSettingException(string.Format(CultureInfo.CurrentCulture, Resources.SampleEncoderBadApplyGain, settings["ApplyGain"]));
-
-                encoder.SetScale(scale);
-
-                // Adjust the metadata so that it remains valid:
-                metadata["AlbumGain"] = AdjustGain(metadata["AlbumGain"], scale);
-                metadata["TrackGain"] = AdjustGain(metadata["TrackGain"], scale);
-                metadata["AlbumPeak"] = AdjustPeak(metadata["AlbumPeak"], scale);
-                metadata["TrackPeak"] = AdjustPeak(metadata["TrackPeak"], scale);
-            }
         }
 
         static void ConfigureEncoderForBitRate(SettingsDictionary settings, NativeEncoder encoder)
@@ -246,29 +238,6 @@ namespace PowerShellAudio.Extensions.Lame
                 throw new InvalidSettingException(string.Format(CultureInfo.CurrentCulture, Resources.SampleEncoderBadVBRQuality, settings["VBRQuality"]));
 
             encoder.SetVbrQuality(vbrQuality);
-        }
-
-        static float CalculateScale(string gain, string peak)
-        {
-            Contract.Requires(!string.IsNullOrEmpty(gain));
-            Contract.Requires(!string.IsNullOrEmpty(peak));
-
-            // Return the desired scale, or the closest possible without clipping:
-            return Math.Min((float)Math.Pow(10, float.Parse(gain.Replace(" dB", string.Empty), CultureInfo.InvariantCulture) / 20), 1 / float.Parse(peak, CultureInfo.InvariantCulture));
-        }
-
-        static string AdjustGain(string gain, float scale)
-        {
-            if (!string.IsNullOrEmpty(gain))
-                return string.Format(CultureInfo.InvariantCulture, "{0:0.00} dB", float.Parse(gain.Replace(" dB", string.Empty), CultureInfo.InvariantCulture) - Math.Log10(scale) * 20);
-            return string.Empty;
-        }
-
-        static string AdjustPeak(string peak, float scale)
-        {
-            if (!string.IsNullOrEmpty(peak))
-                return string.Format(CultureInfo.InvariantCulture, "{0:0.000000}", float.Parse(peak, CultureInfo.InvariantCulture) * scale);
-            return string.Empty;
         }
     }
 }

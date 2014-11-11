@@ -76,11 +76,6 @@ namespace PowerShellAudio.Extensions.Lame
             SafeNativeMethods.SetMeanBitRate(_handle, bitRate);
         }
 
-        internal void SetScale(float scale)
-        {
-            SafeNativeMethods.SetScale(_handle, scale);
-        }
-
         internal void SetVbrQuality(float quality)
         {
             SafeNativeMethods.SetVbrQuality(_handle, quality);
