@@ -154,12 +154,3 @@ $RECYCLE.BIN/
 
 # Mac desktop service store files
 .DS_Store
-
-# =========================
-# Deployment files
-# =========================
-
-*.wixobj
-*.wixpdb
-*.msi
-*.exe

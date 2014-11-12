@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+
+Copyright © 2014 Jeremy Herbison
+
+This file is part of PowerShell Audio.
+
+PowerShell Audio is free software: you can redistribute it and/or modify it under the terms of the GNU Lesser General
+Public License as published by the Free Software Foundation, either version 3 of the License, or (at your option) any
+later version.
+
+PowerShell Audio is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied
+warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU Lesser General Public License for more
+details.
+
+You should have received a copy of the GNU Lesser General Public License along with PowerShell Audio.  If not, see
+<http://www.gnu.org/licenses/>.
+
+-->
+<Wix xmlns="http://schemas.microsoft.com/wix/2006/wi">
+	<Fragment>
+
+    <ComponentGroup Id="ReplayGain">
+      <ComponentRef Id="$(var.PowerShellAudio.Extensions.ReplayGain.TargetFileName)" />
+      <ComponentRef Id="$(var.PowerShellAudio.Extensions.ReplayGain.TargetName).Contracts.dll" />
+      <ComponentRef Id="System.Threading.Tasks.Dataflow.dll" />
+    </ComponentGroup>
+
+    <DirectoryRef Id="ReplayGainFolder">
+      <Component Guid="{3E9142C7-7402-43D1-B581-3BD09B8CAE17}">
+        <File Source="$(var.PowerShellAudio.Extensions.ReplayGain.TargetPath)" KeyPath="yes" Checksum="yes" />
+      </Component>
+      <Component Guid="{0F5B8A22-4D1B-4306-8582-FC4728F8AE53}">
+        <File Source="$(var.PowerShellAudio.Extensions.ReplayGain.TargetDir)System.Threading.Tasks.Dataflow.dll" KeyPath="yes" Checksum="yes" />
+      </Component>
+    </DirectoryRef>
+    <DirectoryRef Id="ReplayGainCodeContractsFolder">
+      <Component Guid="{03E730F6-4F49-4AB2-99EB-2CC412D80DA7}">
+        <File Source="$(var.PowerShellAudio.Extensions.ReplayGain.TargetDir)CodeContracts\$(var.PowerShellAudio.Extensions.ReplayGain.TargetName).Contracts.dll" KeyPath="yes" Checksum="yes" />
+      </Component>
+    </DirectoryRef>
+
+    <DirectoryRef Id="ExtensionsFolder">
+      <Directory Id="ReplayGainFolder" Name="ReplayGain">
+        <Directory Id="ReplayGainCodeContractsFolder" Name="CodeContracts" />
+      </Directory>
+    </DirectoryRef>
+    
+	</Fragment>
+  
+</Wix>

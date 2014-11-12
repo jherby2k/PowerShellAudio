@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+
+Copyright © 2014 Jeremy Herbison
+
+This file is part of PowerShell Audio.
+
+PowerShell Audio is free software: you can redistribute it and/or modify it under the terms of the GNU Lesser General
+Public License as published by the Free Software Foundation, either version 3 of the License, or (at your option) any
+later version.
+
+PowerShell Audio is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied
+warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU Lesser General Public License for more
+details.
+
+You should have received a copy of the GNU Lesser General Public License along with PowerShell Audio.  If not, see
+<http://www.gnu.org/licenses/>.
+
+-->
+<Wix xmlns="http://schemas.microsoft.com/wix/2006/wi">
+	<Fragment>
+
+    <ComponentGroup Id="Apple">
+      <ComponentRef Id="$(var.PowerShellAudio.Extensions.Apple.TargetFileName)" />
+      <ComponentRef Id="$(var.PowerShellAudio.Extensions.Apple.TargetName).Contracts.dll" />
+    </ComponentGroup>
+
+    <DirectoryRef Id="AppleFolder">
+      <Component Guid="{DE223073-8A5A-4D65-8847-2E5FA6D022A6}">
+        <File Source="$(var.PowerShellAudio.Extensions.Apple.TargetPath)" KeyPath="yes" Checksum="yes" />
+      </Component>
+    </DirectoryRef>
+    <DirectoryRef Id="AppleCodeContractsFolder">
+      <Component Guid="{8B8BE089-164E-41BC-A5F3-72068098BB52}">
+        <File Source="$(var.PowerShellAudio.Extensions.Apple.TargetDir)CodeContracts\$(var.PowerShellAudio.Extensions.Apple.TargetName).Contracts.dll" KeyPath="yes" Checksum="yes" />
+      </Component>
+    </DirectoryRef>
+
+    <DirectoryRef Id="ExtensionsFolder">
+      <Directory Id="AppleFolder" Name="Apple">
+        <Directory Id="AppleCodeContractsFolder" Name="CodeContracts" />
+      </Directory>
+    </DirectoryRef>
+    
+	</Fragment>
+  
+</Wix>

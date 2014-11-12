@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+
+Copyright © 2014 Jeremy Herbison
+
+This file is part of PowerShell Audio.
+
+PowerShell Audio is free software: you can redistribute it and/or modify it under the terms of the GNU Lesser General
+Public License as published by the Free Software Foundation, either version 3 of the License, or (at your option) any
+later version.
+
+PowerShell Audio is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied
+warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU Lesser General Public License for more
+details.
+
+You should have received a copy of the GNU Lesser General Public License along with PowerShell Audio.  If not, see
+<http://www.gnu.org/licenses/>.
+
+-->
+<Wix xmlns="http://schemas.microsoft.com/wix/2006/wi">
+	<Fragment>
+
+    <ComponentGroup Id="MP3">
+      <ComponentRef Id="$(var.PowerShellAudio.Extensions.Mp3.TargetFileName)" />
+      <ComponentRef Id="$(var.PowerShellAudio.Extensions.Mp3.TargetName).Contracts.dll" />
+    </ComponentGroup>
+
+    <DirectoryRef Id="Mp3Folder">
+      <Component Guid="{48350015-5A8D-40D0-96CA-931DC44D806D}">
+        <File Source="$(var.PowerShellAudio.Extensions.Mp3.TargetPath)" KeyPath="yes" Checksum="yes" />
+      </Component>
+    </DirectoryRef>
+    <DirectoryRef Id="Mp3CodeContractsFolder">
+      <Component Guid="{2ECB95F7-6571-4E72-9E86-307E12B6D7B1}">
+        <File Source="$(var.PowerShellAudio.Extensions.Mp3.TargetDir)CodeContracts\$(var.PowerShellAudio.Extensions.Mp3.TargetName).Contracts.dll" KeyPath="yes" Checksum="yes" />
+      </Component>
+    </DirectoryRef>
+
+    <DirectoryRef Id="ExtensionsFolder">
+      <Directory Id="Mp3Folder" Name="Mp3">
+        <Directory Id="Mp3CodeContractsFolder" Name="CodeContracts" />
+      </Directory>
+    </DirectoryRef>
+    
+	</Fragment>
+  
+</Wix>

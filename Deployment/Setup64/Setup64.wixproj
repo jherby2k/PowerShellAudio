@@ -1,0 +1,166 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">x86</Platform>
+    <ProductVersion>3.9</ProductVersion>
+    <ProjectGuid>61b61907-b607-4bfd-b3ee-5ddea6310bdf</ProjectGuid>
+    <SchemaVersion>2.0</SchemaVersion>
+    <OutputName>PowerShellAudio64</OutputName>
+    <OutputType>Package</OutputType>
+    <WixTargetsPath Condition=" '$(WixTargetsPath)' == '' AND '$(MSBuildExtensionsPath32)' != '' ">$(MSBuildExtensionsPath32)\Microsoft\WiX\v3.x\Wix.targets</WixTargetsPath>
+    <WixTargetsPath Condition=" '$(WixTargetsPath)' == '' ">$(MSBuildExtensionsPath)\Microsoft\WiX\v3.x\Wix.targets</WixTargetsPath>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|x64' ">
+    <DefineConstants>Debug</DefineConstants>
+    <OutputPath>bin\$(Platform)\$(Configuration)\</OutputPath>
+    <IntermediateOutputPath>obj\$(Platform)\$(Configuration)\</IntermediateOutputPath>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|x64' ">
+    <OutputPath>bin\$(Platform)\$(Configuration)\</OutputPath>
+    <IntermediateOutputPath>obj\$(Platform)\$(Configuration)\</IntermediateOutputPath>
+  </PropertyGroup>
+  <ItemGroup>
+    <Compile Include="AppleExtension.wxs" />
+    <Compile Include="FlacExtension.wxs" />
+    <Compile Include="FlacFeature.wxs" />
+    <Compile Include="Id3Extension.wxs" />
+    <Compile Include="LameExtension.wxs" />
+    <Compile Include="Mp3Extension.wxs" />
+    <Compile Include="Mp3Feature.wxs" />
+    <Compile Include="Mp4Extension.wxs" />
+    <Compile Include="Mp4Feature.wxs" />
+    <Compile Include="Product.wxs" />
+    <Compile Include="ReplayGainExtension.wxs" />
+    <Compile Include="ReplayGainFeature.wxs" />
+    <Compile Include="VorbisExtension.wxs" />
+    <Compile Include="VorbisFeature.wxs" />
+    <Compile Include="WaveExtension.wxs" />
+    <Compile Include="WaveFeature.wxs" />
+  </ItemGroup>
+  <ItemGroup>
+    <WixExtension Include="WixUIExtension">
+      <HintPath>$(WixExtDir)\WixUIExtension.dll</HintPath>
+      <Name>WixUIExtension</Name>
+    </WixExtension>
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="License.rtf" />
+    <Content Include="Microsoft_VC120_CRT_x64.msm" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\..\Extensions\PowerShellAudio.Extensions.Apple\PowerShellAudio.Extensions.Apple.csproj">
+      <Name>PowerShellAudio.Extensions.Apple</Name>
+      <Project>{e0f122ae-2811-4d7d-b59d-3105f237b56b}</Project>
+      <Private>True</Private>
+      <DoNotHarvest>True</DoNotHarvest>
+      <RefProjectOutputGroups>Binaries;Content;Satellites</RefProjectOutputGroups>
+      <RefTargetDir>INSTALLFOLDER</RefTargetDir>
+    </ProjectReference>
+    <ProjectReference Include="..\..\Extensions\PowerShellAudio.Extensions.Flac\PowerShellAudio.Extensions.Flac.csproj">
+      <Name>PowerShellAudio.Extensions.Flac</Name>
+      <Project>{bce18f0d-f650-40db-9092-2adadbf113e3}</Project>
+      <Private>True</Private>
+      <DoNotHarvest>True</DoNotHarvest>
+      <RefProjectOutputGroups>Binaries;Content;Satellites</RefProjectOutputGroups>
+      <RefTargetDir>INSTALLFOLDER</RefTargetDir>
+    </ProjectReference>
+    <ProjectReference Include="..\..\Extensions\PowerShellAudio.Extensions.Id3\PowerShellAudio.Extensions.Id3.csproj">
+      <Name>PowerShellAudio.Extensions.Id3</Name>
+      <Project>{9c6b94a7-05ff-4bc4-8ff8-bcc808f240ab}</Project>
+      <Private>True</Private>
+      <DoNotHarvest>True</DoNotHarvest>
+      <RefProjectOutputGroups>Binaries;Content;Satellites</RefProjectOutputGroups>
+      <RefTargetDir>INSTALLFOLDER</RefTargetDir>
+    </ProjectReference>
+    <ProjectReference Include="..\..\Extensions\PowerShellAudio.Extensions.Lame\PowerShellAudio.Extensions.Lame.csproj">
+      <Name>PowerShellAudio.Extensions.Lame</Name>
+      <Project>{e58f1e1c-72bc-4379-b491-cfa5e48e8605}</Project>
+      <Private>True</Private>
+      <DoNotHarvest>True</DoNotHarvest>
+      <RefProjectOutputGroups>Binaries;Content;Satellites</RefProjectOutputGroups>
+      <RefTargetDir>INSTALLFOLDER</RefTargetDir>
+    </ProjectReference>
+    <ProjectReference Include="..\..\Extensions\PowerShellAudio.Extensions.Mp3\PowerShellAudio.Extensions.Mp3.csproj">
+      <Name>PowerShellAudio.Extensions.Mp3</Name>
+      <Project>{f6e7e018-9caa-44b5-9e77-f90dbc954170}</Project>
+      <Private>True</Private>
+      <DoNotHarvest>True</DoNotHarvest>
+      <RefProjectOutputGroups>Binaries;Content;Satellites</RefProjectOutputGroups>
+      <RefTargetDir>INSTALLFOLDER</RefTargetDir>
+    </ProjectReference>
+    <ProjectReference Include="..\..\Extensions\PowerShellAudio.Extensions.Mp4\PowerShellAudio.Extensions.Mp4.csproj">
+      <Name>PowerShellAudio.Extensions.Mp4</Name>
+      <Project>{7d89fd61-1b43-4055-90cf-ed8b12259b49}</Project>
+      <Private>True</Private>
+      <DoNotHarvest>True</DoNotHarvest>
+      <RefProjectOutputGroups>Binaries;Content;Satellites</RefProjectOutputGroups>
+      <RefTargetDir>INSTALLFOLDER</RefTargetDir>
+    </ProjectReference>
+    <ProjectReference Include="..\..\Extensions\PowerShellAudio.Extensions.ReplayGain\PowerShellAudio.Extensions.ReplayGain.csproj">
+      <Name>PowerShellAudio.Extensions.ReplayGain</Name>
+      <Project>{4277bebb-073a-4a27-946f-09adedce98c9}</Project>
+      <Private>True</Private>
+      <DoNotHarvest>True</DoNotHarvest>
+      <RefProjectOutputGroups>Binaries;Content;Satellites</RefProjectOutputGroups>
+      <RefTargetDir>INSTALLFOLDER</RefTargetDir>
+    </ProjectReference>
+    <ProjectReference Include="..\..\Extensions\PowerShellAudio.Extensions.Vorbis\PowerShellAudio.Extensions.Vorbis.csproj">
+      <Name>PowerShellAudio.Extensions.Vorbis</Name>
+      <Project>{f5cd5fce-2e46-4c2d-a9e9-075e427ff2e5}</Project>
+      <Private>True</Private>
+      <DoNotHarvest>True</DoNotHarvest>
+      <RefProjectOutputGroups>Binaries;Content;Satellites</RefProjectOutputGroups>
+      <RefTargetDir>INSTALLFOLDER</RefTargetDir>
+    </ProjectReference>
+    <ProjectReference Include="..\..\Extensions\PowerShellAudio.Extensions.Wave\PowerShellAudio.Extensions.Wave.csproj">
+      <Name>PowerShellAudio.Extensions.Wave</Name>
+      <Project>{0a130488-a419-4133-b8d8-0f637b490089}</Project>
+      <Private>True</Private>
+      <DoNotHarvest>True</DoNotHarvest>
+      <RefProjectOutputGroups>Binaries;Content;Satellites</RefProjectOutputGroups>
+      <RefTargetDir>INSTALLFOLDER</RefTargetDir>
+    </ProjectReference>
+    <ProjectReference Include="..\..\PowerShellAudio.Api\PowerShellAudio.Api.csproj">
+      <Name>PowerShellAudio.Api</Name>
+      <Project>{b122f71f-58ca-4cdb-91f0-ed91db6fe3fb}</Project>
+      <Private>True</Private>
+      <DoNotHarvest>True</DoNotHarvest>
+      <RefProjectOutputGroups>Binaries;Content;Satellites</RefProjectOutputGroups>
+      <RefTargetDir>INSTALLFOLDER</RefTargetDir>
+    </ProjectReference>
+    <ProjectReference Include="..\..\PowerShellAudio.Commands\PowerShellAudio.Commands.csproj">
+      <Name>PowerShellAudio.Commands</Name>
+      <Project>{a49041d4-6c2b-48b8-a3ad-f9607b09d357}</Project>
+      <Private>True</Private>
+      <DoNotHarvest>True</DoNotHarvest>
+      <RefProjectOutputGroups>Binaries;Content;Satellites</RefProjectOutputGroups>
+      <RefTargetDir>INSTALLFOLDER</RefTargetDir>
+    </ProjectReference>
+    <ProjectReference Include="..\..\PowerShellAudio.Common\PowerShellAudio.Common.csproj">
+      <Name>PowerShellAudio.Common</Name>
+      <Project>{805811ed-7986-4691-bacb-00fffee65fa7}</Project>
+      <Private>True</Private>
+      <DoNotHarvest>True</DoNotHarvest>
+      <RefProjectOutputGroups>Binaries;Content;Satellites</RefProjectOutputGroups>
+      <RefTargetDir>INSTALLFOLDER</RefTargetDir>
+    </ProjectReference>
+    <ProjectReference Include="..\..\PowerShellAudio.Extensibility\PowerShellAudio.Extensibility.csproj">
+      <Name>PowerShellAudio.Extensibility</Name>
+      <Project>{53a553d8-f413-4ca0-a958-dedc9d0e83f1}</Project>
+      <Private>True</Private>
+      <DoNotHarvest>True</DoNotHarvest>
+      <RefProjectOutputGroups>Binaries;Content;Satellites</RefProjectOutputGroups>
+      <RefTargetDir>INSTALLFOLDER</RefTargetDir>
+    </ProjectReference>
+  </ItemGroup>
+  <Import Project="$(WixTargetsPath)" />
+  <!--
+	To modify your build process, add your task inside one of the targets below and uncomment it.
+	Other similar extension points exist, see Wix.targets.
+	<Target Name="BeforeBuild">
+	</Target>
+	<Target Name="AfterBuild">
+	</Target>
+	-->
+</Project>

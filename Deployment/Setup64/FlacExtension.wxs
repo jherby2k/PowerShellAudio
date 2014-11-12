@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+
+Copyright © 2014 Jeremy Herbison
+
+This file is part of PowerShell Audio.
+
+PowerShell Audio is free software: you can redistribute it and/or modify it under the terms of the GNU Lesser General
+Public License as published by the Free Software Foundation, either version 3 of the License, or (at your option) any
+later version.
+
+PowerShell Audio is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied
+warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU Lesser General Public License for more
+details.
+
+You should have received a copy of the GNU Lesser General Public License along with PowerShell Audio.  If not, see
+<http://www.gnu.org/licenses/>.
+
+-->
+<Wix xmlns="http://schemas.microsoft.com/wix/2006/wi">
+	<Fragment>
+
+    <ComponentGroup Id="FLAC">
+      <ComponentRef Id="$(var.PowerShellAudio.Extensions.Flac.TargetFileName)" />
+      <ComponentRef Id="$(var.PowerShellAudio.Extensions.Flac.TargetName).Contracts.dll" />
+      <ComponentRef Id="libFLAC.dll" />
+    </ComponentGroup>
+
+    <DirectoryRef Id="FlacFolder">
+      <Component Guid="{4E31F5DF-4826-434A-B0AC-53E50B327F71}">
+        <File Source="$(var.PowerShellAudio.Extensions.Flac.TargetPath)" KeyPath="yes" Checksum="yes" />
+      </Component>
+    </DirectoryRef>
+    <DirectoryRef Id="FlacCodeContractsFolder">
+      <Component Guid="{0398EA5E-B1DD-42E3-9848-6E5C627488BC}">
+        <File Source="$(var.PowerShellAudio.Extensions.Flac.TargetDir)CodeContracts\$(var.PowerShellAudio.Extensions.Flac.TargetName).Contracts.dll" KeyPath="yes" Checksum="yes" />
+      </Component>
+    </DirectoryRef>
+    <DirectoryRef Id="FlacX64Folder">
+      <Component Guid="{3AC3FF6A-D890-431D-A3E8-CBC01D9119B3}">
+        <File Source="$(var.PowerShellAudio.Extensions.Flac.TargetDir)x64\libFLAC.dll" KeyPath="yes" Checksum="yes" />
+      </Component>
+    </DirectoryRef>
+
+    <DirectoryRef Id="ExtensionsFolder">
+      <Directory Id="FlacFolder" Name="Flac">
+        <Directory Id="FlacCodeContractsFolder" Name="CodeContracts" />
+        <Directory Id="FlacX64Folder" Name="x64" />
+      </Directory>
+    </DirectoryRef>
+    
+	</Fragment>
+  
+</Wix>

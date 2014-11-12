@@ -1,0 +1,115 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+
+Copyright © 2014 Jeremy Herbison
+
+This file is part of PowerShell Audio.
+
+PowerShell Audio is free software: you can redistribute it and/or modify it under the terms of the GNU Lesser General
+Public License as published by the Free Software Foundation, either version 3 of the License, or (at your option) any
+later version.
+
+PowerShell Audio is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied
+warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU Lesser General Public License for more
+details.
+
+You should have received a copy of the GNU Lesser General Public License along with PowerShell Audio.  If not, see
+<http://www.gnu.org/licenses/>.
+
+-->
+<Wix xmlns="http://schemas.microsoft.com/wix/2006/wi">
+	<Product Id="*" Name="PowerShell Audio" Language="1033" Version="0.9.5" Manufacturer="Jeremy Herbison" UpgradeCode="{2597CDCD-6C10-4151-8314-0EEE87AD563D}">
+		<Package InstallerVersion="405" Compressed="yes" InstallScope="perMachine" />
+
+		<MajorUpgrade DowngradeErrorMessage="A newer version of [ProductName] is already installed." />
+		<MediaTemplate EmbedCab="yes" />
+
+    <UIRef Id="WixUI_FeatureTree" />
+    <WixVariable Id="WixUILicenseRtf" Value="License.rtf" />
+
+    <Feature Id="Common" Title="Core Components" Absent="disallow" Display="expand" AllowAdvertise="no">
+      <ComponentGroupRef Id="Common" />
+      <Feature Id="Formats" Title="Audio Formats" Display="expand" AllowAdvertise="no">
+        <FeatureRef Id="Wave" />
+        <FeatureRef Id="Flac" />
+        <FeatureRef Id="Vorbis" />
+        <FeatureRef Id="MP3" />
+        <FeatureRef Id="MP4" />
+      </Feature>
+      <Feature Id="Analyzers" Title="Audio Analyzers" Display="expand" AllowAdvertise="no">
+        <FeatureRef Id="ReplayGain" />
+      </Feature>
+    </Feature>
+	</Product>
+
+	<Fragment>
+    
+    <ComponentGroup Id="Common">
+      <ComponentRef Id="COPYING" />
+      <ComponentRef Id="COPYING.LESSER" />
+      <ComponentRef Id="$(var.SolutionName).psd1" />
+      <ComponentRef Id="$(var.PowerShellAudio.Commands.TargetFileName)" />
+      <ComponentRef Id="$(var.PowerShellAudio.Commands.TargetFileName)_Help.xml" />
+      <ComponentRef Id="$(var.PowerShellAudio.Api.TargetFileName)" />
+      <ComponentRef Id="$(var.PowerShellAudio.Api.TargetName).Contracts.dll" />
+      <ComponentRef Id="$(var.PowerShellAudio.Common.TargetFileName)" />
+      <ComponentRef Id="$(var.PowerShellAudio.Common.TargetName).Contracts.dll" />
+      <ComponentRef Id="$(var.PowerShellAudio.Extensibility.TargetFileName)" />
+      <ComponentRef Id="$(var.PowerShellAudio.Extensibility.TargetName).Contracts.dll" />
+    </ComponentGroup>
+
+    <DirectoryRef Id="INSTALLFOLDER">
+      <Component Guid="{8B810255-4362-4731-8222-4C3C8D8C026C}">
+        <File Source="$(var.PowerShellAudio.Commands.TargetDir)COPYING" KeyPath="yes" />
+      </Component>
+      <Component Guid="{D1E63266-BCE5-47B0-B01A-F2A63A61B668}">
+        <File Source="$(var.PowerShellAudio.Commands.TargetDir)COPYING.LESSER" KeyPath="yes" />
+      </Component>
+      <Component Guid="{E475FB82-087B-4BDE-877F-264010390FFB}">
+        <File Source="$(var.PowerShellAudio.Commands.TargetDir)$(var.SolutionName).psd1" KeyPath="yes" />
+      </Component>
+      <Component Guid="{C315BDFA-64E5-4C66-95FF-3A939E28A399}">
+        <File Source="$(var.PowerShellAudio.Commands.TargetPath)" KeyPath="yes" Checksum="yes" />
+      </Component>
+      <Component Guid="{4BC807F8-C850-42D2-81A2-1F2BDF650D1E}">
+        <File Source="$(var.PowerShellAudio.Api.TargetPath)" KeyPath="yes" Checksum="yes" />
+      </Component>
+      <Component Guid="{A8B6BB4D-1AEC-4101-8888-2CC072A092C9}">
+        <File Source="$(var.PowerShellAudio.Common.TargetPath)" KeyPath="yes" Checksum="yes" />
+      </Component>
+      <Component Guid="{203FCC0C-905D-4D2E-AA0A-3057093A5414}">
+        <File Source="$(var.PowerShellAudio.Extensibility.TargetPath)" KeyPath="yes" Checksum="yes" />
+      </Component>
+    </DirectoryRef>
+    <DirectoryRef Id="CodeContractsFolder">
+      <Component Guid="{08BE03D3-5F85-410C-96B1-86CF032243AC}">
+        <File Source="$(var.PowerShellAudio.Api.TargetDir)CodeContracts\$(var.PowerShellAudio.Api.TargetName).Contracts.dll" KeyPath="yes" Checksum="yes" />
+      </Component>
+      <Component Guid="{F9024BEF-EFDD-441D-B58A-AB1ADC37B437}">
+        <File Source="$(var.PowerShellAudio.Common.TargetDir)CodeContracts\$(var.PowerShellAudio.Common.TargetName).Contracts.dll" KeyPath="yes" Checksum="yes" />
+      </Component>
+      <Component Guid="{0F06E8D0-1211-43D8-A0A1-230B337F3395}">
+        <File Source="$(var.PowerShellAudio.Extensibility.TargetDir)CodeContracts\$(var.PowerShellAudio.Extensibility.TargetName).Contracts.dll" KeyPath="yes" Checksum="yes" />
+      </Component>
+    </DirectoryRef>
+    <DirectoryRef Id="en_USFolder">
+      <Component Guid="{C813F493-E95A-4D58-ADFA-1650542BA8D8}">
+        <File Id="$(var.PowerShellAudio.Commands.TargetFileName)_Help.xml" Source="$(var.PowerShellAudio.Commands.TargetDir)en-US\$(var.PowerShellAudio.Commands.TargetFileName)-Help.xml" KeyPath="yes" Checksum="yes" />
+      </Component>
+    </DirectoryRef>
+
+    <Directory Id="TARGETDIR" Name="SourceDir">
+      <Directory Id="ProgramFilesFolder">
+        <Directory Id="WindowsPowerShell" Name="WindowsPowerShell">
+          <Directory Id="ModulesFolder" Name="Modules">
+            <Directory Id="INSTALLFOLDER" Name="PowerShellAudio">
+              <Directory Id="CodeContractsFolder" Name="CodeContracts" />
+              <Directory Id="en_USFolder" Name="en-US" />
+              <Directory Id="ExtensionsFolder" Name="Extensions" />
+            </Directory>
+          </Directory>
+        </Directory>
+      </Directory>
+    </Directory>
+	</Fragment>
+</Wix>

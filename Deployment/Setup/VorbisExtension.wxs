@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+
+Copyright © 2014 Jeremy Herbison
+
+This file is part of PowerShell Audio.
+
+PowerShell Audio is free software: you can redistribute it and/or modify it under the terms of the GNU Lesser General
+Public License as published by the Free Software Foundation, either version 3 of the License, or (at your option) any
+later version.
+
+PowerShell Audio is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied
+warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU Lesser General Public License for more
+details.
+
+You should have received a copy of the GNU Lesser General Public License along with PowerShell Audio.  If not, see
+<http://www.gnu.org/licenses/>.
+
+-->
+<Wix xmlns="http://schemas.microsoft.com/wix/2006/wi">
+	<Fragment>
+    
+    <ComponentGroup Id="Vorbis">
+      <ComponentRef Id="$(var.PowerShellAudio.Extensions.Vorbis.TargetFileName)" />
+      <ComponentRef Id="$(var.PowerShellAudio.Extensions.Vorbis.TargetName).Contracts.dll" />
+      <ComponentRef Id="libogg.dll" />
+      <ComponentRef Id="libvorbis.dll" />
+    </ComponentGroup>
+
+    <DirectoryRef Id="VorbisFolder">
+      <Component Guid="{B65F155D-AE3E-444E-9F71-310B7448D011}">
+        <File Source="$(var.PowerShellAudio.Extensions.Vorbis.TargetPath)" KeyPath="yes" Checksum="yes" />
+      </Component>
+    </DirectoryRef>
+    <DirectoryRef Id="VorbisCodeContractsFolder">
+      <Component Guid="{4B324EDD-6573-4CAA-A718-0A7EA3BC2E35}">
+        <File Source="$(var.PowerShellAudio.Extensions.Vorbis.TargetDir)CodeContracts\$(var.PowerShellAudio.Extensions.Vorbis.TargetName).Contracts.dll" KeyPath="yes" Checksum="yes" />
+      </Component>
+    </DirectoryRef>
+    <DirectoryRef Id="VorbisX86Folder">
+      <Component Guid="{4D08F749-A2DD-456B-B922-326A141E3873}">
+        <File Source="$(var.PowerShellAudio.Extensions.Vorbis.TargetDir)x86\libogg.dll" KeyPath="yes" Checksum="yes" />
+      </Component>
+      <Component Guid="{D6B82A43-16E3-40B2-B93D-14C769CCCB60}">
+        <File Source="$(var.PowerShellAudio.Extensions.Vorbis.TargetDir)x86\libvorbis.dll" KeyPath="yes" Checksum="yes" />
+      </Component>
+      <Merge Id="VCRedist" SourceFile="Microsoft_VC120_CRT_x86.msm" DiskId="1" Language="0" />
+    </DirectoryRef>
+
+    <DirectoryRef Id="ExtensionsFolder">
+      <Directory Id="VorbisFolder" Name="Vorbis">
+        <Directory Id="VorbisCodeContractsFolder" Name="CodeContracts" />
+        <Directory Id="VorbisX86Folder" Name="x86" />
+      </Directory>
+    </DirectoryRef>
+    
+	</Fragment>
+</Wix>

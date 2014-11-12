@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+
+Copyright © 2014 Jeremy Herbison
+
+This file is part of PowerShell Audio.
+
+PowerShell Audio is free software: you can redistribute it and/or modify it under the terms of the GNU Lesser General
+Public License as published by the Free Software Foundation, either version 3 of the License, or (at your option) any
+later version.
+
+PowerShell Audio is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied
+warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU Lesser General Public License for more
+details.
+
+You should have received a copy of the GNU Lesser General Public License along with PowerShell Audio.  If not, see
+<http://www.gnu.org/licenses/>.
+
+-->
+<Wix xmlns="http://schemas.microsoft.com/wix/2006/wi">
+	<Fragment>
+
+    <ComponentGroup Id="ID3">
+      <ComponentRef Id="$(var.PowerShellAudio.Extensions.Id3.TargetFileName)" />
+      <ComponentRef Id="$(var.PowerShellAudio.Extensions.Id3.TargetName).Contracts.dll" />
+      <ComponentRef Id="Id3Lib.dll" />
+      <ComponentRef Id="ICSharpCode.SharpZipLib.dll" />
+    </ComponentGroup>
+
+    <DirectoryRef Id="Id3Folder">
+      <Component Guid="{E41B900A-20B1-46BB-804A-414CAFDF6AE8}">
+        <File Source="$(var.PowerShellAudio.Extensions.Id3.TargetPath)" KeyPath="yes" Checksum="yes" />
+      </Component>
+      <Component Guid="{9E974501-2ED6-4B58-BC75-82A983D6129F}">
+        <File Source="$(var.PowerShellAudio.Extensions.Id3.TargetDir)Id3Lib.dll" KeyPath="yes" Checksum="yes" />
+      </Component>
+      <Component Guid="{C11F657B-3EF5-468F-8196-CDF5E3F012DD}">
+        <File Source="$(var.PowerShellAudio.Extensions.Id3.TargetDir)ICSharpCode.SharpZipLib.dll" KeyPath="yes" Checksum="yes" />
+      </Component>
+    </DirectoryRef>
+    <DirectoryRef Id="Id3CodeContractsFolder">
+      <Component Guid="{CAD003EE-7DD1-4E01-B765-6229DB67FF61}">
+        <File Source="$(var.PowerShellAudio.Extensions.Id3.TargetDir)CodeContracts\$(var.PowerShellAudio.Extensions.Id3.TargetName).Contracts.dll" KeyPath="yes" Checksum="yes" />
+      </Component>
+    </DirectoryRef>
+
+    <DirectoryRef Id="ExtensionsFolder">
+      <Directory Id="Id3Folder" Name="Id3">
+        <Directory Id="Id3CodeContractsFolder" Name="CodeContracts" />
+      </Directory>
+    </DirectoryRef>
+    
+	</Fragment>
+  
+</Wix>
