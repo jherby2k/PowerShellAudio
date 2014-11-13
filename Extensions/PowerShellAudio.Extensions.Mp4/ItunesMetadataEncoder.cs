@@ -112,6 +112,11 @@ namespace PowerShellAudio.Extensions.Mp4
 
         static byte[] GenerateIlst(Mp4 originalMp4, MetadataDictionary metadata, SettingsDictionary settings)
         {
+            Contract.Requires(originalMp4 != null);
+            Contract.Requires(metadata != null);
+            Contract.Requires(settings != null);
+            Contract.Ensures(Contract.Result<byte[]>() != null);
+
             using (var resultStream = new MemoryStream())
             {
                 var adaptedMetadata = new MetadataToAtomAdapter(metadata, settings);

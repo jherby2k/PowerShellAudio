@@ -121,9 +121,6 @@ namespace PowerShellAudio
         {
             Contract.Requires(sampleAnalyzer != null);
             Contract.Requires(groupToken != null);
-            Contract.Requires(FileInfo != null);
-            Contract.Requires(AudioInfo != null);
-            Contract.Requires(Metadata != null);
 
             sampleAnalyzer.Initialize(AudioInfo, groupToken);
 

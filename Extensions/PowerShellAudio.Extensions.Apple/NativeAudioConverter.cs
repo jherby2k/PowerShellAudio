@@ -83,6 +83,8 @@ namespace PowerShellAudio.Extensions.Apple
 
         AudioConverterStatus InputCallback(IntPtr handle, ref uint numberPackets, ref AudioBufferList data, IntPtr packetDescriptions, IntPtr userData)
         {
+            Contract.Requires(data.Buffers.Length > 0);
+
             if (_buffer == null)
             {
                 _buffer = new byte[numberPackets * _audioFile.GetProperty<uint>(AudioFilePropertyID.PacketSizeUpperBound)];

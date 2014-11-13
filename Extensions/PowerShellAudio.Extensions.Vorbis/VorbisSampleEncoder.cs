@@ -34,7 +34,7 @@ namespace PowerShellAudio.Extensions.Vorbis
         NativeVorbisEncoder _encoder;
         ExportLifetimeContext<ISampleFilter> _replayGainFilterLifetime;
         NativeOggStream _oggStream;
-        byte[] _buffer = new byte[4096];
+        byte[] _buffer;
         Stream _output;
 
         public string Extension
@@ -106,6 +106,7 @@ namespace PowerShellAudio.Extensions.Vorbis
             _replayGainFilterLifetime.Value.Initialize(metadata, settings);
 
             _oggStream = IntializeOggStream(settings);
+            _buffer = new byte[4096];
 
             if (!string.IsNullOrEmpty(settings["BitRate"]))
                 ConfigureEncoderForBitRate(settings, audioInfo, _encoder);
@@ -239,12 +240,6 @@ namespace PowerShellAudio.Extensions.Vorbis
                 stream.Write(_buffer, 0, bytesCopied);
                 offset += bytesCopied;
             }
-        }
-
-        [ContractInvariantMethod]
-        void ObjectInvariant()
-        {
-            Contract.Invariant(_buffer != null);
         }
 
         static NativeOggStream IntializeOggStream(SettingsDictionary settings)

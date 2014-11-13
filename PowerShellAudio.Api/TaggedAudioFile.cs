@@ -147,6 +147,9 @@ namespace PowerShellAudio
 
         static void ValidateSettings(SettingsDictionary settings, IMetadataEncoder encoder)
         {
+            Contract.Requires(settings != null);
+            Contract.Requires(encoder != null);
+
             foreach (var unsupportedKey in settings.Keys.Where(setting => !encoder.AvailableSettings.Contains(setting, StringComparer.OrdinalIgnoreCase)))
                 throw new ArgumentException(string.Format(CultureInfo.CurrentCulture, Resources.TaggedAudioFileSettingsError, unsupportedKey));
         }
