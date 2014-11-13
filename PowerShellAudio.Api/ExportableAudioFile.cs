@@ -116,7 +116,7 @@ namespace PowerShellAudio
             if (settings == null)
                 settings = new SettingsDictionary();
 
-            var encoderFactory = ExtensionProvider<ISampleEncoder>.Instance.Factories.Where(factory => string.Compare((string)factory.Metadata["Name"], encoder, StringComparison.OrdinalIgnoreCase) == 0).SingleOrDefault();
+            var encoderFactory = ExtensionProvider.GetFactories<ISampleEncoder>().Where(factory => string.Compare((string)factory.Metadata["Name"], encoder, StringComparison.OrdinalIgnoreCase) == 0).SingleOrDefault();
             if (encoderFactory == null)
                 throw new ArgumentException(string.Format(CultureInfo.CurrentCulture, Resources.ExportableAudioFileFactoryError, encoder), "encoder");
 
@@ -188,7 +188,7 @@ namespace PowerShellAudio
             using (FileStream inputStream = FileInfo.OpenRead())
             {
                 // Try each decoder that supports this file extension:
-                foreach (var decoderFactory in ExtensionProvider<ISampleDecoder>.Instance.Factories.Where(factory => string.Compare((string)factory.Metadata["Extension"], FileInfo.Extension, StringComparison.OrdinalIgnoreCase) == 0))
+                foreach (var decoderFactory in ExtensionProvider.GetFactories<ISampleDecoder>().Where(factory => string.Compare((string)factory.Metadata["Extension"], FileInfo.Extension, StringComparison.OrdinalIgnoreCase) == 0))
                 {
                     try
                     {

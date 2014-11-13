@@ -121,7 +121,7 @@ namespace PowerShellAudio
             using (FileStream fileStream = FileInfo.OpenRead())
             {
                 // Try each info decoder that supports this file extension:
-                foreach (var decoderFactory in ExtensionProvider<IAudioInfoDecoder>.Instance.Factories.Where(factory => string.Compare((string)factory.Metadata["Extension"], FileInfo.Extension, StringComparison.OrdinalIgnoreCase) == 0))
+                foreach (var decoderFactory in ExtensionProvider.GetFactories<IAudioInfoDecoder>().Where(factory => string.Compare((string)factory.Metadata["Extension"], FileInfo.Extension, StringComparison.OrdinalIgnoreCase) == 0))
                 {
                     try
                     {

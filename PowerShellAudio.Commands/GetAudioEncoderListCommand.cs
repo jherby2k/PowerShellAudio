@@ -25,7 +25,7 @@ namespace PowerShellAudio.Commands
     {
         protected override void ProcessRecord()
         {
-            WriteObject(ExtensionProvider<ISampleEncoder>.Instance.Factories.Select(factory => factory.Metadata["Name"].ToString()), true);
+            WriteObject(ExtensionProvider.GetFactories<ISampleEncoder>().Select(factory => factory.Metadata["Name"].ToString()), true);
         }
     }
 }

@@ -49,7 +49,7 @@ namespace PowerShellAudio.Extensions.Apple
                 Contract.Ensures(Contract.Result<SettingsDictionary>() != null);
 
                 // Call the external MP4 encoder for writing iTunes-compatible atoms:
-                var metadataEncoderFactory = ExtensionProvider<IMetadataEncoder>.Instance.Factories.Where(factory => string.Compare((string)factory.Metadata["Extension"], Extension, StringComparison.OrdinalIgnoreCase) == 0).SingleOrDefault();
+                var metadataEncoderFactory = ExtensionProvider.GetFactories<IMetadataEncoder>().Where(factory => string.Compare((string)factory.Metadata["Extension"], Extension, StringComparison.OrdinalIgnoreCase) == 0).SingleOrDefault();
                 if (metadataEncoderFactory != null)
                     using (ExportLifetimeContext<IMetadataEncoder> metadataEncoderLifetime = metadataEncoderFactory.CreateExport())
                         return metadataEncoderLifetime.Value.DefaultSettings;
@@ -65,7 +65,7 @@ namespace PowerShellAudio.Extensions.Apple
                 Contract.Ensures(Contract.Result<IReadOnlyCollection<string>>() != null);
 
                 // Call the external MP4 encoder for writing iTunes-compatible atoms:
-                var metadataEncoderFactory = ExtensionProvider<IMetadataEncoder>.Instance.Factories.Where(factory => string.Compare((string)factory.Metadata["Extension"], Extension, StringComparison.OrdinalIgnoreCase) == 0).SingleOrDefault();
+                var metadataEncoderFactory = ExtensionProvider.GetFactories<IMetadataEncoder>().Where(factory => string.Compare((string)factory.Metadata["Extension"], Extension, StringComparison.OrdinalIgnoreCase) == 0).SingleOrDefault();
                 if (metadataEncoderFactory != null)
                     using (ExportLifetimeContext<IMetadataEncoder> metadataEncoderLifetime = metadataEncoderFactory.CreateExport())
                         return metadataEncoderLifetime.Value.AvailableSettings;
@@ -152,7 +152,7 @@ namespace PowerShellAudio.Extensions.Apple
 
                 // Call an external MP4 encoder for writing iTunes-compatible atoms:
                 _stream.Position = 0;
-                var metadataEncoderFactory = ExtensionProvider<IMetadataEncoder>.Instance.Factories.Where(factory => string.Compare((string)factory.Metadata["Extension"], Extension, StringComparison.OrdinalIgnoreCase) == 0).Single();
+                var metadataEncoderFactory = ExtensionProvider.GetFactories<IMetadataEncoder>().Where(factory => string.Compare((string)factory.Metadata["Extension"], Extension, StringComparison.OrdinalIgnoreCase) == 0).Single();
                 using (ExportLifetimeContext<IMetadataEncoder> metadataEncoderLifetime = metadataEncoderFactory.CreateExport())
                     metadataEncoderLifetime.Value.WriteMetadata(_stream, _metadata, _settings);
             }

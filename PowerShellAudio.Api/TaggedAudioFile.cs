@@ -129,7 +129,7 @@ namespace PowerShellAudio
                 }
 
                 // Try each encoder that supports the file extension:
-                foreach (var encoderFactory in ExtensionProvider<IMetadataEncoder>.Instance.Factories.Where(factory => string.Compare((string)factory.Metadata["Extension"], FileInfo.Extension, StringComparison.OrdinalIgnoreCase) == 0))
+                foreach (var encoderFactory in ExtensionProvider.GetFactories<IMetadataEncoder>().Where(factory => string.Compare((string)factory.Metadata["Extension"], FileInfo.Extension, StringComparison.OrdinalIgnoreCase) == 0))
                 {
                     using (ExportLifetimeContext<IMetadataEncoder> lifetimeContext = encoderFactory.CreateExport())
                     {
@@ -159,7 +159,7 @@ namespace PowerShellAudio
             Contract.Ensures(_metadata != null);
 
             // Try each decoder that supports this file extension:
-            foreach (var decoderFactory in ExtensionProvider<IMetadataDecoder>.Instance.Factories.Where(factory => string.Compare((string)factory.Metadata["Extension"], FileInfo.Extension, StringComparison.OrdinalIgnoreCase) == 0))
+            foreach (var decoderFactory in ExtensionProvider.GetFactories<IMetadataDecoder>().Where(factory => string.Compare((string)factory.Metadata["Extension"], FileInfo.Extension, StringComparison.OrdinalIgnoreCase) == 0))
             {
                 try
                 {

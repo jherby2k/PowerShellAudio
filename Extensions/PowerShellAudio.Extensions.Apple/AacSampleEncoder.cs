@@ -58,13 +58,13 @@ namespace PowerShellAudio.Extensions.Apple
                 result.Add("VBRQuality", "9");
 
                 // Call the external ReplayGain filter for scaling the input:
-                var replayGainFilterFactory = ExtensionProvider<ISampleFilter>.Instance.Factories.Where(factory => string.Compare((string)factory.Metadata["Name"], "ReplayGain", StringComparison.OrdinalIgnoreCase) == 0).SingleOrDefault();
+                var replayGainFilterFactory = ExtensionProvider.GetFactories<ISampleFilter>().Where(factory => string.Compare((string)factory.Metadata["Name"], "ReplayGain", StringComparison.OrdinalIgnoreCase) == 0).SingleOrDefault();
                 if (replayGainFilterFactory != null)
                     using (ExportLifetimeContext<ISampleFilter> replayGainFilterLifetime = replayGainFilterFactory.CreateExport())
                         replayGainFilterLifetime.Value.DefaultSettings.CopyTo(result);
 
                 // Call the external MP4 encoder for writing iTunes-compatible atoms:
-                var metadataEncoderFactory = ExtensionProvider<IMetadataEncoder>.Instance.Factories.Where(factory => string.Compare((string)factory.Metadata["Extension"], Extension, StringComparison.OrdinalIgnoreCase) == 0).SingleOrDefault();
+                var metadataEncoderFactory = ExtensionProvider.GetFactories<IMetadataEncoder>().Where(factory => string.Compare((string)factory.Metadata["Extension"], Extension, StringComparison.OrdinalIgnoreCase) == 0).SingleOrDefault();
                 if (metadataEncoderFactory != null)
                     using (ExportLifetimeContext<IMetadataEncoder> metadataEncoderLifetime = metadataEncoderFactory.CreateExport())
                         metadataEncoderLifetime.Value.DefaultSettings.CopyTo(result);
@@ -87,13 +87,13 @@ namespace PowerShellAudio.Extensions.Apple
                 partialResult.Add("VBRQuality");
 
                 // Call the external ReplayGain filter for scaling the input:
-                var replayGainFilterFactory = ExtensionProvider<ISampleFilter>.Instance.Factories.Where(factory => string.Compare((string)factory.Metadata["Name"], "ReplayGain", StringComparison.OrdinalIgnoreCase) == 0).SingleOrDefault();
+                var replayGainFilterFactory = ExtensionProvider.GetFactories<ISampleFilter>().Where(factory => string.Compare((string)factory.Metadata["Name"], "ReplayGain", StringComparison.OrdinalIgnoreCase) == 0).SingleOrDefault();
                 if (replayGainFilterFactory != null)
                     using (ExportLifetimeContext<ISampleFilter> replayGainFilterLifetime = replayGainFilterFactory.CreateExport())
                         partialResult = partialResult.Concat(replayGainFilterLifetime.Value.AvailableSettings).ToList();
 
                 // Call the external MP4 encoder for writing iTunes-compatible atoms:
-                var metadataEncoderFactory = ExtensionProvider<IMetadataEncoder>.Instance.Factories.Where(factory => string.Compare((string)factory.Metadata["Extension"], Extension, StringComparison.OrdinalIgnoreCase) == 0).SingleOrDefault();
+                var metadataEncoderFactory = ExtensionProvider.GetFactories<IMetadataEncoder>().Where(factory => string.Compare((string)factory.Metadata["Extension"], Extension, StringComparison.OrdinalIgnoreCase) == 0).SingleOrDefault();
                 if (metadataEncoderFactory != null)
                     using (ExportLifetimeContext<IMetadataEncoder> metadataEncoderLifetime = metadataEncoderFactory.CreateExport())
                         partialResult = partialResult.Concat(metadataEncoderLifetime.Value.AvailableSettings).ToList();
@@ -117,7 +117,7 @@ namespace PowerShellAudio.Extensions.Apple
             _settings = settings;
 
             // Load the external gain filter:
-            var sampleFilterFactory = ExtensionProvider<ISampleFilter>.Instance.Factories.Where(factory => string.Compare((string)factory.Metadata["Name"], "ReplayGain", StringComparison.OrdinalIgnoreCase) == 0).SingleOrDefault();
+            var sampleFilterFactory = ExtensionProvider.GetFactories<ISampleFilter>().Where(factory => string.Compare((string)factory.Metadata["Name"], "ReplayGain", StringComparison.OrdinalIgnoreCase) == 0).SingleOrDefault();
             if (sampleFilterFactory == null)
                 throw new ExtensionInitializationException(Resources.AacSampleEncoderReplayGainFilterError);
             _replayGainFilterLifetime = sampleFilterFactory.CreateExport();
@@ -197,7 +197,7 @@ namespace PowerShellAudio.Extensions.Apple
 
                 // Call an external MP4 encoder for writing iTunes-compatible atoms:
                 _stream.Position = 0;
-                var metadataEncoderFactory = ExtensionProvider<IMetadataEncoder>.Instance.Factories.Where(factory => string.Compare((string)factory.Metadata["Extension"], Extension, StringComparison.OrdinalIgnoreCase) == 0).Single();
+                var metadataEncoderFactory = ExtensionProvider.GetFactories<IMetadataEncoder>().Where(factory => string.Compare((string)factory.Metadata["Extension"], Extension, StringComparison.OrdinalIgnoreCase) == 0).Single();
                 using (ExportLifetimeContext<IMetadataEncoder> metadataEncoderLifetime = metadataEncoderFactory.CreateExport())
                     metadataEncoderLifetime.Value.WriteMetadata(_stream, _metadata, _settings);
             }

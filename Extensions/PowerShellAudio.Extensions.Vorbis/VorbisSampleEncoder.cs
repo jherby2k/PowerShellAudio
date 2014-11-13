@@ -55,7 +55,7 @@ namespace PowerShellAudio.Extensions.Vorbis
                 result.Add("VBRQuality", "5");
 
                 // Call the external ReplayGain filter for scaling the input:
-                var replayGainFilterFactory = ExtensionProvider<ISampleFilter>.Instance.Factories.Where(factory => string.Compare((string)factory.Metadata["Name"], "ReplayGain", StringComparison.OrdinalIgnoreCase) == 0).SingleOrDefault();
+                var replayGainFilterFactory = ExtensionProvider.GetFactories<ISampleFilter>().Where(factory => string.Compare((string)factory.Metadata["Name"], "ReplayGain", StringComparison.OrdinalIgnoreCase) == 0).SingleOrDefault();
                 if (replayGainFilterFactory != null)
                     using (ExportLifetimeContext<ISampleFilter> replayGainFilterLifetime = replayGainFilterFactory.CreateExport())
                         replayGainFilterLifetime.Value.DefaultSettings.CopyTo(result);
@@ -79,7 +79,7 @@ namespace PowerShellAudio.Extensions.Vorbis
                 partialResult.Add("VBRQuality");
 
                 // Call the external ReplayGain filter for scaling the input:
-                var replayGainFilterFactory = ExtensionProvider<ISampleFilter>.Instance.Factories.Where(factory => string.Compare((string)factory.Metadata["Name"], "ReplayGain", StringComparison.OrdinalIgnoreCase) == 0).SingleOrDefault();
+                var replayGainFilterFactory = ExtensionProvider.GetFactories<ISampleFilter>().Where(factory => string.Compare((string)factory.Metadata["Name"], "ReplayGain", StringComparison.OrdinalIgnoreCase) == 0).SingleOrDefault();
                 if (replayGainFilterFactory != null)
                     using (ExportLifetimeContext<ISampleFilter> replayGainFilterLifetime = replayGainFilterFactory.CreateExport())
                         partialResult = partialResult.Concat(replayGainFilterLifetime.Value.AvailableSettings).ToList();
@@ -99,7 +99,7 @@ namespace PowerShellAudio.Extensions.Vorbis
             _output = stream;
 
             // Load the external gain filter:
-            var sampleFilterFactory = ExtensionProvider<ISampleFilter>.Instance.Factories.Where(factory => string.Compare((string)factory.Metadata["Name"], "ReplayGain", StringComparison.OrdinalIgnoreCase) == 0).SingleOrDefault();
+            var sampleFilterFactory = ExtensionProvider.GetFactories<ISampleFilter>().Where(factory => string.Compare((string)factory.Metadata["Name"], "ReplayGain", StringComparison.OrdinalIgnoreCase) == 0).SingleOrDefault();
             if (sampleFilterFactory == null)
                 throw new ExtensionInitializationException(Resources.SampleEncoderReplayGainFilterError);
             _replayGainFilterLifetime = sampleFilterFactory.CreateExport();

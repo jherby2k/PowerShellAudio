@@ -109,7 +109,7 @@ namespace PowerShellAudio
             if (groupToken == null)
                 groupToken = new GroupToken(1);
 
-            var analyzerFactory = ExtensionProvider<ISampleAnalyzer>.Instance.Factories.Where(factory => string.Compare((string)factory.Metadata["Name"], analyzer, StringComparison.OrdinalIgnoreCase) == 0).SingleOrDefault();
+            var analyzerFactory = ExtensionProvider.GetFactories<ISampleAnalyzer>().Where(factory => string.Compare((string)factory.Metadata["Name"], analyzer, StringComparison.OrdinalIgnoreCase) == 0).SingleOrDefault();
             if (analyzerFactory == null)
                 throw new ArgumentException(string.Format(CultureInfo.CurrentCulture, Resources.AnalyzableAudioFileFactoryError, analyzer), "analyzer");
 
@@ -130,7 +130,7 @@ namespace PowerShellAudio
             using (FileStream fileStream = FileInfo.OpenRead())
             {
                 // Try each decoder that supports this file extension:
-                foreach (var decoderFactory in ExtensionProvider<ISampleDecoder>.Instance.Factories.Where(factory => string.Compare((string)factory.Metadata["Extension"], FileInfo.Extension, StringComparison.OrdinalIgnoreCase) == 0))
+                foreach (var decoderFactory in ExtensionProvider.GetFactories<ISampleDecoder>().Where(factory => string.Compare((string)factory.Metadata["Extension"], FileInfo.Extension, StringComparison.OrdinalIgnoreCase) == 0))
                 {
                     try
                     {

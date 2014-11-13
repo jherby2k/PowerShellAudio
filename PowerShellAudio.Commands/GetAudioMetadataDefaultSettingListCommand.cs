@@ -31,7 +31,7 @@ namespace PowerShellAudio.Commands
 
         protected override void ProcessRecord()
         {
-            var encoderFactory = ExtensionProvider<IMetadataEncoder>.Instance.Factories.Where(factory => string.Compare((string)factory.Metadata["Extension"], Extension, StringComparison.OrdinalIgnoreCase) == 0).SingleOrDefault();
+            var encoderFactory = ExtensionProvider.GetFactories<IMetadataEncoder>().Where(factory => string.Compare((string)factory.Metadata["Extension"], Extension, StringComparison.OrdinalIgnoreCase) == 0).SingleOrDefault();
             if (encoderFactory == null)
                 throw new ArgumentException(string.Format(CultureInfo.CurrentCulture, Resources.ExtensionUnknownError, Extension));
 
