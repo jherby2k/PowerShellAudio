@@ -18,6 +18,7 @@
 using System;
 using System.Collections.Generic;
 using System.Diagnostics.Contracts;
+using System.Globalization;
 using System.Runtime.InteropServices;
 using System.Text;
 
@@ -66,6 +67,13 @@ namespace PowerShellAudio.Extensions.Vorbis
                     base["TrackNumber"] = segments[0];
                     if (segments.Length > 1)
                         base["TrackCount"] = segments[1];
+                }
+                else if (comment[0] == "DATE")
+                {
+                    // The DATE comment may contain the year:
+                    DateTime result;
+                    if (DateTime.TryParse(comment[1], out result) && result.Year >= 1000)
+                        base["Year"] = result.Year.ToString(CultureInfo.InvariantCulture);
                 }
                 else
                 {

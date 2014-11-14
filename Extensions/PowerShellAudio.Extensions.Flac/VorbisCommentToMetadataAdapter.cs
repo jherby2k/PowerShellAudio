@@ -18,6 +18,7 @@
 using System;
 using System.Collections.Generic;
 using System.Diagnostics.Contracts;
+using System.Globalization;
 
 namespace PowerShellAudio.Extensions.Flac
 {
@@ -53,6 +54,13 @@ namespace PowerShellAudio.Extensions.Flac
                     base["TrackNumber"] = segments[0];
                     if (segments.Length > 1)
                         base["TrackCount"] = segments[1];
+                }
+                else if (item.Key == "DATE")
+                {
+                    // The DATE comment may contain the year:
+                    DateTime result;
+                    if (DateTime.TryParse(item.Value, out result) && result.Year >= 1000)
+                        base["Year"] = result.Year.ToString(CultureInfo.InvariantCulture);
                 }
                 else
                 {
