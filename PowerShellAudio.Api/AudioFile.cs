@@ -56,9 +56,17 @@ namespace PowerShellAudio
         /// </summary>
         /// <param name="audioFile">The audio file to copy.</param>
         /// <exception cref="ArgumentNullException">Thrown if <paramref name="audioFile"/> is null.</exception>
+        /// <exception cref="ArgumentException">Thrown if <paramref name="audioFile"/> does not have a file extension.</exception>
+        /// <exception cref="ArgumentOutOfRangeException">Thrown if <paramref name="audioFile"/> is an empty file.</exception>
+        /// <exception cref="FileNotFoundException">Thrown if <paramref name="audioFile"/> does not exist.</exception>
         public AudioFile(AudioFile audioFile)
         {
             Contract.Requires<ArgumentNullException>(audioFile != null);
+            Contract.Requires<ArgumentException>(audioFile.FileInfo != null);
+            Contract.Requires<ArgumentException>(!string.IsNullOrEmpty(audioFile.FileInfo.Extension));
+            Contract.Requires<FileNotFoundException>(audioFile.FileInfo.Exists);
+            Contract.Requires<ArgumentOutOfRangeException>(audioFile.FileInfo.Length > 0);
+            Contract.Requires<ArgumentException>(audioFile.AudioInfo != null);
 
             FileInfo = audioFile.FileInfo;
             AudioInfo = audioFile.AudioInfo;
@@ -100,7 +108,7 @@ namespace PowerShellAudio
         {
             Contract.Requires<ArgumentNullException>(!string.IsNullOrEmpty(fileName));
             Contract.Requires<ArgumentException>(!fileName.Contains(Path.DirectorySeparatorChar));
-            Contract.Ensures(FileInfo != Contract.OldValue<FileInfo>(FileInfo));
+            Contract.Ensures(!string.IsNullOrEmpty(FileInfo.Extension));
             Contract.Ensures(FileInfo.Exists);
 
             string newFileName = Path.Combine(FileInfo.DirectoryName, fileName);
@@ -138,15 +146,6 @@ namespace PowerShellAudio
             }
 
             throw new UnsupportedAudioException(Resources.AudioFileDecodeError);
-        }
-
-        [ContractInvariantMethod]
-        void ObjectInvariant()
-        {
-            Contract.Invariant(FileInfo != null);
-            Contract.Invariant(!string.IsNullOrEmpty(FileInfo.Extension));
-            Contract.Invariant(FileInfo.Exists);
-            Contract.Invariant(AudioInfo != null);
         }
     }
 }

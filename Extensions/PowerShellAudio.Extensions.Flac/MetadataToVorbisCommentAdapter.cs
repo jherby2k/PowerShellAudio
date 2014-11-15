@@ -64,7 +64,10 @@ namespace PowerShellAudio.Extensions.Flac
 
             // The DATE field should contain either a full date, or just the year:
             if (day > 0 && month > 0 && year > 0)
+            {
+                Contract.Assume(month <= 12);
                 this["DATE"] = new DateTime(year, month, day).ToShortDateString();
+            }
             else if (year > 0)
                 this["DATE"] = year.ToString(CultureInfo.InvariantCulture);
         }

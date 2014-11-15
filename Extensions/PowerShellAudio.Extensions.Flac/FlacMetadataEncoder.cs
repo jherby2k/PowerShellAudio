@@ -125,7 +125,7 @@ namespace PowerShellAudio.Extensions.Flac
             {
                 switch ((MetadataType)Marshal.ReadInt32(iterator.GetBlock()))
                 {
-                    // Replace the existing vorbis comment:
+                    // Replace the existing Vorbis comment:
                     case MetadataType.VorbisComment:
                         if (!iterator.DeleteBlock(false))
                             throw new IOException(Resources.MetadataEncoderDeleteError);

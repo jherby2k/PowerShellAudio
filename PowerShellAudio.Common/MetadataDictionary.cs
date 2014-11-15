@@ -66,11 +66,15 @@ namespace PowerShellAudio
         /// </exception>
         public override string this[string key]
         {
-            get { return base[key]; }
+            get
+            {
+                Contract.Ensures(Contract.Result<string>() != null);
+
+                return base[key];
+            }
             set
             {
-                if (string.IsNullOrEmpty(key))
-                    throw new ArgumentNullException("key");
+                Contract.Requires<ArgumentNullException>(!string.IsNullOrEmpty(key));
 
                 if (!string.IsNullOrEmpty(value))
                 {
@@ -93,6 +97,7 @@ namespace PowerShellAudio
         void ObjectInvariant()
         {
             Contract.Invariant(_acceptedKeys != null);
+            Contract.Invariant(Contract.ForAll<string>(this.Keys, key => _acceptedKeys.Keys.Contains(key)));
         }
 
         static Dictionary<string, Func<string, string>> InitializeAcceptedKeys()
@@ -108,24 +113,28 @@ namespace PowerShellAudio
             Func<string, string> validateTrackNumber = new Func<string, string>(value => Convert.ToInt32(value, CultureInfo.InvariantCulture).ToString("00", CultureInfo.InvariantCulture));
             Func<string, string> validateDay = new Func<string, string>(value =>
             {
-                int intValue = Convert.ToInt32(value, CultureInfo.InvariantCulture);
-                if (intValue < 1 || intValue > 31)
+                if (Convert.ToInt32(value, CultureInfo.InvariantCulture) < 1 || Convert.ToInt32(value, CultureInfo.InvariantCulture) > 31)
                     throw new ArgumentException(string.Format(CultureInfo.CurrentCulture, Resources.MetadataDictionaryDayError, value));
-                return intValue.ToString("00", CultureInfo.InvariantCulture);
+                Contract.EndContractBlock();
+
+                return Convert.ToInt32(value, CultureInfo.InvariantCulture).ToString("00", CultureInfo.InvariantCulture);
             });
             Func<string, string> validateMonth = new Func<string, string>(value =>
             {
-                int intValue = Convert.ToInt32(value, CultureInfo.InvariantCulture);
-                if (intValue < 1 || intValue > 12)
+                if (Convert.ToInt32(value, CultureInfo.InvariantCulture) < 1 || Convert.ToInt32(value, CultureInfo.InvariantCulture) > 12)
                     throw new ArgumentException(string.Format(CultureInfo.CurrentCulture, Resources.MetadataDictionaryMonthError, value));
-                return intValue.ToString("00", CultureInfo.InvariantCulture);
+                Contract.EndContractBlock();
+
+                return Convert.ToInt32(value, CultureInfo.InvariantCulture).ToString("00", CultureInfo.InvariantCulture);
             });
             Func<string, string> validateYear = new Func<string, string>(value =>
             {
                 // Accept any years from 1000 through 2999:
-                if (Regex.IsMatch(value, "^[12][0-9]{3}$"))
-                    return value;
-                throw new ArgumentException(string.Format(CultureInfo.CurrentCulture, Resources.MetadataDictionaryYearError, value));
+                if (!Regex.IsMatch(value, "^[12][0-9]{3}$"))
+                    throw new ArgumentException(string.Format(CultureInfo.CurrentCulture, Resources.MetadataDictionaryYearError, value));
+                Contract.EndContractBlock();
+
+                return value;
             });
 
             result.Add("Album", validateDefault);
