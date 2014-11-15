@@ -106,6 +106,20 @@ namespace PowerShellAudio
             Func<string, string> validateGain = new Func<string, string>(value => string.Format(CultureInfo.InvariantCulture, "{0:0.00} dB", Convert.ToSingle(value.Replace(" dB", string.Empty), CultureInfo.InvariantCulture)));
             Func<string, string> validatePeak = new Func<string, string>(value => string.Format(CultureInfo.InvariantCulture, "{0:0.000000}", Convert.ToSingle(value, CultureInfo.InvariantCulture)));
             Func<string, string> validateTrackNumber = new Func<string, string>(value => Convert.ToInt32(value, CultureInfo.InvariantCulture).ToString("00", CultureInfo.InvariantCulture));
+            Func<string, string> validateDay = new Func<string, string>(value =>
+            {
+                int intValue = Convert.ToInt32(value, CultureInfo.InvariantCulture);
+                if (intValue < 1 || intValue > 31)
+                    throw new ArgumentException(string.Format(CultureInfo.CurrentCulture, Resources.MetadataDictionaryDayError, value));
+                return intValue.ToString("00", CultureInfo.InvariantCulture);
+            });
+            Func<string, string> validateMonth = new Func<string, string>(value =>
+            {
+                int intValue = Convert.ToInt32(value, CultureInfo.InvariantCulture);
+                if (intValue < 1 || intValue > 12)
+                    throw new ArgumentException(string.Format(CultureInfo.CurrentCulture, Resources.MetadataDictionaryMonthError, value));
+                return intValue.ToString("00", CultureInfo.InvariantCulture);
+            });
             Func<string, string> validateYear = new Func<string, string>(value =>
             {
                 // Accept any years from 1000 through 2999:
@@ -125,6 +139,8 @@ namespace PowerShellAudio
             result.Add("TrackGain", validateGain);
             result.Add("TrackNumber", validateTrackNumber);
             result.Add("TrackPeak", validatePeak);
+            result.Add("Day", validateDay);
+            result.Add("Month", validateMonth);
             result.Add("Year", validateYear);
 
             return result;

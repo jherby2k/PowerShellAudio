@@ -52,6 +52,12 @@ namespace PowerShellAudio.Extensions.Id3
                                 base["TrackCount"] = segments[1];
                             break;
 
+                        // The TDAT frame contains the day and the month:
+                        case "TDAT":
+                            base["Day"] = frameText.Text.Substring(0, 2);
+                            base["Month"] = frameText.Text.Substring(2);
+                            break;
+
                         default:
                             string mappedKey;
                             if (_map.TryGetValue(frameText.FrameId, out mappedKey))

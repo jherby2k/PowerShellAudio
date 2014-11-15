@@ -117,6 +117,12 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
+  <data name="MetadataDictionaryDayError" xml:space="preserve">
+    <value>'{0}' is not a valid day of the month</value>
+  </data>
+  <data name="MetadataDictionaryMonthError" xml:space="preserve">
+    <value>'{0}' is not a valid month</value>
+  </data>
   <data name="MetadataDictionaryYearError" xml:space="preserve">
     <value>'{0}' is not a valid year</value>
   </data>

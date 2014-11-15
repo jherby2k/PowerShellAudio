@@ -42,6 +42,7 @@ namespace PowerShellAudio.Extensions.Id3
             Contract.Requires(settings != null);
 
             var trckFrame = new TrckFrame();
+            var tdatFrame = new TdatFrame();
             var trackSoundCheckFrame = new SoundCheckFrame();
             var albumSoundCheckFrame = new SoundCheckFrame();
 
@@ -55,6 +56,14 @@ namespace PowerShellAudio.Extensions.Id3
 
                     case "TrackCount":
                         trckFrame.TrackCount = item.Value;
+                        break;
+
+                    case "Day":
+                        tdatFrame.Day = item.Value;
+                        break;
+
+                    case "Month":
+                        tdatFrame.Month = item.Value;
                         break;
 
                     // The standard comment field has a blank description:
@@ -115,6 +124,9 @@ namespace PowerShellAudio.Extensions.Id3
 
             if (!string.IsNullOrEmpty(trckFrame.Text))
                 Add(trckFrame);
+
+            if (!string.IsNullOrEmpty(tdatFrame.Text))
+                Add(tdatFrame);
 
             if (!string.IsNullOrEmpty(settings["AddSoundCheck"]) && string.Compare(settings["AddSoundCheck"], bool.FalseString, StringComparison.OrdinalIgnoreCase) != 0)
             {

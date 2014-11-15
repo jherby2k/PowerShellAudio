@@ -39,7 +39,6 @@ namespace PowerShellAudio.Extensions.Vorbis
             { "TRACKCOUNT", "TrackCount"           },
             { "REPLAYGAIN_TRACK_GAIN", "TrackGain" },
             { "REPLAYGAIN_TRACK_PEAK", "TrackPeak" },
-            { "DATE", "Year"                       },
             { "YEAR", "Year"                       }
         };
 
@@ -70,10 +69,16 @@ namespace PowerShellAudio.Extensions.Vorbis
                 }
                 else if (comment[0] == "DATE")
                 {
-                    // The DATE comment may contain the year:
+                    // The DATE comment may contain a full date, or only the year:
                     DateTime result;
-                    if (DateTime.TryParse(comment[1], out result) && result.Year >= 1000)
+                    if (DateTime.TryParse(comment[1], CultureInfo.CurrentCulture, DateTimeStyles.NoCurrentDateDefault, out result) && result.Year >= 1000)
+                    {
+                        base["Day"] = result.Day.ToString(CultureInfo.InvariantCulture);
+                        base["Month"] = result.Month.ToString(CultureInfo.InvariantCulture);
                         base["Year"] = result.Year.ToString(CultureInfo.InvariantCulture);
+                    }
+                    else
+                        base["Year"] = comment[1];
                 }
                 else
                 {

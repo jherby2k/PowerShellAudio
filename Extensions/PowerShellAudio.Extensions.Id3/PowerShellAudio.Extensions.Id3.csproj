@@ -131,6 +131,7 @@
     <Compile Include="TagModelToMetadataAdapter.cs" />
     <Compile Include="MetadataToTagModelAdapter.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="TdatFrame.cs" />
     <Compile Include="TrckFrame.cs" />
   </ItemGroup>
   <ItemGroup>

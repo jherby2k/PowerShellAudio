@@ -18,6 +18,7 @@
 using System;
 using System.Collections.Generic;
 using System.Diagnostics.Contracts;
+using System.Globalization;
 
 namespace PowerShellAudio.Extensions.Flac
 {
@@ -34,20 +35,38 @@ namespace PowerShellAudio.Extensions.Flac
             { "TrackCount", "TOTALTRACKS"          },
             { "TrackGain", "REPLAYGAIN_TRACK_GAIN" },
             { "TrackNumber", "TRACKNUMBER"         },
-            { "TrackPeak", "REPLAYGAIN_TRACK_PEAK" },
-            { "Year", "DATE"                       }
+            { "TrackPeak", "REPLAYGAIN_TRACK_PEAK" }
         };
 
         internal MetadataToVorbisCommentAdapter(MetadataDictionary metadata)
         {
             Contract.Requires(metadata != null);
 
+            int day = 0;
+            int month = 0;
+            int year = 0;
+
             foreach (var item in metadata)
             {
-                string mappedKey;
-                if (_map.TryGetValue(item.Key, out mappedKey))
-                    this[mappedKey] = item.Value;
+                if (item.Key == "Day")
+                    day = int.Parse(item.Value, CultureInfo.InvariantCulture);
+                else if (item.Key == "Month")
+                    month = int.Parse(item.Value, CultureInfo.InvariantCulture);
+                else if (item.Key == "Year")
+                    year = int.Parse(item.Value, CultureInfo.InvariantCulture);
+                else
+                {
+                    string mappedKey;
+                    if (_map.TryGetValue(item.Key, out mappedKey))
+                        this[mappedKey] = item.Value;
+                }
             }
+
+            // The DATE field should contain either a full date, or just the year:
+            if (day > 0 && month > 0 && year > 0)
+                this["DATE"] = new DateTime(year, month, day).ToShortDateString();
+            else if (year > 0)
+                this["DATE"] = year.ToString(CultureInfo.InvariantCulture);
         }
     }
 }
