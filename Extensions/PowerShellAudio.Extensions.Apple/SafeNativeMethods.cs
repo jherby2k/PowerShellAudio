@@ -23,6 +23,7 @@ using System.IO;
 using System.Runtime.InteropServices;
 using System.Security;
 using System.Text;
+using System.Diagnostics;
 
 namespace PowerShellAudio.Extensions.Apple
 {
@@ -30,26 +31,34 @@ namespace PowerShellAudio.Extensions.Apple
     static class SafeNativeMethods
     {
         const string _coreAudioToolboxLibrary = "CoreAudioToolbox.dll";
+        static readonly string _coreAudioInstallDir;
 
+        [SuppressMessage("Microsoft.Performance", "CA1810:InitializeReferenceTypeStaticFieldsInline", Justification = "Static initialization must be guaranteed to occur before a static method of the type is called.")]
         [SuppressMessage("Microsoft.Design", "CA1065:DoNotRaiseExceptionsInUnexpectedLocations", Justification = "This type is unusable if accessed from a 64-bit process, if the unmanaged DLL can't be loaded")]
         static SafeNativeMethods()
         {
             if (Environment.Is64BitProcess)
                 throw new ExtensionInitializationException(Resources.SafeNativeMethods64BitError);
 
-            // Prefix the PATH variable with the Apple Application Support installation directory:
             try
             {
-                var newPath = new StringBuilder((string)Registry.LocalMachine.OpenSubKey("SOFTWARE").OpenSubKey("Apple Inc.").OpenSubKey("Apple Application Support").GetValue("InstallDir"));
+                _coreAudioInstallDir = (string)Registry.LocalMachine.OpenSubKey("SOFTWARE").OpenSubKey("Apple Inc.").OpenSubKey("Apple Application Support").GetValue("InstallDir");
+
+                // Prefix the PATH variable with the Apple Application Support installation directory:
+                var newPath = new StringBuilder(_coreAudioInstallDir);
                 newPath.Append(Path.PathSeparator);
                 newPath.Append(Environment.GetEnvironmentVariable("PATH"));
-
                 Environment.SetEnvironmentVariable("PATH", newPath.ToString());
             }
             catch (NullReferenceException e)
             {
                 throw new ExtensionInitializationException(Resources.SafeNativeMethodsDllsMissing, e);
             }
+        }
+
+        internal static string GetCoreAudioToolboxVersion()
+        {
+            return FileVersionInfo.GetVersionInfo(Path.Combine(_coreAudioInstallDir, _coreAudioToolboxLibrary)).FileVersion;
         }
 
         [DllImport(_coreAudioToolboxLibrary, CallingConvention = CallingConvention.Cdecl)]

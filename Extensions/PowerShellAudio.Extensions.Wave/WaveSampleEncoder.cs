@@ -15,9 +15,11 @@
  * <http://www.gnu.org/licenses/>.
  */
 
+using PowerShellAudio.Extensions.Wave.Properties;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics.Contracts;
+using System.Globalization;
 using System.IO;
 
 namespace PowerShellAudio.Extensions.Wave
@@ -31,9 +33,24 @@ namespace PowerShellAudio.Extensions.Wave
         int _bytesPerSample;
         float _multiplier;
 
+        public string Description
+        {
+            get
+            {
+                Contract.Ensures(!string.IsNullOrEmpty(Contract.Result<string>()));
+
+                return string.Format(CultureInfo.CurrentCulture, Resources.SampleEncoderDescription);
+            }
+        }
+
         public string Extension
         {
-            get { return ".wav"; }
+            get
+            {
+                Contract.Ensures(!string.IsNullOrEmpty(Contract.Result<string>()));
+
+                return ".wav";
+            }
         }
 
         public SettingsDictionary DefaultSettings

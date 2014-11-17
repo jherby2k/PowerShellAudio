@@ -37,9 +37,24 @@ namespace PowerShellAudio.Extensions.Vorbis
         byte[] _buffer;
         Stream _output;
 
+        public string Description
+        {
+            get
+            {
+                Contract.Ensures(!string.IsNullOrEmpty(Contract.Result<string>()));
+
+                return string.Format(CultureInfo.CurrentCulture, Resources.SampleEncoderDescription, SafeNativeMethods.VorbisVersion());
+            }
+        }
+
         public string Extension
         {
-            get { return ".ogg"; }
+            get
+            {
+                Contract.Ensures(!string.IsNullOrEmpty(Contract.Result<string>()));
+
+                return ".ogg";
+            }
         }
 
         public SettingsDictionary DefaultSettings

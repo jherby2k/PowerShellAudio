@@ -40,9 +40,24 @@ namespace PowerShellAudio.Extensions.Apple
         NativeExtendedAudioFile _audioFile;
         int[] _buffer;
 
+        public string Description
+        {
+            get
+            {
+                Contract.Ensures(!string.IsNullOrEmpty(Contract.Result<string>()));
+
+                return string.Format(CultureInfo.CurrentCulture, Resources.AacSampleEncoderDescription, SafeNativeMethods.GetCoreAudioToolboxVersion());
+            }
+        }
+
         public string Extension
         {
-            get { return ".m4a"; }
+            get
+            {
+                Contract.Ensures(!string.IsNullOrEmpty(Contract.Result<string>()));
+
+                return ".m4a";
+            }
         }
 
         public SettingsDictionary DefaultSettings

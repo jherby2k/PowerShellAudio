@@ -180,6 +180,9 @@
   <data name="SampleEncoderBadSeekPointInterval" xml:space="preserve">
     <value>Unrecognized SeekPointInterval value '{0}'. Specify a value greater than or equal to '0'. Default is '10'</value>
   </data>
+  <data name="SampleEncoderDescription" xml:space="preserve">
+    <value>Free Lossless Audio Codec ({0})</value>
+  </data>
   <data name="SampleEncoderEncodingError" xml:space="preserve">
     <value>FLAC encountered an encoding error. Status: {0}</value>
   </data>

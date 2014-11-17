@@ -32,9 +32,24 @@ namespace PowerShellAudio.Extensions.Flac
         float _multiplier;
         int[] _buffer;
 
+        public string Description
+        {
+            get
+            {
+                Contract.Ensures(!string.IsNullOrEmpty(Contract.Result<string>()));
+
+                return string.Format(CultureInfo.CurrentCulture, Resources.SampleEncoderDescription, SafeNativeMethods.GetVersion());
+            }
+        }
+
         public string Extension
         {
-            get { return ".flac"; }
+            get
+            {
+                Contract.Ensures(!string.IsNullOrEmpty(Contract.Result<string>()));
+
+                return ".flac";
+            }
         }
 
         public SettingsDictionary DefaultSettings
@@ -170,8 +185,9 @@ namespace PowerShellAudio.Extensions.Flac
                 if (_encoder != null)
                     _encoder.Dispose();
 
-                foreach (var metadataBlock in _metadataBlocks)
-                    metadataBlock.Dispose();
+                if (_metadataBlocks != null)
+                    foreach (var metadataBlock in _metadataBlocks)
+                        metadataBlock.Dispose();
             }
         }
 

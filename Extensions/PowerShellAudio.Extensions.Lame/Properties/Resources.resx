@@ -141,6 +141,9 @@
   <data name="SampleEncoderBadVBRQuality" xml:space="preserve">
     <value>Unrecognized VBRQuality value '{0}'. Specify a value between '0' (high) and '9.999' (low). Default is '2'</value>
   </data>
+  <data name="SampleEncoderDescription" xml:space="preserve">
+    <value>MPEG Audio Layer III (Lame {0})</value>
+  </data>
   <data name="SampleEncoderFailedToInitialize" xml:space="preserve">
     <value>Lame failed to initialize the encoder using the specified settings</value>
   </data>

@@ -153,4 +153,7 @@
   <data name="SampleDecoderUnsupportedError" xml:space="preserve">
     <value>Only PCM Wave files are supported by this decoder</value>
   </data>
+  <data name="SampleEncoderDescription" xml:space="preserve">
+    <value>Linear PCM Wave</value>
+  </data>
 </root>

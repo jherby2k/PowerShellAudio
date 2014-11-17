@@ -117,6 +117,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="ExportAudioFileCommand.cs" />
+    <Compile Include="GetAudioEncoderDescriptionCommand.cs" />
     <Compile Include="GetAudioMetadataAvailableSettingListCommand.cs" />
     <Compile Include="GetAudioEncoderAvailableSettingListCommand.cs" />
     <Compile Include="GetAudioMetadataDefaultSettingListCommand.cs" />

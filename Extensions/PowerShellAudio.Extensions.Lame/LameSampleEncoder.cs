@@ -32,9 +32,24 @@ namespace PowerShellAudio.Extensions.Lame
         NativeEncoder _encoder;
         ExportLifetimeContext<ISampleFilter> _replayGainFilterLifetime;
 
+        public string Description
+        {
+            get
+            {
+                Contract.Ensures(!string.IsNullOrEmpty(Contract.Result<string>()));
+
+                return string.Format(CultureInfo.CurrentCulture, Resources.SampleEncoderDescription, SafeNativeMethods.GetLameVersion());
+            }
+        }
+
         public string Extension
         {
-            get { return ".mp3"; }
+            get
+            {
+                Contract.Ensures(!string.IsNullOrEmpty(Contract.Result<string>()));
+
+                return ".mp3";
+            }
         }
 
         public SettingsDictionary DefaultSettings

@@ -26,6 +26,16 @@ namespace PowerShellAudio
     [ContractClassFor(typeof(ISampleEncoder))]
     abstract class SampleEncoderContract : ISampleEncoder
     {
+        public string Description
+        {
+            get
+            {
+                Contract.Ensures(!string.IsNullOrEmpty(Contract.Result<string>()));
+
+                return default(string);
+            }
+        }
+
         public string Extension
         {
             get

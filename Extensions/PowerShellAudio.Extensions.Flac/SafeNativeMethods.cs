@@ -27,7 +27,8 @@ namespace PowerShellAudio.Extensions.Flac
     [SuppressUnmanagedCodeSecurity]
     static class SafeNativeMethods
     {
-        const string _flacLibrary = @"libFLAC.dll";
+        const string _kernelLibrary = "kernel32.dll";
+        const string _flacLibrary = "libFLAC.dll";
 
         static SafeNativeMethods()
         {
@@ -39,6 +40,42 @@ namespace PowerShellAudio.Extensions.Flac
 
             Environment.SetEnvironmentVariable("PATH", newPath.ToString());
         }
+
+        internal static string GetVersion()
+        {
+            bool requiresFreeing = false;
+            IntPtr module = GetModuleHandle(_flacLibrary);
+
+            try
+            {
+                // If the module isn't already loaded, load it:
+                if (module == IntPtr.Zero)
+                {
+                    module = LoadLibrary(_flacLibrary);
+                    requiresFreeing = true;
+                }
+
+                return Marshal.PtrToStringAnsi(Marshal.PtrToStructure<IntPtr>(GetProcAddress(module, "FLAC__VENDOR_STRING")));
+            }
+            finally
+            {
+                if (requiresFreeing)
+                    FreeLibrary(module);
+            }
+        }
+
+        [DllImport(_kernelLibrary, CharSet = CharSet.Unicode)]
+        internal static extern IntPtr GetModuleHandle(string moduleName);
+
+        [DllImport(_kernelLibrary, CharSet = CharSet.Unicode)]
+        internal static extern IntPtr LoadLibrary(string dllToLoad);
+
+        [DllImport(_kernelLibrary)]
+        [return: MarshalAs(UnmanagedType.Bool)]
+        internal static extern bool FreeLibrary(IntPtr module);
+
+        [DllImport(_kernelLibrary, ExactSpelling = true, CharSet = CharSet.Ansi, BestFitMapping = false)]
+        internal static extern IntPtr GetProcAddress(IntPtr module, string name);
 
         #region Stream Decoder
 
