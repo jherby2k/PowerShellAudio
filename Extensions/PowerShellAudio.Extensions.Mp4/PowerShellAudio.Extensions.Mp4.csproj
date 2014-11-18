@@ -127,6 +127,7 @@
     <Compile Include="GlobalSuppressions.cs" />
     <Compile Include="ItunesMetadataDecoder.cs" />
     <Compile Include="ItunesMetadataEncoder.cs" />
+    <Compile Include="ItunesMetadataEncoderInfo.cs" />
     <Compile Include="M4AAudioInfoDecoder.cs" />
     <Compile Include="MetadataToAtomAdapter.cs" />
     <Compile Include="Mp4.cs" />

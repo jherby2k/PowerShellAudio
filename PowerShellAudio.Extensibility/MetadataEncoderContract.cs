@@ -25,23 +25,13 @@ namespace PowerShellAudio
     [ContractClassFor(typeof(IMetadataEncoder))]
     abstract class MetadataEncoderContract : IMetadataEncoder
     {
-        public SettingsDictionary DefaultSettings
+        public MetadataEncoderInfo EncoderInfo
         {
             get
             {
-                Contract.Ensures(Contract.Result<SettingsDictionary>() != null);
+                Contract.Ensures(Contract.Result<MetadataEncoderInfo>() != null);
 
-                return default(SettingsDictionary);
-            }
-        }
-
-        public IReadOnlyCollection<string> AvailableSettings
-        {
-            get
-            {
-                Contract.Ensures(Contract.Result<IReadOnlyCollection<string>>() != null);
-
-                return default(IReadOnlyCollection<string>);
+                return default(MetadataEncoderInfo);
             }
         }
 

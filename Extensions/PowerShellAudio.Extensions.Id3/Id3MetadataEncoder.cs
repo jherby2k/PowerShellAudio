@@ -15,12 +15,11 @@
  * <http://www.gnu.org/licenses/>.
  */
 
-using PowerShellAudio.Extensions.Id3.Properties;
 using Id3Lib;
 using Id3Lib.Exceptions;
 using Id3Lib.Frames;
+using PowerShellAudio.Extensions.Id3.Properties;
 using System;
-using System.Collections.Generic;
 using System.Diagnostics.Contracts;
 using System.Globalization;
 using System.IO;
@@ -31,37 +30,13 @@ namespace PowerShellAudio.Extensions.Id3
     [MetadataEncoderExport(".mp3")]
     public class Id3MetadataEncoder : IMetadataEncoder
     {
-        public SettingsDictionary DefaultSettings
+        public MetadataEncoderInfo EncoderInfo
         {
             get
             {
-                Contract.Ensures(Contract.Result<SettingsDictionary>() != null);
+                Contract.Ensures(Contract.Result<MetadataEncoderInfo>() != null);
 
-                var result = new SettingsDictionary();
-
-                result.Add("AddSoundCheck", bool.FalseString);
-                result.Add("ID3Version", "2.3");
-                result.Add("PaddingSize", "0");
-                result.Add("UsePadding", bool.FalseString);
-
-                return result;
-            }
-        }
-
-        public IReadOnlyCollection<string> AvailableSettings
-        {
-            get
-            {
-                Contract.Ensures(Contract.Result<IReadOnlyCollection<string>>() != null);
-
-                var result = new List<string>(4);
-
-                result.Add("AddSoundCheck");
-                result.Add("ID3Version");
-                result.Add("PaddingSize");
-                result.Add("UsePadding");
-
-                return result.AsReadOnly();
+                return new Id3MetadataEncoderInfo();
             }
         }
 

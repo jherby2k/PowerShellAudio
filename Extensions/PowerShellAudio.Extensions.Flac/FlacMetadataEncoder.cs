@@ -16,8 +16,6 @@
  */
 
 using PowerShellAudio.Extensions.Flac.Properties;
-using System.Collections.Generic;
-using System.Diagnostics.CodeAnalysis;
 using System.Diagnostics.Contracts;
 using System.Globalization;
 using System.IO;
@@ -28,31 +26,13 @@ namespace PowerShellAudio.Extensions.Flac
     [MetadataEncoderExport(".flac")]
     public class FlacMetadataEncoder : IMetadataEncoder
     {
-        public SettingsDictionary DefaultSettings
+        public MetadataEncoderInfo EncoderInfo
         {
             get
             {
-                Contract.Ensures(Contract.Result<SettingsDictionary>() != null);
+                Contract.Ensures(Contract.Result<MetadataEncoderInfo>() != null);
 
-                var result = new SettingsDictionary();
-
-                result.Add("UsePadding", bool.FalseString);
-
-                return result;
-            }
-        }
-
-        public IReadOnlyCollection<string> AvailableSettings
-        {
-            get
-            {
-                Contract.Ensures(Contract.Result<IReadOnlyCollection<string>>() != null);
-
-                var result = new List<string>(1);
-
-                result.Add("UsePadding");
-
-                return result.AsReadOnly();
+                return new FlacMetadataEncoderInfo();
             }
         }
 

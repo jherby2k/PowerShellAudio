@@ -15,7 +15,6 @@
  * <http://www.gnu.org/licenses/>.
  */
 
-using System.Collections.Generic;
 using System.Diagnostics.Contracts;
 using System.IO;
 
@@ -33,20 +32,12 @@ namespace PowerShellAudio
     public interface IMetadataEncoder
     {
         /// <summary>
-        /// Gets the default settings.
+        /// Gets the encoder information.
         /// </summary>
         /// <value>
-        /// The default settings.
+        /// The encoder information.
         /// </value>
-        SettingsDictionary DefaultSettings { get; }
-
-        /// <summary>
-        /// Gets the available settings.
-        /// </summary>
-        /// <value>
-        /// The available settings.
-        /// </value>
-        IReadOnlyCollection<string> AvailableSettings { get; }
+        MetadataEncoderInfo EncoderInfo { get; }
 
         /// <summary>
         /// Writes the metadata.

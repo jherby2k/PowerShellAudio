@@ -145,6 +145,7 @@
     <Compile Include="VorbisInfo.cs" />
     <Compile Include="VorbisMetadataDecoder.cs" />
     <Compile Include="VorbisMetadataEncoder.cs" />
+    <Compile Include="VorbisMetadataEncoderInfo.cs" />
     <Compile Include="VorbisSampleEncoder.cs" />
   </ItemGroup>
   <ItemGroup>

@@ -122,6 +122,7 @@
     <Compile Include="GlobalSuppressions.cs" />
     <Compile Include="Id3MetadataDecoder.cs" />
     <Compile Include="Id3MetadataEncoder.cs" />
+    <Compile Include="Id3MetadataEncoderInfo.cs" />
     <Compile Include="Properties\Resources.Designer.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>

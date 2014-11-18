@@ -17,7 +17,6 @@
 
 using PowerShellAudio.Extensions.Vorbis.Properties;
 using System;
-using System.Collections.Generic;
 using System.Diagnostics.Contracts;
 using System.IO;
 using System.Runtime.InteropServices;
@@ -28,23 +27,13 @@ namespace PowerShellAudio.Extensions.Vorbis
     [MetadataEncoderExport(".ogg")]
     public class VorbisMetadataEncoder : IMetadataEncoder
     {
-        public SettingsDictionary DefaultSettings
+        public MetadataEncoderInfo EncoderInfo
         {
             get
             {
-                Contract.Ensures(Contract.Result<SettingsDictionary>() != null);
+                Contract.Ensures(Contract.Result<MetadataEncoderInfo>() != null);
 
-                return new SettingsDictionary();
-            }
-        }
-
-        public IReadOnlyCollection<string> AvailableSettings
-        {
-            get
-            {
-                Contract.Ensures(Contract.Result<IReadOnlyCollection<string>>() != null);
-
-                return new List<string>(0).AsReadOnly();
+                return new VorbisMetadataEncoderInfo();
             }
         }
 

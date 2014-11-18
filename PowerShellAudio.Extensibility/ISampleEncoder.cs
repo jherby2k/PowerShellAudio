@@ -15,7 +15,6 @@
  * <http://www.gnu.org/licenses/>.
  */
 
-using System.Collections.Generic;
 using System.Diagnostics.Contracts;
 using System.IO;
 

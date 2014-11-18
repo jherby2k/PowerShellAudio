@@ -118,8 +118,7 @@
   <ItemGroup>
     <Compile Include="ExportAudioFileCommand.cs" />
     <Compile Include="GetAudioEncoderInfoCommand.cs" />
-    <Compile Include="GetAudioMetadataAvailableSettingListCommand.cs" />
-    <Compile Include="GetAudioMetadataDefaultSettingListCommand.cs" />
+    <Compile Include="GetAudioMetadataEncoderInfoCommand.cs" />
     <Compile Include="GetAudioAnalyzerListCommand.cs" />
     <Compile Include="GetAudioEncoderListCommand.cs" />
     <Compile Include="HashTableToMetadataDictionaryAdapter.cs" />

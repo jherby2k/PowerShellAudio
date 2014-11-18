@@ -84,7 +84,7 @@ namespace PowerShellAudio.Extensions.Apple
                 var metadataEncoderFactory = ExtensionProvider.GetFactories<IMetadataEncoder>().Where(factory => string.Compare((string)factory.Metadata["Extension"], FileExtension, StringComparison.OrdinalIgnoreCase) == 0).SingleOrDefault();
                 if (metadataEncoderFactory != null)
                     using (ExportLifetimeContext<IMetadataEncoder> metadataEncoderLifetime = metadataEncoderFactory.CreateExport())
-                        metadataEncoderLifetime.Value.DefaultSettings.CopyTo(result);
+                        metadataEncoderLifetime.Value.EncoderInfo.DefaultSettings.CopyTo(result);
 
                 return result;
             }
@@ -113,7 +113,7 @@ namespace PowerShellAudio.Extensions.Apple
                 var metadataEncoderFactory = ExtensionProvider.GetFactories<IMetadataEncoder>().Where(factory => string.Compare((string)factory.Metadata["Extension"], FileExtension, StringComparison.OrdinalIgnoreCase) == 0).SingleOrDefault();
                 if (metadataEncoderFactory != null)
                     using (ExportLifetimeContext<IMetadataEncoder> metadataEncoderLifetime = metadataEncoderFactory.CreateExport())
-                        partialResult = partialResult.Concat(metadataEncoderLifetime.Value.AvailableSettings).ToList();
+                        partialResult = partialResult.Concat(metadataEncoderLifetime.Value.EncoderInfo.AvailableSettings).ToList();
 
                 return partialResult.AsReadOnly();
             }

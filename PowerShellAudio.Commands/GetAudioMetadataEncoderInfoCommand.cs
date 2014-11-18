@@ -23,8 +23,8 @@ using System.Management.Automation;
 
 namespace PowerShellAudio.Commands
 {
-    [Cmdlet(VerbsCommon.Get, "AudioMetadataDefaultSettingList"), OutputType(typeof(SettingsDictionary))]
-    public class GetAudioMetadataDefaultSettingListCommand : Cmdlet
+    [Cmdlet(VerbsCommon.Get, "AudioMetadataEncoderInfo"), OutputType(typeof(MetadataEncoderInfo))]
+    public class GetAudioMetadataEncoderInfoCommand : Cmdlet
     {
         [Parameter(Mandatory = true, Position = 0)]
         public string Extension { get; set; }
@@ -36,7 +36,7 @@ namespace PowerShellAudio.Commands
                 throw new ArgumentException(string.Format(CultureInfo.CurrentCulture, Resources.ExtensionUnknownError, Extension));
 
             using (var encoderLifetime = encoderFactory.CreateExport())
-                WriteObject(encoderLifetime.Value.DefaultSettings, true);
+                WriteObject(encoderLifetime.Value.EncoderInfo);
         }
     }
 }

@@ -17,46 +17,23 @@
 
 using PowerShellAudio.Extensions.Mp4.Properties;
 using System;
-using System.Collections.Generic;
 using System.Diagnostics.Contracts;
 using System.Globalization;
 using System.IO;
 using System.Linq;
-using System.Text;
 
 namespace PowerShellAudio.Extensions.Mp4
 {
     [MetadataEncoderExport(".m4a")]
     public class ItunesMetadataEncoder : IMetadataEncoder
     {
-        public SettingsDictionary DefaultSettings
+        public MetadataEncoderInfo EncoderInfo
         {
             get
             {
-                Contract.Ensures(Contract.Result<SettingsDictionary>() != null);
+                Contract.Ensures(Contract.Result<MetadataEncoderInfo>() != null);
 
-                var result = new SettingsDictionary();
-
-                result.Add("AddMetadata", bool.TrueString);
-                result.Add("AddSoundCheck", bool.FalseString);
-
-                return result;
-            }
-        }
-
-        public IReadOnlyCollection<string> AvailableSettings
-        {
-            get
-            {
-                Contract.Ensures(Contract.Result<IReadOnlyCollection<string>>() != null);
-
-                var result = new List<string>(3);
-
-                result.Add("AddMetadata");
-                result.Add("AddSoundCheck");
-                result.Add("CreationTime");
-
-                return result.AsReadOnly();
+                return new ItunesMetadataEncoderInfo();
             }
         }
 
