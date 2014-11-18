@@ -304,15 +304,6 @@ namespace PowerShellAudio.Extensions.Vorbis.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Ogg Vorbis ({0}).
-        /// </summary>
-        internal static string SampleEncoderDescription {
-            get {
-                return ResourceManager.GetString("SampleEncoderDescription", resourceCulture);
-            }
-        }
-        
-        /// <summary>
         ///   Looks up a localized string similar to There is no sample filter named &apos;ReplayGain&apos; installed.
         /// </summary>
         internal static string SampleEncoderReplayGainFilterError {

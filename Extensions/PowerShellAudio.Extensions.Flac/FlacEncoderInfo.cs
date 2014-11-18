@@ -15,32 +15,45 @@
  * <http://www.gnu.org/licenses/>.
  */
 
-using PowerShellAudio.Extensions.Flac.Properties;
 using System.Collections.Generic;
 using System.Diagnostics.Contracts;
-using System.Globalization;
 
 namespace PowerShellAudio.Extensions.Flac
 {
     class FlacEncoderInfo : SampleEncoderInfo
     {
-        public override string Description
+        public override string Name
         {
             get
             {
                 Contract.Ensures(!string.IsNullOrEmpty(Contract.Result<string>()));
 
-                return string.Format(CultureInfo.CurrentCulture, Resources.SampleEncoderDescription, SafeNativeMethods.GetVersion());
+                return "FLAC";
             }
         }
 
-        public override string Extension
+        public override string FileExtension
         {
             get
             {
                 Contract.Ensures(!string.IsNullOrEmpty(Contract.Result<string>()));
 
                 return ".flac";
+            }
+        }
+
+        public override bool IsLossless
+        {
+            get { return true; }
+        }
+
+        public override string ExternalLibrary
+        {
+            get
+            {
+                Contract.Ensures(!string.IsNullOrEmpty(Contract.Result<string>()));
+
+                return SafeNativeMethods.GetVersion();
             }
         }
 

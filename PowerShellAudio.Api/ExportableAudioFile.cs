@@ -235,7 +235,7 @@ namespace PowerShellAudio
             else
                 outputDirectory.Create();
 
-            return new FileInfo(Path.Combine(outputDirectory.FullName, outputFileName + sampleEncoder.EncoderInfo.Extension));
+            return new FileInfo(Path.Combine(outputDirectory.FullName, outputFileName + sampleEncoder.EncoderInfo.FileExtension));
         }
     }
 }

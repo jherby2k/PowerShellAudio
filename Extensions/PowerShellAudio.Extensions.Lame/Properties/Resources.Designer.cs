@@ -133,7 +133,7 @@ namespace PowerShellAudio.Extensions.Lame.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to MPEG Audio Layer III (Lame {0}).
+        ///   Looks up a localized string similar to Lame {0}.
         /// </summary>
         internal static string SampleEncoderDescription {
             get {

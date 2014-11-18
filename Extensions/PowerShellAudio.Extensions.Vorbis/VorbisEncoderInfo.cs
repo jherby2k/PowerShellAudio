@@ -15,35 +15,48 @@
  * <http://www.gnu.org/licenses/>.
  */
 
-using PowerShellAudio.Extensions.Vorbis.Properties;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.Composition;
 using System.Diagnostics.Contracts;
-using System.Globalization;
 using System.Linq;
 
 namespace PowerShellAudio.Extensions.Vorbis
 {
     class VorbisEncoderInfo : SampleEncoderInfo
     {
-        public override string Description
+        public override string Name
         {
             get
             {
                 Contract.Ensures(!string.IsNullOrEmpty(Contract.Result<string>()));
 
-                return string.Format(CultureInfo.CurrentCulture, Resources.SampleEncoderDescription, SafeNativeMethods.VorbisVersion());
+                return "Ogg Vorbis";
             }
         }
 
-        public override string Extension
+        public override string FileExtension
         {
             get
             {
                 Contract.Ensures(!string.IsNullOrEmpty(Contract.Result<string>()));
 
                 return ".ogg";
+            }
+        }
+
+        public override bool IsLossless
+        {
+            get { return false; }
+        }
+
+        public override string ExternalLibrary
+        {
+            get
+            {
+                Contract.Ensures(!string.IsNullOrEmpty(Contract.Result<string>()));
+
+                return SafeNativeMethods.VorbisVersion();
             }
         }
 

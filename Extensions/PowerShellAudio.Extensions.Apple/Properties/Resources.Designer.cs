@@ -106,15 +106,6 @@ namespace PowerShellAudio.Extensions.Apple.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to MPEG 4 Advanced Audio Coding (Apple Core Audio Toolbox {0}).
-        /// </summary>
-        internal static string AacSampleEncoderDescription {
-            get {
-                return ResourceManager.GetString("AacSampleEncoderDescription", resourceCulture);
-            }
-        }
-        
-        /// <summary>
         ///   Looks up a localized string similar to There is no sample filter named &apos;ReplayGain&apos; installed.
         /// </summary>
         internal static string AacSampleEncoderReplayGainFilterError {
@@ -183,15 +174,6 @@ namespace PowerShellAudio.Extensions.Apple.Properties {
         internal static string LosslessSampleEncoderBitRateError {
             get {
                 return ResourceManager.GetString("LosslessSampleEncoderBitRateError", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Apple Lossless (Apple Core Audio Toolbox {0}).
-        /// </summary>
-        internal static string LosslessSampleEncoderDescription {
-            get {
-                return ResourceManager.GetString("LosslessSampleEncoderDescription", resourceCulture);
             }
         }
         
@@ -282,6 +264,15 @@ namespace PowerShellAudio.Extensions.Apple.Properties {
         internal static string SampleEncoderConverterQualityError {
             get {
                 return ResourceManager.GetString("SampleEncoderConverterQualityError", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Apple Core Audio Toolbox {0}.
+        /// </summary>
+        internal static string SampleEncoderDescription {
+            get {
+                return ResourceManager.GetString("SampleEncoderDescription", resourceCulture);
             }
         }
         

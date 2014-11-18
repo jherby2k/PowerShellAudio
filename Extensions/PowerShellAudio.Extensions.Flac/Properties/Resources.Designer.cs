@@ -250,15 +250,6 @@ namespace PowerShellAudio.Extensions.Flac.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Free Lossless Audio Codec ({0}).
-        /// </summary>
-        internal static string SampleEncoderDescription {
-            get {
-                return ResourceManager.GetString("SampleEncoderDescription", resourceCulture);
-            }
-        }
-        
-        /// <summary>
         ///   Looks up a localized string similar to FLAC encountered an encoding error. Status: {0}.
         /// </summary>
         internal static string SampleEncoderEncodingError {

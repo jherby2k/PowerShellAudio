@@ -198,9 +198,6 @@
   <data name="SampleEncoderBadVbrQuality" xml:space="preserve">
     <value>Unrecognized VBRQuality value '{0}'. Specify a value between '-1' (low) and '10' (high). Default is '5'</value>
   </data>
-  <data name="SampleEncoderDescription" xml:space="preserve">
-    <value>Ogg Vorbis ({0})</value>
-  </data>
   <data name="SampleEncoderReplayGainFilterError" xml:space="preserve">
     <value>There is no sample filter named 'ReplayGain' installed</value>
   </data>

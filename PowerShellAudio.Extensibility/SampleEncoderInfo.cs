@@ -27,20 +27,44 @@ namespace PowerShellAudio
     public abstract class SampleEncoderInfo
     {
         /// <summary>
-        /// Gets a description of the encoder.
+        /// Gets the name of the encoder.
         /// </summary>
         /// <value>
-        /// The description.
+        /// The name.
         /// </value>
-        public abstract string Description { get; }
+        public abstract string Name { get; }
 
         /// <summary>
-        /// Gets the file extension used by this audio format.
+        /// Gets the file extension output by the encoder.
         /// </summary>
         /// <value>
         /// The file extension.
         /// </value>
-        public abstract string Extension { get; }
+        public abstract string FileExtension { get; }
+
+        /// <summary>
+        /// Gets a value indicating whether this encoder generates lossless output.
+        /// </summary>
+        /// <value>
+        /// <c>true</c> if this encoder is lossless; otherwise, <c>false</c>.
+        /// </value>
+        public abstract bool IsLossless { get; }
+
+        /// <summary>
+        /// Gets the external library's version string, if relevant.
+        /// </summary>
+        /// <value>
+        /// The external library.
+        /// </value>
+        public virtual string ExternalLibrary
+        {
+            get
+            {
+                Contract.Ensures(Contract.Result<string>() != null);
+
+                return string.Empty;
+            }
+        }
 
         /// <summary>
         /// Gets the default settings.

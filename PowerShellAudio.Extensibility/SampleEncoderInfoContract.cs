@@ -25,7 +25,7 @@ namespace PowerShellAudio
     [ContractClassFor(typeof(SampleEncoderInfo))]
     abstract class SampleEncoderInfoContract : SampleEncoderInfo
     {
-        public override string Description
+        public override string Name
         {
             get
             {
@@ -35,7 +35,7 @@ namespace PowerShellAudio
             }
         }
 
-        public override string Extension
+        public override string FileExtension
         {
             get
             {
@@ -46,6 +46,14 @@ namespace PowerShellAudio
                 Contract.Ensures(!Contract.Result<string>().Any(character => char.IsUpper(character)));
 
                 return default(string);
+            }
+        }
+
+        public override bool IsLossless
+        {
+            get
+            {
+                return default(bool);
             }
         }
     }

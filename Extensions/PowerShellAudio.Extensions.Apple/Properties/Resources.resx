@@ -132,9 +132,6 @@
   <data name="AacSampleEncoderBadVbrQuality" xml:space="preserve">
     <value>Unrecognized VBRQuality value '{0}'. Specify a value between '0' (low) and '14' (high). Default is '9'</value>
   </data>
-  <data name="AacSampleEncoderDescription" xml:space="preserve">
-    <value>MPEG 4 Advanced Audio Coding (Apple Core Audio Toolbox {0})</value>
-  </data>
   <data name="AacSampleEncoderReplayGainFilterError" xml:space="preserve">
     <value>There is no sample filter named 'ReplayGain' installed</value>
   </data>
@@ -158,9 +155,6 @@
   </data>
   <data name="LosslessSampleEncoderBitRateError" xml:space="preserve">
     <value>Apple Lossless does not support {0} bits per second input</value>
-  </data>
-  <data name="LosslessSampleEncoderDescription" xml:space="preserve">
-    <value>Apple Lossless (Apple Core Audio Toolbox {0})</value>
   </data>
   <data name="NativeAudioConverterInitializationError" xml:space="preserve">
     <value>Audio Converter Services encountered an error while initializing the converter: {0}</value>
@@ -191,6 +185,9 @@
   </data>
   <data name="SampleEncoderConverterQualityError" xml:space="preserve">
     <value>Audio Converter Services encountered an error while setting the quality: {0}</value>
+  </data>
+  <data name="SampleEncoderDescription" xml:space="preserve">
+    <value>Apple Core Audio Toolbox {0}</value>
   </data>
   <data name="SampleEncoderInitializationError" xml:space="preserve">
     <value>Extended Audio File Services encountered an error while initializing the audio file: {0}</value>
