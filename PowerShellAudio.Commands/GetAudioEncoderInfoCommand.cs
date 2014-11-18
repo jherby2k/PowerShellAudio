@@ -23,8 +23,8 @@ using System.Management.Automation;
 
 namespace PowerShellAudio.Commands
 {
-    [Cmdlet(VerbsCommon.Get, "AudioEncoderDescription"), OutputType(typeof(string))]
-    public class GetAudioEncoderDescriptionCommand : Cmdlet
+    [Cmdlet(VerbsCommon.Get, "AudioEncoderInfo"), OutputType(typeof(SampleEncoderInfo))]
+    public class GetAudioEncoderInfoCommand : Cmdlet
     {
         [Parameter(Mandatory = true, Position = 0)]
         public string Encoder { get; set; }
@@ -36,7 +36,7 @@ namespace PowerShellAudio.Commands
                 throw new ArgumentException(string.Format(CultureInfo.CurrentCulture, Resources.EncoderUnknownError, Encoder));
 
             using (var encoderLifetime = encoderFactory.CreateExport())
-                WriteObject(encoderLifetime.Value.Description, true);
+                WriteObject(encoderLifetime.Value.EncoderInfo);
         }
     }
 }

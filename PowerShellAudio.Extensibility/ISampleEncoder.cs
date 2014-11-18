@@ -33,36 +33,12 @@ namespace PowerShellAudio
     public interface ISampleEncoder : IFinalSampleConsumer
     {
         /// <summary>
-        /// Gets a description of the encoder.
+        /// Gets the encoder information.
         /// </summary>
         /// <value>
-        /// The description.
+        /// The encoder information.
         /// </value>
-        string Description { get; }
-
-        /// <summary>
-        /// Gets the file extension used by this audio format.
-        /// </summary>
-        /// <value>
-        /// The file extension.
-        /// </value>
-        string Extension { get; }
-
-        /// <summary>
-        /// Gets the default settings.
-        /// </summary>
-        /// <value>
-        /// The default settings.
-        /// </value>
-        SettingsDictionary DefaultSettings { get; }
-
-        /// <summary>
-        /// Gets the available settings.
-        /// </summary>
-        /// <value>
-        /// The available settings.
-        /// </value>
-        IReadOnlyCollection<string> AvailableSettings { get; }
+        SampleEncoderInfo EncoderInfo { get; }
 
         /// <summary>
         /// Initializes the encoder.

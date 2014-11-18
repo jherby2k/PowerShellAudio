@@ -32,55 +32,13 @@ namespace PowerShellAudio.Extensions.Flac
         float _multiplier;
         int[] _buffer;
 
-        public string Description
+        public SampleEncoderInfo EncoderInfo
         {
             get
             {
-                Contract.Ensures(!string.IsNullOrEmpty(Contract.Result<string>()));
+                Contract.Ensures(Contract.Result<SampleEncoderInfo>() != null);
 
-                return string.Format(CultureInfo.CurrentCulture, Resources.SampleEncoderDescription, SafeNativeMethods.GetVersion());
-            }
-        }
-
-        public string Extension
-        {
-            get
-            {
-                Contract.Ensures(!string.IsNullOrEmpty(Contract.Result<string>()));
-
-                return ".flac";
-            }
-        }
-
-        public SettingsDictionary DefaultSettings
-        {
-            get
-            {
-                Contract.Ensures(Contract.Result<SettingsDictionary>() != null);
-
-                var result = new SettingsDictionary();
-
-                result.Add("AddMetadata", bool.TrueString);
-                result.Add("CompressionLevel", "5");
-                result.Add("SeekPointInterval", "10");
-
-                return result;
-            }
-        }
-
-        public IReadOnlyCollection<string> AvailableSettings
-        {
-            get
-            {
-                Contract.Ensures(Contract.Result<IReadOnlyCollection<string>>() != null);
-
-                var result = new List<string>(3);
-
-                result.Add("AddMetadata");
-                result.Add("CompressionLevel");
-                result.Add("SeekPointInterval");
-
-                return result.AsReadOnly();
+                return new FlacEncoderInfo();
             }
         }
 

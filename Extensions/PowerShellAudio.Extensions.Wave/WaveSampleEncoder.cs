@@ -15,11 +15,8 @@
  * <http://www.gnu.org/licenses/>.
  */
 
-using PowerShellAudio.Extensions.Wave.Properties;
 using System;
-using System.Collections.Generic;
 using System.Diagnostics.Contracts;
-using System.Globalization;
 using System.IO;
 
 namespace PowerShellAudio.Extensions.Wave
@@ -33,43 +30,13 @@ namespace PowerShellAudio.Extensions.Wave
         int _bytesPerSample;
         float _multiplier;
 
-        public string Description
+        public SampleEncoderInfo EncoderInfo
         {
             get
             {
-                Contract.Ensures(!string.IsNullOrEmpty(Contract.Result<string>()));
+                Contract.Ensures(Contract.Result<SampleEncoderInfo>() != null);
 
-                return string.Format(CultureInfo.CurrentCulture, Resources.SampleEncoderDescription);
-            }
-        }
-
-        public string Extension
-        {
-            get
-            {
-                Contract.Ensures(!string.IsNullOrEmpty(Contract.Result<string>()));
-
-                return ".wav";
-            }
-        }
-
-        public SettingsDictionary DefaultSettings
-        {
-            get
-            {
-                Contract.Ensures(Contract.Result<SettingsDictionary>() != null);
-
-                return new SettingsDictionary();
-            }
-        }
-
-        public IReadOnlyCollection<string> AvailableSettings
-        {
-            get
-            {
-                Contract.Ensures(Contract.Result<IReadOnlyCollection<string>>() != null);
-
-                return new List<string>(0).AsReadOnly();
+                return new WaveEncoderInfo();
             }
         }
 

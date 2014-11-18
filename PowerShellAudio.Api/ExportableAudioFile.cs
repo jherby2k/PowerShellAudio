@@ -215,7 +215,7 @@ namespace PowerShellAudio
             Contract.Requires(settings != null);
             Contract.Requires(encoder != null);
 
-            foreach (var unsupportedKey in settings.Keys.Where(setting => !encoder.AvailableSettings.Contains(setting, StringComparer.OrdinalIgnoreCase)))
+            foreach (var unsupportedKey in settings.Keys.Where(setting => !encoder.EncoderInfo.AvailableSettings.Contains(setting, StringComparer.OrdinalIgnoreCase)))
                 throw new ArgumentException(string.Format(CultureInfo.CurrentCulture, Resources.ExportableAudioFileSettingsError, unsupportedKey));
         }
 
@@ -235,7 +235,7 @@ namespace PowerShellAudio
             else
                 outputDirectory.Create();
 
-            return new FileInfo(Path.Combine(outputDirectory.FullName, outputFileName + sampleEncoder.Extension));
+            return new FileInfo(Path.Combine(outputDirectory.FullName, outputFileName + sampleEncoder.EncoderInfo.Extension));
         }
     }
 }

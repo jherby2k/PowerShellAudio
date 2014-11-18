@@ -126,6 +126,7 @@
     <Compile Include="RiffWriter.cs" />
     <Compile Include="WaveAudioInfoDecoder.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="WaveEncoderInfo.cs" />
     <Compile Include="WaveSampleDecoder.cs" />
     <Compile Include="WaveSampleEncoder.cs" />
   </ItemGroup>

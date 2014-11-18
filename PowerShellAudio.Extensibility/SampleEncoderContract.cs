@@ -16,57 +16,21 @@
  */
 
 using System;
-using System.Collections.Generic;
 using System.Diagnostics.Contracts;
 using System.IO;
-using System.Linq;
 
 namespace PowerShellAudio
 {
     [ContractClassFor(typeof(ISampleEncoder))]
     abstract class SampleEncoderContract : ISampleEncoder
     {
-        public string Description
+        public SampleEncoderInfo EncoderInfo
         {
             get
             {
-                Contract.Ensures(!string.IsNullOrEmpty(Contract.Result<string>()));
+                Contract.Ensures(Contract.Result<SampleEncoderInfo>() != null);
 
-                return default(string);
-            }
-        }
-
-        public string Extension
-        {
-            get
-            {
-                Contract.Ensures(!string.IsNullOrEmpty(Contract.Result<string>()));
-                Contract.Ensures(Contract.Result<string>().StartsWith(".", StringComparison.OrdinalIgnoreCase));
-                Contract.Ensures(!Contract.Result<string>().Any(character => char.IsWhiteSpace(character)));
-                Contract.Ensures(!Contract.Result<string>().Any(character => Path.GetInvalidFileNameChars().Contains(character)));
-                Contract.Ensures(!Contract.Result<string>().Any(character => char.IsUpper(character)));
-
-                return default(string);
-            }
-        }
-
-        public SettingsDictionary DefaultSettings
-        {
-            get
-            {
-                Contract.Ensures(Contract.Result<SettingsDictionary>() != null);
-
-                return default(SettingsDictionary);
-            }
-        }
-
-        public IReadOnlyCollection<string> AvailableSettings
-        {
-            get
-            {
-                Contract.Ensures(Contract.Result<IReadOnlyCollection<string>>() != null);
-
-                return default(IReadOnlyCollection<string>);
+                return default(SampleEncoderInfo);
             }
         }
 

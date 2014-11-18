@@ -119,6 +119,8 @@
   <ItemGroup>
     <Compile Include="AudioInfoDecoderContract.cs" />
     <Compile Include="AudioInfoDecoderExportAttribute.cs" />
+    <Compile Include="SampleEncoderInfo.cs" />
+    <Compile Include="SampleEncoderInfoContract.cs" />
     <Compile Include="ExtensionProvider.cs" />
     <Compile Include="ExtensionProviderSingleton.cs" />
     <Compile Include="IFinalSampleConsumer.cs" />
