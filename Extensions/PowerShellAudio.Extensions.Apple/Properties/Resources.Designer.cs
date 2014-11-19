@@ -286,6 +286,15 @@ namespace PowerShellAudio.Extensions.Apple.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to There is no metadata encoder for the &apos;{0}&apos; extension installed.
+        /// </summary>
+        internal static string SampleEncoderMetadataEncoderError {
+            get {
+                return ResourceManager.GetString("SampleEncoderMetadataEncoderError", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Extended Audio File Services encountered an error while writing a packet: {0}.
         /// </summary>
         internal static string SampleEncoderWriteError {

@@ -192,6 +192,9 @@
   <data name="SampleEncoderInitializationError" xml:space="preserve">
     <value>Extended Audio File Services encountered an error while initializing the audio file: {0}</value>
   </data>
+  <data name="SampleEncoderMetadataEncoderError" xml:space="preserve">
+    <value>There is no metadata encoder for the '{0}' extension installed</value>
+  </data>
   <data name="SampleEncoderWriteError" xml:space="preserve">
     <value>Extended Audio File Services encountered an error while writing a packet: {0}</value>
   </data>

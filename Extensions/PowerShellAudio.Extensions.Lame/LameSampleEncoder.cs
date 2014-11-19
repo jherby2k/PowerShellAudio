@@ -46,7 +46,7 @@ namespace PowerShellAudio.Extensions.Lame
             Contract.Ensures(_encoder != null);
 
             // Load the external gain filter:
-            var sampleFilterFactory = ExtensionProvider.GetFactories<ISampleFilter>().Where(factory => string.Compare((string)factory.Metadata["Name"], "ReplayGain", StringComparison.OrdinalIgnoreCase) == 0).SingleOrDefault();
+            var sampleFilterFactory = ExtensionProvider.GetFactories<ISampleFilter>("Name", "ReplayGain").SingleOrDefault();
             if (sampleFilterFactory == null)
                 throw new ExtensionInitializationException(Resources.SampleEncoderReplayGainFilterError);
             _replayGainFilterLifetime = sampleFilterFactory.CreateExport();
@@ -55,7 +55,9 @@ namespace PowerShellAudio.Extensions.Lame
             if (string.IsNullOrEmpty(settings["AddMetadata"]) || string.Compare(settings["AddMetadata"], bool.TrueString, StringComparison.OrdinalIgnoreCase) == 0)
             {
                 // Call the external ID3 encoder:
-                var metadataEncoderFactory = ExtensionProvider.GetFactories<IMetadataEncoder>().Where(factory => string.Compare((string)factory.Metadata["Extension"], EncoderInfo.FileExtension, StringComparison.OrdinalIgnoreCase) == 0).Single();
+                var metadataEncoderFactory = ExtensionProvider.GetFactories<IMetadataEncoder>("Extension", EncoderInfo.FileExtension).Single();
+                if (metadataEncoderFactory == null)
+                    throw new ExtensionInitializationException(string.Format(CultureInfo.CurrentCulture, Resources.SampleEncoderMetadataEncoderError, EncoderInfo.FileExtension));
                 using (ExportLifetimeContext<IMetadataEncoder> metadataEncoderLifetime = metadataEncoderFactory.CreateExport())
                     metadataEncoderLifetime.Value.WriteMetadata(stream, metadata, settings);
             }

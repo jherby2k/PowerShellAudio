@@ -57,7 +57,7 @@ namespace PowerShellAudio.Extensions.Vorbis
             _output = stream;
 
             // Load the external gain filter:
-            var sampleFilterFactory = ExtensionProvider.GetFactories<ISampleFilter>().Where(factory => string.Compare((string)factory.Metadata["Name"], "ReplayGain", StringComparison.OrdinalIgnoreCase) == 0).SingleOrDefault();
+            var sampleFilterFactory = ExtensionProvider.GetFactories<ISampleFilter>("Name", "ReplayGain").SingleOrDefault();
             if (sampleFilterFactory == null)
                 throw new ExtensionInitializationException(Resources.SampleEncoderReplayGainFilterError);
             _replayGainFilterLifetime = sampleFilterFactory.CreateExport();

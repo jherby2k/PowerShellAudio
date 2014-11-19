@@ -117,17 +117,11 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
-  <data name="EncoderUnknownError" xml:space="preserve">
-    <value>There is no encoder named '{0}' available</value>
-  </data>
   <data name="ExportAudioFileCommandActivityMessage" xml:space="preserve">
     <value>Exporting to {0} format</value>
   </data>
   <data name="ExportAudioFileCommandStatusMessage" xml:space="preserve">
     <value>{0} of {1} files exported</value>
-  </data>
-  <data name="ExtensionUnknownError" xml:space="preserve">
-    <value>There is no metadata encoder for the file extension '{0}'</value>
   </data>
   <data name="MeasureAudioFileCommandActivityMessage" xml:space="preserve">
     <value>Performing {0} analysis</value>

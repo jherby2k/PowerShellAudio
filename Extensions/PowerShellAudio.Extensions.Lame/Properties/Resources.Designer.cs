@@ -151,6 +151,15 @@ namespace PowerShellAudio.Extensions.Lame.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to There is no metadata encoder for the &apos;{0}&apos; extension installed..
+        /// </summary>
+        internal static string SampleEncoderMetadataEncoderError {
+            get {
+                return ResourceManager.GetString("SampleEncoderMetadataEncoderError", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to There is no sample filter named &apos;ReplayGain&apos; installed.
         /// </summary>
         internal static string SampleEncoderReplayGainFilterError {

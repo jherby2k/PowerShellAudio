@@ -15,10 +15,6 @@
  * <http://www.gnu.org/licenses/>.
  */
 
-using PowerShellAudio.Commands.Properties;
-using System;
-using System.Globalization;
-using System.Linq;
 using System.Management.Automation;
 
 namespace PowerShellAudio.Commands
@@ -31,12 +27,9 @@ namespace PowerShellAudio.Commands
 
         protected override void ProcessRecord()
         {
-            var encoderFactory = ExtensionProvider.GetFactories<IMetadataEncoder>().Where(factory => string.Compare((string)factory.Metadata["Extension"], Extension, StringComparison.OrdinalIgnoreCase) == 0).SingleOrDefault();
-            if (encoderFactory == null)
-                throw new ArgumentException(string.Format(CultureInfo.CurrentCulture, Resources.ExtensionUnknownError, Extension));
-
-            using (var encoderLifetime = encoderFactory.CreateExport())
-                WriteObject(encoderLifetime.Value.EncoderInfo);
+            foreach (var encoderFactory in ExtensionProvider.GetFactories<IMetadataEncoder>("Extension", Extension))
+                using (var encoderLifetime = encoderFactory.CreateExport())
+                    WriteObject(encoderLifetime.Value.EncoderInfo);
         }
     }
 }

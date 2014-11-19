@@ -15,7 +15,6 @@
  * <http://www.gnu.org/licenses/>.
  */
 
-using System;
 using System.Collections.Generic;
 using System.ComponentModel.Composition;
 using System.Diagnostics.Contracts;
@@ -73,7 +72,7 @@ namespace PowerShellAudio.Extensions.Vorbis
                 result.Add("VBRQuality", "5");
 
                 // Call the external ReplayGain filter for scaling the input:
-                var replayGainFilterFactory = ExtensionProvider.GetFactories<ISampleFilter>().Where(factory => string.Compare((string)factory.Metadata["Name"], "ReplayGain", StringComparison.OrdinalIgnoreCase) == 0).SingleOrDefault();
+                var replayGainFilterFactory = ExtensionProvider.GetFactories<ISampleFilter>("Name", "ReplayGain").SingleOrDefault();
                 if (replayGainFilterFactory != null)
                     using (ExportLifetimeContext<ISampleFilter> replayGainFilterLifetime = replayGainFilterFactory.CreateExport())
                         replayGainFilterLifetime.Value.DefaultSettings.CopyTo(result);
@@ -97,7 +96,7 @@ namespace PowerShellAudio.Extensions.Vorbis
                 partialResult.Add("VBRQuality");
 
                 // Call the external ReplayGain filter for scaling the input:
-                var replayGainFilterFactory = ExtensionProvider.GetFactories<ISampleFilter>().Where(factory => string.Compare((string)factory.Metadata["Name"], "ReplayGain", StringComparison.OrdinalIgnoreCase) == 0).SingleOrDefault();
+                var replayGainFilterFactory = ExtensionProvider.GetFactories<ISampleFilter>("Name", "ReplayGain").SingleOrDefault();
                 if (replayGainFilterFactory != null)
                     using (ExportLifetimeContext<ISampleFilter> replayGainFilterLifetime = replayGainFilterFactory.CreateExport())
                         partialResult = partialResult.Concat(replayGainFilterLifetime.Value.AvailableSettings).ToList();

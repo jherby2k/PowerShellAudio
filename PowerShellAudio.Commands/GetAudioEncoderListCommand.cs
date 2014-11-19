@@ -15,7 +15,6 @@
  * <http://www.gnu.org/licenses/>.
  */
 
-using System.Linq;
 using System.Management.Automation;
 
 namespace PowerShellAudio.Commands
@@ -25,7 +24,7 @@ namespace PowerShellAudio.Commands
     {
         protected override void ProcessRecord()
         {
-            WriteObject(ExtensionProvider.GetFactories<ISampleEncoder>().Select(factory => factory.Metadata["Name"].ToString()), true);
+            WriteObject(ExtensionProvider.GetMetadata<ISampleEncoder>("Name"), true);
         }
     }
 }

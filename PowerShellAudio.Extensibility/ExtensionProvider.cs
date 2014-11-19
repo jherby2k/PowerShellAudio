@@ -15,9 +15,10 @@
  * <http://www.gnu.org/licenses/>.
  */
 
+using System;
 using System.Collections.Generic;
 using System.ComponentModel.Composition;
-using System.Diagnostics.Contracts;
+using System.Linq;
 
 namespace PowerShellAudio
 {
@@ -27,15 +28,26 @@ namespace PowerShellAudio
     public static class ExtensionProvider
     {
         /// <summary>
-        /// Discovers the extension factories for a given type.
+        /// Gets the values of the specified key for all extensions of type T from metadata.
         /// </summary>
-        /// <typeparam name="T">The type of extension factories to discover.</typeparam>
-        /// <returns>The extension factories.</returns>
-        public static IEnumerable<ExportFactory<T, IDictionary<string, object>>> GetFactories<T>()
+        /// <typeparam name="T"></typeparam>
+        /// <param name="key">The key.</param>
+        /// <returns>The values.</returns>
+        public static IEnumerable<string> GetMetadata<T>(string key)
         {
-            Contract.Ensures(Contract.Result<IEnumerable<ExportFactory<T, IDictionary<string, object>>>>() != null);
+            return ExtensionProviderSingleton<T>.Instance.Factories.Select(factory => factory.Metadata[key]).Cast<string>();
+        }
 
-            return ExtensionProviderSingleton<T>.Instance.Factories;
+        /// <summary>
+        /// Gets the extension export factories with the specified metadata key and value.
+        /// </summary>
+        /// <typeparam name="T">The extension type.</typeparam>
+        /// <param name="key">The key.</param>
+        /// <param name="value">The value.</param>
+        /// <returns>The encoder </returns>
+        public static IEnumerable<ExportFactory<T>> GetFactories<T>(string key, string value)
+        {
+            return ExtensionProviderSingleton<T>.Instance.Factories.Where(factory => string.Compare((string)factory.Metadata[key], value, StringComparison.OrdinalIgnoreCase) == 0);
         }
     }
 }
