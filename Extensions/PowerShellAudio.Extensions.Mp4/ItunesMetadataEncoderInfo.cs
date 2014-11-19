@@ -22,6 +22,16 @@ namespace PowerShellAudio.Extensions.Mp4
 {
     class ItunesMetadataEncoderInfo : MetadataEncoderInfo
     {
+        public override string Format
+        {
+            get
+            {
+                Contract.Ensures(!string.IsNullOrEmpty(Contract.Result<string>()));
+
+                return "MP4 (iTunes)";
+            }
+        }
+
         public override string FileExtension
         {
             get

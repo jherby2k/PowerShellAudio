@@ -27,6 +27,14 @@ namespace PowerShellAudio
     public abstract class MetadataEncoderInfo
     {
         /// <summary>
+        /// Gets the format.
+        /// </summary>
+        /// <value>
+        /// The format.
+        /// </value>
+        public abstract string Format { get; }
+
+        /// <summary>
         /// Gets the file extension supported by the encoder.
         /// </summary>
         /// <value>

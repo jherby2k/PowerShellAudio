@@ -22,6 +22,16 @@ namespace PowerShellAudio.Extensions.Id3
 {
     class Id3MetadataEncoderInfo : MetadataEncoderInfo
     {
+        public override string Format
+        {
+            get
+            {
+                Contract.Ensures(!string.IsNullOrEmpty(Contract.Result<string>()));
+
+                return "ID3v2";
+            }
+        }
+
         public override string FileExtension
         {
             get

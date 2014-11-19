@@ -21,6 +21,16 @@ namespace PowerShellAudio.Extensions.Vorbis
 {
     class VorbisMetadataEncoderInfo : MetadataEncoderInfo
     {
+        public override string Format
+        {
+            get
+            {
+                Contract.Ensures(!string.IsNullOrEmpty(Contract.Result<string>()));
+
+                return "Vorbis Comments";
+            }
+        }
+
         public override string FileExtension
         {
             get
