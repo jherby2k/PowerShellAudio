@@ -33,8 +33,9 @@ namespace PowerShellAudio.Extensions.Flac
         static SafeNativeMethods()
         {
             // Select an architecture-appropriate libFLAC.dll by prefixing the PATH variable:
-            var newPath = new StringBuilder(Path.GetDirectoryName(Assembly.GetCallingAssembly().Location));
-            newPath.Append(Environment.Is64BitProcess ? @"\x64" : @"\x86");
+            var newPath = new StringBuilder(Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location));
+            newPath.Append(Path.DirectorySeparatorChar);
+            newPath.Append(Environment.Is64BitProcess ? "x64" : "x86");
             newPath.Append(Path.PathSeparator);
             newPath.Append(Environment.GetEnvironmentVariable("PATH"));
 

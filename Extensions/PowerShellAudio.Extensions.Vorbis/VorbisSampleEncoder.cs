@@ -30,6 +30,8 @@ namespace PowerShellAudio.Extensions.Vorbis
     [SampleEncoderExport("Ogg Vorbis")]
     public class VorbisSampleEncoder : ISampleEncoder, IDisposable
     {
+        static readonly SampleEncoderInfo _encoderInfo = new VorbisSampleEncoderInfo();
+
         NativeVorbisEncoder _encoder;
         ExportLifetimeContext<ISampleFilter> _replayGainFilterLifetime;
         NativeOggStream _oggStream;
@@ -42,7 +44,7 @@ namespace PowerShellAudio.Extensions.Vorbis
             {
                 Contract.Ensures(Contract.Result<SampleEncoderInfo>() != null);
 
-                return new VorbisEncoderInfo();
+                return _encoderInfo;
             }
         }
 

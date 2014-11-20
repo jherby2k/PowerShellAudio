@@ -15,14 +15,16 @@
  * <http://www.gnu.org/licenses/>.
  */
 
+using PowerShellAudio.Extensions.Apple.Properties;
 using System.Collections.Generic;
 using System.ComponentModel.Composition;
 using System.Diagnostics.Contracts;
+using System.Globalization;
 using System.Linq;
 
-namespace PowerShellAudio.Extensions.Vorbis
+namespace PowerShellAudio.Extensions.Apple
 {
-    class VorbisEncoderInfo : SampleEncoderInfo
+    class LosslessSampleEncoderInfo : SampleEncoderInfo
     {
         public override string Name
         {
@@ -30,7 +32,7 @@ namespace PowerShellAudio.Extensions.Vorbis
             {
                 Contract.Ensures(!string.IsNullOrEmpty(Contract.Result<string>()));
 
-                return "Ogg Vorbis";
+                return "Apple Lossless";
             }
         }
 
@@ -40,13 +42,13 @@ namespace PowerShellAudio.Extensions.Vorbis
             {
                 Contract.Ensures(!string.IsNullOrEmpty(Contract.Result<string>()));
 
-                return ".ogg";
+                return ".m4a";
             }
         }
 
         public override bool IsLossless
         {
-            get { return false; }
+            get { return true; }
         }
 
         public override string ExternalLibrary
@@ -55,7 +57,7 @@ namespace PowerShellAudio.Extensions.Vorbis
             {
                 Contract.Ensures(!string.IsNullOrEmpty(Contract.Result<string>()));
 
-                return SafeNativeMethods.VorbisVersion();
+                return string.Format(CultureInfo.CurrentCulture, Resources.SampleEncoderDescription, SafeNativeMethods.GetCoreAudioToolboxVersion());
             }
         }
 
@@ -65,19 +67,13 @@ namespace PowerShellAudio.Extensions.Vorbis
             {
                 Contract.Ensures(Contract.Result<SettingsDictionary>() != null);
 
-                var result = new SettingsDictionary();
+                // Call the external MP4 encoder for writing iTunes-compatible atoms:
+                var metadataEncoderFactory = ExtensionProvider.GetFactories<IMetadataEncoder>("Extension", FileExtension).SingleOrDefault();
+                if (metadataEncoderFactory != null)
+                    using (ExportLifetimeContext<IMetadataEncoder> metadataEncoderLifetime = metadataEncoderFactory.CreateExport())
+                        return metadataEncoderLifetime.Value.EncoderInfo.DefaultSettings;
 
-                result.Add("AddMetadata", bool.TrueString);
-                result.Add("ControlMode", "Variable");
-                result.Add("VBRQuality", "5");
-
-                // Call the external ReplayGain filter for scaling the input:
-                var replayGainFilterFactory = ExtensionProvider.GetFactories<ISampleFilter>("Name", "ReplayGain").SingleOrDefault();
-                if (replayGainFilterFactory != null)
-                    using (ExportLifetimeContext<ISampleFilter> replayGainFilterLifetime = replayGainFilterFactory.CreateExport())
-                        replayGainFilterLifetime.Value.DefaultSettings.CopyTo(result);
-
-                return result;
+                return new SettingsDictionary();
             }
         }
 
@@ -87,21 +83,13 @@ namespace PowerShellAudio.Extensions.Vorbis
             {
                 Contract.Ensures(Contract.Result<IReadOnlyCollection<string>>() != null);
 
-                var partialResult = new List<string>();
+                // Call the external MP4 encoder for writing iTunes-compatible atoms:
+                var metadataEncoderFactory = ExtensionProvider.GetFactories<IMetadataEncoder>("Extension", FileExtension).SingleOrDefault();
+                if (metadataEncoderFactory != null)
+                    using (ExportLifetimeContext<IMetadataEncoder> metadataEncoderLifetime = metadataEncoderFactory.CreateExport())
+                        return metadataEncoderLifetime.Value.EncoderInfo.AvailableSettings;
 
-                partialResult.Add("AddMetadata");
-                partialResult.Add("BitRate");
-                partialResult.Add("ControlMode");
-                partialResult.Add("SerialNumber");
-                partialResult.Add("VBRQuality");
-
-                // Call the external ReplayGain filter for scaling the input:
-                var replayGainFilterFactory = ExtensionProvider.GetFactories<ISampleFilter>("Name", "ReplayGain").SingleOrDefault();
-                if (replayGainFilterFactory != null)
-                    using (ExportLifetimeContext<ISampleFilter> replayGainFilterLifetime = replayGainFilterFactory.CreateExport())
-                        partialResult = partialResult.Concat(replayGainFilterLifetime.Value.AvailableSettings).ToList();
-
-                return partialResult.AsReadOnly();
+                return new List<string>(1).AsReadOnly();
             }
         }
     }

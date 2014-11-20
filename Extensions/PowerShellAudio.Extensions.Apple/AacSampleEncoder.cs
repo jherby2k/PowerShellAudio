@@ -29,6 +29,7 @@ namespace PowerShellAudio.Extensions.Apple
     [SampleEncoderExport("Apple AAC")]
     public class AacSampleEncoder : ISampleEncoder, IDisposable
     {
+        static readonly SampleEncoderInfo _encoderInfo = new AacSampleEncoderInfo();
         static readonly uint[] _vbrQualities = new uint[] { 0, 5, 14, 23, 32, 41, 50, 59, 69, 78, 87, 96, 105, 114, 123 };
 
         Stream _stream;
@@ -44,7 +45,7 @@ namespace PowerShellAudio.Extensions.Apple
             {
                 Contract.Ensures(Contract.Result<SampleEncoderInfo>() != null);
 
-                return new AacEncoderInfo();
+                return _encoderInfo;
             }
         }
 

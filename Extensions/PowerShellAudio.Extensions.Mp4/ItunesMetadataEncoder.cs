@@ -27,13 +27,15 @@ namespace PowerShellAudio.Extensions.Mp4
     [MetadataEncoderExport(".m4a")]
     public class ItunesMetadataEncoder : IMetadataEncoder
     {
+        static readonly MetadataEncoderInfo _encoderInfo = new ItunesMetadataEncoderInfo();
+
         public MetadataEncoderInfo EncoderInfo
         {
             get
             {
                 Contract.Ensures(Contract.Result<MetadataEncoderInfo>() != null);
 
-                return new ItunesMetadataEncoderInfo();
+                return _encoderInfo;
             }
         }
 

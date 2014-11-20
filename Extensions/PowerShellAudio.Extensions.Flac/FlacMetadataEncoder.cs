@@ -26,13 +26,15 @@ namespace PowerShellAudio.Extensions.Flac
     [MetadataEncoderExport(".flac")]
     public class FlacMetadataEncoder : IMetadataEncoder
     {
+        static readonly MetadataEncoderInfo _encoderInfo = new FlacMetadataEncoderInfo();
+
         public MetadataEncoderInfo EncoderInfo
         {
             get
             {
                 Contract.Ensures(Contract.Result<MetadataEncoderInfo>() != null);
 
-                return new FlacMetadataEncoderInfo();
+                return _encoderInfo;
             }
         }
 

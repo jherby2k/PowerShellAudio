@@ -30,13 +30,15 @@ namespace PowerShellAudio.Extensions.Id3
     [MetadataEncoderExport(".mp3")]
     public class Id3MetadataEncoder : IMetadataEncoder
     {
+        static readonly MetadataEncoderInfo _encoderInfo = new Id3MetadataEncoderInfo();
+
         public MetadataEncoderInfo EncoderInfo
         {
             get
             {
                 Contract.Ensures(Contract.Result<MetadataEncoderInfo>() != null);
 
-                return new Id3MetadataEncoderInfo();
+                return _encoderInfo;
             }
         }
 

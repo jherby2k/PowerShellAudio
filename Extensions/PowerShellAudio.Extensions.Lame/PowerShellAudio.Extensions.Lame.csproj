@@ -115,7 +115,7 @@
     <Reference Include="System.ComponentModel.Composition" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="LameEncoderInfo.cs" />
+    <Compile Include="LameSampleEncoderInfo.cs" />
     <Compile Include="NativeEncoderHandle.cs" />
     <Compile Include="Enumerations.cs" />
     <Compile Include="GlobalSuppressions.cs" />

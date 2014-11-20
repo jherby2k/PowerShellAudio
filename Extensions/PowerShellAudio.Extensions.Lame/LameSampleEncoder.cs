@@ -28,6 +28,8 @@ namespace PowerShellAudio.Extensions.Lame
     [SampleEncoderExport("Lame MP3")]
     public class LameSampleEncoder : ISampleEncoder, IDisposable
     {
+        static readonly SampleEncoderInfo _encoderInfo = new LameSampleEncoderInfo();
+
         NativeEncoder _encoder;
         ExportLifetimeContext<ISampleFilter> _replayGainFilterLifetime;
 
@@ -37,7 +39,7 @@ namespace PowerShellAudio.Extensions.Lame
             {
                 Contract.Ensures(Contract.Result<SampleEncoderInfo>() != null);
 
-                return new LameEncoderInfo();
+                return _encoderInfo;
             }
         }
 

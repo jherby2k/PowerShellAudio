@@ -19,7 +19,7 @@ using System.Diagnostics.Contracts;
 
 namespace PowerShellAudio.Extensions.Wave
 {
-    class WaveEncoderInfo : SampleEncoderInfo
+    class WaveSampleEncoderInfo : SampleEncoderInfo
     {
         public override string Name
         {

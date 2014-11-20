@@ -16,11 +16,13 @@
  */
 
 using System.Collections.Generic;
+using System.ComponentModel.Composition;
 using System.Diagnostics.Contracts;
+using System.Linq;
 
-namespace PowerShellAudio.Extensions.Flac
+namespace PowerShellAudio.Extensions.Vorbis
 {
-    class FlacEncoderInfo : SampleEncoderInfo
+    class VorbisSampleEncoderInfo : SampleEncoderInfo
     {
         public override string Name
         {
@@ -28,7 +30,7 @@ namespace PowerShellAudio.Extensions.Flac
             {
                 Contract.Ensures(!string.IsNullOrEmpty(Contract.Result<string>()));
 
-                return "FLAC";
+                return "Ogg Vorbis";
             }
         }
 
@@ -38,13 +40,13 @@ namespace PowerShellAudio.Extensions.Flac
             {
                 Contract.Ensures(!string.IsNullOrEmpty(Contract.Result<string>()));
 
-                return ".flac";
+                return ".ogg";
             }
         }
 
         public override bool IsLossless
         {
-            get { return true; }
+            get { return false; }
         }
 
         public override string ExternalLibrary
@@ -53,7 +55,7 @@ namespace PowerShellAudio.Extensions.Flac
             {
                 Contract.Ensures(!string.IsNullOrEmpty(Contract.Result<string>()));
 
-                return SafeNativeMethods.GetVersion();
+                return SafeNativeMethods.VorbisVersion();
             }
         }
 
@@ -66,8 +68,14 @@ namespace PowerShellAudio.Extensions.Flac
                 var result = new SettingsDictionary();
 
                 result.Add("AddMetadata", bool.TrueString);
-                result.Add("CompressionLevel", "5");
-                result.Add("SeekPointInterval", "10");
+                result.Add("ControlMode", "Variable");
+                result.Add("VBRQuality", "5");
+
+                // Call the external ReplayGain filter for scaling the input:
+                var replayGainFilterFactory = ExtensionProvider.GetFactories<ISampleFilter>("Name", "ReplayGain").SingleOrDefault();
+                if (replayGainFilterFactory != null)
+                    using (ExportLifetimeContext<ISampleFilter> replayGainFilterLifetime = replayGainFilterFactory.CreateExport())
+                        replayGainFilterLifetime.Value.DefaultSettings.CopyTo(result);
 
                 return result;
             }
@@ -79,13 +87,21 @@ namespace PowerShellAudio.Extensions.Flac
             {
                 Contract.Ensures(Contract.Result<IReadOnlyCollection<string>>() != null);
 
-                var result = new List<string>(3);
+                var partialResult = new List<string>();
 
-                result.Add("AddMetadata");
-                result.Add("CompressionLevel");
-                result.Add("SeekPointInterval");
+                partialResult.Add("AddMetadata");
+                partialResult.Add("BitRate");
+                partialResult.Add("ControlMode");
+                partialResult.Add("SerialNumber");
+                partialResult.Add("VBRQuality");
 
-                return result.AsReadOnly();
+                // Call the external ReplayGain filter for scaling the input:
+                var replayGainFilterFactory = ExtensionProvider.GetFactories<ISampleFilter>("Name", "ReplayGain").SingleOrDefault();
+                if (replayGainFilterFactory != null)
+                    using (ExportLifetimeContext<ISampleFilter> replayGainFilterLifetime = replayGainFilterFactory.CreateExport())
+                        partialResult = partialResult.Concat(replayGainFilterLifetime.Value.AvailableSettings).ToList();
+
+                return partialResult.AsReadOnly();
             }
         }
     }

@@ -115,8 +115,8 @@
     <Reference Include="System.ComponentModel.Composition" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="LosslessEncoderInfo.cs" />
-    <Compile Include="AacEncoderInfo.cs" />
+    <Compile Include="LosslessSampleEncoderInfo.cs" />
+    <Compile Include="AacSampleEncoderInfo.cs" />
     <Compile Include="AudioStreamPacketDescription.cs" />
     <Compile Include="GlobalSuppressions.cs" />
     <Compile Include="NativeAudioConverterHandle.cs" />

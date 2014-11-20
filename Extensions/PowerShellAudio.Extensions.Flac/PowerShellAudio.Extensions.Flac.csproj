@@ -118,7 +118,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Enumerations.cs" />
-    <Compile Include="FlacEncoderInfo.cs" />
+    <Compile Include="FlacSampleEncoderInfo.cs" />
     <Compile Include="FlacMetadataEncoderInfo.cs" />
     <Compile Include="FlacSampleEncoder.cs" />
     <Compile Include="NativeMetadataBlock.cs" />

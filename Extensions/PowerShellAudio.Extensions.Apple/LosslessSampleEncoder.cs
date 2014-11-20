@@ -29,6 +29,8 @@ namespace PowerShellAudio.Extensions.Apple
     [SampleEncoderExport("Apple Lossless")]
     public class LosslessSampleEncoder : ISampleEncoder, IDisposable
     {
+        static readonly SampleEncoderInfo _encoderInfo = new LosslessSampleEncoderInfo();
+
         Stream _stream;
         float _multiplier;
         MetadataDictionary _metadata;
@@ -42,7 +44,7 @@ namespace PowerShellAudio.Extensions.Apple
             {
                 Contract.Ensures(Contract.Result<SampleEncoderInfo>() != null);
 
-                return new LosslessEncoderInfo();
+                return _encoderInfo;
             }
         }
 

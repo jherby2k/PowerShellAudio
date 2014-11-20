@@ -27,6 +27,8 @@ namespace PowerShellAudio.Extensions.Flac
     [SampleEncoderExport("FLAC")]
     public class FlacSampleEncoder : ISampleEncoder, IDisposable
     {
+        static readonly SampleEncoderInfo _encoderInfo = new FlacSampleEncoderInfo();
+
         NativeStreamEncoder _encoder;
         List<NativeMetadataBlock> _metadataBlocks;
         float _multiplier;
@@ -38,7 +40,7 @@ namespace PowerShellAudio.Extensions.Flac
             {
                 Contract.Ensures(Contract.Result<SampleEncoderInfo>() != null);
 
-                return new FlacEncoderInfo();
+                return _encoderInfo;
             }
         }
 

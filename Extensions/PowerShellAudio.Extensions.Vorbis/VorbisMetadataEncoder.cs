@@ -27,13 +27,15 @@ namespace PowerShellAudio.Extensions.Vorbis
     [MetadataEncoderExport(".ogg")]
     public class VorbisMetadataEncoder : IMetadataEncoder
     {
+        static readonly MetadataEncoderInfo _encoderInfo = new VorbisMetadataEncoderInfo();
+
         public MetadataEncoderInfo EncoderInfo
         {
             get
             {
                 Contract.Ensures(Contract.Result<MetadataEncoderInfo>() != null);
 
-                return new VorbisMetadataEncoderInfo();
+                return _encoderInfo;
             }
         }
 

@@ -15,16 +15,17 @@
  * <http://www.gnu.org/licenses/>.
  */
 
-using PowerShellAudio.Extensions.Apple.Properties;
+using PowerShellAudio.Extensions.Lame.Properties;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel.Composition;
 using System.Diagnostics.Contracts;
 using System.Globalization;
 using System.Linq;
 
-namespace PowerShellAudio.Extensions.Apple
+namespace PowerShellAudio.Extensions.Lame
 {
-    class AacEncoderInfo : SampleEncoderInfo
+    class LameSampleEncoderInfo : SampleEncoderInfo
     {
         public override string Name
         {
@@ -32,7 +33,7 @@ namespace PowerShellAudio.Extensions.Apple
             {
                 Contract.Ensures(!string.IsNullOrEmpty(Contract.Result<string>()));
 
-                return "Apple AAC";
+                return "Lame MP3";
             }
         }
 
@@ -42,7 +43,7 @@ namespace PowerShellAudio.Extensions.Apple
             {
                 Contract.Ensures(!string.IsNullOrEmpty(Contract.Result<string>()));
 
-                return ".m4a";
+                return ".mp3";
             }
         }
 
@@ -57,7 +58,7 @@ namespace PowerShellAudio.Extensions.Apple
             {
                 Contract.Ensures(!string.IsNullOrEmpty(Contract.Result<string>()));
 
-                return string.Format(CultureInfo.CurrentCulture, Resources.SampleEncoderDescription, SafeNativeMethods.GetCoreAudioToolboxVersion());
+                return string.Format(CultureInfo.CurrentCulture, Resources.SampleEncoderDescription, SafeNativeMethods.GetLameVersion());
             }
         }
 
@@ -69,9 +70,9 @@ namespace PowerShellAudio.Extensions.Apple
 
                 var result = new SettingsDictionary();
 
-                result.Add("ControlMode", "Variable");
-                result.Add("Quality", "High");
-                result.Add("VBRQuality", "9");
+                result.Add("AddMetadata", bool.TrueString);
+                result.Add("Quality", "3");
+                result.Add("VBRQuality", "2");
 
                 // Call the external ReplayGain filter for scaling the input:
                 var replayGainFilterFactory = ExtensionProvider.GetFactories<ISampleFilter>("Name", "ReplayGain").SingleOrDefault();
@@ -79,8 +80,8 @@ namespace PowerShellAudio.Extensions.Apple
                     using (ExportLifetimeContext<ISampleFilter> replayGainFilterLifetime = replayGainFilterFactory.CreateExport())
                         replayGainFilterLifetime.Value.DefaultSettings.CopyTo(result);
 
-                // Call the external MP4 encoder for writing iTunes-compatible atoms:
-                var metadataEncoderFactory = ExtensionProvider.GetFactories<IMetadataEncoder>("Extension", FileExtension).SingleOrDefault();
+                // Call the external ID3 encoder:
+                var metadataEncoderFactory = ExtensionProvider.GetFactories<IMetadataEncoder>("Extension", "FileExtension").SingleOrDefault();
                 if (metadataEncoderFactory != null)
                     using (ExportLifetimeContext<IMetadataEncoder> metadataEncoderLifetime = metadataEncoderFactory.CreateExport())
                         metadataEncoderLifetime.Value.EncoderInfo.DefaultSettings.CopyTo(result);
@@ -97,8 +98,9 @@ namespace PowerShellAudio.Extensions.Apple
 
                 var partialResult = new List<string>();
 
+                partialResult.Add("AddMetadata");
                 partialResult.Add("BitRate");
-                partialResult.Add("ControlMode");
+                partialResult.Add("ForceCBR");
                 partialResult.Add("Quality");
                 partialResult.Add("VBRQuality");
 
@@ -108,7 +110,7 @@ namespace PowerShellAudio.Extensions.Apple
                     using (ExportLifetimeContext<ISampleFilter> replayGainFilterLifetime = replayGainFilterFactory.CreateExport())
                         partialResult = partialResult.Concat(replayGainFilterLifetime.Value.AvailableSettings).ToList();
 
-                // Call the external MP4 encoder for writing iTunes-compatible atoms:
+                // Call the external ID3 encoder:
                 var metadataEncoderFactory = ExtensionProvider.GetFactories<IMetadataEncoder>("Extension", FileExtension).SingleOrDefault();
                 if (metadataEncoderFactory != null)
                     using (ExportLifetimeContext<IMetadataEncoder> metadataEncoderLifetime = metadataEncoderFactory.CreateExport())

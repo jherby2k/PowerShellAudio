@@ -141,7 +141,7 @@
     <Compile Include="VorbisComment.cs" />
     <Compile Include="VorbisCommentToMetadataAdapter.cs" />
     <Compile Include="VorbisDspState.cs" />
-    <Compile Include="VorbisEncoderInfo.cs" />
+    <Compile Include="VorbisSampleEncoderInfo.cs" />
     <Compile Include="VorbisInfo.cs" />
     <Compile Include="VorbisMetadataDecoder.cs" />
     <Compile Include="VorbisMetadataEncoder.cs" />

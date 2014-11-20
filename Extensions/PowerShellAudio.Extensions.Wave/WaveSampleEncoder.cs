@@ -24,6 +24,8 @@ namespace PowerShellAudio.Extensions.Wave
     [SampleEncoderExport("Wave")]
     public class WaveSampleEncoder : ISampleEncoder, IDisposable
     {
+        static readonly SampleEncoderInfo _encoderInfo = new WaveSampleEncoderInfo();
+
         readonly byte[] _buffer = new byte[4];
         RiffWriter _writer;
         int _channels;
@@ -36,7 +38,7 @@ namespace PowerShellAudio.Extensions.Wave
             {
                 Contract.Ensures(Contract.Result<SampleEncoderInfo>() != null);
 
-                return new WaveEncoderInfo();
+                return _encoderInfo;
             }
         }
 
