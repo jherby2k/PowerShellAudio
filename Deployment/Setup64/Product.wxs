@@ -24,6 +24,9 @@ You should have received a copy of the GNU Lesser General Public License along w
 		<MajorUpgrade DowngradeErrorMessage="A newer version of [ProductName] is already installed." />
     <MediaTemplate EmbedCab="yes" />
 
+    <Icon Id="Logo.ico" SourceFile="Logo.ico" />
+    <Property Id="ARPPRODUCTICON" Value="Logo.ico" />
+
     <UIRef Id="WixUI_FeatureTree" />
     <WixVariable Id="WixUILicenseRtf" Value="License.rtf" />
 
