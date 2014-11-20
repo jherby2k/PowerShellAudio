@@ -23,18 +23,19 @@ using System.Diagnostics.CodeAnalysis;
 using System.Diagnostics.Contracts;
 using System.IO;
 using System.Reflection;
+using System.Linq;
 
 namespace PowerShellAudio
 {
-    class ExtensionProviderSingleton<T>
+    class ExtensionContainer<T>
     {
-        static readonly Lazy<ExtensionProviderSingleton<T>> _lazyInstance = new Lazy<ExtensionProviderSingleton<T>>(() => new ExtensionProviderSingleton<T>());
+        static readonly Lazy<ExtensionContainer<T>> _lazyInstance = new Lazy<ExtensionContainer<T>>(() => new ExtensionContainer<T>());
 
-        internal static ExtensionProviderSingleton<T> Instance
+        internal static ExtensionContainer<T> Instance
         {
             get
             {
-                Contract.Ensures(Contract.Result<ExtensionProviderSingleton<T>>() != null);
+                Contract.Ensures(Contract.Result<ExtensionContainer<T>>() != null);
 
                 return _lazyInstance.Value;
             }
@@ -43,7 +44,7 @@ namespace PowerShellAudio
         [ImportMany]
         internal IEnumerable<ExportFactory<T, IDictionary<string, object>>> Factories { get; private set; }
 
-        ExtensionProviderSingleton()
+        ExtensionContainer()
         {
             Contract.Ensures(Factories != null);
 
@@ -55,7 +56,7 @@ namespace PowerShellAudio
         {
             Contract.Ensures(Factories != null);
 
-            var extensionsDir = new DirectoryInfo(Path.Combine(Path.GetDirectoryName(Assembly.GetCallingAssembly().Location), "Extensions"));
+            var extensionsDir = new DirectoryInfo(Path.Combine(Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location), "Extensions"));
 
             // Add a catalog for each subdirectory under Extensions:
             using (var catalog = new AggregateCatalog())
@@ -65,7 +66,7 @@ namespace PowerShellAudio
                         catalog.Catalogs.Add(new DirectoryCatalog(directory.FullName));
 
                 // Compose the parts:
-                var compositionContainer = new CompositionContainer(catalog, true);
+                var compositionContainer = new CompositionContainer(catalog, CompositionOptions.IsThreadSafe | CompositionOptions.DisableSilentRejection);
                 compositionContainer.ComposeParts(this);
             }
         }

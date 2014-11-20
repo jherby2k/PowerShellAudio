@@ -22,12 +22,12 @@ namespace PowerShellAudio.Commands
     [Cmdlet(VerbsCommon.Get, "AudioEncoderInfo"), OutputType(typeof(SampleEncoderInfo))]
     public class GetAudioEncoderInfoCommand : Cmdlet
     {
-        [Parameter(Mandatory = true, Position = 0)]
-        public string Encoder { get; set; }
+        [Parameter(Position = 0)]
+        public string Name { get; set; }
 
         protected override void ProcessRecord()
         {
-            foreach (var encoderFactory in ExtensionProvider.GetFactories<ISampleEncoder>("Name", Encoder))
+            foreach (var encoderFactory in string.IsNullOrEmpty(Name) ? ExtensionProvider.GetFactories<ISampleEncoder>() : ExtensionProvider.GetFactories<ISampleEncoder>("Name", Name))
                 using (var encoderLifetime = encoderFactory.CreateExport())
                     WriteObject(encoderLifetime.Value.EncoderInfo);
         }

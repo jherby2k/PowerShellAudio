@@ -22,13 +22,13 @@ namespace PowerShellAudio.Commands
     [Cmdlet(VerbsCommon.Get, "AudioMetadataEncoderInfo"), OutputType(typeof(MetadataEncoderInfo))]
     public class GetAudioMetadataEncoderInfoCommand : Cmdlet
     {
-        [Parameter(Mandatory = true, Position = 0)]
+        [Parameter(Position = 0)]
         public string Extension { get; set; }
 
         protected override void ProcessRecord()
         {
-            foreach (var encoderFactory in ExtensionProvider.GetFactories<IMetadataEncoder>("Extension", Extension))
-                using (var encoderLifetime = encoderFactory.CreateExport())
+            foreach (var factory in string.IsNullOrEmpty(Extension) ? ExtensionProvider.GetFactories<IMetadataEncoder>() : ExtensionProvider.GetFactories<IMetadataEncoder>("Extension", Extension))
+                using (var encoderLifetime = factory.CreateExport())
                     WriteObject(encoderLifetime.Value.EncoderInfo);
         }
     }

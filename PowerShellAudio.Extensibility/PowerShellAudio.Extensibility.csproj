@@ -124,7 +124,7 @@
     <Compile Include="MetadataEncoderInfoContract.cs" />
     <Compile Include="SampleEncoderInfoContract.cs" />
     <Compile Include="ExtensionProvider.cs" />
-    <Compile Include="ExtensionProviderSingleton.cs" />
+    <Compile Include="ExtensionContainer.cs" />
     <Compile Include="IFinalSampleConsumer.cs" />
     <Compile Include="ISampleConsumer.cs" />
     <Compile Include="ISampleFilter.cs" />

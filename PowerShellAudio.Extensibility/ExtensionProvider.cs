@@ -30,12 +30,22 @@ namespace PowerShellAudio
         /// <summary>
         /// Gets the values of the specified key for all extensions of type T from metadata.
         /// </summary>
-        /// <typeparam name="T"></typeparam>
+        /// <typeparam name="T">The extension type.</typeparam>
         /// <param name="key">The key.</param>
         /// <returns>The values.</returns>
-        public static IEnumerable<string> GetMetadata<T>(string key)
+        public static IEnumerable<string> GetMetadata<T>(string key) where T : class
         {
-            return ExtensionProviderSingleton<T>.Instance.Factories.Select(factory => factory.Metadata[key]).Cast<string>();
+            return ExtensionContainer<T>.Instance.Factories.Select(factory => factory.Metadata[key]).Cast<string>();
+        }
+
+        /// <summary>
+        /// Gets all the available extension export factories of type T.
+        /// </summary>
+        /// <typeparam name="T">The extension type.</typeparam>
+        /// <returns>The factories.</returns>
+        public static IEnumerable<ExportFactory<T>> GetFactories<T>() where T : class
+        {
+            return ExtensionContainer<T>.Instance.Factories;
         }
 
         /// <summary>
@@ -44,10 +54,10 @@ namespace PowerShellAudio
         /// <typeparam name="T">The extension type.</typeparam>
         /// <param name="key">The key.</param>
         /// <param name="value">The value.</param>
-        /// <returns>The encoder </returns>
-        public static IEnumerable<ExportFactory<T>> GetFactories<T>(string key, string value)
+        /// <returns>The factories.</returns>
+        public static IEnumerable<ExportFactory<T>> GetFactories<T>(string key, string value) where T : class
         {
-            return ExtensionProviderSingleton<T>.Instance.Factories.Where(factory => string.Compare((string)factory.Metadata[key], value, StringComparison.OrdinalIgnoreCase) == 0);
+            return ExtensionContainer<T>.Instance.Factories.Where(factory => string.Compare((string)factory.Metadata[key], value, StringComparison.OrdinalIgnoreCase) == 0);
         }
     }
 }
