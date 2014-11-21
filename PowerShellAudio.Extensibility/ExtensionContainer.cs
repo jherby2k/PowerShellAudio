@@ -23,7 +23,6 @@ using System.Diagnostics.CodeAnalysis;
 using System.Diagnostics.Contracts;
 using System.IO;
 using System.Reflection;
-using System.Linq;
 
 namespace PowerShellAudio
 {
@@ -56,18 +55,20 @@ namespace PowerShellAudio
         {
             Contract.Ensures(Factories != null);
 
-            var extensionsDir = new DirectoryInfo(Path.Combine(Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location), "Extensions"));
+            var mainDir = Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location);
+            var extensionsDir = new DirectoryInfo(Path.Combine(mainDir, "Extensions"));
 
-            // Add a catalog for each subdirectory under Extensions:
             using (var catalog = new AggregateCatalog())
             {
-                if (extensionsDir.Exists)
-                    foreach (DirectoryInfo directory in extensionsDir.GetDirectories())
-                        catalog.Catalogs.Add(new DirectoryCatalog(directory.FullName));
+                // Add the root directory as well, so extension references can be found:
+                catalog.Catalogs.Add(new DirectoryCatalog(mainDir));
+
+                // Add a catalog for each subdirectory under Extensions:
+                foreach (DirectoryInfo directory in new DirectoryInfo(Path.Combine(mainDir, "Extensions")).GetDirectories())
+                    catalog.Catalogs.Add(new DirectoryCatalog(directory.FullName));
 
                 // Compose the parts:
-                var compositionContainer = new CompositionContainer(catalog, CompositionOptions.IsThreadSafe | CompositionOptions.DisableSilentRejection);
-                compositionContainer.ComposeParts(this);
+                new CompositionContainer(catalog, CompositionOptions.IsThreadSafe | CompositionOptions.DisableSilentRejection).ComposeParts(this);
             }
         }
 
