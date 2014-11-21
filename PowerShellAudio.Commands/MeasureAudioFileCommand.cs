@@ -74,7 +74,7 @@ namespace PowerShellAudio.Commands
                         catch (Exception e)
                         {
                             Interlocked.Increment(ref completed);
-                            outputQueue.Add(new ErrorRecord(e, e.HResult.ToString(CultureInfo.CurrentCulture), ErrorCategory.WriteError, audioFile));
+                            outputQueue.Add(new ErrorRecord(e, e.HResult.ToString(CultureInfo.CurrentCulture), ErrorCategory.ReadError, audioFile));
                         }
                     })).ContinueWith(task => outputQueue.CompleteAdding());
 
