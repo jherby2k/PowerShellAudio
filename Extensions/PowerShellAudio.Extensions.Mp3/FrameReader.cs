@@ -58,7 +58,7 @@ namespace PowerShellAudio.Extensions.Mp3
             }
         }
         
-        internal uint ReadBEUInt32()
+        internal uint ReadUInt32BigEndian()
         {
             Contract.Ensures(_buffer != null);
             Contract.Ensures(_buffer.Length == 4);
@@ -71,19 +71,19 @@ namespace PowerShellAudio.Extensions.Mp3
 
         internal XingHeader ReadXingHeader()
         {
-            XingHeader result = new XingHeader();
+            var result = new XingHeader();
 
             string headerID = new string(ReadChars(4));
             if (headerID == "Xing" || headerID == "Info")
             {
                 // The flags DWORD indicates whether the frame and byte counts are present:
-                uint flags = ReadBEUInt32();
+                uint flags = ReadUInt32BigEndian();
 
                 if ((flags & 0x1) == 1)
-                    result.FrameCount = ReadBEUInt32();
+                    result.FrameCount = ReadUInt32BigEndian();
 
                 if ((flags >> 1 & 0x1) == 1)
-                    result.ByteCount = ReadBEUInt32();
+                    result.ByteCount = ReadUInt32BigEndian();
             }
 
             return result;

@@ -47,12 +47,7 @@ namespace PowerShellAudio.Extensions.Mp4
         {
             Contract.Requires(reader != null);
 
-            byte[] buffer = reader.ReadBytes(4);
-            if (buffer.Length < 4)
-                throw new EndOfStreamException();
-
-            Array.Reverse(buffer);
-            return BitConverter.ToUInt32(buffer, 0);
+            return ((uint)reader.ReadByte() << 24) + ((uint)reader.ReadByte() << 16) + ((uint)reader.ReadByte() << 8) + reader.ReadByte();
         }
 
         internal static string ReadFourCC(this BinaryReader reader)

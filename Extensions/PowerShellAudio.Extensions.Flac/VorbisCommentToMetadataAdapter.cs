@@ -17,7 +17,6 @@
 
 using System;
 using System.Collections.Generic;
-using System.Diagnostics.Contracts;
 using System.Globalization;
 
 namespace PowerShellAudio.Extensions.Flac
@@ -40,38 +39,37 @@ namespace PowerShellAudio.Extensions.Flac
             { "YEAR", "Year"                       }
         };
 
-        internal VorbisCommentToMetadataAdapter(IEnumerable<KeyValuePair<string, string>> vorbisComments)
+        public override string this[string key]
         {
-            Contract.Requires<ArgumentNullException>(vorbisComments != null);
-
-            foreach (KeyValuePair<string, string> item in vorbisComments)
+            get { return base[key]; }
+            set
             {
                 // The track number and count may be packed into the same comment:
-                if (item.Key == "TRACKNUMBER")
+                if (key == "TRACKNUMBER")
                 {
-                    string[] segments = item.Value.Split('/');
+                    string[] segments = value.Split('/');
                     base["TrackNumber"] = segments[0];
                     if (segments.Length > 1)
                         base["TrackCount"] = segments[1];
                 }
-                else if (item.Key == "DATE")
+                else if (key == "DATE")
                 {
                     // The DATE comment may contain a full date, or only the year:
                     DateTime result;
-                    if (DateTime.TryParse(item.Value, CultureInfo.CurrentCulture, DateTimeStyles.NoCurrentDateDefault, out result) && result.Year >= 1000)
+                    if (DateTime.TryParse(value, CultureInfo.CurrentCulture, DateTimeStyles.NoCurrentDateDefault, out result) && result.Year >= 1000)
                     {
                         base["Day"] = result.Day.ToString(CultureInfo.InvariantCulture);
                         base["Month"] = result.Month.ToString(CultureInfo.InvariantCulture);
                         base["Year"] = result.Year.ToString(CultureInfo.InvariantCulture);
                     }
                     else
-                        base["Year"] = item.Value;
+                        base["Year"] = value;
                 }
                 else
                 {
                     string mappedKey;
-                    if (_map.TryGetValue(item.Key, out mappedKey))
-                        base[mappedKey] = item.Value;
+                    if (_map.TryGetValue(key, out mappedKey))
+                        base[mappedKey] = value;
                 }
             }
         }
