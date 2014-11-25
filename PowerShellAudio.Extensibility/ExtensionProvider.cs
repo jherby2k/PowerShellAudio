@@ -28,17 +28,6 @@ namespace PowerShellAudio
     public static class ExtensionProvider
     {
         /// <summary>
-        /// Gets the values of the specified key for all extensions of type T from metadata.
-        /// </summary>
-        /// <typeparam name="T">The extension type.</typeparam>
-        /// <param name="key">The key.</param>
-        /// <returns>The values.</returns>
-        public static IEnumerable<string> GetMetadata<T>(string key) where T : class
-        {
-            return ExtensionContainer<T>.Instance.Factories.Select(factory => factory.Metadata[key]).Cast<string>();
-        }
-
-        /// <summary>
         /// Gets all the available extension export factories of type T.
         /// </summary>
         /// <typeparam name="T">The extension type.</typeparam>
