@@ -17,7 +17,6 @@
 
 using System;
 using System.Collections.Generic;
-using System.Diagnostics.CodeAnalysis;
 using System.Diagnostics.Contracts;
 using System.IO;
 using System.Runtime.InteropServices;
@@ -44,7 +43,7 @@ namespace PowerShellAudio.Extensions.Flac
         {
             if ((MetadataType)Marshal.ReadInt32(metadata) == MetadataType.VorbisComment)
             {
-                var result = new VorbisCommentToMetadataAdapter();
+                var vorbisComments = new Dictionary<string, string>();
 
                 int commentCount = Marshal.ReadInt32(metadata, 16 + _nativePtrSize * 2);
                 IntPtr commentsPtr = Marshal.ReadIntPtr(metadata, 16 + _nativePtrSize * 3);
@@ -59,10 +58,10 @@ namespace PowerShellAudio.Extensions.Flac
 
                     Contract.Assert(comment.Length == 2);
 
-                    result.Add(comment[0], comment[1]);
+                    vorbisComments[comment[0]] = comment[1];
                 }
 
-                Metadata = result;
+                Metadata = new VorbisCommentToMetadataAdapter(vorbisComments);
             }
         }
 
