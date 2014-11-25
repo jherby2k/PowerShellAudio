@@ -59,7 +59,7 @@ namespace PowerShellAudio.Extensions.Vorbis
 
                 try
                 {
-                    return Marshal.PtrToStringUni(SafeNativeMethods.VorbisVersion());
+                    return Marshal.PtrToStringAnsi(SafeNativeMethods.VorbisVersion());
                 }
                 catch (TypeInitializationException e)
                 {
