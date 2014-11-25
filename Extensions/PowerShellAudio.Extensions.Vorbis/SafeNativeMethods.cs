@@ -32,7 +32,7 @@ namespace PowerShellAudio.Extensions.Vorbis
 
         static SafeNativeMethods()
         {
-            // Select an architecture-appropriate libFLAC.dll by prefixing the PATH variable:
+            // Select an architecture-appropriate directory by prefixing the PATH variable:
             var newPath = new StringBuilder(Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location));
             newPath.Append(Path.DirectorySeparatorChar);
             newPath.Append(Environment.Is64BitProcess ? "x64" : "x86");

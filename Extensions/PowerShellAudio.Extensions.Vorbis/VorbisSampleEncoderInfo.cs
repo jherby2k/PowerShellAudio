@@ -15,6 +15,7 @@
  * <http://www.gnu.org/licenses/>.
  */
 
+using System;
 using System.Collections.Generic;
 using System.ComponentModel.Composition;
 using System.Diagnostics.Contracts;
@@ -53,9 +54,18 @@ namespace PowerShellAudio.Extensions.Vorbis
         {
             get
             {
-                Contract.Ensures(!string.IsNullOrEmpty(Contract.Result<string>()));
+                Contract.Ensures(Contract.Result<string>() != null);
 
-                return SafeNativeMethods.VorbisVersion();
+                try
+                {
+                    return SafeNativeMethods.VorbisVersion();
+                }
+                catch (TypeInitializationException e)
+                {
+                    if (e.InnerException != null)
+                        return e.InnerException.Message;
+                    return e.Message;
+                }
             }
         }
 

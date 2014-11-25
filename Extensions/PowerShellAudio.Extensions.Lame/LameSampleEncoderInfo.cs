@@ -56,9 +56,18 @@ namespace PowerShellAudio.Extensions.Lame
         {
             get
             {
-                Contract.Ensures(!string.IsNullOrEmpty(Contract.Result<string>()));
+                Contract.Ensures(Contract.Result<string>() != null);
 
-                return string.Format(CultureInfo.CurrentCulture, Resources.SampleEncoderDescription, SafeNativeMethods.GetLameVersion());
+                try
+                {
+                    return string.Format(CultureInfo.CurrentCulture, Resources.SampleEncoderDescription, SafeNativeMethods.GetLameVersion());
+                }
+                catch (TypeInitializationException e)
+                {
+                    if (e.InnerException != null)
+                        return e.InnerException.Message;
+                    return e.Message;
+                }
             }
         }
 

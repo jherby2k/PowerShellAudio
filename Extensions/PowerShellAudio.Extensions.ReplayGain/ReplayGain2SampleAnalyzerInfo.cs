@@ -16,6 +16,7 @@
  */
 
 using PowerShellAudio.Extensions.ReplayGain.Properties;
+using System;
 using System.Diagnostics.Contracts;
 using System.Globalization;
 
@@ -37,14 +38,23 @@ namespace PowerShellAudio.Extensions.ReplayGain
         {
             get
             {
-                Contract.Ensures(!string.IsNullOrEmpty(Contract.Result<string>()));
+                Contract.Ensures(Contract.Result<string>() != null);
 
-                int majorVersion;
-                int minorVersion;
-                int patchVersion;
-                SafeNativeMethods.GetVersion(out majorVersion, out minorVersion, out patchVersion);
+                try
+                {
+                    int majorVersion;
+                    int minorVersion;
+                    int patchVersion;
+                    SafeNativeMethods.GetVersion(out majorVersion, out minorVersion, out patchVersion);
 
-                return string.Format(CultureInfo.CurrentCulture, Resources.SampleAnalyzerDescription, majorVersion, minorVersion, patchVersion);
+                    return string.Format(CultureInfo.CurrentCulture, Resources.SampleAnalyzerDescription, majorVersion, minorVersion, patchVersion);
+                }
+                catch (TypeInitializationException e)
+                {
+                    if (e.InnerException != null)
+                        return e.InnerException.Message;
+                    return e.Message;
+                }
             }
         }
     }
