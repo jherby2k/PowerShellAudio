@@ -53,9 +53,9 @@ namespace PowerShellAudio.Commands
         {
             if (_audioFiles.Count > 0)
             {
-                var groupToken = new GroupToken(_audioFiles.Count);
                 int completed = 0;
 
+                using (var groupToken = new GroupToken(_audioFiles.Count))
                 using (var outputQueue = new BlockingCollection<object>())
                 {
                     outputQueue.Add(new ProgressRecord(0, string.Format(CultureInfo.CurrentCulture, Resources.MeasureAudioFileCommandActivityMessage, Analyzer), string.Format(CultureInfo.CurrentCulture, Resources.MeasureAudioFileCommandStatusMessage, 0, _audioFiles.Count)) { PercentComplete = 0 });
