@@ -24,6 +24,7 @@ You should have received a copy of the GNU Lesser General Public License along w
       <ComponentRef Id="$(var.PowerShellAudio.Extensions.ReplayGain.TargetFileName)" />
       <ComponentRef Id="$(var.PowerShellAudio.Extensions.ReplayGain.TargetName).Contracts.dll" />
       <ComponentRef Id="System.Threading.Tasks.Dataflow.dll" />
+      <ComponentRef Id="ebur128.dll" />
     </ComponentGroup>
 
     <DirectoryRef Id="ReplayGainFolder">

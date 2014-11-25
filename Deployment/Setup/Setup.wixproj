@@ -147,7 +147,6 @@
   <ItemGroup>
     <Content Include="License.rtf" />
     <Content Include="Logo.ico" />
-    <Content Include="Microsoft_VC120_CRT_x86.msm" />
   </ItemGroup>
   <ItemGroup>
     <WixExtension Include="WixUIExtension">

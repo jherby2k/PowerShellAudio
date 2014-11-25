@@ -47,7 +47,6 @@
   <ItemGroup>
     <Content Include="License.rtf" />
     <Content Include="Logo.ico" />
-    <Content Include="Microsoft_VC120_CRT_x64.msm" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\..\Extensions\PowerShellAudio.Extensions.Apple\PowerShellAudio.Extensions.Apple.csproj">

@@ -23,7 +23,6 @@ You should have received a copy of the GNU Lesser General Public License along w
     <Feature Id="Vorbis" Title="Ogg Vorbis" Description="Enables the editing of Vorbis comment metadata, and AoTuV-optimized encoding." AllowAdvertise="no">
       <ComponentGroupRef Id="Vorbis" />
       <ComponentGroupRef Id="ReplayGain" />
-      <MergeRef Id="VCRedist" />
     </Feature>
     
 	</Fragment>

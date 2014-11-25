@@ -44,7 +44,6 @@ You should have received a copy of the GNU Lesser General Public License along w
       <Component Guid="{13C93345-32E0-4B5C-AAD8-67B7B4A7E664}">
         <File Source="$(var.PowerShellAudio.Extensions.Vorbis.TargetDir)x64\libvorbis.dll" KeyPath="yes" Checksum="yes" />
       </Component>
-      <Merge Id="VCRedist" SourceFile="Microsoft_VC120_CRT_x64.msm" DiskId="1" Language="0" />
     </DirectoryRef>
 
     <DirectoryRef Id="ExtensionsFolder">
