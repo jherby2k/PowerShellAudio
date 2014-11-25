@@ -4,8 +4,8 @@ Index,FileName,Analyzer,ExpectedMetadata
 2,LPCM 16-bit 44100Hz Mono.wav,ReplayGain,TrackPeak=1.000000;TrackGain=-11.05 dB;AlbumPeak=1.000000;AlbumGain=-11.05 dB
 3,LPCM 16-bit 48000Hz Stereo.wav,ReplayGain,TrackPeak=0.999970;TrackGain=-6.46 dB;AlbumPeak=0.999970;AlbumGain=-6.46 dB
 4,LPCM 24-bit 96000Hz Stereo.wav,ReplayGain,TrackPeak=0.988553;TrackGain=-6.47 dB;AlbumPeak=0.988553;AlbumGain=-6.47 dB
-5,LPCM 8-bit 8000Hz Stereo.wav,ReplayGain,TrackPeak=0.976563;TrackGain=-7.60 dB;AlbumPeak=0.976563;AlbumGain=-7.60 dB
-6,LPCM 16-bit 44100Hz Stereo.wav,ReplayGain 2,TrackPeak=1.000000;TrackGain=-8.68 dB;AlbumPeak=1.000000;AlbumGain=-8.68 dB
-7,LPCM 16-bit 44100Hz Mono.wav,ReplayGain 2,TrackPeak=1.000000;TrackGain=-9.79 dB;AlbumPeak=1.000000;AlbumGain=-9.79 dB
-8,LPCM 16-bit 48000Hz Stereo.wav,ReplayGain 2,TrackPeak=0.999969;TrackGain=-8.67 dB;AlbumPeak=0.999969;AlbumGain=-8.67 dB
-9,LPCM 24-bit 96000Hz Stereo.wav,ReplayGain 2,TrackPeak=0.988553;TrackGain=-8.64 dB;AlbumPeak=0.988553;AlbumGain=-8.64 dB
+5,LPCM 8-bit 8000Hz Stereo.wav,ReplayGain 2.0,TrackPeak=0.976563;TrackGain=-8.89 dB;AlbumPeak=0.976563;AlbumGain=-8.89 dB
+6,LPCM 16-bit 44100Hz Stereo.wav,ReplayGain 2.0,TrackPeak=1.000000;TrackGain=-8.68 dB;AlbumPeak=1.000000;AlbumGain=-8.68 dB
+7,LPCM 16-bit 44100Hz Mono.wav,ReplayGain 2.0,TrackPeak=1.000000;TrackGain=-9.79 dB;AlbumPeak=1.000000;AlbumGain=-9.79 dB
+8,LPCM 16-bit 48000Hz Stereo.wav,ReplayGain 2.0,TrackPeak=0.999969;TrackGain=-8.67 dB;AlbumPeak=0.999969;AlbumGain=-8.67 dB
+9,LPCM 24-bit 96000Hz Stereo.wav,ReplayGain 2.0,TrackPeak=0.988553;TrackGain=-8.64 dB;AlbumPeak=0.988553;AlbumGain=-8.64 dB
