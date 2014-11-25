@@ -85,7 +85,7 @@ namespace PowerShellAudio.Extensions.Vorbis
         internal static extern void OggStreamClear(IntPtr streamState);
 
         [DllImport(_vorbisLibrary, EntryPoint = "vorbis_version_string", CallingConvention = CallingConvention.Cdecl)]
-        internal static extern string VorbisVersion();
+        internal static extern IntPtr VorbisVersion();
 
         [DllImport(_vorbisLibrary, EntryPoint = "vorbis_info_init", CallingConvention = CallingConvention.Cdecl)]
         internal static extern void VorbisInfoInitialize(IntPtr info);

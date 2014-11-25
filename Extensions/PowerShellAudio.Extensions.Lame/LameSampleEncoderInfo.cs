@@ -22,6 +22,7 @@ using System.ComponentModel.Composition;
 using System.Diagnostics.Contracts;
 using System.Globalization;
 using System.Linq;
+using System.Runtime.InteropServices;
 
 namespace PowerShellAudio.Extensions.Lame
 {
@@ -60,7 +61,7 @@ namespace PowerShellAudio.Extensions.Lame
 
                 try
                 {
-                    return string.Format(CultureInfo.CurrentCulture, Resources.SampleEncoderDescription, SafeNativeMethods.GetLameVersion());
+                    return string.Format(CultureInfo.CurrentCulture, Resources.SampleEncoderDescription, Marshal.PtrToStringAnsi(SafeNativeMethods.GetLameVersion()));
                 }
                 catch (TypeInitializationException e)
                 {

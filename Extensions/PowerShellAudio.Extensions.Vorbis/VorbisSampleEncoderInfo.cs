@@ -20,6 +20,7 @@ using System.Collections.Generic;
 using System.ComponentModel.Composition;
 using System.Diagnostics.Contracts;
 using System.Linq;
+using System.Runtime.InteropServices;
 
 namespace PowerShellAudio.Extensions.Vorbis
 {
@@ -58,7 +59,7 @@ namespace PowerShellAudio.Extensions.Vorbis
 
                 try
                 {
-                    return SafeNativeMethods.VorbisVersion();
+                    return Marshal.PtrToStringUni(SafeNativeMethods.VorbisVersion());
                 }
                 catch (TypeInitializationException e)
                 {

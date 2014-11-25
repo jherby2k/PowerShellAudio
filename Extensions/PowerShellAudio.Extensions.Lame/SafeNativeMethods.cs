@@ -42,7 +42,7 @@ namespace PowerShellAudio.Extensions.Lame
         }
 
         [DllImport(_lameLibrary, EntryPoint = "get_lame_version", CallingConvention = CallingConvention.Cdecl)]
-        internal static extern string GetLameVersion();
+        internal static extern IntPtr GetLameVersion();
 
         [DllImport(_lameLibrary, EntryPoint = "lame_init", CallingConvention = CallingConvention.Cdecl)]
         internal static extern NativeEncoderHandle Initialize();
