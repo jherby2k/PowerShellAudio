@@ -123,6 +123,7 @@
     <Compile Include="Enumerations.cs" />
     <Compile Include="EqualLoudnessFilter.cs" />
     <Compile Include="AlbumComponent.cs" />
+    <Compile Include="NativeR128GroupState.cs" />
     <Compile Include="NativeR128Analyzer.cs" />
     <Compile Include="NativeStateHandle.cs" />
     <Compile Include="ReplayGain2Analyzer.cs" />

@@ -220,9 +220,9 @@ namespace PowerShellAudio.Extensions.ReplayGain
             return string.Format(CultureInfo.InvariantCulture, "{0:0.000000}", peak);
         }
 
-        static string ConvertGainToString(float peak)
+        static string ConvertGainToString(float gain)
         {
-            return string.Format(CultureInfo.InvariantCulture, "{0:0.00} dB", peak);
+            return string.Format(CultureInfo.InvariantCulture, "{0:0.00} dB", gain);
         }
     }
 }

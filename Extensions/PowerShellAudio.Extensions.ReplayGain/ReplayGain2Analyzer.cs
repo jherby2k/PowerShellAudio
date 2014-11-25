@@ -21,7 +21,7 @@ using System.Globalization;
 
 namespace PowerShellAudio.Extensions.ReplayGain
 {
-    [SampleAnalyzerExport("ReplayGain 2")]
+    [SampleAnalyzerExport("ReplayGain 2.0")]
     public class ReplayGain2Analyzer : ISampleAnalyzer, IDisposable
     {
         const int referenceLevel = -18;

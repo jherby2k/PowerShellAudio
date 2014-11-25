@@ -28,11 +28,12 @@ namespace PowerShellAudio.Extensions.ReplayGain
 {
     class NativeR128Analyzer : IDisposable
     {
-        static readonly ConcurrentDictionary<GroupToken, ConcurrentBag<NativeStateHandle>> _groupHandles = new ConcurrentDictionary<GroupToken, ConcurrentBag<NativeStateHandle>>();
+        static readonly ConcurrentDictionary<GroupToken, NativeR128GroupState> _globalHandles = new ConcurrentDictionary<GroupToken, NativeR128GroupState>();
 
         readonly uint _channels;
         readonly GroupToken _groupToken;
         readonly NativeStateHandle _handle;
+        readonly NativeR128GroupState _groupState;
 
         internal NativeR128Analyzer(uint channels, uint sampleRate, GroupToken groupToken)
         {
@@ -42,12 +43,13 @@ namespace PowerShellAudio.Extensions.ReplayGain
             Contract.Ensures(_groupToken == groupToken);
             Contract.Ensures(_handle != null);
             Contract.Ensures(!_handle.IsInvalid);
+            Contract.Ensures(_groupState != null);
 
             _channels = channels;
             _groupToken = groupToken;
             _handle = SafeNativeMethods.Initialize(channels, sampleRate, Mode.Global | Mode.SamplePeak);
-
-            _groupHandles.GetOrAdd(groupToken, new ConcurrentBag<NativeStateHandle>()).Add(_handle);
+            _groupState = _globalHandles.GetOrAdd(groupToken, new NativeR128GroupState());
+            _groupState.Handles.Add(_handle);
         }
 
         internal void AddFrames(float[] frames)
@@ -71,9 +73,7 @@ namespace PowerShellAudio.Extensions.ReplayGain
         [SuppressMessage("Microsoft.Reliability", "CA2001:AvoidCallingProblematicMethods", MessageId = "System.Runtime.InteropServices.SafeHandle.DangerousGetHandle", Justification = "Passing an array of SafeHandles isn't supported.")]
         internal double GetLoudnessMultiple()
         {
-            ConcurrentBag<NativeStateHandle> bag;
-            _groupHandles.TryGetValue(_groupToken, out bag);
-            IntPtr[] handles = bag.ToArray().Select(handle => handle.DangerousGetHandle()).ToArray();
+            IntPtr[] handles = _groupState.Handles.ToArray().Select(handle => handle.DangerousGetHandle()).ToArray();
 
             double loudness;
             Ebur128Error result = SafeNativeMethods.GetLoudnessMultiple(handles, new UIntPtr((uint)handles.Length), out loudness);
@@ -100,25 +100,19 @@ namespace PowerShellAudio.Extensions.ReplayGain
 
         internal double GetSamplePeakMultiple()
         {
-            ConcurrentBag<NativeStateHandle> bag;
-            if (_groupHandles.TryGetValue(_groupToken, out bag))
-            {
-                double combinedPeak = 0;
+            double combinedPeak = 0;
 
-                foreach (NativeStateHandle handle in bag)
-                    for (uint channel = 0; channel < _channels; channel++)
-                    {
-                        double channelPeak;
-                        Ebur128Error result = SafeNativeMethods.GetSamplePeak(handle, channel, out channelPeak);
-                        if (result != Ebur128Error.Success)
-                            throw new IOException(string.Format(CultureInfo.CurrentCulture, Resources.NativeAnalyzerGetLoudnessError, result));
-                        combinedPeak = Math.Max(combinedPeak, channelPeak);
-                    }
+            foreach (NativeStateHandle handle in _groupState.Handles)
+                for (uint channel = 0; channel < _channels; channel++)
+                {
+                    double channelPeak;
+                    Ebur128Error result = SafeNativeMethods.GetSamplePeak(handle, channel, out channelPeak);
+                    if (result != Ebur128Error.Success)
+                        throw new IOException(string.Format(CultureInfo.CurrentCulture, Resources.NativeAnalyzerGetLoudnessError, result));
+                    combinedPeak = Math.Max(combinedPeak, channelPeak);
+                }
 
-                return combinedPeak;
-            }
-            else
-                throw new IOException(Resources.NativeAnalyzerGroupDisposedError);
+            return combinedPeak;
         }
 
         public void Dispose()
@@ -131,17 +125,31 @@ namespace PowerShellAudio.Extensions.ReplayGain
         {
             if (disposing)
             {
-                _handle.Dispose();
-                ConcurrentBag<NativeStateHandle> bag;
-                _groupHandles.TryRemove(_groupToken, out bag);
+                _groupState.MemberDisposed();
+
+                // Once all members have been disposed...
+                if (_groupToken.Count == _groupState.MembersDisposed)
+                {
+                    // Dispose all the handles at once:
+                    NativeStateHandle handle;
+                    while (_groupState.Handles.TryTake(out handle))
+                        handle.Dispose();
+
+                    // Remove the group from the global list:
+                    NativeR128GroupState groupState;
+                    _globalHandles.TryRemove(_groupToken, out groupState);
+                }
             }
         }
 
         [ContractInvariantMethod]
         void ObjectInvariant()
         {
+            Contract.Invariant(_channels > 0);
+            Contract.Invariant(_groupToken != null);
             Contract.Invariant(_handle != null);
             Contract.Invariant(!_handle.IsInvalid);
+            Contract.Invariant(_groupState != null);
         }
     }
 }
