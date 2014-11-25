@@ -1,7 +1,7 @@
 <?xml version="1.0"?>
 <ModuleObject xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" fVersion="1.1" type="Binary" mclass="Module" useSupports="false">
   <Name>PowerShellAudio</Name>
-  <Version>0.9.5</Version>
+  <Version>0.9.6</Version>
   <Description>An extensible, multi-format audio conversion and tagging module</Description>
   <HasManifest>true</HasManifest>
   <OverridePostCount>false</OverridePostCount>

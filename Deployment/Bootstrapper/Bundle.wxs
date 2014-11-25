@@ -21,7 +21,7 @@ You should have received a copy of the GNU Lesser General Public License along w
      xmlns:bal="http://schemas.microsoft.com/wix/BalExtension"
      xmlns:util="http://schemas.microsoft.com/wix/UtilExtension"
      xmlns:netfx="http://schemas.microsoft.com/wix/NetFxExtension">
-	<Bundle Name="PowerShell Audio" IconSourceFile="Logo.ico" Version="0.9.5" Manufacturer="Jeremy Herbison" UpgradeCode="{7D38656D-6BE6-4972-A9DB-7B4AF7BCC880}">
+	<Bundle Name="PowerShell Audio" IconSourceFile="Logo.ico" Version="0.9.6" Manufacturer="Jeremy Herbison" UpgradeCode="{7D38656D-6BE6-4972-A9DB-7B4AF7BCC880}">
     <BootstrapperApplicationRef Id="WixStandardBootstrapperApplication.HyperlinkSidebarLicense">
       <bal:WixStandardBootstrapperApplication LicenseUrl="http://www.gnu.org/licenses/lgpl.html" LogoFile="Logo.png" LogoSideFile="LogoSide.png" ShowVersion="yes" SuppressOptionsUI="yes" />
     </BootstrapperApplicationRef>
@@ -35,30 +35,34 @@ You should have received a copy of the GNU Lesser General Public License along w
 
     <Chain>
       <PackageGroupRef Id="NetFx452Web" />
-      <MsuPackage DisplayName="Windows Management Framework 4.0"
-                  KB="KB2819745"
-                  Permanent="yes"
-                  SourceFile="Windows6.1-KB2819745-x64-MultiPkg.msu"
-                  InstallCondition="VersionNT=v6.1 AND VersionNT64"
-                  DetectCondition="PSVersion&gt;=v4.0" />
+      
       <MsuPackage DisplayName="Windows Management Framework 4.0"
                   KB="KB2819745"
                   Permanent="yes"
                   SourceFile="Windows6.1-KB2819745-x86-MultiPkg.msu"
                   InstallCondition="VersionNT=v6.1 AND NOT VersionNT64"
                   DetectCondition="PSVersion&gt;=v4.0" />
+      <MsuPackage DisplayName="Windows Management Framework 4.0"
+                  KB="KB2819745"
+                  Permanent="yes"
+                  SourceFile="Windows6.1-KB2819745-x64-MultiPkg.msu"
+                  InstallCondition="VersionNT=v6.1 AND VersionNT64"
+                  DetectCondition="PSVersion&gt;=v4.0" />
+      
       <ExePackage DisplayName="Microsoft Visual C++ 2013 Redistributable (x86)"
                   InstallCommand="/quiet /norestart"
                   Protocol="burn"
                   Permanent="yes"
                   SourceFile="vcredist_x86.exe"
-                  InstallCondition="VCRedist_x86&lt;v12.0.21005" />
+                  DetectCondition="VCRedist_x86&gt;=v12.0.21005" />
       <ExePackage DisplayName="Microsoft Visual C++ 2013 Redistributable (x64)"
                   InstallCommand="/quiet /norestart"
                   Protocol="burn"
                   Permanent="yes"
                   SourceFile="vcredist_x64.exe"
-                  InstallCondition="VCRedist_x64&lt;v12.0.21005 AND VersionNT64" />
+                  InstallCondition="VersionNT64"
+                  DetectCondition="VCRedist_x64&gt;=v12.0.21005" />
+      
       <MsiPackage SourceFile="$(var.Setup.TargetPath)" />
       <MsiPackage SourceFile="$(var.Setup64.TargetPath)"
                   InstallCondition="VersionNT64" />
