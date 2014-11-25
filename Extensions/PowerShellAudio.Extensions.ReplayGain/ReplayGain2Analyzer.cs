@@ -25,10 +25,21 @@ namespace PowerShellAudio.Extensions.ReplayGain
     public class ReplayGain2Analyzer : ISampleAnalyzer, IDisposable
     {
         const int referenceLevel = -18;
+        static readonly SampleAnalyzerInfo _analyzerInfo = new ReplayGain2SampleAnalyzerInfo();
 
         GroupToken _groupToken;
         NativeR128Analyzer _analyzer;
         float[] _buffer;
+
+        public SampleAnalyzerInfo AnalyzerInfo
+        {
+            get
+            {
+                Contract.Ensures(Contract.Result<SampleAnalyzerInfo>() != null);
+
+                return _analyzerInfo;
+            }
+        }
 
         public void Initialize(AudioInfo audioInfo, GroupToken groupToken)
         {

@@ -134,6 +134,8 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>Resources.resx</DependentUpon>
     </Compile>
+    <Compile Include="ReplayGain2SampleAnalyzerInfo.cs" />
+    <Compile Include="ReplayGainSampleAnalyzerInfo.cs" />
     <Compile Include="SafeNativeMethods.cs" />
     <Compile Include="WindowSelector.cs" />
     <Compile Include="IirFilter.cs" />

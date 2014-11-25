@@ -15,39 +15,38 @@
  * <http://www.gnu.org/licenses/>.
  */
 
-using System;
 using System.Diagnostics.Contracts;
 
 namespace PowerShellAudio
 {
-    [ContractClassFor(typeof(ISampleAnalyzer))]
-    abstract class SampleAnalyzerContract : ISampleAnalyzer
+    /// <summary>
+    /// Contains information about an <see cref="ISampleAnalyzer"/> implementation.
+    /// </summary>
+    [ContractClass(typeof(SampleAnalyzerInfoContract))]
+    public abstract class SampleAnalyzerInfo
     {
-        public SampleAnalyzerInfo AnalyzerInfo
+        /// <summary>
+        /// Gets the name of the analyzer.
+        /// </summary>
+        /// <value>
+        /// The name.
+        /// </value>
+        public abstract string Name { get; }
+
+        /// <summary>
+        /// Gets the external library's version string, if relevant.
+        /// </summary>
+        /// <value>
+        /// The external library.
+        /// </value>
+        public virtual string ExternalLibrary
         {
             get
             {
-                Contract.Ensures(Contract.Result<SampleAnalyzerInfo>() != null);
+                Contract.Ensures(Contract.Result<string>() != null);
 
-                return default(SampleAnalyzerInfo);
+                return string.Empty;
             }
         }
-
-        public void Initialize(AudioInfo audioInfo, GroupToken groupToken)
-        {
-            Contract.Requires<ArgumentNullException>(audioInfo != null);
-            Contract.Requires<ArgumentNullException>(groupToken != null);
-        }
-
-        public MetadataDictionary GetResult()
-        {
-            Contract.Ensures(Contract.Result<MetadataDictionary>() != null);
-
-            return default(MetadataDictionary);
-        }
-
-        public abstract bool ManuallyFreesSamples { get; }
-
-        public abstract void Submit(SampleCollection samples);
     }
 }

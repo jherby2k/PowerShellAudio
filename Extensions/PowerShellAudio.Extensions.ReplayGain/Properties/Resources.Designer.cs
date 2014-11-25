@@ -140,5 +140,14 @@ namespace PowerShellAudio.Extensions.ReplayGain.Properties {
                 return ResourceManager.GetString("ReplayGainSampleFilterMissingTrackPeak", resourceCulture);
             }
         }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to libebur128 {0}.{1}.{2}.
+        /// </summary>
+        internal static string SampleAnalyzerDescription {
+            get {
+                return ResourceManager.GetString("SampleAnalyzerDescription", resourceCulture);
+            }
+        }
     }
 }

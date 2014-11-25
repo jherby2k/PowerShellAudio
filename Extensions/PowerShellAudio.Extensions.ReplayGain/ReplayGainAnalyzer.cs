@@ -30,12 +30,23 @@ namespace PowerShellAudio.Extensions.ReplayGain
         const int _boundedCapacity = 10;
         const float _rmsWindowTime = 0.05f;
 
-        static ConcurrentDictionary<GroupToken, AlbumComponent> _albumComponents = new ConcurrentDictionary<GroupToken, AlbumComponent>();
+        static readonly SampleAnalyzerInfo _analyzerInfo = new ReplayGainSampleAnalyzerInfo();
+        static readonly ConcurrentDictionary<GroupToken, AlbumComponent> _albumComponents = new ConcurrentDictionary<GroupToken, AlbumComponent>();
 
         GroupToken _groupToken;
         AlbumComponent _albumComponent;
         TransformManyBlock<SampleCollection, SampleCollection> _filterSampleCountBlock;
         BufferBlock<MetadataDictionary> _bufferResultsBlock;
+
+        public SampleAnalyzerInfo AnalyzerInfo
+        {
+            get
+            {
+                Contract.Ensures(Contract.Result<SampleAnalyzerInfo>() != null);
+
+                return _analyzerInfo;
+            }
+        }
 
         public void Initialize(AudioInfo audioInfo, GroupToken groupToken)
         {
@@ -84,7 +95,7 @@ namespace PowerShellAudio.Extensions.ReplayGain
 
         protected virtual void Dispose(bool disposing)
         {
-            if (disposing && _albumComponent.SetTrackDisposed())
+            if (disposing && _albumComponent != null && _albumComponent.SetTrackDisposed())
             {
                 AlbumComponent removedAlbumComponent;
                 _albumComponents.TryRemove(_groupToken, out removedAlbumComponent);

@@ -41,6 +41,9 @@ namespace PowerShellAudio.Extensions.ReplayGain
             Environment.SetEnvironmentVariable("PATH", newPath.ToString());
         }
 
+        [DllImport(_ebur128Library, EntryPoint = "ebur128_get_version", CallingConvention = CallingConvention.Cdecl)]
+        internal static extern void GetVersion(out int major, out int minor, out int patch);
+
         [DllImport(_ebur128Library, EntryPoint = "ebur128_init", CallingConvention = CallingConvention.Cdecl)]
         internal static extern NativeStateHandle Initialize(uint channels, uint samplerate, Mode mode);
 

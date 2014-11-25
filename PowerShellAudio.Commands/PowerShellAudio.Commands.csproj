@@ -119,7 +119,7 @@
     <Compile Include="ExportAudioFileCommand.cs" />
     <Compile Include="GetAudioMetadataEncoderInfoCommand.cs" />
     <Compile Include="GetAudioEncoderInfoCommand.cs" />
-    <Compile Include="GetAudioAnalyzerListCommand.cs" />
+    <Compile Include="GetAudioAnalyzerInfoCommand.cs" />
     <Compile Include="HashTableToMetadataDictionaryAdapter.cs" />
     <Compile Include="HashTableToSettingsDictionaryAdapter.cs" />
     <Compile Include="MeasureAudioFileCommand.cs" />

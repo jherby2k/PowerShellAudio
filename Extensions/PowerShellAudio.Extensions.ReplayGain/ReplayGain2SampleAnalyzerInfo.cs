@@ -15,39 +15,37 @@
  * <http://www.gnu.org/licenses/>.
  */
 
-using System;
+using PowerShellAudio.Extensions.ReplayGain.Properties;
 using System.Diagnostics.Contracts;
+using System.Globalization;
 
-namespace PowerShellAudio
+namespace PowerShellAudio.Extensions.ReplayGain
 {
-    [ContractClassFor(typeof(ISampleAnalyzer))]
-    abstract class SampleAnalyzerContract : ISampleAnalyzer
+    class ReplayGain2SampleAnalyzerInfo : SampleAnalyzerInfo
     {
-        public SampleAnalyzerInfo AnalyzerInfo
+        public override string Name
         {
             get
             {
-                Contract.Ensures(Contract.Result<SampleAnalyzerInfo>() != null);
+                Contract.Ensures(!string.IsNullOrEmpty(Contract.Result<string>()));
 
-                return default(SampleAnalyzerInfo);
+                return "ReplayGain 2.0";
             }
         }
 
-        public void Initialize(AudioInfo audioInfo, GroupToken groupToken)
+        public override string ExternalLibrary
         {
-            Contract.Requires<ArgumentNullException>(audioInfo != null);
-            Contract.Requires<ArgumentNullException>(groupToken != null);
+            get
+            {
+                Contract.Ensures(!string.IsNullOrEmpty(Contract.Result<string>()));
+
+                int majorVersion;
+                int minorVersion;
+                int patchVersion;
+                SafeNativeMethods.GetVersion(out majorVersion, out minorVersion, out patchVersion);
+
+                return string.Format(CultureInfo.CurrentCulture, Resources.SampleAnalyzerDescription, majorVersion, minorVersion, patchVersion);
+            }
         }
-
-        public MetadataDictionary GetResult()
-        {
-            Contract.Ensures(Contract.Result<MetadataDictionary>() != null);
-
-            return default(MetadataDictionary);
-        }
-
-        public abstract bool ManuallyFreesSamples { get; }
-
-        public abstract void Submit(SampleCollection samples);
     }
 }

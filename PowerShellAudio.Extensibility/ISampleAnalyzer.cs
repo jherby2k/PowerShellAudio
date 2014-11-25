@@ -31,6 +31,14 @@ namespace PowerShellAudio
     public interface ISampleAnalyzer : IFinalSampleConsumer
     {
         /// <summary>
+        /// Gets the analyzer information.
+        /// </summary>
+        /// <value>
+        /// The analyzer information.
+        /// </value>
+        SampleAnalyzerInfo AnalyzerInfo { get; }
+
+        /// <summary>
         /// Initializes the analyzer.
         /// </summary>
         /// <param name="audioInfo">The  audio info.</param>

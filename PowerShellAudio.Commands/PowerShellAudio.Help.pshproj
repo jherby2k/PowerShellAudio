@@ -35,6 +35,7 @@ The new file name(s) and/or directory can be generated from metadata by specifyi
         <CommandParameterSetInfo2 Name="__AllParameterSets" Params="Directory AudioFile Name Replace PassThru Verbose Debug ErrorAction WarningAction ErrorVariable WarningVariable OutVariable OutBuffer PipelineVariable WhatIf Confirm" />
         <CommandParameterSetInfo2 Name="__AllParameterSets" Params="Directory AudioFile Name Replace PassThru Verbose Debug ErrorAction WarningAction ErrorVariable WarningVariable OutVariable OutBuffer PipelineVariable WhatIf Confirm" />
         <CommandParameterSetInfo2 Name="__AllParameterSets" Params="Directory AudioFile Name Replace PassThru Verbose Debug ErrorAction WarningAction ErrorVariable WarningVariable OutVariable OutBuffer PipelineVariable WhatIf Confirm" />
+        <CommandParameterSetInfo2 Name="__AllParameterSets" Params="Directory AudioFile Name Replace PassThru Verbose Debug ErrorAction WarningAction ErrorVariable WarningVariable OutVariable OutBuffer PipelineVariable WhatIf Confirm" />
       </ParamSets>
       <Syntax>
         <string>Copy-AudioFile [-Directory] &lt;DirectoryInfo&gt; [-AudioFile] &lt;AudioFile&gt; [-Name &lt;String&gt;] [-Replace] [-PassThru] [-WhatIf] [-Confirm]</string>
@@ -188,6 +189,9 @@ For more complex operations, such as recursively searching through a directory t
         <CommandParameterSetInfo2 Name="ByPath" Params="Path Verbose Debug ErrorAction WarningAction ErrorVariable WarningVariable OutVariable OutBuffer PipelineVariable" />
         <CommandParameterSetInfo2 Name="ByFileInfo" Params="FileInfo Verbose Debug ErrorAction WarningAction ErrorVariable WarningVariable OutVariable OutBuffer PipelineVariable" />
         <CommandParameterSetInfo2 Name="ByLiteralPath" Params="LiteralPath Verbose Debug ErrorAction WarningAction ErrorVariable WarningVariable OutVariable OutBuffer PipelineVariable" />
+        <CommandParameterSetInfo2 Name="ByPath" Params="Path Verbose Debug ErrorAction WarningAction ErrorVariable WarningVariable OutVariable OutBuffer PipelineVariable" />
+        <CommandParameterSetInfo2 Name="ByFileInfo" Params="FileInfo Verbose Debug ErrorAction WarningAction ErrorVariable WarningVariable OutVariable OutBuffer PipelineVariable" />
+        <CommandParameterSetInfo2 Name="ByLiteralPath" Params="LiteralPath Verbose Debug ErrorAction WarningAction ErrorVariable WarningVariable OutVariable OutBuffer PipelineVariable" />
       </ParamSets>
       <Syntax>
         <string>Get-AudioFile [-Path] &lt;String&gt;</string>
@@ -278,6 +282,7 @@ For more complex operations, such as recursively searching through a directory t
         <CommandParameterSetInfo2 Name="__AllParameterSets" Params="AudioFile Verbose Debug ErrorAction WarningAction ErrorVariable WarningVariable OutVariable OutBuffer PipelineVariable" />
         <CommandParameterSetInfo2 Name="__AllParameterSets" Params="AudioFile Verbose Debug ErrorAction WarningAction ErrorVariable WarningVariable OutVariable OutBuffer PipelineVariable" />
         <CommandParameterSetInfo2 Name="__AllParameterSets" Params="AudioFile Verbose Debug ErrorAction WarningAction ErrorVariable WarningVariable OutVariable OutBuffer PipelineVariable" />
+        <CommandParameterSetInfo2 Name="__AllParameterSets" Params="AudioFile Verbose Debug ErrorAction WarningAction ErrorVariable WarningVariable OutVariable OutBuffer PipelineVariable" />
       </ParamSets>
       <Syntax>
         <string>Get-AudioInfo [-AudioFile] &lt;AudioFile&gt;</string>
@@ -323,6 +328,7 @@ For more complex operations, such as recursively searching through a directory t
         <ReturnTypeDescription />
       </GeneralHelp>
       <ParamSets>
+        <CommandParameterSetInfo2 Name="__AllParameterSets" Params="Key AudioFile Verbose Debug ErrorAction WarningAction ErrorVariable WarningVariable OutVariable OutBuffer PipelineVariable" />
         <CommandParameterSetInfo2 Name="__AllParameterSets" Params="Key AudioFile Verbose Debug ErrorAction WarningAction ErrorVariable WarningVariable OutVariable OutBuffer PipelineVariable" />
         <CommandParameterSetInfo2 Name="__AllParameterSets" Params="Key AudioFile Verbose Debug ErrorAction WarningAction ErrorVariable WarningVariable OutVariable OutBuffer PipelineVariable" />
         <CommandParameterSetInfo2 Name="__AllParameterSets" Params="Key AudioFile Verbose Debug ErrorAction WarningAction ErrorVariable WarningVariable OutVariable OutBuffer PipelineVariable" />
@@ -398,6 +404,7 @@ The results can be retrieved with the Get-AudioMetadata cmdlet, or by accessing 
         <ReturnTypeDescription />
       </GeneralHelp>
       <ParamSets>
+        <CommandParameterSetInfo2 Name="__AllParameterSets" Params="Analyzer AudioFile PassThru Verbose Debug ErrorAction WarningAction ErrorVariable WarningVariable OutVariable OutBuffer PipelineVariable" />
         <CommandParameterSetInfo2 Name="__AllParameterSets" Params="Analyzer AudioFile PassThru Verbose Debug ErrorAction WarningAction ErrorVariable WarningVariable OutVariable OutBuffer PipelineVariable" />
         <CommandParameterSetInfo2 Name="__AllParameterSets" Params="Analyzer AudioFile PassThru Verbose Debug ErrorAction WarningAction ErrorVariable WarningVariable OutVariable OutBuffer PipelineVariable" />
         <CommandParameterSetInfo2 Name="__AllParameterSets" Params="Analyzer AudioFile PassThru Verbose Debug ErrorAction WarningAction ErrorVariable WarningVariable OutVariable OutBuffer PipelineVariable" />
@@ -490,6 +497,7 @@ The new file name(s) can be generated from metadata by specifying keys inside cu
         <ReturnTypeDescription />
       </GeneralHelp>
       <ParamSets>
+        <CommandParameterSetInfo2 Name="__AllParameterSets" Params="Name AudioFile PassThru Verbose Debug ErrorAction WarningAction ErrorVariable WarningVariable OutVariable OutBuffer PipelineVariable WhatIf Confirm" />
         <CommandParameterSetInfo2 Name="__AllParameterSets" Params="Name AudioFile PassThru Verbose Debug ErrorAction WarningAction ErrorVariable WarningVariable OutVariable OutBuffer PipelineVariable WhatIf Confirm" />
         <CommandParameterSetInfo2 Name="__AllParameterSets" Params="Name AudioFile PassThru Verbose Debug ErrorAction WarningAction ErrorVariable WarningVariable OutVariable OutBuffer PipelineVariable WhatIf Confirm" />
         <CommandParameterSetInfo2 Name="__AllParameterSets" Params="Name AudioFile PassThru Verbose Debug ErrorAction WarningAction ErrorVariable WarningVariable OutVariable OutBuffer PipelineVariable WhatIf Confirm" />
@@ -601,6 +609,7 @@ The new file name(s) can be generated from metadata by specifying keys inside cu
         <CommandParameterSetInfo2 Name="__AllParameterSets" Params="AudioFile Setting PassThru Verbose Debug ErrorAction WarningAction ErrorVariable WarningVariable OutVariable OutBuffer PipelineVariable WhatIf Confirm" />
         <CommandParameterSetInfo2 Name="__AllParameterSets" Params="AudioFile Setting PassThru Verbose Debug ErrorAction WarningAction ErrorVariable WarningVariable OutVariable OutBuffer PipelineVariable WhatIf Confirm" />
         <CommandParameterSetInfo2 Name="__AllParameterSets" Params="AudioFile Setting PassThru Verbose Debug ErrorAction WarningAction ErrorVariable WarningVariable OutVariable OutBuffer PipelineVariable WhatIf Confirm" />
+        <CommandParameterSetInfo2 Name="__AllParameterSets" Params="AudioFile Setting PassThru Verbose Debug ErrorAction WarningAction ErrorVariable WarningVariable OutVariable OutBuffer PipelineVariable WhatIf Confirm" />
       </ParamSets>
       <Syntax>
         <string>Save-AudioMetadata [-AudioFile] &lt;AudioFile&gt; [-Setting &lt;Hashtable&gt;] [-PassThru] [-WhatIf] [-Confirm]</string>
@@ -700,6 +709,7 @@ The new file name(s) can be generated from metadata by specifying keys inside cu
         <CommandParameterSetInfo2 Name="__AllParameterSets" Params="Metadata AudioFile PassThru Verbose Debug ErrorAction WarningAction ErrorVariable WarningVariable OutVariable OutBuffer PipelineVariable" />
         <CommandParameterSetInfo2 Name="__AllParameterSets" Params="Metadata AudioFile PassThru Verbose Debug ErrorAction WarningAction ErrorVariable WarningVariable OutVariable OutBuffer PipelineVariable" />
         <CommandParameterSetInfo2 Name="__AllParameterSets" Params="Metadata AudioFile PassThru Verbose Debug ErrorAction WarningAction ErrorVariable WarningVariable OutVariable OutBuffer PipelineVariable" />
+        <CommandParameterSetInfo2 Name="__AllParameterSets" Params="Metadata AudioFile PassThru Verbose Debug ErrorAction WarningAction ErrorVariable WarningVariable OutVariable OutBuffer PipelineVariable" />
       </ParamSets>
       <Syntax>
         <string>Set-AudioMetadata [-Metadata] &lt;Hashtable&gt; [-AudioFile] &lt;AudioFile&gt; [-PassThru]</string>
@@ -767,6 +777,7 @@ The resulting file name(s) and/or directory can be generated from metadata by sp
         <ReturnTypeDescription />
       </GeneralHelp>
       <ParamSets>
+        <CommandParameterSetInfo2 Name="__AllParameterSets" Params="Encoder AudioFile Setting Directory Name Replace Verbose Debug ErrorAction WarningAction ErrorVariable WarningVariable OutVariable OutBuffer PipelineVariable WhatIf Confirm" />
         <CommandParameterSetInfo2 Name="__AllParameterSets" Params="Encoder AudioFile Setting Directory Name Replace Verbose Debug ErrorAction WarningAction ErrorVariable WarningVariable OutVariable OutBuffer PipelineVariable WhatIf Confirm" />
         <CommandParameterSetInfo2 Name="__AllParameterSets" Params="Encoder AudioFile Setting Directory Name Replace Verbose Debug ErrorAction WarningAction ErrorVariable WarningVariable OutVariable OutBuffer PipelineVariable WhatIf Confirm" />
         <CommandParameterSetInfo2 Name="__AllParameterSets" Params="Encoder AudioFile Setting Directory Name Replace Verbose Debug ErrorAction WarningAction ErrorVariable WarningVariable OutVariable OutBuffer PipelineVariable WhatIf Confirm" />
@@ -885,42 +896,10 @@ The resulting file name(s) and/or directory can be generated from metadata by sp
       <SupportInformation ad="false" rsat="false" ps2="false" ps3="false" ps4="false" ps5="false" wxp="false" wv="false" w7="false" w8="false" w81="false" w2k3s="false" w2k3e="false" w2k3d="false" w2k8s="false" w2k8e="false" w2k8d="false" w2k8r2s="false" w2k8r2e="false" w2k8r2d="false" w2k12s="false" w2k12d="false" w2k12r2s="false" w2k12r2d="false" />
       <Publish>false</Publish>
     </CmdletObject>
-    <CmdletObject verb="Get" noun="AudioAnalyzerList">
-      <Name>Get-AudioAnalyzerList</Name>
-      <GeneralHelp>
-        <Synopsis>Gets a list of analyzers available for measurement.</Synopsis>
-        <Description>The Get-AudioAnalyzerList cmdlet lists all available analyzers currently loaded by PowerShell Audio. These analyzers can be used with Measure-AudioFile's Analyzer property.</Description>
-        <Notes />
-        <InputType />
-        <InputUrl />
-        <InputTypeDescription />
-        <ReturnType />
-        <ReturnUrl />
-        <ReturnTypeDescription />
-      </GeneralHelp>
-      <ParamSets>
-        <CommandParameterSetInfo2 Name="__AllParameterSets" Params="Verbose Debug ErrorAction WarningAction ErrorVariable WarningVariable OutVariable OutBuffer PipelineVariable" />
-        <CommandParameterSetInfo2 Name="__AllParameterSets" Params="Verbose Debug ErrorAction WarningAction ErrorVariable WarningVariable OutVariable OutBuffer PipelineVariable" />
-        <CommandParameterSetInfo2 Name="__AllParameterSets" Params="Verbose Debug ErrorAction WarningAction ErrorVariable WarningVariable OutVariable OutBuffer PipelineVariable" />
-        <CommandParameterSetInfo2 Name="__AllParameterSets" Params="Verbose Debug ErrorAction WarningAction ErrorVariable WarningVariable OutVariable OutBuffer PipelineVariable" />
-        <CommandParameterSetInfo2 Name="__AllParameterSets" Params="Verbose Debug ErrorAction WarningAction ErrorVariable WarningVariable OutVariable OutBuffer PipelineVariable" />
-        <CommandParameterSetInfo2 Name="__AllParameterSets" Params="Verbose Debug ErrorAction WarningAction ErrorVariable WarningVariable OutVariable OutBuffer PipelineVariable" />
-        <CommandParameterSetInfo2 Name="__AllParameterSets" Params="Verbose Debug ErrorAction WarningAction ErrorVariable WarningVariable OutVariable OutBuffer PipelineVariable" />
-        <CommandParameterSetInfo2 Name="__AllParameterSets" Params="Verbose Debug ErrorAction WarningAction ErrorVariable WarningVariable OutVariable OutBuffer PipelineVariable" />
-      </ParamSets>
-      <Syntax>
-        <string>Get-AudioAnalyzerList</string>
-      </Syntax>
-      <Parameters />
-      <Examples />
-      <RelatedLinks />
-      <SupportInformation ad="false" rsat="false" ps2="false" ps3="false" ps4="false" ps5="false" wxp="false" wv="false" w7="false" w8="false" w81="false" w2k3s="false" w2k3e="false" w2k3d="false" w2k8s="false" w2k8e="false" w2k8d="false" w2k8r2s="false" w2k8r2e="false" w2k8r2d="false" w2k12s="false" w2k12d="false" w2k12r2s="false" w2k12r2d="false" />
-      <Publish>false</Publish>
-    </CmdletObject>
     <CmdletObject verb="Get" noun="AudioEncoderInfo">
       <Name>Get-AudioEncoderInfo</Name>
       <GeneralHelp>
-        <Synopsis>Gets detailed information about an encoder.</Synopsis>
+        <Synopsis>Gets detailed information about the available encoders.</Synopsis>
         <Description>The Get-AudioEncoderInfo cmdlet provides detailed information about the available encoders currently loaded by PowerShell Audio.</Description>
         <Notes />
         <InputType />
@@ -934,6 +913,7 @@ The resulting file name(s) and/or directory can be generated from metadata by sp
         <CommandParameterSetInfo2 Name="__AllParameterSets" Params="Encoder Verbose Debug ErrorAction WarningAction ErrorVariable WarningVariable OutVariable OutBuffer PipelineVariable" />
         <CommandParameterSetInfo2 Name="__AllParameterSets" Params="Encoder Verbose Debug ErrorAction WarningAction ErrorVariable WarningVariable OutVariable OutBuffer PipelineVariable" />
         <CommandParameterSetInfo2 Name="__AllParameterSets" Params="Encoder Verbose Debug ErrorAction WarningAction ErrorVariable WarningVariable OutVariable OutBuffer PipelineVariable" />
+        <CommandParameterSetInfo2 Name="__AllParameterSets" Params="Name Verbose Debug ErrorAction WarningAction ErrorVariable WarningVariable OutVariable OutBuffer PipelineVariable" />
         <CommandParameterSetInfo2 Name="__AllParameterSets" Params="Name Verbose Debug ErrorAction WarningAction ErrorVariable WarningVariable OutVariable OutBuffer PipelineVariable" />
       </ParamSets>
       <Syntax>
@@ -958,7 +938,7 @@ The resulting file name(s) and/or directory can be generated from metadata by sp
     <CmdletObject verb="Get" noun="AudioMetadataEncoderInfo">
       <Name>Get-AudioMetadataEncoderInfo</Name>
       <GeneralHelp>
-        <Synopsis>Gets detailed information about a metadata encoder.</Synopsis>
+        <Synopsis>Gets detailed information about the available metadata encoders.</Synopsis>
         <Description>The Get-AudioMetadataEncoderInfo cmdlet provides detailed information about the available metadata encoders currently loaded by PowerShell Audio.</Description>
         <Notes />
         <InputType />
@@ -971,6 +951,7 @@ The resulting file name(s) and/or directory can be generated from metadata by sp
       <ParamSets>
         <CommandParameterSetInfo2 Name="__AllParameterSets" Params="Extension Verbose Debug ErrorAction WarningAction ErrorVariable WarningVariable OutVariable OutBuffer PipelineVariable" />
         <CommandParameterSetInfo2 Name="__AllParameterSets" Params="Extension Verbose Debug ErrorAction WarningAction ErrorVariable WarningVariable OutVariable OutBuffer PipelineVariable" />
+        <CommandParameterSetInfo2 Name="__AllParameterSets" Params="Extension Verbose Debug ErrorAction WarningAction ErrorVariable WarningVariable OutVariable OutBuffer PipelineVariable" />
       </ParamSets>
       <Syntax>
         <string>Get-AudioMetadataEncoderInfo [[-Extension] &lt;String&gt;]</string>
@@ -978,6 +959,41 @@ The resulting file name(s) and/or directory can be generated from metadata by sp
       <Parameters>
         <ParameterDescription type="String" varLen="false" required="false" dynamic="false" pipeRemaining="false" pipe="false" pipeProp="false" isPos="true" pos="0" globbing="false">
           <Name>Extension</Name>
+          <Attributes>
+            <string>System.Management.Automation.ParameterAttribute</string>
+          </Attributes>
+          <Aliases />
+          <Description />
+          <DefaultValue />
+        </ParameterDescription>
+      </Parameters>
+      <Examples />
+      <RelatedLinks />
+      <SupportInformation ad="false" rsat="false" ps2="false" ps3="false" ps4="false" ps5="false" wxp="false" wv="false" w7="false" w8="false" w81="false" w2k3s="false" w2k3e="false" w2k3d="false" w2k8s="false" w2k8e="false" w2k8d="false" w2k8r2s="false" w2k8r2e="false" w2k8r2d="false" w2k12s="false" w2k12d="false" w2k12r2s="false" w2k12r2d="false" />
+      <Publish>false</Publish>
+    </CmdletObject>
+    <CmdletObject verb="Get" noun="AudioAnalyzerInfo">
+      <Name>Get-AudioAnalyzerInfo</Name>
+      <GeneralHelp>
+        <Synopsis>Gets detailed information about the available analyzers.</Synopsis>
+        <Description>The Get-AudioAnalyzerInfo cmdlet provides detailed information about the available analyzers currently loaded by PowerShell Audio.</Description>
+        <Notes />
+        <InputType />
+        <InputUrl />
+        <InputTypeDescription />
+        <ReturnType />
+        <ReturnUrl />
+        <ReturnTypeDescription />
+      </GeneralHelp>
+      <ParamSets>
+        <CommandParameterSetInfo2 Name="__AllParameterSets" Params="Name Verbose Debug ErrorAction WarningAction ErrorVariable WarningVariable OutVariable OutBuffer PipelineVariable" />
+      </ParamSets>
+      <Syntax>
+        <string>Get-AudioAnalyzerInfo [[-Name] &lt;String&gt;]</string>
+      </Syntax>
+      <Parameters>
+        <ParameterDescription type="String" varLen="false" required="false" dynamic="false" pipeRemaining="false" pipe="false" pipeProp="false" isPos="true" pos="0" globbing="false">
+          <Name>Name</Name>
           <Attributes>
             <string>System.Management.Automation.ParameterAttribute</string>
           </Attributes>

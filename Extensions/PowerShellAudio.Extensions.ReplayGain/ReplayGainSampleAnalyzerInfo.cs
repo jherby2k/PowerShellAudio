@@ -15,39 +15,20 @@
  * <http://www.gnu.org/licenses/>.
  */
 
-using System;
 using System.Diagnostics.Contracts;
 
-namespace PowerShellAudio
+namespace PowerShellAudio.Extensions.ReplayGain
 {
-    [ContractClassFor(typeof(ISampleAnalyzer))]
-    abstract class SampleAnalyzerContract : ISampleAnalyzer
+    class ReplayGainSampleAnalyzerInfo : SampleAnalyzerInfo
     {
-        public SampleAnalyzerInfo AnalyzerInfo
+        public override string Name
         {
             get
             {
-                Contract.Ensures(Contract.Result<SampleAnalyzerInfo>() != null);
+                Contract.Ensures(!string.IsNullOrEmpty(Contract.Result<string>()));
 
-                return default(SampleAnalyzerInfo);
+                return "ReplayGain";
             }
         }
-
-        public void Initialize(AudioInfo audioInfo, GroupToken groupToken)
-        {
-            Contract.Requires<ArgumentNullException>(audioInfo != null);
-            Contract.Requires<ArgumentNullException>(groupToken != null);
-        }
-
-        public MetadataDictionary GetResult()
-        {
-            Contract.Ensures(Contract.Result<MetadataDictionary>() != null);
-
-            return default(MetadataDictionary);
-        }
-
-        public abstract bool ManuallyFreesSamples { get; }
-
-        public abstract void Submit(SampleCollection samples);
     }
 }

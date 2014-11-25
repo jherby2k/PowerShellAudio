@@ -15,17 +15,21 @@
  * <http://www.gnu.org/licenses/>.
  */
 
-using System.Linq;
-using System.Management.Automation;
+using System.Diagnostics.Contracts;
 
-namespace PowerShellAudio.Commands
+namespace PowerShellAudio
 {
-    [Cmdlet(VerbsCommon.Get, "AudioAnalyzerList"), OutputType(typeof(string))]
-    public class GetAudioAnalyzerListCommand : Cmdlet
+    [ContractClassFor(typeof(SampleAnalyzerInfo))]
+    abstract class SampleAnalyzerInfoContract : SampleAnalyzerInfo
     {
-        protected override void ProcessRecord()
+        public override string Name
         {
-            WriteObject(ExtensionProvider.GetMetadata<ISampleAnalyzer>("Name"), true);
+            get
+            {
+                Contract.Ensures(!string.IsNullOrEmpty(Contract.Result<string>()));
+
+                return default(string);
+            }
         }
     }
 }
