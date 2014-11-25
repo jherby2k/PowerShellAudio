@@ -56,8 +56,6 @@ namespace PowerShellAudio
             Contract.Ensures(Factories != null);
 
             var mainDir = Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location);
-            var extensionsDir = new DirectoryInfo(Path.Combine(mainDir, "Extensions"));
-
             using (var catalog = new AggregateCatalog())
             {
                 // Add the root directory as well, so extension references can be found:

@@ -17,14 +17,18 @@
 
 using System;
 using System.Diagnostics.Contracts;
+using System.Threading;
 
 namespace PowerShellAudio
 {
     /// <summary>
     /// An object used to indicate membership in a collection (An album or compilation).
     /// </summary>
-    public class GroupToken
+    public class GroupToken : IDisposable
     {
+        readonly ManualResetEventSlim resetEvent = new ManualResetEventSlim();
+        int _remainingMembers;
+
         /// <summary>
         /// Gets the member count.
         /// </summary>
@@ -44,9 +48,52 @@ namespace PowerShellAudio
         public GroupToken(int count)
         {
             Contract.Requires<ArgumentOutOfRangeException>(count > 0);
+            Contract.Ensures(_remainingMembers == count);
             Contract.Ensures(Count == count);
 
+            _remainingMembers = count;
             Count = count;
+        }
+
+        /// <summary>
+        /// Signals that one of the members has completed. Once the final member completes, WaitForMembers will no
+        /// longer block waiting threads.
+        /// </summary>
+        public void CompleteMember()
+        {
+            Contract.Ensures(_remainingMembers == Contract.OldValue<int>(_remainingMembers) - 1);
+
+            if (Interlocked.Decrement(ref _remainingMembers) <= 0)
+                resetEvent.Set();
+        }
+
+        /// <summary>
+        /// Blocks the current thread until the last member completes.
+        /// </summary>
+        public void WaitForMembers()
+        {
+            resetEvent.Wait();
+        }
+
+        /// <summary>
+        /// Performs application-defined tasks associated with freeing, releasing, or resetting unmanaged resources.
+        /// </summary>
+        public void Dispose()
+        {
+            Dispose(true);
+            GC.SuppressFinalize(this);
+        }
+
+        /// <summary>
+        /// Releases unmanaged and - optionally - managed resources.
+        /// </summary>
+        /// <param name="disposing">
+        /// <c>true</c> to release both managed and unmanaged resources; <c>false</c> to release only unmanaged
+        /// resources.
+        /// </param>
+        protected virtual void Dispose(bool disposing)
+        {
+            resetEvent.Dispose();
         }
 
         [ContractInvariantMethod]

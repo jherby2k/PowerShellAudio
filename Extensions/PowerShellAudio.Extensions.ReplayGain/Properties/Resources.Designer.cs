@@ -70,6 +70,33 @@ namespace PowerShellAudio.Extensions.ReplayGain.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to ebur128 encountered an error while adding frames: {0}.
+        /// </summary>
+        internal static string NativeAnalyzerAddFramesError {
+            get {
+                return ResourceManager.GetString("NativeAnalyzerAddFramesError", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to ebur128 encountered an error while getting the loudness: {0}.
+        /// </summary>
+        internal static string NativeAnalyzerGetLoudnessError {
+            get {
+                return ResourceManager.GetString("NativeAnalyzerGetLoudnessError", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to One or more group members has already been disposed.
+        /// </summary>
+        internal static string NativeAnalyzerGroupDisposedError {
+            get {
+                return ResourceManager.GetString("NativeAnalyzerGroupDisposedError", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Unrecognized ApplyGain value &apos;{0}&apos;. Specify &apos;Album&apos;, &apos;Track&apos; or &apos;False&apos;. Default is &apos;False&apos;.
         /// </summary>
         internal static string ReplayGainSampleFilterBadApplyGain {

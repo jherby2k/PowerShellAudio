@@ -120,8 +120,12 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="ButterworthFilter.cs" />
+    <Compile Include="Enumerations.cs" />
     <Compile Include="EqualLoudnessFilter.cs" />
     <Compile Include="AlbumComponent.cs" />
+    <Compile Include="NativeR128Analyzer.cs" />
+    <Compile Include="NativeStateHandle.cs" />
+    <Compile Include="ReplayGain2Analyzer.cs" />
     <Compile Include="ReplayGainFilter.cs" />
     <Compile Include="GlobalSuppressions.cs" />
     <Compile Include="Properties\Resources.Designer.cs">
@@ -129,6 +133,7 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>Resources.resx</DependentUpon>
     </Compile>
+    <Compile Include="SafeNativeMethods.cs" />
     <Compile Include="WindowSelector.cs" />
     <Compile Include="IirFilter.cs" />
     <Compile Include="PeakDetector.cs" />
@@ -168,6 +173,15 @@
       <Generator>ResXFileCodeGenerator</Generator>
       <LastGenOutput>Resources.Designer.cs</LastGenOutput>
     </EmbeddedResource>
+  </ItemGroup>
+  <ItemGroup>
+    <CodeAnalysisDictionary Include="CustomDictionary.xml" />
+    <Content Include="x64\ebur128.dll">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="x86\ebur128.dll">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

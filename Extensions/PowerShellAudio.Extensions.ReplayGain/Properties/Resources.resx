@@ -120,6 +120,15 @@
   <data name="EqualLoudnessFilterSampleRateError" xml:space="preserve">
     <value>ReplayGain does not support a sample rate of {0} Hz</value>
   </data>
+  <data name="NativeAnalyzerAddFramesError" xml:space="preserve">
+    <value>ebur128 encountered an error while adding frames: {0}</value>
+  </data>
+  <data name="NativeAnalyzerGetLoudnessError" xml:space="preserve">
+    <value>ebur128 encountered an error while getting the loudness: {0}</value>
+  </data>
+  <data name="NativeAnalyzerGroupDisposedError" xml:space="preserve">
+    <value>One or more group members has already been disposed</value>
+  </data>
   <data name="ReplayGainSampleFilterBadApplyGain" xml:space="preserve">
     <value>Unrecognized ApplyGain value '{0}'. Specify 'Album', 'Track' or 'False'. Default is 'False'</value>
   </data>

@@ -39,10 +39,17 @@ You should have received a copy of the GNU Lesser General Public License along w
         <File Source="$(var.PowerShellAudio.Extensions.ReplayGain.TargetDir)CodeContracts\$(var.PowerShellAudio.Extensions.ReplayGain.TargetName).Contracts.dll" KeyPath="yes" Checksum="yes" />
       </Component>
     </DirectoryRef>
+    <DirectoryRef Id="ReplayGainX64Folder">
+      <Component Guid="{B2FE7AAF-147F-48A5-96C8-0BAC92FE3CF7}">
+        <File Source="$(var.PowerShellAudio.Extensions.ReplayGain.TargetDir)x64\ebur128.dll" KeyPath="yes" Checksum="yes" />
+      </Component>
+      <Merge Id="VCRedist" SourceFile="Microsoft_VC120_CRT_x64.msm" DiskId="1" Language="0" />
+    </DirectoryRef>
 
     <DirectoryRef Id="ExtensionsFolder">
       <Directory Id="ReplayGainFolder" Name="ReplayGain">
         <Directory Id="ReplayGainCodeContractsFolder" Name="CodeContracts" />
+        <Directory Id="ReplayGainX64Folder" Name="x64" />
       </Directory>
     </DirectoryRef>
     

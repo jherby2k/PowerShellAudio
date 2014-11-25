@@ -17,6 +17,7 @@
 
 using PowerShellAudio.Properties;
 using System;
+using System.Diagnostics.CodeAnalysis;
 using System.Diagnostics.Contracts;
 using System.Globalization;
 using System.IO;
@@ -102,19 +103,32 @@ namespace PowerShellAudio
         /// <exception cref="InvalidOperationException">Thrown if an analyzer with the specified name could not be found.</exception>
         /// <exception cref="UnsupportedAudioException">Thrown if no decoders were able to read this file.</exception>
         /// <exception cref="OperationCanceledException">Throw if the operation was canceled.</exception>
+        [SuppressMessage("Microsoft.Reliability", "CA2000:Dispose objects before losing scope", Justification = "False positive")]
         public void Analyze(string analyzer, CancellationToken cancelToken, GroupToken groupToken = null)
         {
             Contract.Requires<ArgumentNullException>(!string.IsNullOrEmpty(analyzer));
 
-            if (groupToken == null)
-                groupToken = new GroupToken(1);
+            bool groupTokenOwned = false;
+            try
+            {
+                if (groupToken == null)
+                {
+                    groupToken = new GroupToken(1);
+                    groupTokenOwned = true;
+                }
 
-            var analyzerFactory = ExtensionProvider.GetFactories<ISampleAnalyzer>("Name", analyzer).SingleOrDefault();
-            if (analyzerFactory == null)
-                throw new ArgumentException(string.Format(CultureInfo.CurrentCulture, Resources.AnalyzableAudioFileFactoryError, analyzer), "analyzer");
+                var analyzerFactory = ExtensionProvider.GetFactories<ISampleAnalyzer>("Name", analyzer).SingleOrDefault();
+                if (analyzerFactory == null)
+                    throw new ArgumentException(string.Format(CultureInfo.CurrentCulture, Resources.AnalyzableAudioFileFactoryError, analyzer), "analyzer");
 
-            using (var analyzerLifetime = analyzerFactory.CreateExport())
-                DoAnalyze(analyzerLifetime.Value, cancelToken, groupToken);
+                using (var analyzerLifetime = analyzerFactory.CreateExport())
+                    DoAnalyze(analyzerLifetime.Value, cancelToken, groupToken);
+            }
+            finally
+            {
+                if (groupTokenOwned && groupToken != null)
+                    groupToken.Dispose();
+            }
         }
 
         void DoAnalyze(ISampleAnalyzer sampleAnalyzer, CancellationToken cancelToken, GroupToken groupToken)
