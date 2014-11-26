@@ -58,7 +58,7 @@ namespace PowerShellAudio.Extensions.Mp4
                 tempMp4.DescendToAtom("moov", "udta", "meta", "ilst");
 
                 // Remove any copied ilst atoms, then generate new ones:
-                tempStream.SetLength(stream.Position);
+                tempStream.SetLength(tempStream.Position);
                 byte[] ilstData = GenerateIlst(originalMp4, metadata, settings);
                 tempStream.Write(ilstData, 0, ilstData.Length);
 
