@@ -1,7 +1,7 @@
 Index,FileName,Settings,Metadata,ExpectedHash
-0,FLAC 16-bit 44100Hz Stereo.flac,,,54-2A-A4-2B-93-5F-48-B2-3A-04-EF-27-6D-82-FB-1E
-1,FLAC 16-bit 44100Hz Stereo.flac,,Comment=Test Sample,F5-9B-62-47-1E-27-04-A1-7B-9C-24-87-05-82-FD-5C
-2,FLAC 16-bit 44100Hz Stereo.flac,UsePadding=False,Comment=Test Sample,F5-9B-62-47-1E-27-04-A1-7B-9C-24-87-05-82-FD-5C
+0,FLAC 16-bit 44100Hz Stereo.flac,,,BD-4D-6A-29-FD-88-DF-38-46-89-4E-1C-29-53-C6-64
+1,FLAC 16-bit 44100Hz Stereo.flac,,Comment=Test Sample,53-C6-99-19-46-74-6E-D5-F9-8F-CC-3B-25-EF-5A-45
+2,FLAC 16-bit 44100Hz Stereo.flac,UsePadding=False,Comment=Test Sample,53-C6-99-19-46-74-6E-D5-F9-8F-CC-3B-25-EF-5A-45
 3,MP3 213kbps 44100Hz Stereo.mp3,,,E7-CE-BD-CC-18-5B-EF-4C-8C-14-E5-FF-9B-AF-B8-86
 4,MP3 213kbps 44100Hz Stereo.mp3,,Comment=Test Sample,81-D9-6C-E4-77-CE-F4-0C-F4-AC-DB-BE-1F-F1-D8-EC
 5,MP3 213kbps 44100Hz Stereo.mp3,AddSoundCheck=False;ID3Version=2.3;PaddingSize=0;UsePadding=False,Comment=Test Sample,81-D9-6C-E4-77-CE-F4-0C-F4-AC-DB-BE-1F-F1-D8-EC

@@ -13,17 +13,17 @@ Index,FileName,Encoder,Settings,Metadata,ExpectedHash
 11,ALAC 16-bit 44100Hz Mono.m4a,Wave,,Comment=Test Sample,50-9B-83-82-8F-13-94-5E-41-21-E4-C4-89-7A-86-49
 12,ALAC 16-bit 48000Hz Stereo.m4a,Wave,,Comment=Test Sample,EF-BC-44-B9-FA-9C-04-44-9D-67-EC-D1-6C-B7-F3-D8
 13,ALAC 24-bit 96000Hz Stereo.m4a,Wave,,Comment=Test Sample,D5-5B-D1-98-76-76-A7-D6-C2-A0-4B-F0-9C-10-F6-4F
-14,LPCM 8-bit 8000Hz Stereo.wav,FLAC,,Comment=Test Sample,C8-53-1E-C2-1E-F3-11-7F-61-7B-BB-22-BB-D2-CF-81
-15,LPCM 16-bit 44100Hz Stereo.wav,FLAC,,Comment=Test Sample,F5-9B-62-47-1E-27-04-A1-7B-9C-24-87-05-82-FD-5C
-16,LPCM 16-bit 44100Hz Mono.wav,FLAC,,Comment=Test Sample,24-F0-52-78-9C-EC-2B-B4-45-6D-6A-FF-EF-C4-06-38
-17,LPCM 16-bit 48000Hz Stereo.wav,FLAC,,Comment=Test Sample,DD-27-D7-D5-B9-AA-CD-1D-AD-37-F8-4D-F6-FC-89-95
-18,LPCM 24-bit 96000Hz Stereo.wav,FLAC,,Comment=Test Sample,94-B2-D4-B3-AD-43-A7-27-B9-BE-17-05-49-FA-B2-C1
-19,LPCM 16-bit 44100Hz Stereo.wav,FLAC,,,54-2A-A4-2B-93-5F-48-B2-3A-04-EF-27-6D-82-FB-1E
-20,LPCM 16-bit 44100Hz Stereo.wav,FLAC,CompressionLevel=5;AddMetadata=True;SeekPointInterval=10,Comment=Test Sample,F5-9B-62-47-1E-27-04-A1-7B-9C-24-87-05-82-FD-5C
-21,LPCM 16-bit 44100Hz Stereo.wav,FLAC,CompressionLevel=0,Comment=Test Sample,D1-26-4A-83-DC-2F-4B-70-4F-3F-E5-98-78-F6-93-32
-22,LPCM 16-bit 44100Hz Stereo.wav,FLAC,AddMetadata=False,Comment=Test Sample,54-2A-A4-2B-93-5F-48-B2-3A-04-EF-27-6D-82-FB-1E
-23,LPCM 16-bit 44100Hz Stereo.wav,FLAC,SeekPointInterval=0,Comment=Test Sample,54-AE-09-BD-D8-A0-88-3A-5F-78-17-46-83-22-AD-D4
-24,LPCM 16-bit 44100Hz Stereo.wav,FLAC,SeekPointInterval=1,Comment=Test Sample,E3-DB-F7-52-BD-19-71-E3-01-8B-F2-25-09-EF-6F-1A
+14,LPCM 8-bit 8000Hz Stereo.wav,FLAC,,Comment=Test Sample,E9-9A-C5-CB-BE-5C-8A-BF-97-3B-CA-38-E9-17-BE-8B
+15,LPCM 16-bit 44100Hz Stereo.wav,FLAC,,Comment=Test Sample,53-C6-99-19-46-74-6E-D5-F9-8F-CC-3B-25-EF-5A-45
+16,LPCM 16-bit 44100Hz Mono.wav,FLAC,,Comment=Test Sample,99-4F-C8-4A-78-52-F8-C5-B1-65-F6-29-66-E9-E0-7A
+17,LPCM 16-bit 48000Hz Stereo.wav,FLAC,,Comment=Test Sample,C0-8A-70-40-C8-ED-59-20-1E-60-13-D6-D2-04-E9-CE
+18,LPCM 24-bit 96000Hz Stereo.wav,FLAC,,Comment=Test Sample,B5-40-FF-A2-A7-EE-83-B0-DA-AD-A2-FF-7A-ED-4F-A7
+19,LPCM 16-bit 44100Hz Stereo.wav,FLAC,,,BD-4D-6A-29-FD-88-DF-38-46-89-4E-1C-29-53-C6-64
+20,LPCM 16-bit 44100Hz Stereo.wav,FLAC,CompressionLevel=5;AddMetadata=True;SeekPointInterval=10,Comment=Test Sample,53-C6-99-19-46-74-6E-D5-F9-8F-CC-3B-25-EF-5A-45
+21,LPCM 16-bit 44100Hz Stereo.wav,FLAC,CompressionLevel=0,Comment=Test Sample,09-F2-77-E0-FB-0E-0E-2A-F7-BE-74-B0-0A-2B-0B-15
+22,LPCM 16-bit 44100Hz Stereo.wav,FLAC,AddMetadata=False,Comment=Test Sample,BD-4D-6A-29-FD-88-DF-38-46-89-4E-1C-29-53-C6-64
+23,LPCM 16-bit 44100Hz Stereo.wav,FLAC,SeekPointInterval=0,Comment=Test Sample,48-07-E4-53-E1-86-6E-F1-DB-EF-03-4D-88-CF-63-7F
+24,LPCM 16-bit 44100Hz Stereo.wav,FLAC,SeekPointInterval=1,Comment=Test Sample,A2-1D-50-3C-69-EC-02-00-62-6A-A1-CD-13-45-09-F5
 25,LPCM 8-bit 8000Hz Stereo.wav,Lame MP3,,Comment=Test Sample,F7-99-98-46-6C-DC-8E-60-B3-06-B4-AB-68-CE-05-11
 26,LPCM 16-bit 44100Hz Stereo.wav,Lame MP3,,Comment=Test Sample,81-D9-6C-E4-77-CE-F4-0C-F4-AC-DB-BE-1F-F1-D8-EC
 27,LPCM 16-bit 44100Hz Mono.wav,Lame MP3,,Comment=Test Sample,BD-FE-BD-08-49-95-30-40-8D-3B-60-FE-FC-F7-5F-F9
