@@ -159,10 +159,6 @@ namespace PowerShellAudio.Extensions.Flac
         [return: MarshalAs(UnmanagedType.Bool)]
         internal static extern void StreamEncoderSetCompressionLevel(NativeStreamEncoderHandle handle, uint compressionLevel);
 
-        [DllImport(_flacLibrary, EntryPoint = "FLAC__stream_encoder_set_blocksize", CallingConvention = CallingConvention.Cdecl)]
-        [return: MarshalAs(UnmanagedType.Bool)]
-        internal static extern void StreamEncoderSetBlockSize(NativeStreamEncoderHandle handle, uint blockSize);
-
         [DllImport(_flacLibrary, EntryPoint = "FLAC__stream_encoder_set_metadata", CallingConvention = CallingConvention.Cdecl)]
         [return: MarshalAs(UnmanagedType.Bool)]
         internal static extern bool StreamEncoderSetMetadata(NativeStreamEncoderHandle handle, [MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 2)]IntPtr[] metaData, uint blocks);

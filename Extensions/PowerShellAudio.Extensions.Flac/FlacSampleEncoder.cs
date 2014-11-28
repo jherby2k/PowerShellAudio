@@ -61,10 +61,6 @@ namespace PowerShellAudio.Extensions.Flac
                 throw new InvalidSettingException(string.Format(CultureInfo.CurrentCulture, Resources.SampleEncoderBadCompressionLevel, settings["CompressionLevel"]));
             _encoder.SetCompressionLevel(compressionLevel);
 
-            // FLAC should default to a block size of 4096 for compression levels >= 3, but it doesn't:
-            if (compressionLevel >= 3)
-                _encoder.SetBlockSize(4096);
-
             if (string.IsNullOrEmpty(settings["AddMetadata"]) || string.Compare(settings["AddMetadata"], bool.TrueString, StringComparison.OrdinalIgnoreCase) == 0)
             {
                 var adaptedMetadata = new MetadataToVorbisCommentAdapter(metadata);

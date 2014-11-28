@@ -76,11 +76,6 @@ namespace PowerShellAudio.Extensions.Flac
             SafeNativeMethods.StreamEncoderSetCompressionLevel(_handle, compressionLevel);
         }
 
-        internal void SetBlockSize(uint blockSize)
-        {
-            SafeNativeMethods.StreamEncoderSetBlockSize(_handle, blockSize);
-        }
-
         [SuppressMessage("Microsoft.Reliability", "CA2001:AvoidCallingProblematicMethods", MessageId = "System.Runtime.InteropServices.SafeHandle.DangerousGetHandle", Justification = "Can't pass an array of SafeHandles")]
         internal void SetMetadata(IEnumerable<NativeMetadataBlock> metadataBlocks)
         {
