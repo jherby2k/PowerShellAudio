@@ -36,8 +36,7 @@ namespace PowerShellAudio.Extensions.Flac
             { "TOTALTRACKS", "TrackCount"          },
             { "TRACKCOUNT", "TrackCount"           },
             { "REPLAYGAIN_TRACK_GAIN", "TrackGain" },
-            { "REPLAYGAIN_TRACK_PEAK", "TrackPeak" },
-            { "YEAR", "Year"                       }
+            { "REPLAYGAIN_TRACK_PEAK", "TrackPeak" }
         };
 
         internal VorbisCommentToMetadataAdapter(IEnumerable<KeyValuePair<string, string>> vorbisComments)
@@ -54,7 +53,7 @@ namespace PowerShellAudio.Extensions.Flac
                     if (segments.Length > 1)
                         base["TrackCount"] = segments[1];
                 }
-                else if (item.Key == "DATE")
+                else if (item.Key == "DATE" || item.Key == "YEAR")
                 {
                     // The DATE comment may contain a full date, or only the year:
                     DateTime result;

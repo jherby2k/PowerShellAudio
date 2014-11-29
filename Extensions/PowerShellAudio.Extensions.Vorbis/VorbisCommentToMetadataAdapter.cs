@@ -38,8 +38,7 @@ namespace PowerShellAudio.Extensions.Vorbis
             { "TOTALTRACKS", "TrackCount"          },
             { "TRACKCOUNT", "TrackCount"           },
             { "REPLAYGAIN_TRACK_GAIN", "TrackGain" },
-            { "REPLAYGAIN_TRACK_PEAK", "TrackPeak" },
-            { "YEAR", "Year"                       }
+            { "REPLAYGAIN_TRACK_PEAK", "TrackPeak" }
         };
 
         internal VorbisCommentToMetadataAdapter(VorbisComment vorbisComment)
@@ -67,7 +66,7 @@ namespace PowerShellAudio.Extensions.Vorbis
                     if (segments.Length > 1)
                         base["TrackCount"] = segments[1];
                 }
-                else if (comment[0] == "DATE")
+                else if (comment[0] == "DATE" || comment[0] == "YEAR")
                 {
                     // The DATE comment may contain a full date, or only the year:
                     DateTime result;
