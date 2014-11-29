@@ -31,14 +31,16 @@ namespace PowerShellAudio.Extensions.Mp4
             { "Artist", "©ART"  },
             { "Comment", "©cmt" },
             { "Genre", "©gen"   },
-            { "Title", "©nam"   },
-            { "Year", "©day"    }
+            { "Title", "©nam"   }
         };
 
         internal MetadataToAtomAdapter(MetadataDictionary metadata, SettingsDictionary settings)
         {
             Contract.Requires(metadata != null);
 
+            int day = 0;
+            int month = 0;
+            int year = 0;
             var trackNumberAtom = new TrackNumberAtom();
             var trackSoundCheckAtom = new SoundCheckAtom();
             var albumSoundCheckAtom = new SoundCheckAtom();
@@ -47,6 +49,18 @@ namespace PowerShellAudio.Extensions.Mp4
             {
                 switch (item.Key)
                 {
+                    case "Day":
+                        day = int.Parse(item.Value, CultureInfo.InvariantCulture);
+                        break;
+
+                    case "Month":
+                        month = int.Parse(item.Value, CultureInfo.InvariantCulture);
+                        break;
+
+                    case "Year":
+                        year = int.Parse(item.Value, CultureInfo.InvariantCulture);
+                        break;
+
                     case "TrackNumber":
                         trackNumberAtom.TrackNumber = byte.Parse(item.Value, CultureInfo.InvariantCulture);
                         break;
@@ -78,6 +92,15 @@ namespace PowerShellAudio.Extensions.Mp4
                         break;
                 }
             }
+
+            // The ©day atom should contain either a full date, or just the year:
+            if (day > 0 && month > 0 && year > 0)
+            {
+                Contract.Assume(month <= 12);
+                Add(new TextAtom("©day", new DateTime(year, month, day).ToShortDateString()));
+            }
+            else if (year > 0)
+                Add(new TextAtom("©day", year.ToString(CultureInfo.InvariantCulture)));
 
             if (trackNumberAtom.IsValid)
                 Add(trackNumberAtom);

@@ -29,8 +29,7 @@ namespace PowerShellAudio.Extensions.Mp4
             { "©ART", "Artist"      },
             { "©cmt", "Comment"     },
             { "©gen", "Genre"       },
-            { "©nam", "Title"       },
-            { "©day", "Year"        }
+            { "©nam", "Title"       }
         };
 
         internal AtomToMetadataAdapter(Mp4 mp4, AtomInfo[] atoms)
@@ -48,6 +47,20 @@ namespace PowerShellAudio.Extensions.Mp4
                     Add("TrackNumber", trackNumberAtom.TrackNumber.ToString(CultureInfo.InvariantCulture));
                     if (trackNumberAtom.TrackCount > 0)
                         Add("TrackCount", trackNumberAtom.TrackCount.ToString(CultureInfo.InvariantCulture));
+                }
+                else if (atom.FourCC == "©day")
+                {
+                    // The ©day atom may contain a full date, or only the year:
+                    var dayAtom = new TextAtom(atomData);
+                    DateTime result;
+                    if (DateTime.TryParse(dayAtom.Value, CultureInfo.CurrentCulture, DateTimeStyles.NoCurrentDateDefault, out result) && result.Year >= 1000)
+                    {
+                        base["Day"] = result.Day.ToString(CultureInfo.InvariantCulture);
+                        base["Month"] = result.Month.ToString(CultureInfo.InvariantCulture);
+                        base["Year"] = result.Year.ToString(CultureInfo.InvariantCulture);
+                    }
+                    else
+                        base["Year"] = dayAtom.Value;
                 }
                 else
                 {
