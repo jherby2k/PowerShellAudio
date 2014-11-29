@@ -36,6 +36,7 @@ namespace PowerShellAudio
     /// the file in turn. If no supporting extensions are found, the <see cref="ExportableAudioFile"/> is not created
     /// and an <see cref="UnsupportedAudioException"/> is thrown.
     /// </remarks>
+    [Serializable]
     public class ExportableAudioFile : TaggedAudioFile
     {
         /// <summary>

@@ -15,6 +15,7 @@
  * <http://www.gnu.org/licenses/>.
  */
 
+using System;
 using System.Diagnostics.Contracts;
 
 namespace PowerShellAudio
@@ -22,7 +23,7 @@ namespace PowerShellAudio
     /// <summary>
     /// Contains information about an <see cref="ISampleAnalyzer"/> implementation.
     /// </summary>
-    [ContractClass(typeof(SampleAnalyzerInfoContract))]
+    [Serializable, ContractClass(typeof(SampleAnalyzerInfoContract))]
     public abstract class SampleAnalyzerInfo
     {
         /// <summary>

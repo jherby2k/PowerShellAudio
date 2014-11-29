@@ -32,15 +32,16 @@ namespace PowerShellAudio
     /// This class only accepts a restricted set of keys, and (depending on the key) performs formatting and/or
     /// validation on the values that are set.
     /// </remarks>
+    [Serializable]
     public class MetadataDictionary : SettingsDictionary
     {
-        readonly IDictionary<string, Func<string, string>> _acceptedKeys = InitializeAcceptedKeys();
+        static readonly IDictionary<string, Func<string, string>> _acceptedKeys = InitializeAcceptedKeys();
 
         /// <summary>
         /// Gets the accepted keys.
         /// </summary>
         /// <value>The accepted keys.</value>
-        public IReadOnlyCollection<string> AcceptedKeys
+        public static IReadOnlyCollection<string> AcceptedKeys
         {
             get
             {

@@ -30,6 +30,7 @@ namespace PowerShellAudio
     /// <remarks>
     /// Instances of this class are normally created by extensions, in the PowerShellAudio.Extensibility namespace.
     /// </remarks>
+    [Serializable]
     public class AudioInfo
     {
         static readonly IReadOnlyCollection<int> _supportedChannels = new[] { 1, 2 };

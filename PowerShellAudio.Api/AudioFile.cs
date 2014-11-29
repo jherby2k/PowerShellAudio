@@ -33,6 +33,7 @@ namespace PowerShellAudio
     /// file in turn. If no supporting extensions are found, the <see cref="AudioFile"/> is not created and an
     /// <see cref="UnsupportedAudioException"/> is thrown.
     /// </remarks>
+    [Serializable]
     public class AudioFile
     {
         /// <summary>

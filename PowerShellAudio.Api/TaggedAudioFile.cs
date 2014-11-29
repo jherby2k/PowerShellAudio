@@ -34,6 +34,7 @@ namespace PowerShellAudio
     /// file in turn. If no supporting extensions are found, the <see cref="TaggedAudioFile"/> is not created and an
     /// <see cref="UnsupportedAudioException"/> is thrown.
     /// </remarks>
+    [Serializable]
     public class TaggedAudioFile : AudioFile
     {
         MetadataDictionary _metadata;

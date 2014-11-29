@@ -31,6 +31,7 @@ namespace PowerShellAudio
     /// however, allowing for easier additions or modifications without fear of throwing an exception. The keys are
     /// also case-insensitive.
     /// </remarks>
+    [Serializable]
     public class SettingsDictionary : IDictionary<string, string>
     {
         readonly IDictionary<string, string> _internalDictionary = new Dictionary<string, string>(StringComparer.OrdinalIgnoreCase);

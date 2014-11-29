@@ -15,6 +15,7 @@
  * <http://www.gnu.org/licenses/>.
  */
 
+using System;
 using System.Collections.Generic;
 using System.Diagnostics.Contracts;
 
@@ -23,7 +24,7 @@ namespace PowerShellAudio
     /// <summary>
     /// Contains information about an <see cref="ISampleEncoder"/> implementation.
     /// </summary>
-    [ContractClass(typeof(SampleEncoderInfoContract))]
+    [Serializable, ContractClass(typeof(SampleEncoderInfoContract))]
     public abstract class SampleEncoderInfo
     {
         /// <summary>

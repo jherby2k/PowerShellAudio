@@ -15,6 +15,7 @@
  * <http://www.gnu.org/licenses/>.
  */
 
+using System;
 using System.Collections.Generic;
 using System.Diagnostics.Contracts;
 
@@ -23,7 +24,7 @@ namespace PowerShellAudio
     /// <summary>
     /// Contains information about an <see cref="IMetadataEncoder"/> implementation.
     /// </summary>
-    [ContractClass(typeof(MetadataEncoderInfoContract))]
+    [Serializable, ContractClass(typeof(MetadataEncoderInfoContract))]
     public abstract class MetadataEncoderInfo
     {
         /// <summary>
