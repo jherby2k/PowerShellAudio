@@ -116,6 +116,7 @@
     <Reference Include="System.ComponentModel.Composition" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Enumerations.cs" />
     <Compile Include="GlobalSuppressions.cs" />
     <Compile Include="Properties\Resources.Designer.cs">
       <AutoGen>True</AutoGen>

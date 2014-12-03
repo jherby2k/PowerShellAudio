@@ -117,6 +117,12 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
+  <data name="AudioInfoDecoderBitsPerSampleError" xml:space="preserve">
+    <value>Expected wBitsPerSample to be a multiple of 8</value>
+  </data>
+  <data name="AudioInfoDecoderFmtExtensionLengthError" xml:space="preserve">
+    <value>Expected a 22 byte fmt chunk extension</value>
+  </data>
   <data name="AudioInfoDecoderFmtLengthError" xml:space="preserve">
     <value>The fmt chunk is too small</value>
   </data>
@@ -135,11 +141,17 @@
   <data name="AudioInfoDecoderUnsupportedError" xml:space="preserve">
     <value>Only PCM Wave files are supported by this decoder</value>
   </data>
+  <data name="SampleDecoderBitsPerSampleError" xml:space="preserve">
+    <value>Expected wBitsPerSample to be a multiple of 8</value>
+  </data>
   <data name="SampleDecoderChannelsError" xml:space="preserve">
     <value>Only 1 (mono) or 2 (stereo) channels are supported</value>
   </data>
   <data name="SampleDecoderEndOfStreamError" xml:space="preserve">
     <value>Unexpectedly encountered the end of the stream</value>
+  </data>
+  <data name="SampleDecoderFmtExtensionLengthError" xml:space="preserve">
+    <value>Expected a 22 byte fmt chunk extension</value>
   </data>
   <data name="SampleDecoderFmtLengthError" xml:space="preserve">
     <value>The fmt chunk is too small</value>

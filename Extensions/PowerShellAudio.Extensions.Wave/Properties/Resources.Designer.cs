@@ -61,6 +61,24 @@ namespace PowerShellAudio.Extensions.Wave.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Expected wBitsPerSample to be a multiple of 8.
+        /// </summary>
+        internal static string AudioInfoDecoderBitsPerSampleError {
+            get {
+                return ResourceManager.GetString("AudioInfoDecoderBitsPerSampleError", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Expected a 22 byte fmt chunk extension.
+        /// </summary>
+        internal static string AudioInfoDecoderFmtExtensionLengthError {
+            get {
+                return ResourceManager.GetString("AudioInfoDecoderFmtExtensionLengthError", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to The fmt chunk is too small.
         /// </summary>
         internal static string AudioInfoDecoderFmtLengthError {
@@ -115,6 +133,15 @@ namespace PowerShellAudio.Extensions.Wave.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Expected wBitsPerSample to be a multiple of 8.
+        /// </summary>
+        internal static string SampleDecoderBitsPerSampleError {
+            get {
+                return ResourceManager.GetString("SampleDecoderBitsPerSampleError", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Only 1 (mono) or 2 (stereo) channels are supported.
         /// </summary>
         internal static string SampleDecoderChannelsError {
@@ -129,6 +156,15 @@ namespace PowerShellAudio.Extensions.Wave.Properties {
         internal static string SampleDecoderEndOfStreamError {
             get {
                 return ResourceManager.GetString("SampleDecoderEndOfStreamError", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Expected a 22 byte fmt chunk extension.
+        /// </summary>
+        internal static string SampleDecoderFmtExtensionLengthError {
+            get {
+                return ResourceManager.GetString("SampleDecoderFmtExtensionLengthError", resourceCulture);
             }
         }
         

@@ -44,14 +44,36 @@ namespace PowerShellAudio.Extensions.Wave
                 if (fmtChunkSize < 16)
                     throw new IOException(Resources.AudioInfoDecoderFmtLengthError);
 
-                if (reader.ReadUInt16() != 1)
+                Format format = (Format)reader.ReadUInt16();
+                if (format != Format.Pcm && format != Format.Extensible)
                     throw new UnsupportedAudioException(Resources.AudioInfoDecoderUnsupportedError);
+
+                // WAVEFORMATEXTENSIBLE headers are 40 bytes long:
+                if (format == Format.Extensible && fmtChunkSize < 40)
+                    throw new IOException(Resources.AudioInfoDecoderFmtLengthError);
 
                 ushort channels = reader.ReadUInt16();
                 uint sampleRate = reader.ReadUInt32();
                 stream.Seek(4, SeekOrigin.Current); // Ignore bytesPerSecond
                 ushort blockAlign = reader.ReadUInt16();
                 uint bitsPerSample = reader.ReadUInt16();
+
+                // Read the WAVEFORMATEXTENSIBLE extended header, if present:
+                if (format == Format.Extensible)
+                {
+                    if (reader.ReadUInt16() < 22)
+                        throw new UnsupportedAudioException(Resources.AudioInfoDecoderFmtExtensionLengthError);
+
+                    if (bitsPerSample % 8 != 0)
+                        throw new UnsupportedAudioException(Resources.AudioInfoDecoderBitsPerSampleError);
+                    bitsPerSample = reader.ReadUInt16();
+
+                    // Ignore the channel mask for now:
+                    stream.Seek(4, SeekOrigin.Current);
+
+                    if ((Format)reader.ReadUInt16() != Format.Pcm)
+                        throw new UnsupportedAudioException(Resources.AudioInfoDecoderUnsupportedError);
+                }
 
                 uint dataChunkSize = reader.SeekToChunk("data");
                 if (dataChunkSize == 0)

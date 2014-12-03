@@ -54,18 +54,40 @@ namespace PowerShellAudio.Extensions.Wave
             if (fmtChunkSize < 16)
                 throw new IOException(Resources.SampleDecoderFmtLengthError);
 
-            if (_reader.ReadUInt16() != 1)
+            Format format = (Format)_reader.ReadUInt16();
+            if (format != Format.Pcm && format != Format.Extensible)
                 throw new UnsupportedAudioException(Resources.SampleDecoderUnsupportedError);
+
+            // WAVEFORMATEXTENSIBLE headers are 40 bytes long:
+            if (format == Format.Extensible && fmtChunkSize < 40)
+                throw new IOException(Resources.SampleDecoderFmtLengthError);
 
             _channels = _reader.ReadUInt16();
             if (_channels == 0 || _channels > 2)
                 throw new UnsupportedAudioException(Resources.SampleDecoderChannelsError);
 
-            stream.Seek(8, SeekOrigin.Current); // Ignore sampleRate and bytesPerSecond
+            // Ignore sampleRate and bytesPerSecond:
+            stream.Seek(8, SeekOrigin.Current);
 
             ushort blockAlign = _reader.ReadUInt16();
-
             uint bitsPerSample = _reader.ReadUInt16();
+
+            // Read the WAVEFORMATEXTENSIBLE extended header, if present:
+            if (format == Format.Extensible)
+            {
+                if (_reader.ReadUInt16() < 22)
+                    throw new UnsupportedAudioException(Resources.SampleDecoderFmtExtensionLengthError);
+
+                if (bitsPerSample % 8 != 0)
+                    throw new UnsupportedAudioException(Resources.SampleDecoderBitsPerSampleError);
+                bitsPerSample = _reader.ReadUInt16();
+
+                // Ignore the channel mask for now:
+                stream.Seek(4, SeekOrigin.Current);
+
+                if ((Format)_reader.ReadUInt16() != Format.Pcm)
+                    throw new UnsupportedAudioException(Resources.SampleDecoderUnsupportedError);
+            }
 
             _bytesPerSample = (int)Math.Ceiling(bitsPerSample / (double)8);
             _divisor = (float)Math.Pow(2, bitsPerSample - 1);
