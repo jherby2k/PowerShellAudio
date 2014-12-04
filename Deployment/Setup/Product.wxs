@@ -18,7 +18,7 @@ You should have received a copy of the GNU Lesser General Public License along w
 
 -->
 <Wix xmlns="http://schemas.microsoft.com/wix/2006/wi">
-	<Product Id="*" Name="PowerShell Audio" Language="1033" Version="0.9.7" Manufacturer="Jeremy Herbison" UpgradeCode="{2597CDCD-6C10-4151-8314-0EEE87AD563D}">
+	<Product Id="*" Name="PowerShell Audio" Language="1033" Version="0.9.8" Manufacturer="Jeremy Herbison" UpgradeCode="{2597CDCD-6C10-4151-8314-0EEE87AD563D}">
 		<Package InstallerVersion="405" Compressed="yes" InstallScope="perMachine" />
 
 		<MajorUpgrade DowngradeErrorMessage="A newer version of [ProductName] is already installed." />

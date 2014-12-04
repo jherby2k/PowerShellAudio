@@ -21,7 +21,7 @@ You should have received a copy of the GNU Lesser General Public License along w
      xmlns:bal="http://schemas.microsoft.com/wix/BalExtension"
      xmlns:util="http://schemas.microsoft.com/wix/UtilExtension"
      xmlns:netfx="http://schemas.microsoft.com/wix/NetFxExtension">
-	<Bundle Name="PowerShell Audio" IconSourceFile="Logo.ico" Version="0.9.7" Manufacturer="Jeremy Herbison" UpgradeCode="{7D38656D-6BE6-4972-A9DB-7B4AF7BCC880}">
+	<Bundle Name="PowerShell Audio" IconSourceFile="Logo.ico" Version="0.9.8" Manufacturer="Jeremy Herbison" UpgradeCode="{7D38656D-6BE6-4972-A9DB-7B4AF7BCC880}">
     <BootstrapperApplicationRef Id="WixStandardBootstrapperApplication.HyperlinkSidebarLicense">
       <bal:WixStandardBootstrapperApplication LicenseUrl="http://www.gnu.org/licenses/lgpl.html" LogoFile="Logo.png" LogoSideFile="LogoSide.png" ShowVersion="yes" SuppressOptionsUI="yes" />
     </BootstrapperApplicationRef>
