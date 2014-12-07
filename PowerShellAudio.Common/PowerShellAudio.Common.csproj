@@ -115,9 +115,11 @@
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="System" />
+    <Reference Include="System.Drawing" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="AudioInfo.cs" />
+    <Compile Include="CoverArt.cs" />
     <Compile Include="GroupToken.cs" />
     <Compile Include="Properties\Resources.Designer.cs">
       <AutoGen>True</AutoGen>
@@ -131,6 +133,7 @@
     <Compile Include="SampleCollectionFactory.cs" />
     <Compile Include="InvalidSettingException.cs" />
     <Compile Include="ExtensionInitializationException.cs" />
+    <Compile Include="UnsupportedCoverArtException.cs" />
     <Compile Include="UnsupportedAudioException.cs" />
   </ItemGroup>
   <ItemGroup>

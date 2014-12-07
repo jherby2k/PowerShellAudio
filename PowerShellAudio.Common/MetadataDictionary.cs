@@ -94,6 +94,14 @@ namespace PowerShellAudio
             }
         }
 
+        /// <summary>
+        /// Gets or sets the cover art.
+        /// </summary>
+        /// <value>
+        /// The cover art.
+        /// </value>
+        public CoverArt CoverArt { get; set; }
+
         [ContractInvariantMethod]
         void ObjectInvariant()
         {

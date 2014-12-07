@@ -61,6 +61,15 @@ namespace PowerShellAudio.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Only bitmap, JPEG and PNG images are supported as cover art.
+        /// </summary>
+        internal static string CoverArtUnsupportedImageFormat {
+            get {
+                return ResourceManager.GetString("CoverArtUnsupportedImageFormat", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to &apos;{0}&apos; is not a valid day of the month.
         /// </summary>
         internal static string MetadataDictionaryDayError {
