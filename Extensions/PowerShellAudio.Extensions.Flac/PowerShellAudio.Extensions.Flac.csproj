@@ -136,7 +136,11 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>Resources.resx</DependentUpon>
     </Compile>
+    <Compile Include="PictureMetadataBlock.cs" />
+    <Compile Include="Picture.cs" />
     <Compile Include="VorbisComment.cs" />
+    <Compile Include="VorbisCommentMetadataBlock.cs" />
+    <Compile Include="VorbisCommentEntry.cs" />
     <Compile Include="NativeMetadataIteratorHandle.cs" />
     <Compile Include="NativeMetadataChainHandle.cs" />
     <Compile Include="MetadataToVorbisCommentAdapter.cs" />

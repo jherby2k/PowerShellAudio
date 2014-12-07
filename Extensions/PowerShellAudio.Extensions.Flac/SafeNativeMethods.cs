@@ -251,11 +251,11 @@ namespace PowerShellAudio.Extensions.Flac
 
         [DllImport(_flacLibrary, EntryPoint = "FLAC__metadata_object_vorbiscomment_entry_from_name_value_pair", CallingConvention = CallingConvention.Cdecl)]
         [return: MarshalAs(UnmanagedType.Bool)]
-        internal static extern bool VorbisCommentGet(out VorbisComment vorbisComment, byte[] key, byte[] value);
+        internal static extern bool VorbisCommentGet(out VorbisCommentEntry vorbisComment, byte[] key, byte[] value);
 
         [DllImport(_flacLibrary, EntryPoint = "FLAC__metadata_object_vorbiscomment_append_comment", CallingConvention = CallingConvention.Cdecl)]
         [return: MarshalAs(UnmanagedType.Bool)]
-        internal static extern bool VorbisCommentAppend(NativeMetadataBlockHandle handle, VorbisComment vorbisComment, [MarshalAs(UnmanagedType.Bool)]bool copy);
+        internal static extern bool VorbisCommentAppend(NativeMetadataBlockHandle handle, VorbisCommentEntry vorbisComment, [MarshalAs(UnmanagedType.Bool)]bool copy);
 
         [DllImport(_flacLibrary, EntryPoint = "FLAC__metadata_object_seektable_template_append_spaced_points", CallingConvention = CallingConvention.Cdecl)]
         [return: MarshalAs(UnmanagedType.Bool)]

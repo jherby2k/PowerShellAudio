@@ -39,7 +39,7 @@ namespace PowerShellAudio.Extensions.Flac
         {
             if ((MetadataType)Marshal.ReadInt32(metadata) == MetadataType.StreamInfo)
             {
-                StreamInfo streamInfo = ((StreamInfoMetadataBlock)Marshal.PtrToStructure(metadata, typeof(StreamInfoMetadataBlock))).StreamInfo;
+                StreamInfo streamInfo = Marshal.PtrToStructure<StreamInfoMetadataBlock>(metadata).StreamInfo;
                 AudioInfo = new AudioInfo("FLAC", (int)streamInfo.Channels, (int)streamInfo.BitsPerSample, (int)streamInfo.SampleRate, (long)streamInfo.TotalSamples);
             }
         }

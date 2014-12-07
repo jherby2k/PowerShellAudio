@@ -16,7 +16,6 @@
  */
 
 using System;
-using System.Collections.Generic;
 using System.Diagnostics.Contracts;
 using System.IO;
 using System.Runtime.InteropServices;
@@ -26,8 +25,6 @@ namespace PowerShellAudio.Extensions.Flac
 {
     class NativeStreamMetadataDecoder : NativeStreamDecoder
     {
-        readonly int _nativePtrSize = Marshal.SizeOf(typeof(IntPtr));
-
         internal MetadataDictionary Metadata { get; private set; }
 
         internal NativeStreamMetadataDecoder(Stream input)
@@ -37,38 +34,51 @@ namespace PowerShellAudio.Extensions.Flac
             Contract.Requires(input.CanRead);
             Contract.Requires(input.CanSeek);
             Contract.Requires(input.Length > 0);
+            Contract.Ensures(Metadata != null);
+
+            Metadata = new MetadataDictionary();
         }
 
         protected override void MetadataCallback(IntPtr handle, IntPtr metadata, IntPtr userData)
         {
-            if ((MetadataType)Marshal.ReadInt32(metadata) == MetadataType.VorbisComment)
+            switch ((MetadataType)Marshal.ReadInt32(metadata))
             {
-                var vorbisComments = new Dictionary<string, string>();
+                case MetadataType.VorbisComment:
+                    var commentAdapter = new VorbisCommentToMetadataAdapter();
+                    VorbisComment vorbisComment = Marshal.PtrToStructure<VorbisCommentMetadataBlock>(metadata).VorbisComment;
+                    for (int commentIndex = 0; commentIndex < vorbisComment.Count; commentIndex++)
+                    {
+                        VorbisCommentEntry entry = Marshal.PtrToStructure<VorbisCommentEntry>(IntPtr.Add(vorbisComment.Comments, commentIndex * Marshal.SizeOf<VorbisCommentEntry>()));
+                        var commentBytes = new byte[entry.Length];
+                        Marshal.Copy(entry.Entry, commentBytes, 0, commentBytes.Length);
+                        string[] comment = Encoding.UTF8.GetString(commentBytes).Split('=');
+                        Contract.Assert(comment.Length == 2);
+                        commentAdapter[comment[0]] = comment[1];
+                    }
+                    commentAdapter.CopyTo(Metadata);
+                    break;
 
-                int commentCount = Marshal.ReadInt32(metadata, 16 + _nativePtrSize * 2);
-                IntPtr commentsPtr = Marshal.ReadIntPtr(metadata, 16 + _nativePtrSize * 3);
-                for (int commentIndex = 0; commentIndex < commentCount; commentIndex++)
-                {
-                    int commentStructSize = _nativePtrSize * 2;
-                    int commentLength = Marshal.ReadInt32(commentsPtr, commentIndex * commentStructSize);
-                    var commentBytes = new byte[commentLength];
-                    IntPtr commentPtr = Marshal.ReadIntPtr(commentsPtr, _nativePtrSize + commentIndex * commentStructSize);
-                    Marshal.Copy(commentPtr, commentBytes, 0, commentLength);
-                    string[] comment = Encoding.UTF8.GetString(commentBytes).Split('=');
-
-                    Contract.Assert(comment.Length == 2);
-
-                    vorbisComments[comment[0]] = comment[1];
-                }
-
-                Metadata = new VorbisCommentToMetadataAdapter(vorbisComments);
+                case MetadataType.Picture:
+                    Picture picture = Marshal.PtrToStructure<PictureMetadataBlock>(metadata).Picture;
+                    if (picture.Type == 3) // Front Cover
+                    {
+                        var coverBytes = new byte[picture.DataLength];
+                        Marshal.Copy(picture.Data, coverBytes, 0, coverBytes.Length);
+                        try
+                        {
+                            Metadata.CoverArt = new CoverArt(coverBytes);
+                        }
+                        catch (UnsupportedCoverArtException)
+                        { }
+                    }
+                    break;
             }
         }
 
         [ContractInvariantMethod]
         void ObjectInvariant()
         {
-            Contract.Invariant(_nativePtrSize == Marshal.SizeOf(typeof(IntPtr)));
+            Contract.Invariant(Metadata != null);
         }
     }
 }
