@@ -33,12 +33,36 @@ namespace PowerShellAudio
         readonly byte[] _data;
 
         /// <summary>
-        /// Gets the file extension for this image type.
+        /// Gets the MIME type for this image format.
+        /// </summary>
+        /// <value>
+        /// The MIME type.
+        /// </value>
+        public string MimeType { get; private set; }
+
+        /// <summary>
+        /// Gets the file extension for this image format.
         /// </summary>
         /// <value>
         /// The file extension.
         /// </value>
         public string Extension { get; private set; }
+
+        /// <summary>
+        /// Gets the width, in pixels.
+        /// </summary>
+        /// <value>
+        /// The width.
+        /// </value>
+        public int Width { get; private set; }
+
+        /// <summary>
+        /// Gets the height, in pixels.
+        /// </summary>
+        /// <value>
+        /// The height.
+        /// </value>
+        public int Height { get; private set; }
 
         /// <summary>
         /// Initializes a new instance of the <see cref="CoverArt" /> class.
@@ -60,7 +84,10 @@ namespace PowerShellAudio
             Contract.Requires<ArgumentOutOfRangeException>(data.Length > 0);
             Contract.Ensures(_data != null);
             Contract.Ensures(_data == data);
+            Contract.Ensures(!string.IsNullOrEmpty(MimeType));
             Contract.Ensures(!string.IsNullOrEmpty(Extension));
+            Contract.Ensures(Width > 0);
+            Contract.Ensures(Height > 0);
 
             // This will throw an exception if it isn't a valid image:
             using (var memoryStream = new MemoryStream(data))
@@ -72,19 +99,31 @@ namespace PowerShellAudio
                     {
                         image.Save(pngStream, ImageFormat.Png);
                         _data = pngStream.ToArray();
+
+                        MimeType = "image/png";
                         Extension = ".png";
                     }
                 else
                 {
                     if (image.RawFormat.Guid == ImageFormat.Png.Guid)
+                    {
+                        MimeType = "image/png";
                         Extension = ".png";
+                    }
                     else if (image.RawFormat.Guid == ImageFormat.Jpeg.Guid)
+                    {
+                        MimeType = "image/jpeg";
                         Extension = ".jpg";
+                    }
                     else
                         throw new UnsupportedCoverArtException(Resources.CoverArtUnsupportedImageFormat);
 
+
                     _data = data;
                 }
+
+                Width = image.Width;
+                Height = image.Height;
             }
         }
 
@@ -114,6 +153,18 @@ namespace PowerShellAudio
         }
 
         /// <summary>
+        /// Gets a copy of the raw image data.
+        /// </summary>
+        /// <returns>A copy of the data.</returns>
+        public byte[] GetData()
+        {
+            Contract.Ensures(Contract.Result<byte[]>() != null);
+            Contract.Ensures(Contract.Result<byte[]>().Length == _data.Length);
+
+            return (byte[])_data.Clone();
+        }
+
+        /// <summary>
         /// Exports the cover art to the specified directory, using the specified file name.
         /// </summary>
         /// <param name="directory">The output directory.</param>
@@ -139,7 +190,10 @@ namespace PowerShellAudio
         {
             Contract.Invariant(_data != null);
             Contract.Invariant(_data.Length > 0);
+            Contract.Invariant(!string.IsNullOrEmpty(MimeType));
             Contract.Invariant(!string.IsNullOrEmpty(Extension));
+            Contract.Invariant(Width > 0);
+            Contract.Invariant(Height > 0);
         }
     }
 }
