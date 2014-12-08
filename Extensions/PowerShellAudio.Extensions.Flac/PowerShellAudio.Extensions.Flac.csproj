@@ -131,6 +131,7 @@
     <Compile Include="NativeMetadataBlockHandle.cs" />
     <Compile Include="NativeMetadataIterator.cs" />
     <Compile Include="NativeStreamAudioInfoDecoder.cs" />
+    <Compile Include="NativePictureBlock.cs" />
     <Compile Include="Properties\Resources.Designer.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>

@@ -47,6 +47,7 @@ namespace PowerShellAudio.Extensions.Flac
                 throw new InvalidSettingException(string.Format(CultureInfo.CurrentCulture, Resources.MetadataEncoderBadUsePadding, settings["UsePadding"]));
 
             NativeVorbisCommentBlock vorbisCommentBlock = null;
+            NativePictureBlock pictureBlock = null;
 
             try
             {
@@ -66,9 +67,18 @@ namespace PowerShellAudio.Extensions.Flac
                     foreach (var item in new MetadataToVorbisCommentAdapter(metadata))
                         vorbisCommentBlock.Append(item.Key, item.Value);
 
+                    // Create a Picture block if cover art is available:
+                    if (metadata.CoverArt != null)
+                    {
+                        pictureBlock = new NativePictureBlock();
+                        pictureBlock.SetType(PictureType.CoverFront);
+                        pictureBlock.SetMimeType(metadata.CoverArt.MimeType);
+                        pictureBlock.SetData(metadata.CoverArt.GetData());
+                    }
+
                     // Iterate over the existing blocks, replacing and deleting as needed:
                     using (var iterator = new NativeMetadataIterator(chain.Handle))
-                        UpdateMetadata(iterator, vorbisCommentBlock);
+                        UpdateMetadata(iterator, vorbisCommentBlock, pictureBlock);
 
                     if (chain.CheckIfTempFileNeeded(usePadding))
                     {
@@ -93,15 +103,18 @@ namespace PowerShellAudio.Extensions.Flac
             {
                 if (vorbisCommentBlock != null)
                     vorbisCommentBlock.Dispose();
+                if (pictureBlock != null)
+                    pictureBlock.Dispose();
             }
         }
 
-        static void UpdateMetadata(NativeMetadataIterator iterator, NativeVorbisCommentBlock newComments)
+        static void UpdateMetadata(NativeMetadataIterator iterator, NativeVorbisCommentBlock newComments, NativePictureBlock newPicture)
         {
             Contract.Requires(iterator != null);
             Contract.Requires(newComments != null);
 
             bool metadataInserted = false;
+            bool pictureInserted = false;
 
             do
             {
@@ -114,6 +127,15 @@ namespace PowerShellAudio.Extensions.Flac
                         if (!iterator.InsertBlockAfter(newComments.Handle))
                             throw new IOException(Resources.MetadataEncoderInsertBlockError);
                         metadataInserted = true;
+                        break;
+
+                    // Replace the existing Picture block:
+                    case MetadataType.Picture:
+                        if (!iterator.DeleteBlock(false))
+                            throw new IOException(Resources.MetadataEncoderDeleteError);
+                        if (newPicture != null && !iterator.InsertBlockAfter(newPicture.Handle))
+                            throw new IOException(Resources.MetadataEncoderInsertBlockError);
+                        pictureInserted = true;
                         break;
 
                     // Delete any padding:
@@ -130,7 +152,13 @@ namespace PowerShellAudio.Extensions.Flac
             if (!metadataInserted && !iterator.InsertBlockAfter(newComments.Handle))
                 throw new IOException(Resources.MetadataEncoderInsertBlockError);
 
+            // If there was no existing picture block to replace, and a new one is available, insert it now:
+            if (newPicture != null && !pictureInserted && !iterator.InsertBlockAfter(newPicture.Handle))
+                throw new IOException(Resources.MetadataEncoderInsertBlockError);
+
             newComments.ReleaseHandleOwnership();
+            if (newPicture != null)
+                newPicture.ReleaseHandleOwnership();
         }
     }
 }

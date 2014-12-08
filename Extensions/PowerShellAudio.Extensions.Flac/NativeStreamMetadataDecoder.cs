@@ -60,7 +60,7 @@ namespace PowerShellAudio.Extensions.Flac
 
                 case MetadataType.Picture:
                     Picture picture = Marshal.PtrToStructure<PictureMetadataBlock>(metadata).Picture;
-                    if (picture.Type == 3) // Front Cover
+                    if (picture.Type == 3 || picture.Type == 0) // Front Cover, or Other
                     {
                         var coverBytes = new byte[picture.DataLength];
                         Marshal.Copy(picture.Data, coverBytes, 0, coverBytes.Length);

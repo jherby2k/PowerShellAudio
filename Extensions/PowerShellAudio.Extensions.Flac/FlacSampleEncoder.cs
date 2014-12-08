@@ -18,6 +18,7 @@
 using PowerShellAudio.Extensions.Flac.Properties;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics.CodeAnalysis;
 using System.Diagnostics.Contracts;
 using System.Globalization;
 using System.IO;
@@ -44,6 +45,7 @@ namespace PowerShellAudio.Extensions.Flac
             }
         }
 
+        [SuppressMessage("Microsoft.Reliability", "CA2000:Dispose objects before losing scope", Justification = "Native blocks are added to a collection for disposal later")]
         public void Initialize(Stream stream, AudioInfo audioInfo, MetadataDictionary metadata, SettingsDictionary settings)
         {
             Contract.Ensures(_encoder != null);
@@ -51,7 +53,7 @@ namespace PowerShellAudio.Extensions.Flac
             Contract.Ensures(_multiplier > 0);
 
             _encoder = InitializeEncoder(audioInfo, stream);
-            _metadataBlocks = new List<NativeMetadataBlock>(2);
+            _metadataBlocks = new List<NativeMetadataBlock>(3); // Assumes one metadata block, one picture and one seek table
             _multiplier = (float)Math.Pow(2, audioInfo.BitsPerSample - 1);
 
             uint compressionLevel;
@@ -63,15 +65,10 @@ namespace PowerShellAudio.Extensions.Flac
 
             if (string.IsNullOrEmpty(settings["AddMetadata"]) || string.Compare(settings["AddMetadata"], bool.TrueString, StringComparison.OrdinalIgnoreCase) == 0)
             {
-                var adaptedMetadata = new MetadataToVorbisCommentAdapter(metadata);
-                if (adaptedMetadata.Count > 0)
-                {
-                    var vorbisCommentBlock = new NativeVorbisCommentBlock();
-                    _metadataBlocks.Add(vorbisCommentBlock);
-
-                    foreach (var field in adaptedMetadata)
-                        vorbisCommentBlock.Append(field.Key, field.Value);
-                }
+                var vorbisCommentBlock = new NativeVorbisCommentBlock();
+                foreach (var field in new MetadataToVorbisCommentAdapter(metadata))
+                    vorbisCommentBlock.Append(field.Key, field.Value);
+                _metadataBlocks.Add(vorbisCommentBlock);
             }
             else if (string.Compare(settings["AddMetadata"], bool.FalseString, StringComparison.OrdinalIgnoreCase) != 0)
                 throw new InvalidSettingException(string.Format(CultureInfo.CurrentCulture, Resources.SampleEncoderBadAddMetadata, settings["AddMetadata"]));
@@ -83,9 +80,17 @@ namespace PowerShellAudio.Extensions.Flac
             else if (!uint.TryParse(settings["SeekPointInterval"], out seekPointInterval))
                 throw new InvalidSettingException(string.Format(CultureInfo.CurrentCulture, Resources.SampleEncoderBadSeekPointInterval, settings["SeekPointInterval"]));
             if (seekPointInterval > 0)
+                _metadataBlocks.Add(new NativeSeekTableBlock((int)Math.Ceiling(audioInfo.SampleCount / audioInfo.SampleRate / (double)seekPointInterval), audioInfo.SampleCount));
+
+            // Add a picture block, if cover art is available:
+            if (metadata.CoverArt != null)
             {
-                NativeSeekTableBlock seekTableBlock = new NativeSeekTableBlock((int)Math.Ceiling(audioInfo.SampleCount / audioInfo.SampleRate / (double)seekPointInterval), audioInfo.SampleCount);
-                _metadataBlocks.Add(seekTableBlock);
+                var pictureBlock = new NativePictureBlock();
+                pictureBlock.SetType(PictureType.CoverFront);
+                pictureBlock.SetMimeType(metadata.CoverArt.MimeType);
+                pictureBlock.SetData(metadata.CoverArt.GetData());
+
+                _metadataBlocks.Add(pictureBlock);
             }
 
             _encoder.SetMetadata(_metadataBlocks);

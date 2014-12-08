@@ -265,6 +265,14 @@ namespace PowerShellAudio.Extensions.Flac
         [return: MarshalAs(UnmanagedType.Bool)]
         internal static extern bool SeekTableTemplateSort(NativeMetadataBlockHandle handle, [MarshalAs(UnmanagedType.Bool)]bool compact);
 
+        [DllImport(_flacLibrary, EntryPoint = "FLAC__metadata_object_picture_set_mime_type", CallingConvention = CallingConvention.Cdecl, BestFitMapping = false)]
+        [return: MarshalAs(UnmanagedType.Bool)]
+        internal static extern bool PictureSetMimeType(NativeMetadataBlockHandle handle, [MarshalAs(UnmanagedType.LPStr)]string mimeType, [MarshalAs(UnmanagedType.Bool)]bool copy);
+
+        [DllImport(_flacLibrary, EntryPoint = "FLAC__metadata_object_picture_set_data", CallingConvention = CallingConvention.Cdecl)]
+        [return: MarshalAs(UnmanagedType.Bool)]
+        internal static extern bool PictureSetData(NativeMetadataBlockHandle handle, byte[] data, uint length, [MarshalAs(UnmanagedType.Bool)]bool copy); 
+
         [DllImport(_flacLibrary, EntryPoint = "FLAC__metadata_object_delete", CallingConvention = CallingConvention.Cdecl)]
         internal static extern void MetadataBlockDelete(IntPtr handle);
 
