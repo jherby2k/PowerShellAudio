@@ -36,25 +36,47 @@ namespace PowerShellAudio.Extensions.Mp3
             try
             {
                 // A frame begins with the first 11 bits set:
-                byte currentByte;
                 while (true)
                 {
-                    currentByte = ReadByte();
-
-                    if (currentByte == 0xFF)
+                    if (ReadByte() == 0xff && ReadByte() >= 0xe0)
                     {
-                        ReadByte();
-                        if (currentByte >= 0xE0)
-                        {
-                            BaseStream.Seek(-2, SeekOrigin.Current);
-                            return;
-                        }
+                        BaseStream.Seek(-2, SeekOrigin.Current);
+                        return;
                     }
                 }
             }
             catch (EndOfStreamException e)
             {
                 throw new UnsupportedAudioException(Resources.FrameReaderSyncError, e);
+            }
+        }
+
+        internal bool VerifyFrameSync(FrameHeader header)
+        {
+            Contract.Requires(header != null);
+
+            try
+            {
+                int frameLength = header.SamplesPerFrame / 8 * header.BitRate * 1000 / header.SampleRate + header.Padding;
+
+                // Seek to where the next frame should start, assuming the current position is just past the header:
+                long initialPosition = BaseStream.Position;
+                BaseStream.Seek(frameLength - 4, SeekOrigin.Current);
+                byte firstByte = ReadByte();
+                byte secondByte = ReadByte();
+                BaseStream.Position = initialPosition;
+
+                // If another sync is detected, return success:
+                if (firstByte == 0xff && secondByte >= 0xe0)
+                    return true;
+                return false;
+            }
+            catch (Exception e)
+            {
+                // Treat a bad header as an invalid sync:
+                if (e is UnsupportedAudioException || e is IOException)
+                    return false;
+                throw;
             }
         }
         

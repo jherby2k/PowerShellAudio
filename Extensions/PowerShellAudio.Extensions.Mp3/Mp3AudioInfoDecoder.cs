@@ -33,9 +33,13 @@ namespace PowerShellAudio.Extensions.Mp3
 
             using (FrameReader reader = new FrameReader(stream))
             {
-                reader.SeekToNextFrame();
-
-                var frameHeader = new FrameHeader(reader.ReadBytes(4));
+                // Seek to the first valid frame header:
+                FrameHeader frameHeader;
+                do
+                {
+                    reader.SeekToNextFrame();
+                    frameHeader = new FrameHeader(reader.ReadBytes(4));
+                } while (!reader.VerifyFrameSync(frameHeader));
 
                 if (frameHeader.Layer != "III")
                     throw new UnsupportedAudioException(string.Format(CultureInfo.InvariantCulture, Resources.AudioInfoDecoderLayerError, frameHeader.Layer));
