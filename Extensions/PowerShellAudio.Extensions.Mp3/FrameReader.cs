@@ -54,6 +54,7 @@ namespace PowerShellAudio.Extensions.Mp3
         internal bool VerifyFrameSync(FrameHeader header)
         {
             Contract.Requires(header != null);
+            Contract.Ensures(BaseStream.Position == Contract.OldValue<long>(BaseStream.Position));
 
             try
             {

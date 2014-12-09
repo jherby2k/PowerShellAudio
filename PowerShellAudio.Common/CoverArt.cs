@@ -86,8 +86,6 @@ namespace PowerShellAudio
             Contract.Ensures(_data == data);
             Contract.Ensures(!string.IsNullOrEmpty(MimeType));
             Contract.Ensures(!string.IsNullOrEmpty(Extension));
-            Contract.Ensures(Width > 0);
-            Contract.Ensures(Height > 0);
 
             // This will throw an exception if it isn't a valid image:
             using (var memoryStream = new MemoryStream(data))
@@ -132,6 +130,9 @@ namespace PowerShellAudio
         /// </summary>
         /// <param name="fileInfo">The file information.</param>
         /// <exception cref="ArgumentNullException">Thrown if <paramref name="fileInfo" /> is null.</exception>
+        /// <exception cref="ArgumentException">
+        /// Thrown if<paramref name="fileInfo" />'s FullName property is an empty string.
+        /// </exception>
         /// <exception cref="FileNotFoundException">Thrown if <paramref name="fileInfo" /> does not exist.</exception>
         /// <exception cref="ArgumentOutOfRangeException">
         /// Thrown if <paramref name="fileInfo" /> is an empty file.
@@ -146,6 +147,7 @@ namespace PowerShellAudio
             : this(File.ReadAllBytes(fileInfo.FullName))
         {
             Contract.Requires<ArgumentNullException>(fileInfo != null);
+            Contract.Requires<ArgumentException>(!string.IsNullOrEmpty(fileInfo.FullName));
             Contract.Requires<FileNotFoundException>(fileInfo.Exists);
             Contract.Requires<ArgumentOutOfRangeException>(fileInfo.Length > 0);
             Contract.Ensures(_data != null);
@@ -192,8 +194,6 @@ namespace PowerShellAudio
             Contract.Invariant(_data.Length > 0);
             Contract.Invariant(!string.IsNullOrEmpty(MimeType));
             Contract.Invariant(!string.IsNullOrEmpty(Extension));
-            Contract.Invariant(Width > 0);
-            Contract.Invariant(Height > 0);
         }
     }
 }
