@@ -67,30 +67,36 @@ namespace PowerShellAudio.Extensions.Id3
                 }
                 else
                 {
-                    var frameFullText = frame as FrameFullText;
-                    if (frameFullText != null && frameFullText.FrameId == "COMM" && frameFullText.Description == null)
-                        base["Comment"] = frameFullText.Text;
+                    var framePicture = frame as FramePicture;
+                    if (framePicture != null && (framePicture.PictureType == PictureTypeCode.CoverFront || framePicture.PictureType == PictureTypeCode.Other))
+                        CoverArt = new CoverArt(framePicture.PictureData);
                     else
                     {
-                        var frameTextUserDef = frame as FrameTextUserDef;
-                        if (frameTextUserDef != null && frameTextUserDef.FrameId == "TXXX")
-                            switch (frameTextUserDef.Description)
-                            {
-                                case "REPLAYGAIN_TRACK_GAIN":
-                                    base["TrackGain"] = frameTextUserDef.Text;
-                                    break;
-                                case "REPLAYGAIN_TRACK_PEAK":
-                                    base["TrackPeak"] = frameTextUserDef.Text;
-                                    break;
-                                case "REPLAYGAIN_ALBUM_GAIN":
-                                    base["AlbumGain"] = frameTextUserDef.Text;
-                                    break;
-                                case "REPLAYGAIN_ALBUM_PEAK":
-                                    base["AlbumPeak"] = frameTextUserDef.Text;
-                                    break;
-                                default:
-                                    break;
-                            }
+                        var frameFullText = frame as FrameFullText;
+                        if (frameFullText != null && frameFullText.FrameId == "COMM" && frameFullText.Description == null)
+                            base["Comment"] = frameFullText.Text;
+                        else
+                        {
+                            var frameTextUserDef = frame as FrameTextUserDef;
+                            if (frameTextUserDef != null && frameTextUserDef.FrameId == "TXXX")
+                                switch (frameTextUserDef.Description)
+                                {
+                                    case "REPLAYGAIN_TRACK_GAIN":
+                                        base["TrackGain"] = frameTextUserDef.Text;
+                                        break;
+                                    case "REPLAYGAIN_TRACK_PEAK":
+                                        base["TrackPeak"] = frameTextUserDef.Text;
+                                        break;
+                                    case "REPLAYGAIN_ALBUM_GAIN":
+                                        base["AlbumGain"] = frameTextUserDef.Text;
+                                        break;
+                                    case "REPLAYGAIN_ALBUM_PEAK":
+                                        base["AlbumPeak"] = frameTextUserDef.Text;
+                                        break;
+                                    default:
+                                        break;
+                                }
+                        }
                     }
                 }
             }
