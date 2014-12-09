@@ -26,12 +26,11 @@ namespace PowerShellAudio.Extensions.Mp3
     class FrameHeader
     {
         [SuppressMessage("Microsoft.Performance", "CA1814:PreferJaggedArraysOverMultidimensional", MessageId = "Member", Justification = "Does not waste space")]
-        static readonly int[,] _bitRates = {{ 32, 64, 96, 128, 160, 192, 224, 256, 288, 320, 352, 384, 416, 448 },
-                                            { 32, 64, 96, 128, 160, 192, 224, 256, 288, 320, 352, 384, 416, 448 },
-                                            { 32, 48, 56,  64,  80,  96, 112, 128, 160, 192, 224, 256, 320, 384 },
-                                            { 32, 40, 48,  56,  64,  80,  96, 112, 128, 160, 192, 224, 256, 320 },
-                                            { 32, 48, 56,  64,  80,  96, 112, 128, 144, 160, 176, 192, 224, 256 },
-                                            {  8, 16, 24,  32,  40,  48,  56,  64,  80,  96, 112, 128, 144, 160 }};
+        static readonly int[,] _bitRates = {{ 0, 32, 64, 96, 128, 160, 192, 224, 256, 288, 320, 352, 384, 416, 448 },
+                                            { 0, 32, 48, 56,  64,  80,  96, 112, 128, 160, 192, 224, 256, 320, 384 },
+                                            { 0, 32, 40, 48,  56,  64,  80,  96, 112, 128, 160, 192, 224, 256, 320 },
+                                            { 0, 32, 48, 56,  64,  80,  96, 112, 128, 144, 160, 176, 192, 224, 256 },
+                                            { 0,  8, 16, 24,  32,  40,  48,  56,  64,  80,  96, 112, 128, 144, 160 }};
 
         [SuppressMessage("Microsoft.Performance", "CA1814:PreferJaggedArraysOverMultidimensional", MessageId = "Member", Justification = "Does not waste space")]
         static readonly int[,] _sampleRates = {{ 44100, 48000, 32000 },
@@ -94,16 +93,11 @@ namespace PowerShellAudio.Extensions.Mp3
             {
                 Contract.Ensures(Contract.Result<int>() >= 0);
 
-                int column = (_headerBytes[2] >> 4) & 0xF;
-                int row;
-                
-                // 0 indicates a free bitrate:
-                if (column == 0)
-                    return 0;
-
+                int column = (_headerBytes[2] >> 4) & 0xf;
                 if (column == 15)
                     throw new IOException(Resources.FrameHeaderBitRateError);
 
+                int row;
                 if (MpegVersion == "1")
                     switch (Layer)
                     {
@@ -156,6 +150,11 @@ namespace PowerShellAudio.Extensions.Mp3
             }
         }
 
+        internal int Padding
+        {
+            get { return (_headerBytes[2] >> 1) & 0x1; }
+        }
+
         internal string ChannelMode
         {
             get
@@ -176,6 +175,19 @@ namespace PowerShellAudio.Extensions.Mp3
             }
         }
 
+        internal int SamplesPerFrame
+        {
+            get
+            {
+                if (Layer == "I")
+                    return 384;
+                else if (Layer == "II" || MpegVersion == "1")
+                    return 1152;
+                else
+                    return 576;
+            }
+        }
+
         internal FrameHeader(byte[] headerBytes)
         {
             Contract.Requires(headerBytes != null);
@@ -191,6 +203,5 @@ namespace PowerShellAudio.Extensions.Mp3
             Contract.Invariant(_headerBytes != null);
             Contract.Invariant(_headerBytes.Length == 4);
         }
-
     }
 }
