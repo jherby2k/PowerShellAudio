@@ -16,42 +16,27 @@
  */
 
 using System;
+using System.Diagnostics.Contracts;
+using System.IO;
 
 namespace PowerShellAudio.Extensions.Vorbis
 {
-    internal enum Result
+    static class ExtensionMethods
     {
-        OKMoreAvailable = 1,
-        OK = 0,
-        FaultError = -129,
-        NotImplementedError = -130,
-        InValueError = -131,
-        NotVorbisError = -132,
-        BadHeaderError = -133
-    };
+        internal static uint ReadUInt32BigEndian(this BinaryReader reader)
+        {
+            Contract.Requires(reader != null);
 
-    internal enum PictureType : uint
-    {
-        Other,
-        PngIcon,
-        OtherIcon,
-        CoverFront,
-        CoverBack,
-        Leaflet,
-        Media,
-        LeadArtist,
-        Artist,
-        Conductor,
-        Band,
-        Composer,
-        Lyricist,
-        Location,
-        DuringRecording,
-        DuringPerformance,
-        ScreenCapture,
-        BrightFish,
-        Illustration,
-        ArtistLogo,
-        PublisherLogo
-    };
+            return ((uint)reader.ReadByte() << 24) + ((uint)reader.ReadByte() << 16) + ((uint)reader.ReadByte() << 8) + reader.ReadByte();
+        }
+
+        internal static void WriteBigEndian(this BinaryWriter writer, uint value)
+        {
+            Contract.Requires(writer != null);
+
+            var buffer = BitConverter.GetBytes(value);
+            Array.Reverse(buffer);
+            writer.Write(buffer);
+        }
+    }
 }
