@@ -30,9 +30,7 @@ namespace PowerShellAudio.Commands
 
         protected override void ProcessRecord()
         {
-            TaggedAudioFile taggedAudioFile = AudioFile as TaggedAudioFile;
-            if (taggedAudioFile == null)
-                taggedAudioFile = new TaggedAudioFile(AudioFile);
+            var taggedAudioFile = new TaggedAudioFile(AudioFile);
 
             if (Key != null && Key.Length > 0)
             {

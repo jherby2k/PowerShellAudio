@@ -44,8 +44,7 @@ namespace PowerShellAudio.Commands
 
         protected override void ProcessRecord()
         {
-            var analyzableAudioFile = AudioFile as AnalyzableAudioFile;
-            _audioFiles.Add(analyzableAudioFile != null ? analyzableAudioFile : new AnalyzableAudioFile(AudioFile));
+            _audioFiles.Add(new AnalyzableAudioFile(AudioFile));
         }
 
         [SuppressMessage("Microsoft.Design", "CA1031:DoNotCatchGeneralExceptionTypes", Justification = "Non-terminating Cmdlet exceptions should be written to an ErrorRecord")]

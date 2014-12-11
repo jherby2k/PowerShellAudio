@@ -38,10 +38,7 @@ namespace PowerShellAudio.Commands
         {
             if (ShouldProcess(AudioFile.FileInfo.FullName))
             {
-                var taggedAudioFile = AudioFile as TaggedAudioFile;
-                if (taggedAudioFile == null)
-                    taggedAudioFile = new TaggedAudioFile(AudioFile);
-
+                var taggedAudioFile = new TaggedAudioFile(AudioFile);
                 taggedAudioFile.SaveMetadata(new HashTableToSettingsDictionaryAdapter(Setting));
                 if (PassThru)
                     WriteObject(taggedAudioFile);

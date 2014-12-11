@@ -116,6 +116,7 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="ExportAudioCoverArtCommand.cs" />
     <Compile Include="ExportAudioFileCommand.cs" />
     <Compile Include="GetAudioCoverArtCommand.cs" />
     <Compile Include="GetAudioMetadataEncoderInfoCommand.cs" />
@@ -125,6 +126,7 @@
     <Compile Include="HashTableToSettingsDictionaryAdapter.cs" />
     <Compile Include="MeasureAudioFileCommand.cs" />
     <Compile Include="CopyAudioFileCommand.cs" />
+    <Compile Include="MetadataSubstituter.cs" />
     <Compile Include="Properties\Resources.Designer.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>

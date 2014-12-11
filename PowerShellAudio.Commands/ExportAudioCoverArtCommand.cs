@@ -15,29 +15,34 @@
  * <http://www.gnu.org/licenses/>.
  */
 
-using System.Collections;
+using System.IO;
 using System.Management.Automation;
 
 namespace PowerShellAudio.Commands
 {
-    [Cmdlet(VerbsCommon.Set, "AudioMetadata"), OutputType(typeof(TaggedAudioFile))]
-    public class SetAudioMetadataCommand : Cmdlet
+    [Cmdlet(VerbsData.Export, "AudioCoverArt", SupportsShouldProcess = true)]
+    public class ExportAudioCoverArtCommand : Cmdlet
     {
         [Parameter(Mandatory = true, Position = 0)]
-        public Hashtable Metadata { get; set; }
+        public string Name { get; set; }
 
         [Parameter(Mandatory = true, Position = 1, ValueFromPipeline = true)]
         public AudioFile AudioFile { get; set; }
 
+        [Parameter(Position = 2)]
+        public DirectoryInfo Directory { get; set; }
+
         [Parameter]
-        public SwitchParameter PassThru { get; set; }
+        public SwitchParameter Replace { get; set; }
 
         protected override void ProcessRecord()
         {
-            var taggedAudioFile = new TaggedAudioFile(AudioFile);
-            new HashTableToMetadataDictionaryAdapter(Metadata).CopyTo(taggedAudioFile.Metadata);
-            if (PassThru)
-                WriteObject(taggedAudioFile);
+            if (ShouldProcess(AudioFile.FileInfo.FullName))
+            {
+                var taggedAudioFile = new TaggedAudioFile(AudioFile);
+                var sustituter = new MetadataSubstituter(taggedAudioFile.Metadata);
+                taggedAudioFile.Metadata.CoverArt.Export(new DirectoryInfo(Directory == null ? AudioFile.FileInfo.DirectoryName : sustituter.Substitute(Directory.FullName)), sustituter.Substitute(Name), Replace);
+            }
         }
     }
 }
