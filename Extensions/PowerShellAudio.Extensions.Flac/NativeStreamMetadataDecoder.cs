@@ -51,7 +51,7 @@ namespace PowerShellAudio.Extensions.Flac
                         VorbisCommentEntry entry = Marshal.PtrToStructure<VorbisCommentEntry>(IntPtr.Add(vorbisComment.Comments, commentIndex * Marshal.SizeOf<VorbisCommentEntry>()));
                         var commentBytes = new byte[entry.Length];
                         Marshal.Copy(entry.Entry, commentBytes, 0, commentBytes.Length);
-                        string[] comment = Encoding.UTF8.GetString(commentBytes).Split('=');
+                        string[] comment = Encoding.UTF8.GetString(commentBytes).Split(new[] { '=' }, 2);
                         Contract.Assert(comment.Length == 2);
                         commentAdapter[comment[0]] = comment[1];
                     }
@@ -60,7 +60,7 @@ namespace PowerShellAudio.Extensions.Flac
 
                 case MetadataType.Picture:
                     Picture picture = Marshal.PtrToStructure<PictureMetadataBlock>(metadata).Picture;
-                    if (picture.Type == 3 || picture.Type == 0) // Front Cover, or Other
+                    if (picture.Type == PictureType.CoverFront || picture.Type == PictureType.Other)
                     {
                         var coverBytes = new byte[picture.DataLength];
                         Marshal.Copy(picture.Data, coverBytes, 0, coverBytes.Length);

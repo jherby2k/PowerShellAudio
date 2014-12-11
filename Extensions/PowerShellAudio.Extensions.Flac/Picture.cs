@@ -23,7 +23,7 @@ namespace PowerShellAudio.Extensions.Flac
 {
     struct Picture
     {
-        internal uint Type;
+        internal PictureType Type;
 
         internal IntPtr MimeType;
 
