@@ -66,6 +66,14 @@ namespace PowerShellAudio
         public int Height { get; private set; }
 
         /// <summary>
+        /// Gets the color depth, in bits.
+        /// </summary>
+        /// <value>
+        /// The color depth.
+        /// </value>
+        public int ColorDepth { get; private set; }
+
+        /// <summary>
         /// Initializes a new instance of the <see cref="CoverArt" /> class.
         /// </summary>
         /// <param name="data">The data.</param>
@@ -123,6 +131,40 @@ namespace PowerShellAudio
 
                 Width = image.Width;
                 Height = image.Height;
+                
+                switch (image.PixelFormat)
+                {
+                    case PixelFormat.Format16bppRgb555:
+                    case PixelFormat.Format16bppRgb565:
+                    case PixelFormat.Format16bppArgb1555:
+                    case PixelFormat.Format16bppGrayScale:
+                        ColorDepth = 16;
+                        break;
+
+                    case PixelFormat.Format24bppRgb:
+                        ColorDepth = 24;
+                        break;
+
+                    case PixelFormat.Format32bppRgb:
+                    case PixelFormat.Format32bppPArgb:
+                    case PixelFormat.Format32bppArgb:
+                    case PixelFormat.Canonical:
+                        ColorDepth = 32;
+                        break;
+
+                    case PixelFormat.Format48bppRgb:
+                        ColorDepth = 48;
+                        break;
+
+                    case PixelFormat.Format64bppPArgb:
+                    case PixelFormat.Format64bppArgb:
+                        ColorDepth = 64;
+                        break;
+
+                    default:
+                        ColorDepth = 0;
+                        break;
+                }
             }
         }
 
