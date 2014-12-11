@@ -61,6 +61,15 @@ namespace PowerShellAudio.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to The file &apos;{0}&apos; already exists.
+        /// </summary>
+        internal static string CoverArtFileExistsError {
+            get {
+                return ResourceManager.GetString("CoverArtFileExistsError", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Only bitmap, JPEG and PNG images are supported as cover art.
         /// </summary>
         internal static string CoverArtUnsupportedImageFormat {

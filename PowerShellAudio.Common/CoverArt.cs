@@ -21,6 +21,7 @@ using System.Diagnostics.CodeAnalysis;
 using System.Diagnostics.Contracts;
 using System.Drawing;
 using System.Drawing.Imaging;
+using System.Globalization;
 using System.IO;
 
 namespace PowerShellAudio
@@ -171,6 +172,7 @@ namespace PowerShellAudio
         /// </summary>
         /// <param name="directory">The output directory.</param>
         /// <param name="fileName">The name of the file, without extension.</param>
+        /// <param name="replaceExisting">if set to <c>true</c>, replace the file if it already exists.</param>
         /// <exception cref="ArgumentNullException">
         /// Thrown if <paramref name="directory" /> is null, or <paramref name="fileName" /> is null or empty.
         /// </exception>
@@ -178,13 +180,17 @@ namespace PowerShellAudio
         /// Thrown if <paramref name="directory" /> does not exist.
         /// </exception>
         [SuppressMessage("Microsoft.Design", "CA1011:ConsiderPassingBaseTypesAsParameters", Justification = "Only a directory object makes sense here")]
-        public void Export(DirectoryInfo directory, string fileName)
+        public void Export(DirectoryInfo directory, string fileName, bool replaceExisting = false)
         {
             Contract.Requires<ArgumentNullException>(directory != null);
-            Contract.Requires<DirectoryNotFoundException>(directory.Exists);
             Contract.Requires<ArgumentNullException>(!string.IsNullOrEmpty(fileName));
 
-            File.WriteAllBytes(Path.Combine(directory.FullName, fileName + Extension), _data);
+            string outputName = Path.Combine(directory.FullName, fileName + Extension);
+
+            if (!replaceExisting && File.Exists(outputName))
+                throw new IOException(string.Format(CultureInfo.CurrentCulture, Resources.CoverArtFileExistsError, outputName));
+
+            File.WriteAllBytes(outputName, _data);
         }
 
         [ContractInvariantMethod]
