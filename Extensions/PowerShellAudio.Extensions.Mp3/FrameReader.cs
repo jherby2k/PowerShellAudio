@@ -35,6 +35,18 @@ namespace PowerShellAudio.Extensions.Mp3
         {
             try
             {
+                // First, check if there in an ID3v2 tag present, and skip it:
+                if (BaseStream.Position == 0)
+                {
+                    if (new string(ReadChars(3)) == "ID3")
+                    {
+                        BaseStream.Seek(3, SeekOrigin.Current);
+                        BaseStream.Seek(this.ReadInt32SyncSafe(), SeekOrigin.Current);
+                    }
+                    else
+                        BaseStream.Position = 0;
+                }
+
                 // A frame begins with the first 11 bits set:
                 while (true)
                 {

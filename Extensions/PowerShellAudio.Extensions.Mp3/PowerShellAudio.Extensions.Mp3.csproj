@@ -115,6 +115,7 @@
     <Reference Include="System.ComponentModel.Composition" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="ExtensionMethods.cs" />
     <Compile Include="FrameHeader.cs" />
     <Compile Include="FrameReader.cs" />
     <Compile Include="GlobalSuppressions.cs" />
