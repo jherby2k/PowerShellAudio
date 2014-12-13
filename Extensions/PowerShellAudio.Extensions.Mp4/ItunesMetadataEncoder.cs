@@ -124,14 +124,8 @@ namespace PowerShellAudio.Extensions.Mp4
                     }
                 }
 
-                // If there is metadata to write, append the atoms:
-                if (string.IsNullOrEmpty(settings["AddMetadata"]) || string.Compare(settings["AddMetadata"], bool.TrueString, StringComparison.OrdinalIgnoreCase) == 0)
-                {
-                    byte[] atomData = adaptedMetadata.GetBytes();
-                    resultStream.Write(atomData, 0, atomData.Length);
-                }
-                else if (string.Compare(settings["AddMetadata"], bool.FalseString, StringComparison.OrdinalIgnoreCase) != 0)
-                    throw new InvalidSettingException(string.Format(CultureInfo.CurrentCulture, Resources.MetadataEncoderBadAddMetadata, settings["AddMetadata"]));
+                byte[] atomData = adaptedMetadata.GetBytes();
+                resultStream.Write(atomData, 0, atomData.Length);
 
                 return resultStream.ToArray();
             }

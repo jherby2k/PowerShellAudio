@@ -150,9 +150,6 @@
   <data name="LosslessSampleDecoderSetCookieError" xml:space="preserve">
     <value>Audio Converter Services encountered an error while setting the magic cookie: {0}</value>
   </data>
-  <data name="LosslessSampleEncoderBadAddMetadata" xml:space="preserve">
-    <value>Unrecognized AddMetadata value '{0}'. Specify 'True' or 'False'. Default is 'True'</value>
-  </data>
   <data name="LosslessSampleEncoderBitRateError" xml:space="preserve">
     <value>Apple Lossless does not support {0} bits per second input</value>
   </data>

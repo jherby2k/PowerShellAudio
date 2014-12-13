@@ -126,9 +126,6 @@
   <data name="NativeEncoderPsychoacousticError" xml:space="preserve">
     <value>Lame encountered an encoding error: Psychoacoustic problems</value>
   </data>
-  <data name="SampleEncoderBadAddMetadata" xml:space="preserve">
-    <value>Unrecognized AddMetadata value '{0}'. Specify 'True' or 'False'. Default is 'True'</value>
-  </data>
   <data name="SampleEncoderBadBitRate" xml:space="preserve">
     <value>Unrecognized BitRate value '{0}'. Specify a value between '8' and '320'</value>
   </data>

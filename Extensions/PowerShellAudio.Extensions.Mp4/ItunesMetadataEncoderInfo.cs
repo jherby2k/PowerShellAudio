@@ -50,7 +50,6 @@ namespace PowerShellAudio.Extensions.Mp4
 
                 var result = new SettingsDictionary();
 
-                result.Add("AddMetadata", bool.TrueString);
                 result.Add("AddSoundCheck", bool.FalseString);
 
                 return result;
@@ -63,9 +62,8 @@ namespace PowerShellAudio.Extensions.Mp4
             {
                 Contract.Ensures(Contract.Result<IReadOnlyCollection<string>>() != null);
 
-                var result = new List<string>(3);
+                var result = new List<string>(2);
 
-                result.Add("AddMetadata");
                 result.Add("AddSoundCheck");
                 result.Add("CreationTime");
 

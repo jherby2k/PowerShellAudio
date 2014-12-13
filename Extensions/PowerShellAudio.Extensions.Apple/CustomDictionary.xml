@@ -5,7 +5,6 @@
       <Word>aac</Word>
     </Recognized>
     <Compound>
-      <Term CompoundAlternate="AddMetadata">addmetadata</Term>
       <Term CompoundAlternate="BitRate">bitrate</Term>
       <Term CompoundAlternate="ControlMode">controlmode</Term>
       <Term CompoundAlternate="VBRQuality">vbrquality</Term>

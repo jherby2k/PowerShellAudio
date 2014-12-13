@@ -174,9 +174,6 @@
   <data name="SampleDecoderUnsupportedContainerError" xml:space="preserve">
     <value>FLAC encountered an unsupported container</value>
   </data>
-  <data name="SampleEncoderBadAddMetadata" xml:space="preserve">
-    <value>Unrecognized AddMetadata value '{0}'. Specify 'True' or 'False'. Default is 'True'</value>
-  </data>
   <data name="SampleEncoderBadCompressionLevel" xml:space="preserve">
     <value>Unrecognized CompressionLevel value '{0}'. Specify a value between '0' (fastest) and '8' (best). Default is '5'</value>
   </data>

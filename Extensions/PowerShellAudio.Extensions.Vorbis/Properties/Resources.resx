@@ -180,9 +180,6 @@
   <data name="ReadError" xml:space="preserve">
     <value>The end of the file was unexpectedly reached</value>
   </data>
-  <data name="SampleEncoderBadAddMetadata" xml:space="preserve">
-    <value>Unrecognized AddMetadata value '{0}'. Specify 'True' or 'False'. Default is 'True'</value>
-  </data>
   <data name="SampleEncoderBadBitRate" xml:space="preserve">
     <value>Unrecognized BitRate value '{0}'. Specify a value between '32' and '500'</value>
   </data>

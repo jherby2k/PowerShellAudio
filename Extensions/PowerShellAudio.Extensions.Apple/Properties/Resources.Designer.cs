@@ -160,15 +160,6 @@ namespace PowerShellAudio.Extensions.Apple.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Unrecognized AddMetadata value &apos;{0}&apos;. Specify &apos;True&apos; or &apos;False&apos;. Default is &apos;True&apos;.
-        /// </summary>
-        internal static string LosslessSampleEncoderBadAddMetadata {
-            get {
-                return ResourceManager.GetString("LosslessSampleEncoderBadAddMetadata", resourceCulture);
-            }
-        }
-        
-        /// <summary>
         ///   Looks up a localized string similar to Apple Lossless does not support {0} bits per second input.
         /// </summary>
         internal static string LosslessSampleEncoderBitRateError {

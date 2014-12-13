@@ -80,7 +80,6 @@ namespace PowerShellAudio.Extensions.Lame
 
                 var result = new SettingsDictionary();
 
-                result.Add("AddMetadata", bool.TrueString);
                 result.Add("Quality", "3");
                 result.Add("VBRQuality", "2");
 
@@ -108,7 +107,6 @@ namespace PowerShellAudio.Extensions.Lame
 
                 var partialResult = new List<string>();
 
-                partialResult.Add("AddMetadata");
                 partialResult.Add("BitRate");
                 partialResult.Add("ForceCBR");
                 partialResult.Add("Quality");

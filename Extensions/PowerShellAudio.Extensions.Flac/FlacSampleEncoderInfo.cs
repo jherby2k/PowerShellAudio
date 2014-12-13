@@ -75,7 +75,6 @@ namespace PowerShellAudio.Extensions.Flac
 
                 var result = new SettingsDictionary();
 
-                result.Add("AddMetadata", bool.TrueString);
                 result.Add("CompressionLevel", "5");
                 result.Add("SeekPointInterval", "10");
 
@@ -89,9 +88,8 @@ namespace PowerShellAudio.Extensions.Flac
             {
                 Contract.Ensures(Contract.Result<IReadOnlyCollection<string>>() != null);
 
-                var result = new List<string>(3);
+                var result = new List<string>(2);
 
-                result.Add("AddMetadata");
                 result.Add("CompressionLevel");
                 result.Add("SeekPointInterval");
 
