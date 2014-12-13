@@ -15,29 +15,27 @@
  * <http://www.gnu.org/licenses/>.
  */
 
-using System.Collections;
-using System.Management.Automation;
+using System.IO;
+using System.Linq;
+using System.Text.RegularExpressions;
 
 namespace PowerShellAudio.Commands
 {
-    [Cmdlet(VerbsCommon.Set, "AudioMetadata"), OutputType(typeof(TaggedAudioFile))]
-    public class SetAudioMetadataCommand : Cmdlet
+    class MetadataSubstituter
     {
-        [Parameter(Mandatory = true, Position = 0)]
-        public Hashtable Metadata { get; set; }
+        static readonly char[] invalidChars = Path.GetInvalidFileNameChars();
+        static readonly Regex replacer = new Regex(@"\{[^{]+\}");
 
-        [Parameter(Mandatory = true, Position = 1, ValueFromPipeline = true)]
-        public AudioFile AudioFile { get; set; }
+        readonly MetadataDictionary _metadata;
 
-        [Parameter]
-        public SwitchParameter PassThru { get; set; }
-
-        protected override void ProcessRecord()
+        internal MetadataSubstituter(MetadataDictionary metadata)
         {
-            var taggedAudioFile = new TaggedAudioFile(AudioFile);
-            new HashTableToMetadataDictionaryAdapter(Metadata).CopyTo(taggedAudioFile.Metadata);
-            if (PassThru)
-                WriteObject(taggedAudioFile);
+            _metadata = metadata;
+        }
+
+        internal string Substitute(string path)
+        {
+            return replacer.Replace(path, match => new string(_metadata[match.Value.Substring(1, match.Value.Length - 2)].Where(character => !invalidChars.Contains(character)).ToArray()));
         }
     }
 }

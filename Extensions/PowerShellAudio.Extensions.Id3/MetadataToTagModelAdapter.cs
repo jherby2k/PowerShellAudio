@@ -41,6 +41,9 @@ namespace PowerShellAudio.Extensions.Id3
             Contract.Requires(metadata != null);
             Contract.Requires(settings != null);
 
+            if (metadata.CoverArt != null)
+                Add(new CoverArtToFrameAdapter(metadata.CoverArt));
+
             var trckFrame = new TrckFrame();
             var tdatFrame = new TdatFrame();
             var trackSoundCheckFrame = new SoundCheckFrame();

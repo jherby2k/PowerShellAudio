@@ -70,6 +70,9 @@ namespace PowerShellAudio.Extensions.Vorbis
             }
             else if (year > 0)
                 this["DATE"] = year.ToString(CultureInfo.InvariantCulture);
+
+            if (metadata.CoverArt != null)
+                this["METADATA_BLOCK_PICTURE"] = new MetadataBlockPicture(metadata.CoverArt).ToString();
         }
 
     }

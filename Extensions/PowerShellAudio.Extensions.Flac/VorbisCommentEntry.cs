@@ -21,14 +21,11 @@ using System;
 
 namespace PowerShellAudio.Extensions.Flac
 {
-    struct VorbisComment
+    struct VorbisCommentEntry
     {
-        internal VorbisCommentEntry Vendor;
+        internal uint Length;
 
-        internal uint Count;
-
-        // In-line array of VorbisCommentEntry structures can't be marshaled automatically:
-        internal IntPtr Comments;
+        internal IntPtr Entry;
     }
 }
 

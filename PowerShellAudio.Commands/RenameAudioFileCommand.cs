@@ -15,10 +15,7 @@
  * <http://www.gnu.org/licenses/>.
  */
 
-using System.IO;
-using System.Linq;
 using System.Management.Automation;
-using System.Text.RegularExpressions;
 
 namespace PowerShellAudio.Commands
 {
@@ -38,14 +35,8 @@ namespace PowerShellAudio.Commands
         {
             if (ShouldProcess(AudioFile.FileInfo.FullName))
             {
-                var taggedAudioFile = AudioFile as TaggedAudioFile;
-                if (taggedAudioFile == null)
-                    taggedAudioFile = new TaggedAudioFile(AudioFile);
-
-                char[] invalidChars = Path.GetInvalidFileNameChars();
-
-                // Replace all instances of {Key} with the value of metadata["Key"], while omitting any invalid characters:
-                taggedAudioFile.Rename(Regex.Replace(Name, @"\{[^{]+\}", match => new string(taggedAudioFile.Metadata[match.Value.Substring(1, match.Value.Length - 2)].Where(character => !invalidChars.Contains(character)).ToArray())));
+                var taggedAudioFile = new TaggedAudioFile(AudioFile);
+                taggedAudioFile.Rename(new MetadataSubstituter(taggedAudioFile.Metadata).Substitute(Name));
                 if (PassThru)
                     WriteObject(taggedAudioFile);
             }

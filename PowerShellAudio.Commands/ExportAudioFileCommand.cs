@@ -23,9 +23,7 @@ using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
 using System.Globalization;
 using System.IO;
-using System.Linq;
 using System.Management.Automation;
-using System.Text.RegularExpressions;
 using System.Threading;
 using System.Threading.Tasks;
 
@@ -58,10 +56,7 @@ namespace PowerShellAudio.Commands
         protected override void ProcessRecord()
         {
             if (ShouldProcess(AudioFile.FileInfo.FullName))
-            {
-                var exportableAudioFile = AudioFile as ExportableAudioFile;
-                _audioFiles.Add(exportableAudioFile != null ? exportableAudioFile : new ExportableAudioFile(AudioFile));
-            }
+                _audioFiles.Add(new ExportableAudioFile(AudioFile));
         }
 
         [SuppressMessage("Microsoft.Design", "CA1031:DoNotCatchGeneralExceptionTypes", Justification = "Non-terminating Cmdlet exceptions should be written to an ErrorRecord")]
@@ -79,7 +74,8 @@ namespace PowerShellAudio.Commands
                     {
                         try
                         {
-                            ExportableAudioFile result = audioFile.Export(Encoder, _cancelSource.Token, new HashTableToSettingsDictionaryAdapter(Setting), Directory == null ? null : new DirectoryInfo(SubstituteMetadata(Directory.FullName, audioFile.Metadata)), string.IsNullOrEmpty(Name) ? null : SubstituteMetadata(Name, audioFile.Metadata), Replace);
+                            var substituter = new MetadataSubstituter(audioFile.Metadata);
+                            ExportableAudioFile result = audioFile.Export(Encoder, _cancelSource.Token, new HashTableToSettingsDictionaryAdapter(Setting), Directory == null ? null : new DirectoryInfo(substituter.Substitute(Directory.FullName)), string.IsNullOrEmpty(Name) ? null : substituter.Substitute(Name), Replace);
                             Interlocked.Increment(ref completed);
 
                             outputQueue.Add(result);
@@ -113,14 +109,6 @@ namespace PowerShellAudio.Commands
         {
             if (disposing)
                 _cancelSource.Dispose();
-        }
-
-        static string SubstituteMetadata(string path, MetadataDictionary metadata)
-        {
-            char[] invalidChars = Path.GetInvalidFileNameChars();
-
-            // Replace all instances of {Key} with the value of metadata["Key"], while omitting any invalid characters:
-            return Regex.Replace(path, @"\{[^{]+\}", match => new string(metadata[match.Value.Substring(1, match.Value.Length - 2)].Where(character => !invalidChars.Contains(character)).ToArray()));
         }
     }
 }

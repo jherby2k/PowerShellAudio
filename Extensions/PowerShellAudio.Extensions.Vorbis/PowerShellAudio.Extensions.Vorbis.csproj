@@ -118,7 +118,9 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Enumerations.cs" />
+    <Compile Include="ExtensionMethods.cs" />
     <Compile Include="GlobalSuppressions.cs" />
+    <Compile Include="MetadataBlockPicture.cs" />
     <Compile Include="MetadataToVorbisCommentAdapter.cs" />
     <Compile Include="NativeOggStream.cs" />
     <Compile Include="NativeOggSync.cs" />

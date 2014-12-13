@@ -15,21 +15,11 @@
  * <http://www.gnu.org/licenses/>.
  */
 
-#pragma warning disable 0649
-
-using System;
-
-namespace PowerShellAudio.Extensions.Flac
+namespace PowerShellAudio.Extensions.Mp4
 {
-    struct VorbisComment
+    internal enum CoverType : uint
     {
-        internal VorbisCommentEntry Vendor;
-
-        internal uint Count;
-
-        // In-line array of VorbisCommentEntry structures can't be marshaled automatically:
-        internal IntPtr Comments;
-    }
+        Jpeg = 0xd,
+        Png = 0xe
+    };
 }
-
-#pragma warning restore 0649

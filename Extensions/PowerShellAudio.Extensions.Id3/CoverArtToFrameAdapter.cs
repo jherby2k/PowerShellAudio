@@ -15,21 +15,25 @@
  * <http://www.gnu.org/licenses/>.
  */
 
-#pragma warning disable 0649
+using Id3Lib.Frames;
+using System.Diagnostics.Contracts;
 
-using System;
-
-namespace PowerShellAudio.Extensions.Flac
+namespace PowerShellAudio.Extensions.Id3
 {
-    struct VorbisComment
+    class CoverArtToFrameAdapter : FramePicture
     {
-        internal VorbisCommentEntry Vendor;
+        internal CoverArtToFrameAdapter(CoverArt coverArt)
+            : base("APIC")
+        {
+            Contract.Requires(coverArt != null);
+            Contract.Ensures(PictureType == PictureTypeCode.CoverFront);
+            Contract.Ensures(!string.IsNullOrEmpty(Mime));
+            Contract.Ensures(PictureData != null);
+            Contract.Ensures(PictureData.Length > 0);
 
-        internal uint Count;
-
-        // In-line array of VorbisCommentEntry structures can't be marshaled automatically:
-        internal IntPtr Comments;
+            PictureType = PictureTypeCode.CoverFront;
+            Mime = coverArt.MimeType;
+            PictureData = coverArt.GetData();
+        }
     }
 }
-
-#pragma warning restore 0649

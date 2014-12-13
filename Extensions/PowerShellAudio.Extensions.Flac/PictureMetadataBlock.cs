@@ -21,33 +21,18 @@ using System.Runtime.InteropServices;
 namespace PowerShellAudio.Extensions.Flac
 {
     [StructLayout(LayoutKind.Explicit)]
-    struct FrameHeader
+    struct PictureMetadataBlock
     {
         [FieldOffset(0), SuppressMessage("Microsoft.Performance", "CA1823:AvoidUnusedPrivateFields", Justification = "P/Invoke signature")]
-        internal uint BlockSize;
+        internal MetadataType Type;
 
         [FieldOffset(4), SuppressMessage("Microsoft.Performance", "CA1823:AvoidUnusedPrivateFields", Justification = "P/Invoke signature")]
-        internal uint SampleRate;
+        internal bool IsLast;
 
         [FieldOffset(8), SuppressMessage("Microsoft.Performance", "CA1823:AvoidUnusedPrivateFields", Justification = "P/Invoke signature")]
-        internal uint Channels;
-
-        [FieldOffset(12), SuppressMessage("Microsoft.Performance", "CA1823:AvoidUnusedPrivateFields", Justification = "P/Invoke signature")]
-        internal ChannelAssignment ChannelAssignment;
+        internal uint Length;
 
         [FieldOffset(16), SuppressMessage("Microsoft.Performance", "CA1823:AvoidUnusedPrivateFields", Justification = "P/Invoke signature")]
-        internal uint BitsPerSample;
-
-        [FieldOffset(20), SuppressMessage("Microsoft.Performance", "CA1823:AvoidUnusedPrivateFields", Justification = "P/Invoke signature")]
-        internal FrameNumberType NumberType;
-
-        [FieldOffset(24), SuppressMessage("Microsoft.Performance", "CA1823:AvoidUnusedPrivateFields", Justification = "P/Invoke signature")]
-        internal uint FrameNumber;
-
-        [FieldOffset(24), SuppressMessage("Microsoft.Performance", "CA1823:AvoidUnusedPrivateFields", Justification = "P/Invoke signature")]
-        internal ulong SampleNumber;
-
-        [FieldOffset(32), SuppressMessage("Microsoft.Performance", "CA1823:AvoidUnusedPrivateFields", Justification = "P/Invoke signature")]
-        internal byte Crc;
+        internal Picture Picture;
     }
 }

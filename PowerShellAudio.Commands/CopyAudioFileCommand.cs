@@ -16,9 +16,7 @@
  */
 
 using System.IO;
-using System.Linq;
 using System.Management.Automation;
-using System.Text.RegularExpressions;
 
 namespace PowerShellAudio.Commands
 {
@@ -44,23 +42,14 @@ namespace PowerShellAudio.Commands
         {
             if (ShouldProcess(AudioFile.FileInfo.FullName))
             {
-                var taggedAudioFile = AudioFile as TaggedAudioFile;
-                if (taggedAudioFile == null)
-                    taggedAudioFile = new TaggedAudioFile(AudioFile);
+                var taggedAudioFile = new TaggedAudioFile(AudioFile);
+                var substituter = new MetadataSubstituter(taggedAudioFile.Metadata);
+                string modifiedDirectory = substituter.Substitute(Directory.FullName);
 
-                string modifiedDirectory = SubstituteMetadata(Directory.FullName, taggedAudioFile.Metadata);
                 System.IO.Directory.CreateDirectory(modifiedDirectory);
 
-                taggedAudioFile.FileInfo.CopyTo(Path.Combine(modifiedDirectory, SubstituteMetadata(Name == null ? taggedAudioFile.FileInfo.Name : Name, taggedAudioFile.Metadata) + taggedAudioFile.FileInfo.Extension), Replace);
+                taggedAudioFile.FileInfo.CopyTo(Path.Combine(modifiedDirectory, substituter.Substitute(Name == null ? taggedAudioFile.FileInfo.Name : Name) + taggedAudioFile.FileInfo.Extension), Replace);
             }
-        }
-
-        static string SubstituteMetadata(string path, MetadataDictionary metadata)
-        {
-            char[] invalidChars = Path.GetInvalidFileNameChars();
-
-            // Replace all instances of {Key} with the value of metadata["Key"], while omitting any invalid characters:
-            return Regex.Replace(path, @"\{[^{]+\}", match => new string(metadata[match.Value.Substring(1, match.Value.Length - 2)].Where(character => !invalidChars.Contains(character)).ToArray()));
         }
     }
 }

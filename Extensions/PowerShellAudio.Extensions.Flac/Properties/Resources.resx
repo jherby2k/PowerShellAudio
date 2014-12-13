@@ -156,6 +156,9 @@
   <data name="MetadataEncoderWriteError" xml:space="preserve">
     <value>FLAC encountered an error while writing the Vorbis comment block. Status: {0}</value>
   </data>
+  <data name="NativePictureBlockMemoryError" xml:space="preserve">
+    <value>FLAC encountered an error while allocating memory for a picture block</value>
+  </data>
   <data name="NativeSeekTableBlockMemoryError" xml:space="preserve">
     <value>FLAC encountered an error while allocating memory for a seek table</value>
   </data>

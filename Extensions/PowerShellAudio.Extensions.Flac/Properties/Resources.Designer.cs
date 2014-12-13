@@ -178,6 +178,15 @@ namespace PowerShellAudio.Extensions.Flac.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to FLAC encountered an error while allocating memory for a picture block.
+        /// </summary>
+        internal static string NativePictureBlockMemoryError {
+            get {
+                return ResourceManager.GetString("NativePictureBlockMemoryError", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to FLAC encountered an error while allocating memory for a seek table.
         /// </summary>
         internal static string NativeSeekTableBlockMemoryError {

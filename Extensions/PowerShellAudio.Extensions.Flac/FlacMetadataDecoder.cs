@@ -32,6 +32,7 @@ namespace PowerShellAudio.Extensions.Flac
             using (var decoder = new NativeStreamMetadataDecoder(stream))
             {
                 decoder.SetMetadataRespond(MetadataType.VorbisComment);
+                decoder.SetMetadataRespond(MetadataType.Picture);
 
                 DecoderInitStatus initStatus = decoder.Initialize();
                 if (initStatus != DecoderInitStatus.OK)
@@ -45,7 +46,7 @@ namespace PowerShellAudio.Extensions.Flac
 
                 decoder.Finish();
 
-                return decoder.Metadata == null ? new MetadataDictionary() : decoder.Metadata;
+                return decoder.Metadata;
             }
         }
     }

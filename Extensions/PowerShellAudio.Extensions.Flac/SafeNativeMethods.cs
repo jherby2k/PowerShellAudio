@@ -251,11 +251,11 @@ namespace PowerShellAudio.Extensions.Flac
 
         [DllImport(_flacLibrary, EntryPoint = "FLAC__metadata_object_vorbiscomment_entry_from_name_value_pair", CallingConvention = CallingConvention.Cdecl)]
         [return: MarshalAs(UnmanagedType.Bool)]
-        internal static extern bool VorbisCommentGet(out VorbisComment vorbisComment, byte[] key, byte[] value);
+        internal static extern bool VorbisCommentGet(out VorbisCommentEntry vorbisComment, byte[] key, byte[] value);
 
         [DllImport(_flacLibrary, EntryPoint = "FLAC__metadata_object_vorbiscomment_append_comment", CallingConvention = CallingConvention.Cdecl)]
         [return: MarshalAs(UnmanagedType.Bool)]
-        internal static extern bool VorbisCommentAppend(NativeMetadataBlockHandle handle, VorbisComment vorbisComment, [MarshalAs(UnmanagedType.Bool)]bool copy);
+        internal static extern bool VorbisCommentAppend(NativeMetadataBlockHandle handle, VorbisCommentEntry vorbisComment, [MarshalAs(UnmanagedType.Bool)]bool copy);
 
         [DllImport(_flacLibrary, EntryPoint = "FLAC__metadata_object_seektable_template_append_spaced_points", CallingConvention = CallingConvention.Cdecl)]
         [return: MarshalAs(UnmanagedType.Bool)]
@@ -264,6 +264,14 @@ namespace PowerShellAudio.Extensions.Flac
         [DllImport(_flacLibrary, EntryPoint = "FLAC__metadata_object_seektable_template_sort", CallingConvention = CallingConvention.Cdecl)]
         [return: MarshalAs(UnmanagedType.Bool)]
         internal static extern bool SeekTableTemplateSort(NativeMetadataBlockHandle handle, [MarshalAs(UnmanagedType.Bool)]bool compact);
+
+        [DllImport(_flacLibrary, EntryPoint = "FLAC__metadata_object_picture_set_mime_type", CallingConvention = CallingConvention.Cdecl, BestFitMapping = false)]
+        [return: MarshalAs(UnmanagedType.Bool)]
+        internal static extern bool PictureSetMimeType(NativeMetadataBlockHandle handle, [MarshalAs(UnmanagedType.LPStr)]string mimeType, [MarshalAs(UnmanagedType.Bool)]bool copy);
+
+        [DllImport(_flacLibrary, EntryPoint = "FLAC__metadata_object_picture_set_data", CallingConvention = CallingConvention.Cdecl)]
+        [return: MarshalAs(UnmanagedType.Bool)]
+        internal static extern bool PictureSetData(NativeMetadataBlockHandle handle, byte[] data, uint length, [MarshalAs(UnmanagedType.Bool)]bool copy); 
 
         [DllImport(_flacLibrary, EntryPoint = "FLAC__metadata_object_delete", CallingConvention = CallingConvention.Cdecl)]
         internal static extern void MetadataBlockDelete(IntPtr handle);

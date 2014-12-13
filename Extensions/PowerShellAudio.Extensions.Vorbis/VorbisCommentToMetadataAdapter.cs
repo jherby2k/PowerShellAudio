@@ -54,9 +54,9 @@ namespace PowerShellAudio.Extensions.Vorbis
                 var commentBytes = new byte[commentLengths[i]];
                 Marshal.Copy(commentPtrs[i], commentBytes, 0, commentLengths[i]);
 
-                string[] comment = Encoding.UTF8.GetString(commentBytes).Split('=');
+                string[] comment = Encoding.UTF8.GetString(commentBytes).Split(new[] { '=' }, 2);
 
-                Contract.Assume(comment.Length == 2);
+                Contract.Assert(comment.Length == 2);
 
                 // The track number and count may be packed into the same comment:
                 if (comment[0] == "TRACKNUMBER")
@@ -78,6 +78,29 @@ namespace PowerShellAudio.Extensions.Vorbis
                     }
                     else
                         base["Year"] = comment[1];
+                }
+                else if (comment[0] == "METADATA_BLOCK_PICTURE")
+                {
+                    var picture = new MetadataBlockPicture(comment[1]);
+                    if (picture.Type == PictureType.CoverFront || picture.Type == PictureType.Other)
+                    {
+                        try
+                        {
+                            CoverArt = new CoverArt(picture.Data);
+                        }
+                        catch (UnsupportedCoverArtException)
+                        { }
+                    }
+                }
+                else if (comment[0] == "COVERART")
+                {
+                    try
+                    {
+                        // Deprecated way to store cover art:
+                        CoverArt = new CoverArt(Convert.FromBase64String(comment[1]));
+                    }
+                    catch (UnsupportedCoverArtException)
+                    { }
                 }
                 else
                 {

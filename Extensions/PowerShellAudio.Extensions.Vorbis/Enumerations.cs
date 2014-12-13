@@ -29,4 +29,29 @@ namespace PowerShellAudio.Extensions.Vorbis
         NotVorbisError = -132,
         BadHeaderError = -133
     };
+
+    internal enum PictureType : uint
+    {
+        Other,
+        PngIcon,
+        OtherIcon,
+        CoverFront,
+        CoverBack,
+        Leaflet,
+        Media,
+        LeadArtist,
+        Artist,
+        Conductor,
+        Band,
+        Composer,
+        Lyricist,
+        Location,
+        DuringRecording,
+        DuringPerformance,
+        ScreenCapture,
+        BrightFish,
+        Illustration,
+        ArtistLogo,
+        PublisherLogo
+    };
 }

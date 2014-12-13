@@ -15,21 +15,28 @@
  * <http://www.gnu.org/licenses/>.
  */
 
-#pragma warning disable 0649
-
 using System;
+using System.Diagnostics.Contracts;
+using System.IO;
 
-namespace PowerShellAudio.Extensions.Flac
+namespace PowerShellAudio.Extensions.Vorbis
 {
-    struct VorbisComment
+    static class ExtensionMethods
     {
-        internal VorbisCommentEntry Vendor;
+        internal static uint ReadUInt32BigEndian(this BinaryReader reader)
+        {
+            Contract.Requires(reader != null);
 
-        internal uint Count;
+            return ((uint)reader.ReadByte() << 24) + ((uint)reader.ReadByte() << 16) + ((uint)reader.ReadByte() << 8) + reader.ReadByte();
+        }
 
-        // In-line array of VorbisCommentEntry structures can't be marshaled automatically:
-        internal IntPtr Comments;
+        internal static void WriteBigEndian(this BinaryWriter writer, uint value)
+        {
+            Contract.Requires(writer != null);
+
+            var buffer = BitConverter.GetBytes(value);
+            Array.Reverse(buffer);
+            writer.Write(buffer);
+        }
     }
 }
-
-#pragma warning restore 0649
