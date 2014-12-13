@@ -16,6 +16,7 @@
  */
 
 using System.Management.Automation;
+using System.Linq;
 
 namespace PowerShellAudio.Commands
 {
@@ -37,8 +38,14 @@ namespace PowerShellAudio.Commands
             if (taggedAudioFile != null)
             {
                 if (Key != null && Key.Length > 0)
+                {
                     foreach (var item in Key)
                         taggedAudioFile.Metadata.Remove(item);
+
+                    // Treat CoverArt like a text field:
+                    if (Key.Contains("CoverArt"))
+                        taggedAudioFile.Metadata.CoverArt = null;
+                }
                 else
                     taggedAudioFile.Metadata.Clear();
             }

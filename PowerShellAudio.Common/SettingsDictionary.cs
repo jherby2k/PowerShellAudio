@@ -202,7 +202,7 @@ namespace PowerShellAudio
         /// <summary>
         /// Removes all items from the <see cref="SettingsDictionary"/>.
         /// </summary>
-        public void Clear()
+        public virtual void Clear()
         {
             _internalDictionary.Clear();
         }

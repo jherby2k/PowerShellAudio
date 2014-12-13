@@ -38,6 +38,14 @@ namespace PowerShellAudio
         static readonly IDictionary<string, Func<string, string>> _acceptedKeys = InitializeAcceptedKeys();
 
         /// <summary>
+        /// Gets or sets the cover art.
+        /// </summary>
+        /// <value>
+        /// The cover art.
+        /// </value>
+        public CoverArt CoverArt { get; set; }
+
+        /// <summary>
         /// Gets the accepted keys.
         /// </summary>
         /// <value>The accepted keys.</value>
@@ -94,13 +102,11 @@ namespace PowerShellAudio
             }
         }
 
-        /// <summary>
-        /// Gets or sets the cover art.
-        /// </summary>
-        /// <value>
-        /// The cover art.
-        /// </value>
-        public CoverArt CoverArt { get; set; }
+        public override void Clear()
+        {
+            CoverArt = null;
+            base.Clear();
+        }
 
         [ContractInvariantMethod]
         void ObjectInvariant()
