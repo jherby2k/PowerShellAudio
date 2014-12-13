@@ -62,6 +62,15 @@ namespace PowerShellAudio.Extensions.Mp4
                     else
                         base["Year"] = dayAtom.Value;
                 }
+                else if (atom.FourCC == "covr")
+                {
+                    try
+                    {
+                        CoverArt = new CoverArt(new CovrAtom(atomData).Value);
+                    }
+                    catch (UnsupportedCoverArtException)
+                    { }
+                }
                 else
                 {
                     string mappedKey;

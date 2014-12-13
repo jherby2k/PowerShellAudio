@@ -123,6 +123,7 @@
   <ItemGroup>
     <Compile Include="AlacAtom.cs" />
     <Compile Include="AtomInfo.cs" />
+    <Compile Include="Enumerations.cs" />
     <Compile Include="ExtensionMethods.cs" />
     <Compile Include="GlobalSuppressions.cs" />
     <Compile Include="ItunesMetadataDecoder.cs" />
@@ -142,6 +143,7 @@
     <Compile Include="ReverseDnsAtom.cs" />
     <Compile Include="SoundCheckAtom.cs" />
     <Compile Include="SttsAtom.cs" />
+    <Compile Include="CovrAtom.cs" />
     <Compile Include="TextAtom.cs" />
     <Compile Include="TrackNumberAtom.cs" />
     <Compile Include="WritableAtom.cs" />
