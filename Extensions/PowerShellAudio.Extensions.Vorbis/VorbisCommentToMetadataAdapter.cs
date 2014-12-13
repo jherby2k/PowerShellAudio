@@ -83,12 +83,24 @@ namespace PowerShellAudio.Extensions.Vorbis
                 {
                     var picture = new MetadataBlockPicture(comment[1]);
                     if (picture.Type == PictureType.CoverFront || picture.Type == PictureType.Other)
-                        CoverArt = new CoverArt(picture.Data);
+                    {
+                        try
+                        {
+                            CoverArt = new CoverArt(picture.Data);
+                        }
+                        catch (UnsupportedCoverArtException)
+                        { }
+                    }
                 }
                 else if (comment[0] == "COVERART")
                 {
-                    // Deprecated way to store cover art:
-                    CoverArt = new CoverArt(Convert.FromBase64String(comment[1]));
+                    try
+                    {
+                        // Deprecated way to store cover art:
+                        CoverArt = new CoverArt(Convert.FromBase64String(comment[1]));
+                    }
+                    catch (UnsupportedCoverArtException)
+                    { }
                 }
                 else
                 {

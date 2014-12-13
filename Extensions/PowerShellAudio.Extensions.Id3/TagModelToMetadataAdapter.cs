@@ -69,7 +69,14 @@ namespace PowerShellAudio.Extensions.Id3
                 {
                     var framePicture = frame as FramePicture;
                     if (framePicture != null && (framePicture.PictureType == PictureTypeCode.CoverFront || framePicture.PictureType == PictureTypeCode.Other))
-                        CoverArt = new CoverArt(framePicture.PictureData);
+                    {
+                        try
+                        {
+                            CoverArt = new CoverArt(framePicture.PictureData);
+                        }
+                        catch (UnsupportedCoverArtException)
+                        { }
+                    }
                     else
                     {
                         var frameFullText = frame as FrameFullText;
