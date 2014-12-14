@@ -45,17 +45,28 @@ namespace PowerShellAudio.Extensions.Vorbis
             Contract.Ensures(Description != null);
             Contract.Ensures(Data != null);
 
-            using (var stream = new MemoryStream(Convert.FromBase64String(encodedData)))
-            using (var reader = new BinaryReader(stream))
+            Stream stream = null;
+            try
             {
-                Type = (PictureType)reader.ReadUInt32BigEndian();
-                MimeType = Encoding.ASCII.GetString(reader.ReadBytes((int)reader.ReadUInt32BigEndian()));
-                Description = Encoding.UTF8.GetString(reader.ReadBytes((int)reader.ReadUInt32BigEndian()));
-                Width = reader.ReadUInt32BigEndian();
-                Height = reader.ReadUInt32BigEndian();
-                ColorDepth = reader.ReadUInt32BigEndian();
-                stream.Seek(4, SeekOrigin.Current); // Always 0 for PNG and JPEG
-                Data = reader.ReadBytes((int)reader.ReadUInt32BigEndian());
+                stream = new MemoryStream(Convert.FromBase64String(encodedData));
+                using (var reader = new BinaryReader(stream))
+                {
+                    stream = null;
+
+                    Type = (PictureType)reader.ReadUInt32BigEndian();
+                    MimeType = Encoding.ASCII.GetString(reader.ReadBytes((int)reader.ReadUInt32BigEndian()));
+                    Description = Encoding.UTF8.GetString(reader.ReadBytes((int)reader.ReadUInt32BigEndian()));
+                    Width = reader.ReadUInt32BigEndian();
+                    Height = reader.ReadUInt32BigEndian();
+                    ColorDepth = reader.ReadUInt32BigEndian();
+                    reader.BaseStream.Seek(4, SeekOrigin.Current); // Always 0 for PNG and JPEG
+                    Data = reader.ReadBytes((int)reader.ReadUInt32BigEndian());
+                }
+            }
+            finally
+            {
+                if (stream != null)
+                    stream.Dispose();
             }
         }
 
@@ -72,27 +83,38 @@ namespace PowerShellAudio.Extensions.Vorbis
 
         public override string ToString()
         {
-            using (var stream = new MemoryStream())
-            using (var writer = new BinaryWriter(stream))
+            Stream stream = null;
+            try
             {
-                writer.WriteBigEndian((uint)Type);
-                
-                byte[] mimeBytes = Encoding.ASCII.GetBytes(MimeType);
-                writer.WriteBigEndian((uint)mimeBytes.Length);
-                writer.Write(mimeBytes);
+                stream = new MemoryStream();
+                using (var writer = new BinaryWriter(stream))
+                {
+                    stream = null;
 
-                byte[] descriptionBytes = Encoding.UTF8.GetBytes(Description);
-                writer.WriteBigEndian((uint)descriptionBytes.Length);
-                writer.Write(descriptionBytes);
+                    writer.WriteBigEndian((uint)Type);
 
-                writer.WriteBigEndian(Width);
-                writer.WriteBigEndian(Height);
-                writer.WriteBigEndian(ColorDepth);
-                writer.WriteBigEndian(0); // Always 0 for PNG and JPEG
-                writer.WriteBigEndian((uint)Data.Length);
-                writer.Write(Data);
+                    byte[] mimeBytes = Encoding.ASCII.GetBytes(MimeType);
+                    writer.WriteBigEndian((uint)mimeBytes.Length);
+                    writer.Write(mimeBytes);
 
-                return Convert.ToBase64String(stream.ToArray());
+                    byte[] descriptionBytes = Encoding.UTF8.GetBytes(Description);
+                    writer.WriteBigEndian((uint)descriptionBytes.Length);
+                    writer.Write(descriptionBytes);
+
+                    writer.WriteBigEndian(Width);
+                    writer.WriteBigEndian(Height);
+                    writer.WriteBigEndian(ColorDepth);
+                    writer.WriteBigEndian(0); // Always 0 for PNG and JPEG
+                    writer.WriteBigEndian((uint)Data.Length);
+                    writer.Write(Data);
+
+                    return Convert.ToBase64String(((MemoryStream)writer.BaseStream).ToArray());
+                }
+            }
+            finally
+            {
+                if (stream != null)
+                    stream.Dispose();
             }
         }
     }

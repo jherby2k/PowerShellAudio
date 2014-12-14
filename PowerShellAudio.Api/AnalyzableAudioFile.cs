@@ -104,7 +104,7 @@ namespace PowerShellAudio
         /// <exception cref="InvalidOperationException">Thrown if an analyzer with the specified name could not be found.</exception>
         /// <exception cref="UnsupportedAudioException">Thrown if no decoders were able to read this file.</exception>
         /// <exception cref="OperationCanceledException">Throw if the operation was canceled.</exception>
-        [SuppressMessage("Microsoft.Reliability", "CA2000:Dispose objects before losing scope", Justification = "False positive")]
+        [SuppressMessage("Microsoft.Reliability", "CA2000:Dispose objects before losing scope", Justification = "Group token should only be disposed when owned by this method.")]
         public void Analyze(string analyzer, CancellationToken cancelToken, GroupToken groupToken = null)
         {
             Contract.Requires<ArgumentNullException>(!string.IsNullOrEmpty(analyzer));

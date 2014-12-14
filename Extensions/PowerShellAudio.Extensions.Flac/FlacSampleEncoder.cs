@@ -45,7 +45,7 @@ namespace PowerShellAudio.Extensions.Flac
             }
         }
 
-        [SuppressMessage("Microsoft.Reliability", "CA2000:Dispose objects before losing scope", Justification = "Native blocks are added to a collection for disposal later")]
+        [SuppressMessage("Microsoft.Reliability", "CA2000:Dispose objects before losing scope", Justification = "Native blocks are added to a collection for disposal later.")]
         public void Initialize(Stream stream, AudioInfo audioInfo, MetadataDictionary metadata, SettingsDictionary settings)
         {
             Contract.Ensures(_encoder != null);

@@ -31,7 +31,7 @@ namespace PowerShellAudio
     /// </summary>
     public class CoverArt
     {
-        readonly byte[] _data;
+        byte[] _data;
 
         /// <summary>
         /// Gets the MIME type for this image format.
@@ -92,80 +92,11 @@ namespace PowerShellAudio
             Contract.Requires<ArgumentNullException>(data != null);
             Contract.Requires<ArgumentOutOfRangeException>(data.Length > 0);
             Contract.Ensures(_data != null);
-            Contract.Ensures(_data == data);
+            Contract.Ensures(_data.Length > 0);
             Contract.Ensures(!string.IsNullOrEmpty(MimeType));
             Contract.Ensures(!string.IsNullOrEmpty(Extension));
 
-            // This will throw an exception if it isn't a valid image:
-            using (var memoryStream = new MemoryStream(data))
-            using (Image image = Image.FromStream(memoryStream))
-            {
-                // Convert bitmaps to PNG format:
-                if (image.RawFormat.Guid == ImageFormat.Bmp.Guid)
-                    using (MemoryStream pngStream = new MemoryStream())
-                    {
-                        image.Save(pngStream, ImageFormat.Png);
-                        _data = pngStream.ToArray();
-
-                        MimeType = "image/png";
-                        Extension = ".png";
-                    }
-                else
-                {
-                    if (image.RawFormat.Guid == ImageFormat.Png.Guid)
-                    {
-                        MimeType = "image/png";
-                        Extension = ".png";
-                    }
-                    else if (image.RawFormat.Guid == ImageFormat.Jpeg.Guid)
-                    {
-                        MimeType = "image/jpeg";
-                        Extension = ".jpg";
-                    }
-                    else
-                        throw new UnsupportedCoverArtException(Resources.CoverArtUnsupportedImageFormat);
-
-
-                    _data = data;
-                }
-
-                Width = image.Width;
-                Height = image.Height;
-                
-                switch (image.PixelFormat)
-                {
-                    case PixelFormat.Format16bppRgb555:
-                    case PixelFormat.Format16bppRgb565:
-                    case PixelFormat.Format16bppArgb1555:
-                    case PixelFormat.Format16bppGrayScale:
-                        ColorDepth = 16;
-                        break;
-
-                    case PixelFormat.Format24bppRgb:
-                        ColorDepth = 24;
-                        break;
-
-                    case PixelFormat.Format32bppRgb:
-                    case PixelFormat.Format32bppPArgb:
-                    case PixelFormat.Format32bppArgb:
-                    case PixelFormat.Canonical:
-                        ColorDepth = 32;
-                        break;
-
-                    case PixelFormat.Format48bppRgb:
-                        ColorDepth = 48;
-                        break;
-
-                    case PixelFormat.Format64bppPArgb:
-                    case PixelFormat.Format64bppArgb:
-                        ColorDepth = 64;
-                        break;
-
-                    default:
-                        ColorDepth = 0;
-                        break;
-                }
-            }
+            Initialize(data, true);
         }
 
         /// <summary>
@@ -187,7 +118,6 @@ namespace PowerShellAudio
         /// Thrown if <paramref name="fileInfo" /> is not in a supported image format.
         /// </exception>
         public CoverArt(FileInfo fileInfo)
-            : this(File.ReadAllBytes(fileInfo.FullName))
         {
             Contract.Requires<ArgumentNullException>(fileInfo != null);
             Contract.Requires<ArgumentException>(!string.IsNullOrEmpty(fileInfo.FullName));
@@ -195,6 +125,8 @@ namespace PowerShellAudio
             Contract.Requires<ArgumentOutOfRangeException>(fileInfo.Length > 0);
             Contract.Ensures(_data != null);
             Contract.Ensures(_data.Length > 0);
+
+            Initialize(File.ReadAllBytes(fileInfo.FullName), false);
         }
 
         /// <summary>
@@ -233,6 +165,85 @@ namespace PowerShellAudio
                 throw new IOException(string.Format(CultureInfo.CurrentCulture, Resources.CoverArtFileExistsError, outputName));
 
             File.WriteAllBytes(outputName, _data);
+        }
+
+        void Initialize(byte[] data, bool copy)
+        {
+            Contract.Requires(data != null);
+            Contract.Requires(data.Length > 0);
+            Contract.Ensures(_data != null);
+            Contract.Ensures(_data.Length > 0);
+            Contract.Ensures(!string.IsNullOrEmpty(MimeType));
+            Contract.Ensures(!string.IsNullOrEmpty(Extension));
+
+            // This will throw an exception if it isn't a valid image:
+            using (var memoryStream = new MemoryStream(data))
+            using (Image image = Image.FromStream(memoryStream))
+            {
+                // Convert bitmaps to PNG format:
+                if (image.RawFormat.Guid == ImageFormat.Bmp.Guid)
+                    using (MemoryStream pngStream = new MemoryStream())
+                    {
+                        image.Save(pngStream, ImageFormat.Png);
+                        
+                        _data = pngStream.ToArray();
+                        MimeType = "image/png";
+                        Extension = ".png";
+                    }
+                else
+                {
+                    if (copy)
+                        _data = (byte[])data.Clone();
+                    else
+                        _data = data;
+
+                    if (image.RawFormat.Guid == ImageFormat.Png.Guid)
+                    {
+                        MimeType = "image/png";
+                        Extension = ".png";
+                    }
+                    else if (image.RawFormat.Guid == ImageFormat.Jpeg.Guid)
+                    {
+                        MimeType = "image/jpeg";
+                        Extension = ".jpg";
+                    }
+                    else
+                        throw new UnsupportedCoverArtException(Resources.CoverArtUnsupportedImageFormat);
+                }
+
+                Width = image.Width;
+                Height = image.Height;
+
+                switch (image.PixelFormat)
+                {
+                    case PixelFormat.Format16bppRgb555:
+                    case PixelFormat.Format16bppRgb565:
+                    case PixelFormat.Format16bppArgb1555:
+                    case PixelFormat.Format16bppGrayScale:
+                        ColorDepth = 16;
+                        break;
+
+                    case PixelFormat.Format24bppRgb:
+                        ColorDepth = 24;
+                        break;
+
+                    case PixelFormat.Format32bppRgb:
+                    case PixelFormat.Format32bppPArgb:
+                    case PixelFormat.Format32bppArgb:
+                    case PixelFormat.Canonical:
+                        ColorDepth = 32;
+                        break;
+
+                    case PixelFormat.Format48bppRgb:
+                        ColorDepth = 48;
+                        break;
+
+                    case PixelFormat.Format64bppPArgb:
+                    case PixelFormat.Format64bppArgb:
+                        ColorDepth = 64;
+                        break;
+                }
+            }
         }
 
         [ContractInvariantMethod]
