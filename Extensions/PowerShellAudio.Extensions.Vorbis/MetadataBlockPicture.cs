@@ -49,7 +49,7 @@ namespace PowerShellAudio.Extensions.Vorbis
             try
             {
                 stream = new MemoryStream(Convert.FromBase64String(encodedData));
-                using (var reader = new BinaryReader(stream, Encoding.ASCII, true))
+                using (var reader = new BinaryReader(stream))
                 {
                     stream = null;
 
@@ -59,7 +59,7 @@ namespace PowerShellAudio.Extensions.Vorbis
                     Width = reader.ReadUInt32BigEndian();
                     Height = reader.ReadUInt32BigEndian();
                     ColorDepth = reader.ReadUInt32BigEndian();
-                    stream.Seek(4, SeekOrigin.Current); // Always 0 for PNG and JPEG
+                    reader.BaseStream.Seek(4, SeekOrigin.Current); // Always 0 for PNG and JPEG
                     Data = reader.ReadBytes((int)reader.ReadUInt32BigEndian());
                 }
             }
@@ -83,7 +83,7 @@ namespace PowerShellAudio.Extensions.Vorbis
 
         public override string ToString()
         {
-            MemoryStream stream = null;
+            Stream stream = null;
             try
             {
                 stream = new MemoryStream();
@@ -108,7 +108,7 @@ namespace PowerShellAudio.Extensions.Vorbis
                     writer.WriteBigEndian((uint)Data.Length);
                     writer.Write(Data);
 
-                    return Convert.ToBase64String(stream.ToArray());
+                    return Convert.ToBase64String(((MemoryStream)writer.BaseStream).ToArray());
                 }
             }
             finally
