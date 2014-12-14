@@ -16,7 +16,6 @@
  */
 
 using PowerShellAudio.Extensions.Mp4.Properties;
-using System.Diagnostics.CodeAnalysis;
 using System.Diagnostics.Contracts;
 using System.IO;
 using System.Linq;
@@ -33,42 +32,53 @@ namespace PowerShellAudio.Extensions.Mp4
 
         internal ushort Channels { get; private set; }
 
-        [SuppressMessage("Microsoft.Reliability", "CA2000:Dispose objects before losing scope", Justification = "The BinaryReader always closes the underlying stream")]
         internal EsdsAtom(byte[] data)
         {
             Contract.Requires(data != null);
             Contract.Ensures(_sampleRates.Contains(SampleRate));
 
-            using (var reader = new BinaryReader(new MemoryStream(data)))
+            Stream stream = null;
+            try
             {
-                // Seek past the header, version and flags fields:
-                reader.BaseStream.Position = 12;
-
-                // This appears to be 0 for Apple Lossless files: 
-                if (reader.ReadByte() == 0x3)
+                stream = new MemoryStream(data);
+                using (var reader = new BinaryReader(stream))
                 {
-                    reader.ReadDescriptorLength(); // Seek past the descriptor length
-                    reader.BaseStream.Seek(2, SeekOrigin.Current); // Ignore the ES ID
-                    reader.BaseStream.Seek(1, SeekOrigin.Current); // TODO check these flags for possible additional data!
+                    stream = null;
 
-                    if (reader.ReadByte() != 0x4)
-                        throw new IOException(Resources.EsdsAtomDcdError);
-                    reader.ReadDescriptorLength(); // Seek past the descriptor length
-                    if (reader.ReadByte() != 0x40)
-                        throw new UnsupportedAudioException(Resources.EsdsAtomTypeError);
-                    reader.BaseStream.Seek(8, SeekOrigin.Current); // Seek past the stream type, buffer size and max bitrate
-                    AverageBitrate = reader.ReadUInt32BigEndian();
+                    // Seek past the header, version and flags fields:
+                    reader.BaseStream.Position = 12;
 
-                    if (reader.ReadByte() != 0x5)
-                        throw new IOException(Resources.EsdsAtomDsiError);
-                    reader.ReadDescriptorLength(); // Seek past the descriptor length
-                    byte[] dsiBytes = reader.ReadBytes(2);
+                    // This appears to be 0 for Apple Lossless files: 
+                    if (reader.ReadByte() == 0x3)
+                    {
+                        reader.ReadDescriptorLength(); // Seek past the descriptor length
+                        reader.BaseStream.Seek(2, SeekOrigin.Current); // Ignore the ES ID
+                        reader.BaseStream.Seek(1, SeekOrigin.Current); // TODO check these flags for possible additional data!
 
-                    Contract.Assume(dsiBytes.Length == 2);
+                        if (reader.ReadByte() != 0x4)
+                            throw new IOException(Resources.EsdsAtomDcdError);
+                        reader.ReadDescriptorLength(); // Seek past the descriptor length
+                        if (reader.ReadByte() != 0x40)
+                            throw new UnsupportedAudioException(Resources.EsdsAtomTypeError);
+                        reader.BaseStream.Seek(8, SeekOrigin.Current); // Seek past the stream type, buffer size and max bitrate
+                        AverageBitrate = reader.ReadUInt32BigEndian();
 
-                    SampleRate = _sampleRates[(dsiBytes[0] << 1) & 0xe | (dsiBytes[1] >> 7) & 0x1];
-                    Channels = (ushort)((dsiBytes[1] >> 3) & 0xf);
+                        if (reader.ReadByte() != 0x5)
+                            throw new IOException(Resources.EsdsAtomDsiError);
+                        reader.ReadDescriptorLength(); // Seek past the descriptor length
+                        byte[] dsiBytes = reader.ReadBytes(2);
+
+                        Contract.Assume(dsiBytes.Length == 2);
+
+                        SampleRate = _sampleRates[(dsiBytes[0] << 1) & 0xe | (dsiBytes[1] >> 7) & 0x1];
+                        Channels = (ushort)((dsiBytes[1] >> 3) & 0xf);
+                    }
                 }
+            }
+            finally
+            {
+                if (stream != null)
+                    stream.Dispose();
             }
         }
 
