@@ -69,12 +69,7 @@ namespace PowerShellAudio.Extensions.Flac
 
                     // Create a Picture block if cover art is available:
                     if (metadata.CoverArt != null)
-                    {
-                        pictureBlock = new NativePictureBlock();
-                        pictureBlock.SetType(PictureType.CoverFront);
-                        pictureBlock.SetMimeType(metadata.CoverArt.MimeType);
-                        pictureBlock.SetData(metadata.CoverArt.GetData());
-                    }
+                        pictureBlock = new CoverArtToPictureBlockAdapter(metadata.CoverArt);
 
                     // Iterate over the existing blocks, replacing and deleting as needed:
                     using (var iterator = new NativeMetadataIterator(chain.Handle))

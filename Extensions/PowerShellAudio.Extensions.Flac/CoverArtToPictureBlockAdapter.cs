@@ -15,32 +15,22 @@
  * <http://www.gnu.org/licenses/>.
  */
 
-#pragma warning disable 0649
-
-using System;
+using System.Diagnostics.Contracts;
 
 namespace PowerShellAudio.Extensions.Flac
 {
-    struct Picture
+    class CoverArtToPictureBlockAdapter : NativePictureBlock
     {
-        internal PictureType Type;
+        internal CoverArtToPictureBlockAdapter(CoverArt coverArt)
+        {
+            Contract.Requires(coverArt != null);
 
-        internal IntPtr MimeType;
-
-        internal IntPtr Description;
-
-        internal uint Width;
-
-        internal uint Height;
-
-        internal uint ColorDepth;
-
-        internal uint Colors;
-
-        internal uint DataLength;
-
-        internal IntPtr Data;
+            SetData(coverArt.GetData());
+            SetType(PictureType.CoverFront);
+            SetMimeType(coverArt.MimeType);
+            SetWidth(coverArt.Width);
+            SetHeight(coverArt.Height);
+            SetColorDepth(coverArt.ColorDepth);
+        }
     }
 }
-
-#pragma warning restore 0649

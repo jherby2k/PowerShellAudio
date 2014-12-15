@@ -117,6 +117,7 @@
     <Reference Include="System.ComponentModel.Composition" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="CoverArtToPictureBlockAdapter.cs" />
     <Compile Include="Enumerations.cs" />
     <Compile Include="FlacSampleEncoderInfo.cs" />
     <Compile Include="FlacMetadataEncoderInfo.cs" />
