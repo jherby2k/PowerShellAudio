@@ -141,22 +141,17 @@ namespace PowerShellAudio.Extensions.Vorbis
             {
                 SafeNativeMethods.VorbisCommentInitialize(out vorbisComment);
 
-                if (string.IsNullOrEmpty(settings["AddMetadata"]) || string.Compare(settings["AddMetadata"], bool.TrueString, StringComparison.OrdinalIgnoreCase) == 0)
+                foreach (var item in new MetadataToVorbisCommentAdapter(metadata))
                 {
-                    foreach (var item in new MetadataToVorbisCommentAdapter(metadata))
-                    {
-                        // The key and value need to be marshaled as null-terminated UTF-8 strings:
-                        var keyBytes = new byte[Encoding.UTF8.GetByteCount(item.Key) + 1];
-                        Encoding.UTF8.GetBytes(item.Key, 0, item.Key.Length, keyBytes, 0);
+                    // The key and value need to be marshaled as null-terminated UTF-8 strings:
+                    var keyBytes = new byte[Encoding.UTF8.GetByteCount(item.Key) + 1];
+                    Encoding.UTF8.GetBytes(item.Key, 0, item.Key.Length, keyBytes, 0);
 
-                        var valueBytes = new byte[Encoding.UTF8.GetByteCount(item.Value) + 1];
-                        Encoding.UTF8.GetBytes(item.Value, 0, item.Value.Length, valueBytes, 0);
+                    var valueBytes = new byte[Encoding.UTF8.GetByteCount(item.Value) + 1];
+                    Encoding.UTF8.GetBytes(item.Value, 0, item.Value.Length, valueBytes, 0);
 
-                        SafeNativeMethods.VorbisCommentAddTag(ref vorbisComment, keyBytes, valueBytes);
-                    }
+                    SafeNativeMethods.VorbisCommentAddTag(ref vorbisComment, keyBytes, valueBytes);
                 }
-                else if (string.Compare(settings["AddMetadata"], bool.FalseString, StringComparison.OrdinalIgnoreCase) != 0)
-                    throw new InvalidSettingException(string.Format(CultureInfo.CurrentCulture, Resources.SampleEncoderBadAddMetadata, settings["AddMetadata"]));
 
                 OggPacket first;
                 OggPacket second;

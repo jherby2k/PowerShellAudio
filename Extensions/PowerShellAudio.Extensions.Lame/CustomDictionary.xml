@@ -5,7 +5,6 @@
       <Word>libmp3lame</Word>
     </Recognized>
     <Compound>
-      <Term CompoundAlternate="AddMetadata">addmetadata</Term>
       <Term CompoundAlternate="ApplyGain">applygain</Term>
       <Term CompoundAlternate="BitRate">bitrate</Term>
       <Term CompoundAlternate="ForceCBR">forcecbr</Term>

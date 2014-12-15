@@ -63,15 +63,10 @@ namespace PowerShellAudio.Extensions.Flac
                 throw new InvalidSettingException(string.Format(CultureInfo.CurrentCulture, Resources.SampleEncoderBadCompressionLevel, settings["CompressionLevel"]));
             _encoder.SetCompressionLevel(compressionLevel);
 
-            if (string.IsNullOrEmpty(settings["AddMetadata"]) || string.Compare(settings["AddMetadata"], bool.TrueString, StringComparison.OrdinalIgnoreCase) == 0)
-            {
-                var vorbisCommentBlock = new NativeVorbisCommentBlock();
-                foreach (var field in new MetadataToVorbisCommentAdapter(metadata))
-                    vorbisCommentBlock.Append(field.Key, field.Value);
-                _metadataBlocks.Add(vorbisCommentBlock);
-            }
-            else if (string.Compare(settings["AddMetadata"], bool.FalseString, StringComparison.OrdinalIgnoreCase) != 0)
-                throw new InvalidSettingException(string.Format(CultureInfo.CurrentCulture, Resources.SampleEncoderBadAddMetadata, settings["AddMetadata"]));
+            var vorbisCommentBlock = new NativeVorbisCommentBlock();
+            foreach (var field in new MetadataToVorbisCommentAdapter(metadata))
+                vorbisCommentBlock.Append(field.Key, field.Value);
+            _metadataBlocks.Add(vorbisCommentBlock);
 
             // Add a seek table, unless SeekPointInterval = 0:
             uint seekPointInterval;

@@ -88,15 +88,6 @@ namespace PowerShellAudio.Extensions.Lame.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Unrecognized AddMetadata value &apos;{0}&apos;. Specify &apos;True&apos; or &apos;False&apos;. Default is &apos;True&apos;.
-        /// </summary>
-        internal static string SampleEncoderBadAddMetadata {
-            get {
-                return ResourceManager.GetString("SampleEncoderBadAddMetadata", resourceCulture);
-            }
-        }
-        
-        /// <summary>
         ///   Looks up a localized string similar to Unrecognized BitRate value &apos;{0}&apos;. Specify a value between &apos;8&apos; and &apos;320&apos;.
         /// </summary>
         internal static string SampleEncoderBadBitRate {

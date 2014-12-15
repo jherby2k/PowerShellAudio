@@ -78,7 +78,6 @@ namespace PowerShellAudio.Extensions.Vorbis
 
                 var result = new SettingsDictionary();
 
-                result.Add("AddMetadata", bool.TrueString);
                 result.Add("ControlMode", "Variable");
                 result.Add("VBRQuality", "5");
 
@@ -100,7 +99,6 @@ namespace PowerShellAudio.Extensions.Vorbis
 
                 var partialResult = new List<string>();
 
-                partialResult.Add("AddMetadata");
                 partialResult.Add("BitRate");
                 partialResult.Add("ControlMode");
                 partialResult.Add("SerialNumber");

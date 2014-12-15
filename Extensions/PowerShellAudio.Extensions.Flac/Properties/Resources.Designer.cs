@@ -232,15 +232,6 @@ namespace PowerShellAudio.Extensions.Flac.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Unrecognized AddMetadata value &apos;{0}&apos;. Specify &apos;True&apos; or &apos;False&apos;. Default is &apos;True&apos;.
-        /// </summary>
-        internal static string SampleEncoderBadAddMetadata {
-            get {
-                return ResourceManager.GetString("SampleEncoderBadAddMetadata", resourceCulture);
-            }
-        }
-        
-        /// <summary>
         ///   Looks up a localized string similar to Unrecognized CompressionLevel value &apos;{0}&apos;. Specify a value between &apos;0&apos; (fastest) and &apos;8&apos; (best). Default is &apos;5&apos;.
         /// </summary>
         internal static string SampleEncoderBadCompressionLevel {

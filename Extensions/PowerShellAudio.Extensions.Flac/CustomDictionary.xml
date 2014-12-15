@@ -6,7 +6,6 @@
       <Word>vorbis</Word>
     </Recognized>
     <Compound>
-      <Term CompoundAlternate="AddMetadata">addmetadata</Term>
       <Term CompoundAlternate="CompressionLevel">compressionlevel</Term>
       <Term CompoundAlternate="SeekPointInterval">seekpointinterval</Term>
     </Compound>

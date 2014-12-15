@@ -126,9 +126,6 @@
   <data name="EsdsAtomTypeError" xml:space="preserve">
     <value>This object type is not supported</value>
   </data>
-  <data name="MetadataEncoderBadAddMetadata" xml:space="preserve">
-    <value>Unrecognized AddMetadata value '{0}'. Specify 'True' or 'False'. Default is 'True'</value>
-  </data>
   <data name="MetadataEncoderBadCreationTime" xml:space="preserve">
     <value>Unable to parse the specified creation time: {0}</value>
   </data>

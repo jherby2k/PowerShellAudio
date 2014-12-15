@@ -138,6 +138,7 @@
     <Compile Include="GetAudioFileCommand.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="GetAudioMetadataCommand.cs" />
+    <Compile Include="ClearAudioMetadataCommand.cs" />
     <Compile Include="SetAudioMetadataCommand.cs" />
     <Compile Include="ExtensionMethods.cs" />
   </ItemGroup>

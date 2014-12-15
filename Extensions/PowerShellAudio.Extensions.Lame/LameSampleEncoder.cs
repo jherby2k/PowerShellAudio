@@ -54,17 +54,12 @@ namespace PowerShellAudio.Extensions.Lame
             _replayGainFilterLifetime = sampleFilterFactory.CreateExport();
             _replayGainFilterLifetime.Value.Initialize(metadata, settings);
 
-            if (string.IsNullOrEmpty(settings["AddMetadata"]) || string.Compare(settings["AddMetadata"], bool.TrueString, StringComparison.OrdinalIgnoreCase) == 0)
-            {
-                // Call the external ID3 encoder:
-                var metadataEncoderFactory = ExtensionProvider.GetFactories<IMetadataEncoder>("Extension", EncoderInfo.FileExtension).Single();
-                if (metadataEncoderFactory == null)
-                    throw new ExtensionInitializationException(string.Format(CultureInfo.CurrentCulture, Resources.SampleEncoderMetadataEncoderError, EncoderInfo.FileExtension));
-                using (ExportLifetimeContext<IMetadataEncoder> metadataEncoderLifetime = metadataEncoderFactory.CreateExport())
-                    metadataEncoderLifetime.Value.WriteMetadata(stream, metadata, settings);
-            }
-            else if (string.Compare(settings["AddMetadata"], bool.FalseString, StringComparison.OrdinalIgnoreCase) != 0)
-                throw new InvalidSettingException(string.Format(CultureInfo.CurrentCulture, Resources.SampleEncoderBadAddMetadata, settings["AddMetadata"]));
+            // Call the external ID3 encoder:
+            var metadataEncoderFactory = ExtensionProvider.GetFactories<IMetadataEncoder>("Extension", EncoderInfo.FileExtension).Single();
+            if (metadataEncoderFactory == null)
+                throw new ExtensionInitializationException(string.Format(CultureInfo.CurrentCulture, Resources.SampleEncoderMetadataEncoderError, EncoderInfo.FileExtension));
+            using (ExportLifetimeContext<IMetadataEncoder> metadataEncoderLifetime = metadataEncoderFactory.CreateExport())
+                metadataEncoderLifetime.Value.WriteMetadata(stream, metadata, settings);
 
             _encoder = InitializeEncoder(audioInfo, stream);
             ConfigureEncoder(settings, metadata, _encoder);
