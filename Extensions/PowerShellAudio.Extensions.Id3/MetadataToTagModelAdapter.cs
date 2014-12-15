@@ -41,9 +41,6 @@ namespace PowerShellAudio.Extensions.Id3
             Contract.Requires(metadata != null);
             Contract.Requires(settings != null);
 
-            if (metadata.CoverArt != null)
-                Add(new CoverArtToFrameAdapter(metadata.CoverArt));
-
             var trckFrame = new TrckFrame();
             var tdatFrame = new TdatFrame();
             var trackSoundCheckFrame = new SoundCheckFrame();
@@ -154,6 +151,9 @@ namespace PowerShellAudio.Extensions.Id3
                 else
                     throw new InvalidSettingException(string.Format(CultureInfo.CurrentCulture, Resources.MetadataToTagModelAdapterBadAddSoundCheck, settings["AddSoundCheck"]));
             }
+
+            if (metadata.CoverArt != null)
+                Add(new CoverArtToFrameAdapter(metadata.CoverArt));
         }
 
         internal bool IncludesSoundCheck

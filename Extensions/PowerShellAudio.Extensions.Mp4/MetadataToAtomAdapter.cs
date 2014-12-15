@@ -38,9 +38,6 @@ namespace PowerShellAudio.Extensions.Mp4
         {
             Contract.Requires(metadata != null);
 
-            if (metadata.CoverArt != null)
-                Add (new CovrAtom(metadata.CoverArt));
-
             int day = 0;
             int month = 0;
             int year = 0;
@@ -133,6 +130,9 @@ namespace PowerShellAudio.Extensions.Mp4
                 else
                     throw new InvalidSettingException(string.Format(CultureInfo.CurrentCulture, Resources.MetadataToAtomAdapterBadAddSoundCheck, settings["AddSoundCheck"]));
             }
+
+            if (metadata.CoverArt != null)
+                Add(new CovrAtom(metadata.CoverArt));
         }
 
         internal bool IncludesSoundCheck
