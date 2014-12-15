@@ -94,6 +94,8 @@
     <Content Include="TestFiles\AAC 153 kbps 44100Hz Stereo.m4a" />
     <Content Include="TestFiles\ALAC 16-bit 44100Hz Mono.m4a" />
     <Content Include="TestFiles\ALAC 16-bit 48000Hz Stereo.m4a" />
+    <Content Include="TestFiles\TestCover.jpg" />
+    <Content Include="TestFiles\TestCover.png" />
     <Content Include="TestFiles\LPCM 16-bit 44100Hz Mono.wav" />
     <Content Include="TestFiles\ALAC 16-bit 44100Hz Stereo.m4a" />
     <Content Include="TestFiles\LPCM 16-bit 44100Hz Stereo.wav" />

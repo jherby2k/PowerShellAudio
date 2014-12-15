@@ -43,10 +43,13 @@ namespace PowerShellAudio.UnitTests
             var encoder = Convert.ToString(TestContext.DataRow["Encoder"]);
             var settings = ConvertToDictionary(Convert.ToString(TestContext.DataRow["Settings"]));
             var metadata = ConvertToDictionary(Convert.ToString(TestContext.DataRow["Metadata"]));
+            var coverArt = Convert.ToString(TestContext.DataRow["CoverArt"]);
             var expectedHash = Convert.ToString(TestContext.DataRow["ExpectedHash"]);
 
             var input = new ExportableAudioFile(new FileInfo(fileName));
             metadata.CopyTo(input.Metadata);
+            if (!string.IsNullOrEmpty(coverArt))
+                input.Metadata.CoverArt = new CoverArt(new FileInfo(Path.Combine(TestContext.DeploymentDirectory, "TestFiles", coverArt)));
             var result = input.Export(encoder, settings, new DirectoryInfo(TestContext.DeploymentDirectory), "Export Row " + index);
 
             Assert.AreEqual<string>(expectedHash, CalculateHash(result));
