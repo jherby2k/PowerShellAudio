@@ -90,10 +90,13 @@ namespace PowerShellAudio.UnitTests
             var fileName = Path.Combine(TestContext.DeploymentDirectory, "TestFiles", Convert.ToString(TestContext.DataRow["FileName"]));
             var settings = ConvertToDictionary(Convert.ToString(TestContext.DataRow["Settings"]));
             var metadata = ConvertToDictionary(Convert.ToString(TestContext.DataRow["Metadata"]));
+            var coverArt = Convert.ToString(TestContext.DataRow["CoverArt"]);
             var expectedHash = Convert.ToString(TestContext.DataRow["ExpectedHash"]);
 
             var input = new TaggedAudioFile(new FileInfo(fileName).CopyTo("Save Metadata Row " + index + Path.GetExtension(fileName)));
             metadata.CopyTo(input.Metadata);
+            if (!string.IsNullOrEmpty(coverArt))
+                input.Metadata.CoverArt = new CoverArt(new FileInfo(Path.Combine(TestContext.DeploymentDirectory, "TestFiles", coverArt)));
             input.SaveMetadata(settings);
 
             Assert.AreEqual<string>(expectedHash, CalculateHash(input));
