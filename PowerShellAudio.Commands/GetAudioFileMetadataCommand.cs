@@ -19,8 +19,8 @@ using System.Management.Automation;
 
 namespace PowerShellAudio.Commands
 {
-    [Cmdlet(VerbsCommon.Get, "AudioMetadata"), OutputType(typeof(MetadataDictionary))]
-    public class GetAudioMetadataCommand : Cmdlet
+    [Cmdlet(VerbsCommon.Get, "AudioFileMetadata"), OutputType(typeof(MetadataDictionary))]
+    public class GetAudioFileMetadataCommand : Cmdlet
     {
         [Parameter(Position = 0)]
         public string[] Key { get; set; }

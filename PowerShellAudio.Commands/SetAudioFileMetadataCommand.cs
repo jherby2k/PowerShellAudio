@@ -20,8 +20,8 @@ using System.Management.Automation;
 
 namespace PowerShellAudio.Commands
 {
-    [Cmdlet(VerbsCommon.Set, "AudioMetadata"), OutputType(typeof(TaggedAudioFile))]
-    public class SetAudioMetadataCommand : Cmdlet
+    [Cmdlet(VerbsCommon.Set, "AudioFileMetadata"), OutputType(typeof(TaggedAudioFile))]
+    public class SetAudioFileMetadataCommand : Cmdlet
     {
         [Parameter(Mandatory = true, Position = 0)]
         public Hashtable Metadata { get; set; }

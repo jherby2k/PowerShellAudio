@@ -119,6 +119,7 @@
     <Compile Include="ExportAudioCoverArtCommand.cs" />
     <Compile Include="ExportAudioFileCommand.cs" />
     <Compile Include="GetAudioCoverArtCommand.cs" />
+    <Compile Include="GetAudioFileCoverArtCommand.cs" />
     <Compile Include="GetAudioMetadataEncoderInfoCommand.cs" />
     <Compile Include="GetAudioEncoderInfoCommand.cs" />
     <Compile Include="GetAudioAnalyzerInfoCommand.cs" />
@@ -132,14 +133,14 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>Resources.resx</DependentUpon>
     </Compile>
-    <Compile Include="SaveAudioMetadataCommand.cs" />
+    <Compile Include="SaveAudioFileMetadataCommand.cs" />
     <Compile Include="RenameAudioFileCommand.cs" />
     <Compile Include="GetAudioInfoCommand.cs" />
     <Compile Include="GetAudioFileCommand.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="GetAudioMetadataCommand.cs" />
+    <Compile Include="GetAudioFileMetadataCommand.cs" />
     <Compile Include="ClearAudioFileMetadataCommand.cs" />
-    <Compile Include="SetAudioMetadataCommand.cs" />
+    <Compile Include="SetAudioFileMetadataCommand.cs" />
     <Compile Include="ExtensionMethods.cs" />
   </ItemGroup>
   <ItemGroup>
