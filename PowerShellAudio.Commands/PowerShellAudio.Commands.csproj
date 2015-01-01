@@ -118,6 +118,7 @@
   <ItemGroup>
     <Compile Include="ConvertAudioFileCoverArtCommand.cs" />
     <Compile Include="ConvertAudioCoverArtCommand.cs" />
+    <Compile Include="ExportAudioFileCoverArtCommand.cs" />
     <Compile Include="ExportAudioCoverArtCommand.cs" />
     <Compile Include="ExportAudioFileCommand.cs" />
     <Compile Include="GetAudioCoverArtCommand.cs" />

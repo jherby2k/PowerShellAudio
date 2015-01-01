@@ -21,8 +21,8 @@ using System.Management.Automation;
 
 namespace PowerShellAudio.Commands
 {
-    [Cmdlet(VerbsData.Export, "AudioCoverArt", DefaultParameterSetName = "ByPath", SupportsShouldProcess = true), OutputType(typeof(CoverArt))]
-    public class ExportAudioCoverArtCommand : PSCmdlet
+    [Cmdlet(VerbsData.Export, "AudioFileCoverArt", DefaultParameterSetName = "ByPath", SupportsShouldProcess = true), OutputType(typeof(AudioFile))]
+    public class ExportAudioFileCoverArtCommand : PSCmdlet
     {
         [Parameter(Mandatory = true, Position = 0)]
         public string Name { get; set; }
@@ -34,7 +34,7 @@ namespace PowerShellAudio.Commands
         public string LiteralPath { get; set; }
 
         [Parameter(Mandatory = true, Position = 2, ValueFromPipeline = true)]
-        public CoverArt CoverArt { get; set; }
+        public AudioFile AudioFile { get; set; }
 
         [Parameter]
         public SwitchParameter Replace { get; set; }
@@ -44,21 +44,24 @@ namespace PowerShellAudio.Commands
 
         protected override void ProcessRecord()
         {
+            var taggedAudioFile = new TaggedAudioFile(AudioFile);
+            var substituter = new MetadataSubstituter(taggedAudioFile.Metadata);
+
             DirectoryInfo outputDirectory;
             try
             {
-                outputDirectory = new DirectoryInfo(this.GetFileSystemPaths(Path, LiteralPath).First());
+                outputDirectory = new DirectoryInfo(this.GetFileSystemPaths(substituter.Substitute(Path), substituter.Substitute(LiteralPath)).First());
             }
             catch (ItemNotFoundException e)
             {
                 outputDirectory = new DirectoryInfo(e.ItemName);
             }
 
-            if (ShouldProcess(System.IO.Path.Combine(outputDirectory.FullName, Name + CoverArt.Extension)))
-                CoverArt.Export(outputDirectory, Name, Replace);
+            if (ShouldProcess(AudioFile.FileInfo.FullName))
+                taggedAudioFile.Metadata.CoverArt.Export(outputDirectory, substituter.Substitute(Name), Replace);
 
             if (PassThru)
-                WriteObject(CoverArt);
+                WriteObject(taggedAudioFile);
         }
     }
 }
