@@ -28,6 +28,9 @@ namespace PowerShellAudio.Commands
     {
         readonly List<FileInfo> _files = new List<FileInfo>();
 
+        [Parameter(ParameterSetName = "ByAudioFile", Mandatory = true, Position = 0, ValueFromPipeline = true)]
+        public AudioFile AudioFile { get; set; }
+
         [Parameter(ParameterSetName = "ByFileInfo", Mandatory = true, Position = 0, ValueFromPipeline = true)]
         public FileInfo FileInfo { get; set; }
 
@@ -41,7 +44,9 @@ namespace PowerShellAudio.Commands
         {
             ProviderInfo provider;
 
-            if (!string.IsNullOrEmpty(Path))
+            if (AudioFile != null)
+                WriteObject(new TaggedAudioFile(AudioFile).Metadata.CoverArt);
+            else if (!string.IsNullOrEmpty(Path))
             {
                 var providerPaths = GetResolvedProviderPathFromPSPath(Path, out provider);
                 if (provider.ImplementingType == typeof(FileSystemProvider))
@@ -50,7 +55,6 @@ namespace PowerShellAudio.Commands
             else if (!string.IsNullOrEmpty(LiteralPath))
             {
                 PSDriveInfo drive;
-
                 string providerPath = SessionState.Path.GetUnresolvedProviderPathFromPSPath(LiteralPath, out provider, out drive);
                 if (provider.ImplementingType == typeof(FileSystemProvider))
                     _files.Add(new FileInfo(providerPath));

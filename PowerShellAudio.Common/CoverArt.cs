@@ -74,6 +74,23 @@ namespace PowerShellAudio
         public int ColorDepth { get; private set; }
 
         /// <summary>
+        /// Initializes a new instance of the <see cref="CoverArt"/> class from an existing <see cref="CoverArt"/>
+        /// object.
+        /// </summary>
+        /// <param name="coverArt">The cover art.</param>
+        /// <exception cref="ArgumentNullException">Thrown if <paramref name="coverArt" /> is null.</exception>
+        public CoverArt(CoverArt coverArt)
+        {
+            Contract.Requires<ArgumentNullException>(coverArt != null);
+            Contract.Ensures(_data != null);
+            Contract.Ensures(_data.Length > 0);
+            Contract.Ensures(!string.IsNullOrEmpty(MimeType));
+            Contract.Ensures(!string.IsNullOrEmpty(Extension));
+
+            Initialize(coverArt.GetData(), false);
+        }
+
+        /// <summary>
         /// Initializes a new instance of the <see cref="CoverArt" /> class.
         /// </summary>
         /// <param name="data">The data.</param>

@@ -23,8 +23,11 @@ namespace PowerShellAudio.Commands
     [Cmdlet(VerbsCommon.Set, "AudioMetadata"), OutputType(typeof(TaggedAudioFile))]
     public class SetAudioMetadataCommand : Cmdlet
     {
-        [Parameter(Mandatory = true, Position = 0)]
+        [Parameter(ParameterSetName = "ByHashtable", Mandatory = true, Position = 0)]
         public Hashtable Metadata { get; set; }
+
+        [Parameter(ParameterSetName = "ByCoverArt", Mandatory = true, Position = 0)]
+        public CoverArt CoverArt { get; set; }
 
         [Parameter(Mandatory = true, Position = 1, ValueFromPipeline = true)]
         public AudioFile AudioFile { get; set; }
@@ -36,6 +39,8 @@ namespace PowerShellAudio.Commands
         {
             var taggedAudioFile = new TaggedAudioFile(AudioFile);
             new HashTableToMetadataDictionaryAdapter(Metadata).CopyTo(taggedAudioFile.Metadata);
+            if (CoverArt != null)
+                taggedAudioFile.Metadata.CoverArt = CoverArt;
             if (PassThru)
                 WriteObject(taggedAudioFile);
         }
