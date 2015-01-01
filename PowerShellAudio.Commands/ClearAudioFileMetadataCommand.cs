@@ -20,8 +20,8 @@ using System.Linq;
 
 namespace PowerShellAudio.Commands
 {
-    [Cmdlet(VerbsCommon.Clear, "AudioMetadata"), OutputType(typeof(TaggedAudioFile))]
-    public class ClearAudioMetadataCommand : Cmdlet
+    [Cmdlet(VerbsCommon.Clear, "AudioFileMetadata"), OutputType(typeof(TaggedAudioFile))]
+    public class ClearAudioFileMetadataCommand : Cmdlet
     {
         [Parameter(Position = 0)]
         public string[] Key { get; set; }
@@ -34,24 +34,21 @@ namespace PowerShellAudio.Commands
 
         protected override void ProcessRecord()
         {
-            var taggedAudioFile = AudioFile as TaggedAudioFile;
-            if (taggedAudioFile != null)
+            var taggedAudioFile = new TaggedAudioFile(AudioFile);
+            if (Key != null)
             {
-                if (Key != null && Key.Length > 0)
-                {
-                    foreach (var item in Key)
-                        taggedAudioFile.Metadata.Remove(item);
+                foreach (var item in Key)
+                    taggedAudioFile.Metadata.Remove(item);
 
-                    // Treat CoverArt like a text field:
-                    if (Key.Contains("CoverArt"))
-                        taggedAudioFile.Metadata.CoverArt = null;
-                }
-                else
-                    taggedAudioFile.Metadata.Clear();
+                // Treat CoverArt like a text field:
+                if (Key.Contains("CoverArt"))
+                    taggedAudioFile.Metadata.CoverArt = null;
             }
+            else
+                taggedAudioFile.Metadata.Clear();
 
             if (PassThru)
-                WriteObject(AudioFile);
+                WriteObject(taggedAudioFile);
         }
     }
 }

@@ -15,10 +15,7 @@
  * <http://www.gnu.org/licenses/>.
  */
 
-using Microsoft.PowerShell.Commands;
-using System.Collections.Generic;
 using System.IO;
-using System.Linq;
 using System.Management.Automation;
 
 namespace PowerShellAudio.Commands
@@ -26,43 +23,22 @@ namespace PowerShellAudio.Commands
     [Cmdlet(VerbsCommon.Get, "AudioFile", DefaultParameterSetName = "ByPath"), OutputType(typeof(TaggedAudioFile))]
     public class GetAudioFileCommand : PSCmdlet
     {
-        readonly List<FileInfo> _files = new List<FileInfo>();
-
-        [Parameter(ParameterSetName = "ByFileInfo", Mandatory = true, Position = 0, ValueFromPipeline = true)]
-        public FileInfo FileInfo { get; set; }
-
         [Parameter(ParameterSetName = "ByPath", Mandatory = true, Position = 0, ValueFromPipeline = true)]
         public string Path { get; set; }
 
         [Parameter(ParameterSetName = "ByLiteralPath", Mandatory = true, Position = 0), Alias("PSPath")]
         public string LiteralPath { get; set; }
 
+        [Parameter(ParameterSetName = "ByFileInfo", Mandatory = true, Position = 0, ValueFromPipeline = true)]
+        public FileInfo FileInfo { get; set; }
+
         protected override void ProcessRecord()
         {
-            ProviderInfo provider;
+            foreach (var path in this.GetFileSystemPaths(Path, LiteralPath))
+                WriteObject(new TaggedAudioFile(new FileInfo(path)));
 
-            if (!string.IsNullOrEmpty(Path))
-            {
-                var providerPaths = GetResolvedProviderPathFromPSPath(Path, out provider);
-                if (provider.ImplementingType == typeof(FileSystemProvider))
-                    _files.AddRange(providerPaths.Select(path => new FileInfo(path)));
-            }
-            else if (!string.IsNullOrEmpty(LiteralPath))
-            {
-                PSDriveInfo drive;
-
-                string providerPath = SessionState.Path.GetUnresolvedProviderPathFromPSPath(LiteralPath, out provider, out drive);
-                if (provider.ImplementingType == typeof(FileSystemProvider))
-                    _files.Add(new FileInfo(providerPath));
-            }
-            else
-                _files.Add(FileInfo);
-        }
-
-        protected override void EndProcessing()
-        {
-            foreach (var file in _files)
-                WriteObject(new TaggedAudioFile(file));
+            if (FileInfo != null)
+                WriteObject(new TaggedAudioFile(FileInfo));
         }
     }
 }

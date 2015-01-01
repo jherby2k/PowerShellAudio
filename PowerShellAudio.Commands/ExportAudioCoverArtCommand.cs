@@ -16,33 +16,52 @@
  */
 
 using System.IO;
+using System.Linq;
 using System.Management.Automation;
 
 namespace PowerShellAudio.Commands
 {
-    [Cmdlet(VerbsData.Export, "AudioCoverArt", SupportsShouldProcess = true)]
-    public class ExportAudioCoverArtCommand : Cmdlet
+    [Cmdlet(VerbsData.Export, "AudioCoverArt", DefaultParameterSetName = "ByPath", SupportsShouldProcess = true), OutputType(typeof(CoverArt))]
+    public class ExportAudioCoverArtCommand : PSCmdlet
     {
         [Parameter(Mandatory = true, Position = 0)]
         public string Name { get; set; }
 
-        [Parameter(Mandatory = true, Position = 1, ValueFromPipeline = true)]
-        public AudioFile AudioFile { get; set; }
+        [Parameter(ParameterSetName = "ByPath", Mandatory = true, Position = 1)]
+        public string Path { get; set; }
 
-        [Parameter(Position = 2)]
-        public DirectoryInfo Directory { get; set; }
+        [Parameter(ParameterSetName = "ByLiteralPath", Mandatory = true, Position = 1), Alias("PSPath")]
+        public string LiteralPath { get; set; }
+
+        [Parameter(Mandatory = true, Position = 2, ValueFromPipeline = true)]
+        public AudioFile AudioFile { get; set; }
 
         [Parameter]
         public SwitchParameter Replace { get; set; }
 
+        [Parameter]
+        public SwitchParameter PassThru { get; set; }
+
         protected override void ProcessRecord()
         {
-            if (ShouldProcess(AudioFile.FileInfo.FullName))
+            var taggedAudioFile = new TaggedAudioFile(AudioFile);
+            var substituter = new MetadataSubstituter(taggedAudioFile.Metadata);
+
+            DirectoryInfo outputDirectory;
+            try
             {
-                var taggedAudioFile = new TaggedAudioFile(AudioFile);
-                var sustituter = new MetadataSubstituter(taggedAudioFile.Metadata);
-                taggedAudioFile.Metadata.CoverArt.Export(new DirectoryInfo(Directory == null ? AudioFile.FileInfo.DirectoryName : sustituter.Substitute(Directory.FullName)), sustituter.Substitute(Name), Replace);
+                outputDirectory = new DirectoryInfo(this.GetFileSystemPaths(substituter.Substitute(Path), substituter.Substitute(LiteralPath)).First());
             }
+            catch (ItemNotFoundException e)
+            {
+                outputDirectory = new DirectoryInfo(e.ItemName);
+            }
+
+            if (ShouldProcess(AudioFile.FileInfo.FullName))
+                taggedAudioFile.Metadata.CoverArt.Export(outputDirectory, substituter.Substitute(Name), Replace);
+
+            if (PassThru)
+                WriteObject(taggedAudioFile);
         }
     }
 }

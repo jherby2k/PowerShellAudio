@@ -35,7 +35,9 @@ namespace PowerShellAudio.Commands
 
         internal string Substitute(string path)
         {
-            return replacer.Replace(path, match => new string(_metadata[match.Value.Substring(1, match.Value.Length - 2)].Where(character => !invalidChars.Contains(character)).ToArray()));
+            if (path != null)
+                return replacer.Replace(path, match => new string(_metadata[match.Value.Substring(1, match.Value.Length - 2)].Where(character => !invalidChars.Contains(character)).ToArray()));
+            return null;
         }
     }
 }

@@ -17,8 +17,6 @@
 
 using System.Collections;
 using System.Management.Automation;
-using System.Linq;
-using System.Collections.Generic;
 
 namespace PowerShellAudio.Commands
 {
@@ -36,13 +34,13 @@ namespace PowerShellAudio.Commands
 
         protected override void ProcessRecord()
         {
+            var taggedAudioFile = new TaggedAudioFile(AudioFile);
+
             if (ShouldProcess(AudioFile.FileInfo.FullName))
-            {
-                var taggedAudioFile = new TaggedAudioFile(AudioFile);
                 taggedAudioFile.SaveMetadata(new HashTableToSettingsDictionaryAdapter(Setting));
-                if (PassThru)
-                    WriteObject(taggedAudioFile);
-            }
+
+            if (PassThru)
+                WriteObject(taggedAudioFile);
         }
     }
 }

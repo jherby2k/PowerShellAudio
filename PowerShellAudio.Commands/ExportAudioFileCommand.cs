@@ -23,14 +23,15 @@ using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
 using System.Globalization;
 using System.IO;
+using System.Linq;
 using System.Management.Automation;
 using System.Threading;
 using System.Threading.Tasks;
 
 namespace PowerShellAudio.Commands
 {
-    [Cmdlet(VerbsData.Export, "AudioFile", SupportsShouldProcess = true), OutputType(typeof(ExportableAudioFile))]
-    public class ExportAudioFileCommand : Cmdlet, IDisposable
+    [Cmdlet(VerbsData.Export, "AudioFile", DefaultParameterSetName = "ByPath", SupportsShouldProcess = true), OutputType(typeof(ExportableAudioFile))]
+    public class ExportAudioFileCommand : PSCmdlet, IDisposable
     {
         readonly IList<ExportableAudioFile> _audioFiles = new List<ExportableAudioFile>();
         readonly CancellationTokenSource _cancelSource = new CancellationTokenSource();
@@ -38,17 +39,20 @@ namespace PowerShellAudio.Commands
         [Parameter(Mandatory = true, Position = 0)]
         public string Encoder { get; set; }
 
-        [Parameter(Mandatory = true, Position = 1, ValueFromPipeline = true)]
+        [Parameter(ParameterSetName = "ByPath", Mandatory = true, Position = 1)]
+        public string Path { get; set; }
+
+        [Parameter(ParameterSetName = "ByLiteralPath", Mandatory = true, Position = 1), Alias("PSPath")]
+        public string LiteralPath { get; set; }
+
+        [Parameter(Mandatory = true, Position = 2, ValueFromPipeline = true)]
         public AudioFile AudioFile { get; set; }
 
         [Parameter]
-        public Hashtable Setting { get; set; }
-
-        [Parameter]
-        public DirectoryInfo Directory { get; set; }
-
-        [Parameter]
         public string Name { get; set; }
+
+        [Parameter]
+        public Hashtable Setting { get; set; }
 
         [Parameter]
         public SwitchParameter Replace { get; set; }
@@ -75,7 +79,18 @@ namespace PowerShellAudio.Commands
                         try
                         {
                             var substituter = new MetadataSubstituter(audioFile.Metadata);
-                            ExportableAudioFile result = audioFile.Export(Encoder, _cancelSource.Token, new HashTableToSettingsDictionaryAdapter(Setting), Directory == null ? null : new DirectoryInfo(substituter.Substitute(Directory.FullName)), string.IsNullOrEmpty(Name) ? null : substituter.Substitute(Name), Replace);
+
+                            DirectoryInfo outputDirectory;
+                            try
+                            {
+                                outputDirectory = new DirectoryInfo(this.GetFileSystemPaths(substituter.Substitute(Path), substituter.Substitute(LiteralPath)).First());
+                            }
+                            catch (ItemNotFoundException e)
+                            {
+                                outputDirectory = new DirectoryInfo(e.ItemName);
+                            }
+
+                            ExportableAudioFile result = audioFile.Export(Encoder, _cancelSource.Token, new HashTableToSettingsDictionaryAdapter(Setting), outputDirectory, string.IsNullOrEmpty(Name) ? null : substituter.Substitute(Name), Replace);
                             Interlocked.Increment(ref completed);
 
                             outputQueue.Add(result);

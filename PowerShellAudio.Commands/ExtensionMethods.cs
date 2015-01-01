@@ -15,8 +15,10 @@
  * <http://www.gnu.org/licenses/>.
  */
 
+using Microsoft.PowerShell.Commands;
 using System;
 using System.Collections.Concurrent;
+using System.Collections.Generic;
 using System.Management.Automation;
 using System.Threading;
 
@@ -40,6 +42,30 @@ namespace PowerShellAudio.Commands
                         cmdlet.WriteObject(queuedObject);
                 }
             }
+        }
+
+        internal static IEnumerable<string> GetFileSystemPaths(this PSCmdlet cmdlet, string path, string literalPath)
+        {
+            ProviderInfo provider;
+
+            if (!string.IsNullOrEmpty(path))
+            {
+                var providerPaths = cmdlet.GetResolvedProviderPathFromPSPath(path, out provider);
+
+                if (provider.ImplementingType == typeof(FileSystemProvider))
+                    return providerPaths;
+            }
+
+            if (!string.IsNullOrEmpty(literalPath))
+            {
+                PSDriveInfo drive;
+
+                string providerPath = cmdlet.SessionState.Path.GetUnresolvedProviderPathFromPSPath(literalPath, out provider, out drive);
+                if (provider.ImplementingType == typeof(FileSystemProvider))
+                    return new[] { providerPath };
+            }
+
+            return new string[0];
         }
 
         internal static int GetPercent(this int part, int whole)

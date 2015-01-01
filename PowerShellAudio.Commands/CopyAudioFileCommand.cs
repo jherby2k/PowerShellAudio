@@ -16,15 +16,19 @@
  */
 
 using System.IO;
+using System.Linq;
 using System.Management.Automation;
 
 namespace PowerShellAudio.Commands
 {
-    [Cmdlet(VerbsCommon.Copy, "AudioFile", SupportsShouldProcess = true), OutputType(typeof(TaggedAudioFile))]
-    public class CopyAudioFileCommand : Cmdlet
+    [Cmdlet(VerbsCommon.Copy, "AudioFile", DefaultParameterSetName = "ByPath", SupportsShouldProcess = true), OutputType(typeof(TaggedAudioFile))]
+    public class CopyAudioFileCommand : PSCmdlet
     {
-        [Parameter(Mandatory = true, Position = 0)]
-        public DirectoryInfo Directory { get; set; }
+        [Parameter(ParameterSetName = "ByPath", Mandatory = true, Position = 0)]
+        public string Path { get; set; }
+
+        [Parameter(ParameterSetName = "ByLiteralPath", Mandatory = true, Position = 0), Alias("PSPath")]
+        public string LiteralPath { get; set; }
 
         [Parameter(Mandatory = true, Position = 1, ValueFromPipeline = true)]
         public AudioFile AudioFile { get; set; }
@@ -35,20 +39,25 @@ namespace PowerShellAudio.Commands
         [Parameter]
         public SwitchParameter Replace { get; set; }
 
-        [Parameter]
-        public SwitchParameter PassThru { get; set; }
-
         protected override void ProcessRecord()
         {
+            var taggedAudioFile = new TaggedAudioFile(AudioFile);
+            var substituter = new MetadataSubstituter(taggedAudioFile.Metadata);
+
+            string outputDirectory;
+            try
+            {
+                outputDirectory = this.GetFileSystemPaths(substituter.Substitute(Path), substituter.Substitute(LiteralPath)).First();
+            }
+            catch (ItemNotFoundException e)
+            {
+                outputDirectory = e.ItemName;
+            }
+
             if (ShouldProcess(AudioFile.FileInfo.FullName))
             {
-                var taggedAudioFile = new TaggedAudioFile(AudioFile);
-                var substituter = new MetadataSubstituter(taggedAudioFile.Metadata);
-                string modifiedDirectory = substituter.Substitute(Directory.FullName);
-
-                System.IO.Directory.CreateDirectory(modifiedDirectory);
-
-                taggedAudioFile.FileInfo.CopyTo(Path.Combine(modifiedDirectory, substituter.Substitute(Name == null ? taggedAudioFile.FileInfo.Name : Name) + taggedAudioFile.FileInfo.Extension), Replace);
+                Directory.CreateDirectory(outputDirectory);
+                WriteObject(new TaggedAudioFile(taggedAudioFile.FileInfo.CopyTo(System.IO.Path.Combine(outputDirectory, substituter.Substitute(Name == null ? System.IO.Path.GetFileNameWithoutExtension(taggedAudioFile.FileInfo.Name) : Name) + taggedAudioFile.FileInfo.Extension), Replace)));
             }
         }
     }
