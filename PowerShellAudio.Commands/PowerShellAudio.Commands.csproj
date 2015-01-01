@@ -116,6 +116,7 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="ConvertAudioCoverArtCommand.cs" />
     <Compile Include="ExportAudioCoverArtCommand.cs" />
     <Compile Include="ExportAudioFileCommand.cs" />
     <Compile Include="GetAudioCoverArtCommand.cs" />
@@ -183,6 +184,9 @@
     <None Include="en-US\PowerShellAudio.Commands.dll-Help.xml">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
+  </ItemGroup>
+  <ItemGroup>
+    <CodeAnalysisDictionary Include="CustomDictionary.xml" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>
