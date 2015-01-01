@@ -19,40 +19,24 @@ using System.Management.Automation;
 
 namespace PowerShellAudio.Commands
 {
-    [Cmdlet(VerbsData.Convert, "AudioCoverArt"), OutputType(typeof(CoverArt))]
-    public class ConvertAudioCoverArtCommand : Cmdlet
+    [Cmdlet(VerbsCommon.Set, "AudioFileCoverArt"), OutputType(typeof(TaggedAudioFile))]
+    public class SetAudioFileCoverArtCommand : Cmdlet
     {
-        int _maxWidth = ConvertibleCoverArt.DefaultMaxWidth;
-        bool _convertToLossy = ConvertibleCoverArt.DefaultConvertToLossy;
-        int _quality = ConvertibleCoverArt.DefaultQuality;
-
-        [Parameter(Mandatory = true, Position = 0, ValueFromPipeline = true)]
+        [Parameter(Mandatory = true, Position = 0)]
         public CoverArt CoverArt { get; set; }
 
-        [Parameter]
-        public int MaxWidth
-        {
-            get { return _maxWidth; }
-            set { _maxWidth = value; }
-        }
+        [Parameter(Mandatory = true, Position = 1, ValueFromPipeline = true)]
+        public AudioFile AudioFile { get; set; }
 
         [Parameter]
-        public SwitchParameter ConvertToLossy
-        {
-            get { return _convertToLossy; }
-            set { _convertToLossy = value; }
-        }
-
-        [Parameter]
-        public int Quality
-        {
-            get { return _quality; }
-            set { _quality = value; }
-        }
+        public SwitchParameter PassThru { get; set; }
 
         protected override void ProcessRecord()
         {
-            WriteObject(new ConvertibleCoverArt(CoverArt).Convert(_maxWidth, _convertToLossy, _quality));
+            var taggedAudioFile = new TaggedAudioFile(AudioFile);
+            taggedAudioFile.Metadata.CoverArt = CoverArt;
+            if (PassThru)
+                WriteObject(taggedAudioFile);
         }
     }
 }

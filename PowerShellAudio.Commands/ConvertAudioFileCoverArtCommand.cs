@@ -19,15 +19,15 @@ using System.Management.Automation;
 
 namespace PowerShellAudio.Commands
 {
-    [Cmdlet(VerbsData.Convert, "AudioCoverArt"), OutputType(typeof(CoverArt))]
-    public class ConvertAudioCoverArtCommand : Cmdlet
+    [Cmdlet(VerbsData.Convert, "AudioFileCoverArt"), OutputType(typeof(TaggedAudioFile))]
+    public class ConvertAudioFileCoverArtCommand : Cmdlet
     {
         int _maxWidth = ConvertibleCoverArt.DefaultMaxWidth;
         bool _convertToLossy = ConvertibleCoverArt.DefaultConvertToLossy;
         int _quality = ConvertibleCoverArt.DefaultQuality;
 
         [Parameter(Mandatory = true, Position = 0, ValueFromPipeline = true)]
-        public CoverArt CoverArt { get; set; }
+        public AudioFile AudioFile { get; set; }
 
         [Parameter]
         public int MaxWidth
@@ -50,9 +50,15 @@ namespace PowerShellAudio.Commands
             set { _quality = value; }
         }
 
+        [Parameter]
+        public SwitchParameter PassThru { get; set; }
+
         protected override void ProcessRecord()
         {
-            WriteObject(new ConvertibleCoverArt(CoverArt).Convert(_maxWidth, _convertToLossy, _quality));
+            var taggedAudioFile = new TaggedAudioFile(AudioFile);
+            taggedAudioFile.Metadata.CoverArt = new ConvertibleCoverArt(taggedAudioFile.Metadata.CoverArt).Convert(_maxWidth, _convertToLossy, _quality);
+            if (PassThru)
+                WriteObject(taggedAudioFile);
         }
     }
 }

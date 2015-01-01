@@ -116,6 +116,7 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="ConvertAudioFileCoverArtCommand.cs" />
     <Compile Include="ConvertAudioCoverArtCommand.cs" />
     <Compile Include="ExportAudioCoverArtCommand.cs" />
     <Compile Include="ExportAudioFileCommand.cs" />
@@ -141,6 +142,7 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="GetAudioFileMetadataCommand.cs" />
     <Compile Include="ClearAudioFileMetadataCommand.cs" />
+    <Compile Include="SetAudioFileCoverArtCommand.cs" />
     <Compile Include="SetAudioFileMetadataCommand.cs" />
     <Compile Include="ExtensionMethods.cs" />
   </ItemGroup>
