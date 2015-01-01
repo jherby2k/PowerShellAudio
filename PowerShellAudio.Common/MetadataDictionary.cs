@@ -102,6 +102,9 @@ namespace PowerShellAudio
             }
         }
 
+        /// <summary>
+        /// Removes all items from the <see cref="SettingsDictionary" />.
+        /// </summary>
         public override void Clear()
         {
             CoverArt = null;
