@@ -21,11 +21,11 @@
 		<command:syntaxItem>
 			<maml:name>Copy-AudioFile</maml:name>
 			<command:parameter required="true" variableLength="false" globbing="false" pipelineInput="false" position="0">
-				<maml:name>Directory</maml:name>
+				<maml:name>Path</maml:name>
 				<maml:description>
 					<maml:para />
 				</maml:description>
-				<command:parameterValue required="true" variableLength="false">DirectoryInfo</command:parameterValue>
+				<command:parameterValue required="true" variableLength="false">String</command:parameterValue>
 			</command:parameter>
 			<command:parameter required="true" variableLength="false" globbing="false" pipelineInput="true (ByValue)" position="1">
 				<maml:name>AudioFile</maml:name>
@@ -49,9 +49,47 @@
 				<command:parameterValue required="false" variableLength="false">SwitchParameter</command:parameterValue>
 			</command:parameter>
 			<command:parameter required="false" variableLength="false" globbing="false" pipelineInput="false" position="named">
-				<maml:name>PassThru</maml:name>
+				<maml:name>WhatIf</maml:name>
 				<maml:description>
-					<maml:para>Writes the resulting audio file to the console. By default, this cmdlet does not generate any output.</maml:para>
+					<maml:para>Shows what would happen if the cmdlet runs. The cmdlet is not run.</maml:para>
+				</maml:description>
+				<command:parameterValue required="false" variableLength="false">SwitchParameter</command:parameterValue>
+			</command:parameter>
+			<command:parameter required="false" variableLength="false" globbing="false" pipelineInput="false" position="named">
+				<maml:name>Confirm</maml:name>
+				<maml:description>
+					<maml:para>Prompts you for confirmation before running the cmdlet.</maml:para>
+				</maml:description>
+				<command:parameterValue required="false" variableLength="false">SwitchParameter</command:parameterValue>
+			</command:parameter>
+		</command:syntaxItem>
+		<command:syntaxItem>
+			<maml:name>Copy-AudioFile</maml:name>
+			<command:parameter required="true" variableLength="false" globbing="false" pipelineInput="false" position="0">
+				<maml:name>LiteralPath</maml:name>
+				<maml:description>
+					<maml:para />
+				</maml:description>
+				<command:parameterValue required="true" variableLength="false">String</command:parameterValue>
+			</command:parameter>
+			<command:parameter required="true" variableLength="false" globbing="false" pipelineInput="true (ByValue)" position="1">
+				<maml:name>AudioFile</maml:name>
+				<maml:description>
+					<maml:para />
+				</maml:description>
+				<command:parameterValue required="true" variableLength="false">AudioFile</command:parameterValue>
+			</command:parameter>
+			<command:parameter required="false" variableLength="false" globbing="false" pipelineInput="false" position="named">
+				<maml:name>Name</maml:name>
+				<maml:description>
+					<maml:para />
+				</maml:description>
+				<command:parameterValue required="true" variableLength="false">String</command:parameterValue>
+			</command:parameter>
+			<command:parameter required="false" variableLength="false" globbing="false" pipelineInput="false" position="named">
+				<maml:name>Replace</maml:name>
+				<maml:description>
+					<maml:para />
 				</maml:description>
 				<command:parameterValue required="false" variableLength="false">SwitchParameter</command:parameterValue>
 			</command:parameter>
@@ -72,18 +110,6 @@
 		</command:syntaxItem>
 	</command:syntax>
 	<command:parameters>
-		<command:parameter required="true" variableLength="false" globbing="false" pipelineInput="false" position="0">
-			<maml:name>Directory</maml:name>
-			<maml:description>
-				<maml:para />
-			</maml:description>
-			<command:parameterValue required="true" variableLength="false">DirectoryInfo</command:parameterValue>
-			<dev:type>
-				<maml:name>DirectoryInfo</maml:name>
-				<maml:uri/>
-			</dev:type>
-			<dev:defaultValue></dev:defaultValue>
-		</command:parameter>
 		<command:parameter required="true" variableLength="false" globbing="false" pipelineInput="true (ByValue)" position="1">
 			<maml:name>AudioFile</maml:name>
 			<maml:description>
@@ -121,18 +147,6 @@
 			<dev:defaultValue></dev:defaultValue>
 		</command:parameter>
 		<command:parameter required="false" variableLength="false" globbing="false" pipelineInput="false" position="named">
-			<maml:name>PassThru</maml:name>
-			<maml:description>
-				<maml:para>Writes the resulting audio file to the console. By default, this cmdlet does not generate any output.</maml:para>
-			</maml:description>
-			<command:parameterValue required="false" variableLength="false">SwitchParameter</command:parameterValue>
-			<dev:type>
-				<maml:name>SwitchParameter</maml:name>
-				<maml:uri/>
-			</dev:type>
-			<dev:defaultValue></dev:defaultValue>
-		</command:parameter>
-		<command:parameter required="false" variableLength="false" globbing="false" pipelineInput="false" position="named">
 			<maml:name>WhatIf</maml:name>
 			<maml:description>
 				<maml:para>Shows what would happen if the cmdlet runs. The cmdlet is not run.</maml:para>
@@ -152,6 +166,30 @@
 			<command:parameterValue required="false" variableLength="false">SwitchParameter</command:parameterValue>
 			<dev:type>
 				<maml:name>SwitchParameter</maml:name>
+				<maml:uri/>
+			</dev:type>
+			<dev:defaultValue></dev:defaultValue>
+		</command:parameter>
+		<command:parameter required="true" variableLength="false" globbing="false" pipelineInput="false" position="0">
+			<maml:name>Path</maml:name>
+			<maml:description>
+				<maml:para />
+			</maml:description>
+			<command:parameterValue required="true" variableLength="false">String</command:parameterValue>
+			<dev:type>
+				<maml:name>String</maml:name>
+				<maml:uri/>
+			</dev:type>
+			<dev:defaultValue></dev:defaultValue>
+		</command:parameter>
+		<command:parameter required="true" variableLength="false" globbing="false" pipelineInput="false" position="0">
+			<maml:name>LiteralPath</maml:name>
+			<maml:description>
+				<maml:para />
+			</maml:description>
+			<command:parameterValue required="true" variableLength="false">String</command:parameterValue>
+			<dev:type>
+				<maml:name>String</maml:name>
 				<maml:uri/>
 			</dev:type>
 			<dev:defaultValue></dev:defaultValue>
@@ -305,22 +343,22 @@
 		</command:syntaxItem>
 		<command:syntaxItem>
 			<maml:name>Get-AudioFile</maml:name>
-			<command:parameter required="true" variableLength="false" globbing="false" pipelineInput="true (ByValue)" position="0">
-				<maml:name>FileInfo</maml:name>
-				<maml:description>
-					<maml:para />
-				</maml:description>
-				<command:parameterValue required="true" variableLength="false">FileInfo</command:parameterValue>
-			</command:parameter>
-		</command:syntaxItem>
-		<command:syntaxItem>
-			<maml:name>Get-AudioFile</maml:name>
 			<command:parameter required="true" variableLength="false" globbing="false" pipelineInput="false" position="0">
 				<maml:name>LiteralPath</maml:name>
 				<maml:description>
 					<maml:para />
 				</maml:description>
 				<command:parameterValue required="true" variableLength="false">String</command:parameterValue>
+			</command:parameter>
+		</command:syntaxItem>
+		<command:syntaxItem>
+			<maml:name>Get-AudioFile</maml:name>
+			<command:parameter required="true" variableLength="false" globbing="false" pipelineInput="true (ByValue)" position="0">
+				<maml:name>FileInfo</maml:name>
+				<maml:description>
+					<maml:para />
+				</maml:description>
+				<command:parameterValue required="true" variableLength="false">FileInfo</command:parameterValue>
 			</command:parameter>
 		</command:syntaxItem>
 	</command:syntax>
@@ -602,165 +640,6 @@
 <command:command xmlns:maml="http://schemas.microsoft.com/maml/2004/10" xmlns:command="http://schemas.microsoft.com/maml/dev/command/2004/10" xmlns:dev="http://schemas.microsoft.com/maml/dev/2004/10" xmlns:MSHelp="http://msdn.microsoft.com/mshelp">
 <!--Generated by PS Cmdlet Help Editor-->
 	<command:details>
-		<command:name>Get-AudioMetadata</command:name>
-		<maml:description>
-			<maml:para>Gets metadata (&quot;tags&quot;) associated with one or more audio files.</maml:para>
-		</maml:description>
-		<maml:copyright>
-			<maml:para />
-		</maml:copyright>
-		<command:verb>Get</command:verb>
-		<command:noun>Metadata</command:noun>
-		<dev:version />
-	</command:details>
-	<maml:description>
-		<maml:para>The Get-AudioMetadata cmdlet returns metadata values for one or more audio files, specified by Key.</maml:para>
-	</maml:description>
-	<command:syntax>
-		<command:syntaxItem>
-			<maml:name>Get-AudioMetadata</maml:name>
-			<command:parameter required="false" variableLength="true" globbing="false" pipelineInput="false" position="0">
-				<maml:name>Key</maml:name>
-				<maml:description>
-					<maml:para />
-				</maml:description>
-				<command:parameterValue required="true" variableLength="true">String[]</command:parameterValue>
-			</command:parameter>
-			<command:parameter required="true" variableLength="false" globbing="false" pipelineInput="true (ByValue)" position="1">
-				<maml:name>AudioFile</maml:name>
-				<maml:description>
-					<maml:para />
-				</maml:description>
-				<command:parameterValue required="true" variableLength="false">AudioFile</command:parameterValue>
-			</command:parameter>
-		</command:syntaxItem>
-	</command:syntax>
-	<command:parameters>
-		<command:parameter required="false" variableLength="true" globbing="false" pipelineInput="false" position="0">
-			<maml:name>Key</maml:name>
-			<maml:description>
-				<maml:para />
-			</maml:description>
-			<command:parameterValue required="true" variableLength="true">String[]</command:parameterValue>
-			<dev:type>
-				<maml:name>String[]</maml:name>
-				<maml:uri/>
-			</dev:type>
-			<dev:defaultValue></dev:defaultValue>
-		</command:parameter>
-		<command:parameter required="true" variableLength="false" globbing="false" pipelineInput="true (ByValue)" position="1">
-			<maml:name>AudioFile</maml:name>
-			<maml:description>
-				<maml:para />
-			</maml:description>
-			<command:parameterValue required="true" variableLength="false">AudioFile</command:parameterValue>
-			<dev:type>
-				<maml:name>AudioFile</maml:name>
-				<maml:uri/>
-			</dev:type>
-			<dev:defaultValue></dev:defaultValue>
-		</command:parameter>
-	</command:parameters>
-	<command:inputTypes>
-		<command:inputType>
-			<dev:type>
-				<maml:name></maml:name>
-				<maml:uri></maml:uri>
-				<maml:description/>
-			</dev:type>
-			<maml:description>
-<maml:para />
-			</maml:description>
-		</command:inputType>
-	</command:inputTypes>
-	<command:returnValues>
-		<command:returnValue>
-			<dev:type>
-				<maml:name></maml:name>
-				<maml:uri></maml:uri>
-				<maml:description/>
-			</dev:type>
-			<maml:description>
-<maml:para />
-			</maml:description>
-		</command:returnValue>
-	</command:returnValues>
-	<command:terminatingErrors></command:terminatingErrors>
-	<command:nonTerminatingErrors></command:nonTerminatingErrors>
-	<maml:alertSet>
-		<maml:title></maml:title>
-		<maml:alert>
-			<maml:para />
-		</maml:alert>
-	</maml:alertSet>
-	<command:examples>
-		<command:example>
-			<maml:title>--------------------------  Example 1  --------------------------</maml:title>
-			<maml:introduction>
-				<maml:paragraph>PS C:\&gt;</maml:paragraph>
-			</maml:introduction>
-			<dev:code>Get-AudioFile song.flac | Get-AudioMetadata -Key Title</dev:code>
-			<dev:remarks>
-				<maml:para>This command gets the title for an audio file named song.flac in the current directory.</maml:para>
-				<maml:para />
-				<maml:para />
-				<maml:para></maml:para>
-			</dev:remarks>
-			<command:commandLines>
-				<command:commandLine>
-					<command:commandText>
-						<maml:para />
-					</command:commandText>
-				</command:commandLine>
-			</command:commandLines>
-		</command:example>
-		<command:example>
-			<maml:title>--------------------------  Example 2  --------------------------</maml:title>
-			<maml:introduction>
-				<maml:paragraph>PS C:\&gt;</maml:paragraph>
-			</maml:introduction>
-			<dev:code>Get-AudioFile song.flac | Get-AudioMetadata -Key Title,TrackNumber</dev:code>
-			<dev:remarks>
-				<maml:para>This command gets the title and track number for an audio file named song.flac in the current directory.</maml:para>
-				<maml:para />
-				<maml:para />
-				<maml:para></maml:para>
-			</dev:remarks>
-			<command:commandLines>
-				<command:commandLine>
-					<command:commandText>
-						<maml:para />
-					</command:commandText>
-				</command:commandLine>
-			</command:commandLines>
-		</command:example>
-		<command:example>
-			<maml:title>--------------------------  Example 3  --------------------------</maml:title>
-			<maml:introduction>
-				<maml:paragraph>PS C:\&gt;</maml:paragraph>
-			</maml:introduction>
-			<dev:code>Get-AudioFile *.flac | Get-AudioMetadata -Key Title</dev:code>
-			<dev:remarks>
-				<maml:para>This command gets the title for all audio files with the .flac extension in the current directory.</maml:para>
-				<maml:para />
-				<maml:para />
-				<maml:para></maml:para>
-			</dev:remarks>
-			<command:commandLines>
-				<command:commandLine>
-					<command:commandText>
-						<maml:para />
-					</command:commandText>
-				</command:commandLine>
-			</command:commandLines>
-		</command:example>
-	</command:examples>
-	<maml:relatedLinks>
-	</maml:relatedLinks>
-</command:command>
-<command:command xmlns:maml="http://schemas.microsoft.com/maml/2004/10" xmlns:command="http://schemas.microsoft.com/maml/dev/command/2004/10" xmlns:dev="http://schemas.microsoft.com/maml/dev/2004/10" xmlns:MSHelp="http://msdn.microsoft.com/mshelp">
-<!--Generated by PS Cmdlet Help Editor-->
-	<command:details>
 		<command:name>Measure-AudioFile</command:name>
 		<maml:description>
 			<maml:para>Applies an analysis algorithm to one or more audio files.</maml:para>
@@ -879,9 +758,9 @@
 			<maml:introduction>
 				<maml:paragraph>PS C:\&gt;</maml:paragraph>
 			</maml:introduction>
-			<dev:code>Get-AudioFile song.wav | Measure-AudioFile ReplayGain</dev:code>
+			<dev:code>Get-AudioFile song.wav | Measure-AudioFile &quot;ReplayGain 2.0&quot;</dev:code>
 			<dev:remarks>
-				<maml:para>This command applies ReplayGain analysis to song.wav in the current directory.</maml:para>
+				<maml:para>This command applies ReplayGain 2.0 analysis to song.wav in the current directory.</maml:para>
 				<maml:para />
 				<maml:para />
 				<maml:para></maml:para>
@@ -899,9 +778,9 @@
 			<maml:introduction>
 				<maml:paragraph>PS C:\&gt;</maml:paragraph>
 			</maml:introduction>
-			<dev:code>Get-AudioFile song.wav | Measure-AudioFile ReplayGain -PassThru | Get-AudioMetadata TrackPeak</dev:code>
+			<dev:code>Get-AudioFile song.wav | Measure-AudioFile &quot;ReplayGain 2.0&quot; -PassThru | Get-AudioFileMetadata TrackPeak</dev:code>
 			<dev:remarks>
-				<maml:para>This command applies ReplayGain analysis to song.wav in the current directory, then returns the measured TrackPeak value.</maml:para>
+				<maml:para>This command applies ReplayGain 2.0 analysis to song.wav in the current directory, then returns the measured TrackPeak value.</maml:para>
 				<maml:para />
 				<maml:para />
 				<maml:para></maml:para>
@@ -919,9 +798,9 @@
 			<maml:introduction>
 				<maml:paragraph>PS C:\&gt;</maml:paragraph>
 			</maml:introduction>
-			<dev:code>Get-AudioFile song.wav | Measure-AudioFile ReplayGain -PassThru | Save-AudioMetadata</dev:code>
+			<dev:code>Get-AudioFile song.wav | Measure-AudioFile &quot;ReplayGain 2.0&quot; -PassThru | Save-AudioFileMetadata</dev:code>
 			<dev:remarks>
-				<maml:para>This command applies ReplayGain analysis to song.wav in the current directory, then persists the results to disk.</maml:para>
+				<maml:para>This command applies ReplayGain 2.0 analysis to song.wav in the current directory, then persists the results to disk.</maml:para>
 				<maml:para />
 				<maml:para />
 				<maml:para></maml:para>
@@ -939,9 +818,9 @@
 			<maml:introduction>
 				<maml:paragraph>PS C:\&gt;</maml:paragraph>
 			</maml:introduction>
-			<dev:code>Get-AudioFile *.flac | Measure-AudioFile ReplayGain</dev:code>
+			<dev:code>Get-AudioFile *.flac | Measure-AudioFile &quot;ReplayGain 2.0&quot;</dev:code>
 			<dev:remarks>
-				<maml:para>This command applies ReplayGain analysis to all audio files with a *.flac extension in the current directory. The files are treated as a single album.</maml:para>
+				<maml:para>This command applies ReplayGain 2.0 analysis to all audio files with a *.flac extension in the current directory. The files are treated as a single album.</maml:para>
 				<maml:para />
 				<maml:para />
 				<maml:para></maml:para>
@@ -959,9 +838,9 @@
 			<maml:introduction>
 				<maml:paragraph>PS C:\&gt;</maml:paragraph>
 			</maml:introduction>
-			<dev:code>Get-ChildItem C:\Users\Myself\Music -Directory -Recurse | % { $_ | Get-ChildItem -File -Filter *.flac | Measure-AudioFile ReplayGain -PassThru | Save-AudioMetadata }</dev:code>
+			<dev:code>Get-ChildItem C:\Users\Myself\Music -Directory -Recurse | % { $_ | Get-ChildItem -File -Filter *.flac | Measure-AudioFile &quot;ReplayGain 2.0&quot; -PassThru | Save-AudioFileMetadata }</dev:code>
 			<dev:remarks>
-				<maml:para>This command applies ReplayGain analysis to all audio files with a *.flac extension found anywhere under the Myself user&#39;s Music directory. Each directory is processed as a separate album. Finally, the results are persisted to disk.</maml:para>
+				<maml:para>This command applies ReplayGain 2.0 analysis to all audio files with a *.flac extension found anywhere under the Myself user&#39;s Music directory. Each directory is processed as a separate album. Finally, the results are persisted to disk.</maml:para>
 				<maml:para />
 				<maml:para />
 				<maml:para></maml:para>
@@ -1178,360 +1057,6 @@
 <command:command xmlns:maml="http://schemas.microsoft.com/maml/2004/10" xmlns:command="http://schemas.microsoft.com/maml/dev/command/2004/10" xmlns:dev="http://schemas.microsoft.com/maml/dev/2004/10" xmlns:MSHelp="http://msdn.microsoft.com/mshelp">
 <!--Generated by PS Cmdlet Help Editor-->
 	<command:details>
-		<command:name>Save-AudioMetadata</command:name>
-		<maml:description>
-			<maml:para>Persists changes or additions to one or more audio files&#39; metadata to disk.</maml:para>
-		</maml:description>
-		<maml:copyright>
-			<maml:para />
-		</maml:copyright>
-		<command:verb>Save</command:verb>
-		<command:noun>Metadata</command:noun>
-		<dev:version />
-	</command:details>
-	<maml:description>
-		<maml:para>The Save-AudioMetadata cmdlet persists the current metadata to one or more audio files.</maml:para>
-	</maml:description>
-	<command:syntax>
-		<command:syntaxItem>
-			<maml:name>Save-AudioMetadata</maml:name>
-			<command:parameter required="true" variableLength="false" globbing="false" pipelineInput="true (ByValue)" position="0">
-				<maml:name>AudioFile</maml:name>
-				<maml:description>
-					<maml:para />
-				</maml:description>
-				<command:parameterValue required="true" variableLength="false">AudioFile</command:parameterValue>
-			</command:parameter>
-			<command:parameter required="false" variableLength="false" globbing="false" pipelineInput="false" position="named">
-				<maml:name>Setting</maml:name>
-				<maml:description>
-					<maml:para />
-				</maml:description>
-				<command:parameterValue required="true" variableLength="false">Hashtable</command:parameterValue>
-			</command:parameter>
-			<command:parameter required="false" variableLength="false" globbing="false" pipelineInput="false" position="named">
-				<maml:name>PassThru</maml:name>
-				<maml:description>
-					<maml:para>Writes the audio file back to the console. By default, this cmdlet does not generate any output.</maml:para>
-				</maml:description>
-				<command:parameterValue required="false" variableLength="false">SwitchParameter</command:parameterValue>
-			</command:parameter>
-			<command:parameter required="false" variableLength="false" globbing="false" pipelineInput="false" position="named">
-				<maml:name>WhatIf</maml:name>
-				<maml:description>
-					<maml:para>Shows what would happen if the cmdlet runs. The cmdlet is not run.</maml:para>
-				</maml:description>
-				<command:parameterValue required="false" variableLength="false">SwitchParameter</command:parameterValue>
-			</command:parameter>
-			<command:parameter required="false" variableLength="false" globbing="false" pipelineInput="false" position="named">
-				<maml:name>Confirm</maml:name>
-				<maml:description>
-					<maml:para>Prompts you for confirmation before running the cmdlet.</maml:para>
-				</maml:description>
-				<command:parameterValue required="false" variableLength="false">SwitchParameter</command:parameterValue>
-			</command:parameter>
-		</command:syntaxItem>
-	</command:syntax>
-	<command:parameters>
-		<command:parameter required="true" variableLength="false" globbing="false" pipelineInput="true (ByValue)" position="0">
-			<maml:name>AudioFile</maml:name>
-			<maml:description>
-				<maml:para />
-			</maml:description>
-			<command:parameterValue required="true" variableLength="false">AudioFile</command:parameterValue>
-			<dev:type>
-				<maml:name>AudioFile</maml:name>
-				<maml:uri/>
-			</dev:type>
-			<dev:defaultValue></dev:defaultValue>
-		</command:parameter>
-		<command:parameter required="false" variableLength="false" globbing="false" pipelineInput="false" position="named">
-			<maml:name>Setting</maml:name>
-			<maml:description>
-				<maml:para />
-			</maml:description>
-			<command:parameterValue required="true" variableLength="false">Hashtable</command:parameterValue>
-			<dev:type>
-				<maml:name>Hashtable</maml:name>
-				<maml:uri/>
-			</dev:type>
-			<dev:defaultValue></dev:defaultValue>
-		</command:parameter>
-		<command:parameter required="false" variableLength="false" globbing="false" pipelineInput="false" position="named">
-			<maml:name>PassThru</maml:name>
-			<maml:description>
-				<maml:para>Writes the audio file back to the console. By default, this cmdlet does not generate any output.</maml:para>
-			</maml:description>
-			<command:parameterValue required="false" variableLength="false">SwitchParameter</command:parameterValue>
-			<dev:type>
-				<maml:name>SwitchParameter</maml:name>
-				<maml:uri/>
-			</dev:type>
-			<dev:defaultValue></dev:defaultValue>
-		</command:parameter>
-		<command:parameter required="false" variableLength="false" globbing="false" pipelineInput="false" position="named">
-			<maml:name>WhatIf</maml:name>
-			<maml:description>
-				<maml:para>Shows what would happen if the cmdlet runs. The cmdlet is not run.</maml:para>
-			</maml:description>
-			<command:parameterValue required="false" variableLength="false">SwitchParameter</command:parameterValue>
-			<dev:type>
-				<maml:name>SwitchParameter</maml:name>
-				<maml:uri/>
-			</dev:type>
-			<dev:defaultValue></dev:defaultValue>
-		</command:parameter>
-		<command:parameter required="false" variableLength="false" globbing="false" pipelineInput="false" position="named">
-			<maml:name>Confirm</maml:name>
-			<maml:description>
-				<maml:para>Prompts you for confirmation before running the cmdlet.</maml:para>
-			</maml:description>
-			<command:parameterValue required="false" variableLength="false">SwitchParameter</command:parameterValue>
-			<dev:type>
-				<maml:name>SwitchParameter</maml:name>
-				<maml:uri/>
-			</dev:type>
-			<dev:defaultValue></dev:defaultValue>
-		</command:parameter>
-	</command:parameters>
-	<command:inputTypes>
-		<command:inputType>
-			<dev:type>
-				<maml:name></maml:name>
-				<maml:uri></maml:uri>
-				<maml:description/>
-			</dev:type>
-			<maml:description>
-<maml:para />
-			</maml:description>
-		</command:inputType>
-	</command:inputTypes>
-	<command:returnValues>
-		<command:returnValue>
-			<dev:type>
-				<maml:name></maml:name>
-				<maml:uri></maml:uri>
-				<maml:description/>
-			</dev:type>
-			<maml:description>
-<maml:para />
-			</maml:description>
-		</command:returnValue>
-	</command:returnValues>
-	<command:terminatingErrors></command:terminatingErrors>
-	<command:nonTerminatingErrors></command:nonTerminatingErrors>
-	<maml:alertSet>
-		<maml:title></maml:title>
-		<maml:alert>
-			<maml:para />
-		</maml:alert>
-	</maml:alertSet>
-	<command:examples>
-		<command:example>
-			<maml:title>--------------------------  Example 1  --------------------------</maml:title>
-			<maml:introduction>
-				<maml:paragraph>PS C:\&gt;</maml:paragraph>
-			</maml:introduction>
-			<dev:code>Get-AudioFile song.flac | Set-AudioMetadata @{Title = &quot;Test Song&quot;} -PassThru | Save-AudioMetadata</dev:code>
-			<dev:remarks>
-				<maml:para>This command sets the title on song.flac to &quot;Test Song&quot; and then persists the change to disk.</maml:para>
-				<maml:para />
-				<maml:para />
-				<maml:para></maml:para>
-			</dev:remarks>
-			<command:commandLines>
-				<command:commandLine>
-					<command:commandText>
-						<maml:para />
-					</command:commandText>
-				</command:commandLine>
-			</command:commandLines>
-		</command:example>
-		<command:example>
-			<maml:title>--------------------------  Example 2  --------------------------</maml:title>
-			<maml:introduction>
-				<maml:paragraph>PS C:\&gt;</maml:paragraph>
-			</maml:introduction>
-			<dev:code>Get-AudioFile song.mp3 | Save-AudioMetadata -Setting @{ID3Version = &quot;2.4&quot;; AddSoundCheck = &quot;Album&quot;}</dev:code>
-			<dev:remarks>
-				<maml:para>This command updates song.mp3 with a new tag suitable for iTunes.</maml:para>
-				<maml:para />
-				<maml:para />
-				<maml:para></maml:para>
-			</dev:remarks>
-			<command:commandLines>
-				<command:commandLine>
-					<command:commandText>
-						<maml:para />
-					</command:commandText>
-				</command:commandLine>
-			</command:commandLines>
-		</command:example>
-	</command:examples>
-	<maml:relatedLinks>
-	</maml:relatedLinks>
-</command:command>
-<command:command xmlns:maml="http://schemas.microsoft.com/maml/2004/10" xmlns:command="http://schemas.microsoft.com/maml/dev/command/2004/10" xmlns:dev="http://schemas.microsoft.com/maml/dev/2004/10" xmlns:MSHelp="http://msdn.microsoft.com/mshelp">
-<!--Generated by PS Cmdlet Help Editor-->
-	<command:details>
-		<command:name>Set-AudioMetadata</command:name>
-		<maml:description>
-			<maml:para>Sets the metadata on one or more audio files.</maml:para>
-		</maml:description>
-		<maml:copyright>
-			<maml:para />
-		</maml:copyright>
-		<command:verb>Set</command:verb>
-		<command:noun>Metadata</command:noun>
-		<dev:version />
-	</command:details>
-	<maml:description>
-		<maml:para>The Set-AudioMetadata cmdlet sets metadata on one or more audio files using HashTable syntax.</maml:para>
-	</maml:description>
-	<command:syntax>
-		<command:syntaxItem>
-			<maml:name>Set-AudioMetadata</maml:name>
-			<command:parameter required="true" variableLength="false" globbing="false" pipelineInput="false" position="0">
-				<maml:name>Metadata</maml:name>
-				<maml:description>
-					<maml:para />
-				</maml:description>
-				<command:parameterValue required="true" variableLength="false">Hashtable</command:parameterValue>
-			</command:parameter>
-			<command:parameter required="true" variableLength="false" globbing="false" pipelineInput="true (ByValue)" position="1">
-				<maml:name>AudioFile</maml:name>
-				<maml:description>
-					<maml:para />
-				</maml:description>
-				<command:parameterValue required="true" variableLength="false">AudioFile</command:parameterValue>
-			</command:parameter>
-			<command:parameter required="false" variableLength="false" globbing="false" pipelineInput="false" position="named">
-				<maml:name>PassThru</maml:name>
-				<maml:description>
-					<maml:para>Writes the modified audio file to the console. By default, this cmdlet does not generate any output.</maml:para>
-				</maml:description>
-				<command:parameterValue required="false" variableLength="false">SwitchParameter</command:parameterValue>
-			</command:parameter>
-		</command:syntaxItem>
-	</command:syntax>
-	<command:parameters>
-		<command:parameter required="true" variableLength="false" globbing="false" pipelineInput="false" position="0">
-			<maml:name>Metadata</maml:name>
-			<maml:description>
-				<maml:para />
-			</maml:description>
-			<command:parameterValue required="true" variableLength="false">Hashtable</command:parameterValue>
-			<dev:type>
-				<maml:name>Hashtable</maml:name>
-				<maml:uri/>
-			</dev:type>
-			<dev:defaultValue></dev:defaultValue>
-		</command:parameter>
-		<command:parameter required="true" variableLength="false" globbing="false" pipelineInput="true (ByValue)" position="1">
-			<maml:name>AudioFile</maml:name>
-			<maml:description>
-				<maml:para />
-			</maml:description>
-			<command:parameterValue required="true" variableLength="false">AudioFile</command:parameterValue>
-			<dev:type>
-				<maml:name>AudioFile</maml:name>
-				<maml:uri/>
-			</dev:type>
-			<dev:defaultValue></dev:defaultValue>
-		</command:parameter>
-		<command:parameter required="false" variableLength="false" globbing="false" pipelineInput="false" position="named">
-			<maml:name>PassThru</maml:name>
-			<maml:description>
-				<maml:para>Writes the modified audio file to the console. By default, this cmdlet does not generate any output.</maml:para>
-			</maml:description>
-			<command:parameterValue required="false" variableLength="false">SwitchParameter</command:parameterValue>
-			<dev:type>
-				<maml:name>SwitchParameter</maml:name>
-				<maml:uri/>
-			</dev:type>
-			<dev:defaultValue></dev:defaultValue>
-		</command:parameter>
-	</command:parameters>
-	<command:inputTypes>
-		<command:inputType>
-			<dev:type>
-				<maml:name></maml:name>
-				<maml:uri></maml:uri>
-				<maml:description/>
-			</dev:type>
-			<maml:description>
-<maml:para />
-			</maml:description>
-		</command:inputType>
-	</command:inputTypes>
-	<command:returnValues>
-		<command:returnValue>
-			<dev:type>
-				<maml:name></maml:name>
-				<maml:uri></maml:uri>
-				<maml:description/>
-			</dev:type>
-			<maml:description>
-<maml:para />
-			</maml:description>
-		</command:returnValue>
-	</command:returnValues>
-	<command:terminatingErrors></command:terminatingErrors>
-	<command:nonTerminatingErrors></command:nonTerminatingErrors>
-	<maml:alertSet>
-		<maml:title></maml:title>
-		<maml:alert>
-			<maml:para />
-		</maml:alert>
-	</maml:alertSet>
-	<command:examples>
-		<command:example>
-			<maml:title>--------------------------  Example 1  --------------------------</maml:title>
-			<maml:introduction>
-				<maml:paragraph>PS C:\&gt;</maml:paragraph>
-			</maml:introduction>
-			<dev:code>Get-AudioFile song.flac | Set-AudioMetadata @{Title = &quot;Test Song&quot;}</dev:code>
-			<dev:remarks>
-				<maml:para>This command sets the title on song.flac to &quot;Test Song&quot;.</maml:para>
-				<maml:para />
-				<maml:para />
-				<maml:para></maml:para>
-			</dev:remarks>
-			<command:commandLines>
-				<command:commandLine>
-					<command:commandText>
-						<maml:para />
-					</command:commandText>
-				</command:commandLine>
-			</command:commandLines>
-		</command:example>
-		<command:example>
-			<maml:title>--------------------------  Example 2  --------------------------</maml:title>
-			<maml:introduction>
-				<maml:paragraph>PS C:\&gt;</maml:paragraph>
-			</maml:introduction>
-			<dev:code>Get-AudioFile song.flac | Set-AudioMetadata @{Title = &quot;Test Song&quot;} -PassThru | Save-AudioMetadata</dev:code>
-			<dev:remarks>
-				<maml:para>This command sets the title on song.flac to &quot;Test Song&quot; and then persists the change to disk.</maml:para>
-				<maml:para />
-				<maml:para />
-				<maml:para></maml:para>
-			</dev:remarks>
-			<command:commandLines>
-				<command:commandLine>
-					<command:commandText>
-						<maml:para />
-					</command:commandText>
-				</command:commandLine>
-			</command:commandLines>
-		</command:example>
-	</command:examples>
-	<maml:relatedLinks>
-	</maml:relatedLinks>
-</command:command>
-<command:command xmlns:maml="http://schemas.microsoft.com/maml/2004/10" xmlns:command="http://schemas.microsoft.com/maml/dev/command/2004/10" xmlns:dev="http://schemas.microsoft.com/maml/dev/2004/10" xmlns:MSHelp="http://msdn.microsoft.com/mshelp">
-<!--Generated by PS Cmdlet Help Editor-->
-	<command:details>
 		<command:name>Export-AudioFile</command:name>
 		<maml:description>
 			<maml:para>Encodes one or more audio files to new files located on a file system drive.</maml:para>
@@ -1558,12 +1083,26 @@
 				</maml:description>
 				<command:parameterValue required="true" variableLength="false">String</command:parameterValue>
 			</command:parameter>
-			<command:parameter required="true" variableLength="false" globbing="false" pipelineInput="true (ByValue)" position="1">
+			<command:parameter required="true" variableLength="false" globbing="false" pipelineInput="false" position="1">
+				<maml:name>Path</maml:name>
+				<maml:description>
+					<maml:para />
+				</maml:description>
+				<command:parameterValue required="true" variableLength="false">String</command:parameterValue>
+			</command:parameter>
+			<command:parameter required="true" variableLength="false" globbing="false" pipelineInput="true (ByValue)" position="2">
 				<maml:name>AudioFile</maml:name>
 				<maml:description>
 					<maml:para />
 				</maml:description>
 				<command:parameterValue required="true" variableLength="false">AudioFile</command:parameterValue>
+			</command:parameter>
+			<command:parameter required="false" variableLength="false" globbing="false" pipelineInput="false" position="named">
+				<maml:name>Name</maml:name>
+				<maml:description>
+					<maml:para />
+				</maml:description>
+				<command:parameterValue required="true" variableLength="false">String</command:parameterValue>
 			</command:parameter>
 			<command:parameter required="false" variableLength="false" globbing="false" pipelineInput="false" position="named">
 				<maml:name>Setting</maml:name>
@@ -1573,11 +1112,49 @@
 				<command:parameterValue required="true" variableLength="false">Hashtable</command:parameterValue>
 			</command:parameter>
 			<command:parameter required="false" variableLength="false" globbing="false" pipelineInput="false" position="named">
-				<maml:name>Directory</maml:name>
+				<maml:name>Replace</maml:name>
 				<maml:description>
 					<maml:para />
 				</maml:description>
-				<command:parameterValue required="true" variableLength="false">DirectoryInfo</command:parameterValue>
+				<command:parameterValue required="false" variableLength="false">SwitchParameter</command:parameterValue>
+			</command:parameter>
+			<command:parameter required="false" variableLength="false" globbing="false" pipelineInput="false" position="named">
+				<maml:name>WhatIf</maml:name>
+				<maml:description>
+					<maml:para>Shows what would happen if the cmdlet runs. The cmdlet is not run.</maml:para>
+				</maml:description>
+				<command:parameterValue required="false" variableLength="false">SwitchParameter</command:parameterValue>
+			</command:parameter>
+			<command:parameter required="false" variableLength="false" globbing="false" pipelineInput="false" position="named">
+				<maml:name>Confirm</maml:name>
+				<maml:description>
+					<maml:para>Prompts you for confirmation before running the cmdlet.</maml:para>
+				</maml:description>
+				<command:parameterValue required="false" variableLength="false">SwitchParameter</command:parameterValue>
+			</command:parameter>
+		</command:syntaxItem>
+		<command:syntaxItem>
+			<maml:name>Export-AudioFile</maml:name>
+			<command:parameter required="true" variableLength="false" globbing="false" pipelineInput="false" position="0">
+				<maml:name>Encoder</maml:name>
+				<maml:description>
+					<maml:para />
+				</maml:description>
+				<command:parameterValue required="true" variableLength="false">String</command:parameterValue>
+			</command:parameter>
+			<command:parameter required="true" variableLength="false" globbing="false" pipelineInput="false" position="1">
+				<maml:name>LiteralPath</maml:name>
+				<maml:description>
+					<maml:para />
+				</maml:description>
+				<command:parameterValue required="true" variableLength="false">String</command:parameterValue>
+			</command:parameter>
+			<command:parameter required="true" variableLength="false" globbing="false" pipelineInput="true (ByValue)" position="2">
+				<maml:name>AudioFile</maml:name>
+				<maml:description>
+					<maml:para />
+				</maml:description>
+				<command:parameterValue required="true" variableLength="false">AudioFile</command:parameterValue>
 			</command:parameter>
 			<command:parameter required="false" variableLength="false" globbing="false" pipelineInput="false" position="named">
 				<maml:name>Name</maml:name>
@@ -1585,6 +1162,13 @@
 					<maml:para />
 				</maml:description>
 				<command:parameterValue required="true" variableLength="false">String</command:parameterValue>
+			</command:parameter>
+			<command:parameter required="false" variableLength="false" globbing="false" pipelineInput="false" position="named">
+				<maml:name>Setting</maml:name>
+				<maml:description>
+					<maml:para />
+				</maml:description>
+				<command:parameterValue required="true" variableLength="false">Hashtable</command:parameterValue>
 			</command:parameter>
 			<command:parameter required="false" variableLength="false" globbing="false" pipelineInput="false" position="named">
 				<maml:name>Replace</maml:name>
@@ -1622,7 +1206,7 @@
 			</dev:type>
 			<dev:defaultValue></dev:defaultValue>
 		</command:parameter>
-		<command:parameter required="true" variableLength="false" globbing="false" pipelineInput="true (ByValue)" position="1">
+		<command:parameter required="true" variableLength="false" globbing="false" pipelineInput="true (ByValue)" position="2">
 			<maml:name>AudioFile</maml:name>
 			<maml:description>
 				<maml:para />
@@ -1642,18 +1226,6 @@
 			<command:parameterValue required="true" variableLength="false">Hashtable</command:parameterValue>
 			<dev:type>
 				<maml:name>Hashtable</maml:name>
-				<maml:uri/>
-			</dev:type>
-			<dev:defaultValue></dev:defaultValue>
-		</command:parameter>
-		<command:parameter required="false" variableLength="false" globbing="false" pipelineInput="false" position="named">
-			<maml:name>Directory</maml:name>
-			<maml:description>
-				<maml:para />
-			</maml:description>
-			<command:parameterValue required="true" variableLength="false">DirectoryInfo</command:parameterValue>
-			<dev:type>
-				<maml:name>DirectoryInfo</maml:name>
 				<maml:uri/>
 			</dev:type>
 			<dev:defaultValue></dev:defaultValue>
@@ -1702,6 +1274,30 @@
 			<command:parameterValue required="false" variableLength="false">SwitchParameter</command:parameterValue>
 			<dev:type>
 				<maml:name>SwitchParameter</maml:name>
+				<maml:uri/>
+			</dev:type>
+			<dev:defaultValue></dev:defaultValue>
+		</command:parameter>
+		<command:parameter required="true" variableLength="false" globbing="false" pipelineInput="false" position="1">
+			<maml:name>Path</maml:name>
+			<maml:description>
+				<maml:para />
+			</maml:description>
+			<command:parameterValue required="true" variableLength="false">String</command:parameterValue>
+			<dev:type>
+				<maml:name>String</maml:name>
+				<maml:uri/>
+			</dev:type>
+			<dev:defaultValue></dev:defaultValue>
+		</command:parameter>
+		<command:parameter required="true" variableLength="false" globbing="false" pipelineInput="false" position="1">
+			<maml:name>LiteralPath</maml:name>
+			<maml:description>
+				<maml:para />
+			</maml:description>
+			<command:parameterValue required="true" variableLength="false">String</command:parameterValue>
+			<dev:type>
+				<maml:name>String</maml:name>
 				<maml:uri/>
 			</dev:type>
 			<dev:defaultValue></dev:defaultValue>
@@ -1805,9 +1401,9 @@
 			<maml:introduction>
 				<maml:paragraph>PS C:\&gt;</maml:paragraph>
 			</maml:introduction>
-			<dev:code>Get-AudioFile *.flac | Export-AudioFile &quot;Lame MP3&quot; -Directory &quot;C:\Output\{Artist}\{Album}&quot; -Name &quot;{TrackNumber} - {Title}&quot;</dev:code>
+			<dev:code>Get-AudioFile *.flac | Export-AudioFile &quot;Lame MP3&quot; &quot;C:\Output\{Artist}\{Album}&quot; -Name &quot;{TrackNumber} - {Title}&quot;</dev:code>
 			<dev:remarks>
-				<maml:para>This command exports all the .flac files in the current directory to MP3 files under C:\Output, using metadata to construct the directory structure and file names.</maml:para>
+				<maml:para>This command exports all the .flac files in the current directory to MP3 files under C:\Output, using metadata to construct the directory structure as well as the file names.</maml:para>
 				<maml:para />
 				<maml:para />
 				<maml:para></maml:para>
@@ -2069,7 +1665,7 @@
 	<command:details>
 		<command:name>Export-AudioCoverArt</command:name>
 		<maml:description>
-			<maml:para>Saves the cover art for one or more audio files as image files.</maml:para>
+			<maml:para>Saves CoverArt objects as image files.</maml:para>
 		</maml:description>
 		<maml:copyright>
 			<maml:para />
@@ -2079,8 +1675,7 @@
 		<dev:version />
 	</command:details>
 	<maml:description>
-		<maml:para>The Export-AudioCoverArt cmdlet saves the cover art for one or more audio files as JPEG or PNG files.</maml:para>
-		<maml:para>The resulting file name(s) and/or directory can be generated from metadata by specifying keys inside curly braces. For more information, type &quot;Get-Help Export-AudioFile -Examples&quot;.</maml:para>
+		<maml:para>The Export-AudioCoverArt cmdlet saves one or more cover art objects as image (JPEG or PNG) files.</maml:para>
 	</maml:description>
 	<command:syntax>
 		<command:syntaxItem>
@@ -2092,22 +1687,81 @@
 				</maml:description>
 				<command:parameterValue required="true" variableLength="false">String</command:parameterValue>
 			</command:parameter>
-			<command:parameter required="true" variableLength="false" globbing="false" pipelineInput="true (ByValue)" position="1">
-				<maml:name>AudioFile</maml:name>
+			<command:parameter required="true" variableLength="false" globbing="false" pipelineInput="false" position="1">
+				<maml:name>Path</maml:name>
 				<maml:description>
 					<maml:para />
 				</maml:description>
-				<command:parameterValue required="true" variableLength="false">AudioFile</command:parameterValue>
+				<command:parameterValue required="true" variableLength="false">String</command:parameterValue>
 			</command:parameter>
-			<command:parameter required="false" variableLength="false" globbing="false" pipelineInput="false" position="2">
-				<maml:name>Directory</maml:name>
+			<command:parameter required="true" variableLength="false" globbing="false" pipelineInput="true (ByValue)" position="2">
+				<maml:name>CoverArt</maml:name>
 				<maml:description>
 					<maml:para />
 				</maml:description>
-				<command:parameterValue required="true" variableLength="false">DirectoryInfo</command:parameterValue>
+				<command:parameterValue required="true" variableLength="false">CoverArt</command:parameterValue>
 			</command:parameter>
 			<command:parameter required="false" variableLength="false" globbing="false" pipelineInput="false" position="named">
 				<maml:name>Replace</maml:name>
+				<maml:description>
+					<maml:para />
+				</maml:description>
+				<command:parameterValue required="false" variableLength="false">SwitchParameter</command:parameterValue>
+			</command:parameter>
+			<command:parameter required="false" variableLength="false" globbing="false" pipelineInput="false" position="named">
+				<maml:name>PassThru</maml:name>
+				<maml:description>
+					<maml:para />
+				</maml:description>
+				<command:parameterValue required="false" variableLength="false">SwitchParameter</command:parameterValue>
+			</command:parameter>
+			<command:parameter required="false" variableLength="false" globbing="false" pipelineInput="false" position="named">
+				<maml:name>WhatIf</maml:name>
+				<maml:description>
+					<maml:para />
+				</maml:description>
+				<command:parameterValue required="false" variableLength="false">SwitchParameter</command:parameterValue>
+			</command:parameter>
+			<command:parameter required="false" variableLength="false" globbing="false" pipelineInput="false" position="named">
+				<maml:name>Confirm</maml:name>
+				<maml:description>
+					<maml:para />
+				</maml:description>
+				<command:parameterValue required="false" variableLength="false">SwitchParameter</command:parameterValue>
+			</command:parameter>
+		</command:syntaxItem>
+		<command:syntaxItem>
+			<maml:name>Export-AudioCoverArt</maml:name>
+			<command:parameter required="true" variableLength="false" globbing="false" pipelineInput="false" position="0">
+				<maml:name>Name</maml:name>
+				<maml:description>
+					<maml:para />
+				</maml:description>
+				<command:parameterValue required="true" variableLength="false">String</command:parameterValue>
+			</command:parameter>
+			<command:parameter required="true" variableLength="false" globbing="false" pipelineInput="false" position="1">
+				<maml:name>LiteralPath</maml:name>
+				<maml:description>
+					<maml:para />
+				</maml:description>
+				<command:parameterValue required="true" variableLength="false">String</command:parameterValue>
+			</command:parameter>
+			<command:parameter required="true" variableLength="false" globbing="false" pipelineInput="true (ByValue)" position="2">
+				<maml:name>CoverArt</maml:name>
+				<maml:description>
+					<maml:para />
+				</maml:description>
+				<command:parameterValue required="true" variableLength="false">CoverArt</command:parameterValue>
+			</command:parameter>
+			<command:parameter required="false" variableLength="false" globbing="false" pipelineInput="false" position="named">
+				<maml:name>Replace</maml:name>
+				<maml:description>
+					<maml:para />
+				</maml:description>
+				<command:parameterValue required="false" variableLength="false">SwitchParameter</command:parameterValue>
+			</command:parameter>
+			<command:parameter required="false" variableLength="false" globbing="false" pipelineInput="false" position="named">
+				<maml:name>PassThru</maml:name>
 				<maml:description>
 					<maml:para />
 				</maml:description>
@@ -2130,18 +1784,6 @@
 		</command:syntaxItem>
 	</command:syntax>
 	<command:parameters>
-		<command:parameter required="true" variableLength="false" globbing="false" pipelineInput="true (ByValue)" position="1">
-			<maml:name>AudioFile</maml:name>
-			<maml:description>
-				<maml:para />
-			</maml:description>
-			<command:parameterValue required="true" variableLength="false">AudioFile</command:parameterValue>
-			<dev:type>
-				<maml:name>AudioFile</maml:name>
-				<maml:uri/>
-			</dev:type>
-			<dev:defaultValue></dev:defaultValue>
-		</command:parameter>
 		<command:parameter required="true" variableLength="false" globbing="false" pipelineInput="false" position="0">
 			<maml:name>Name</maml:name>
 			<maml:description>
@@ -2150,18 +1792,6 @@
 			<command:parameterValue required="true" variableLength="false">String</command:parameterValue>
 			<dev:type>
 				<maml:name>String</maml:name>
-				<maml:uri/>
-			</dev:type>
-			<dev:defaultValue></dev:defaultValue>
-		</command:parameter>
-		<command:parameter required="false" variableLength="false" globbing="false" pipelineInput="false" position="2">
-			<maml:name>Directory</maml:name>
-			<maml:description>
-				<maml:para />
-			</maml:description>
-			<command:parameterValue required="true" variableLength="false">DirectoryInfo</command:parameterValue>
-			<dev:type>
-				<maml:name>DirectoryInfo</maml:name>
 				<maml:uri/>
 			</dev:type>
 			<dev:defaultValue></dev:defaultValue>
@@ -2198,6 +1828,54 @@
 			<command:parameterValue required="false" variableLength="false">SwitchParameter</command:parameterValue>
 			<dev:type>
 				<maml:name>SwitchParameter</maml:name>
+				<maml:uri/>
+			</dev:type>
+			<dev:defaultValue></dev:defaultValue>
+		</command:parameter>
+		<command:parameter required="true" variableLength="false" globbing="false" pipelineInput="false" position="1">
+			<maml:name>Path</maml:name>
+			<maml:description>
+				<maml:para />
+			</maml:description>
+			<command:parameterValue required="true" variableLength="false">String</command:parameterValue>
+			<dev:type>
+				<maml:name>String</maml:name>
+				<maml:uri/>
+			</dev:type>
+			<dev:defaultValue></dev:defaultValue>
+		</command:parameter>
+		<command:parameter required="true" variableLength="false" globbing="false" pipelineInput="true (ByValue)" position="2">
+			<maml:name>CoverArt</maml:name>
+			<maml:description>
+				<maml:para />
+			</maml:description>
+			<command:parameterValue required="true" variableLength="false">CoverArt</command:parameterValue>
+			<dev:type>
+				<maml:name>CoverArt</maml:name>
+				<maml:uri/>
+			</dev:type>
+			<dev:defaultValue></dev:defaultValue>
+		</command:parameter>
+		<command:parameter required="false" variableLength="false" globbing="false" pipelineInput="false" position="named">
+			<maml:name>PassThru</maml:name>
+			<maml:description>
+				<maml:para />
+			</maml:description>
+			<command:parameterValue required="false" variableLength="false">SwitchParameter</command:parameterValue>
+			<dev:type>
+				<maml:name>SwitchParameter</maml:name>
+				<maml:uri/>
+			</dev:type>
+			<dev:defaultValue></dev:defaultValue>
+		</command:parameter>
+		<command:parameter required="true" variableLength="false" globbing="false" pipelineInput="false" position="1">
+			<maml:name>LiteralPath</maml:name>
+			<maml:description>
+				<maml:para />
+			</maml:description>
+			<command:parameterValue required="true" variableLength="false">String</command:parameterValue>
+			<dev:type>
+				<maml:name>String</maml:name>
 				<maml:uri/>
 			</dev:type>
 			<dev:defaultValue></dev:defaultValue>
@@ -2241,9 +1919,9 @@
 			<maml:introduction>
 				<maml:paragraph>PS C:\&gt;</maml:paragraph>
 			</maml:introduction>
-			<dev:code>Get-AudioFile song.flac | Export-AudioCoverArt &quot;Cover&quot;</dev:code>
+			<dev:code>Get-AudioFile song.flac | Get-AudioFileCoverArt | Export-AudioCoverArt &quot;Cover&quot;</dev:code>
 			<dev:remarks>
-				<maml:para>This command exports the cover art for song.wav in the current directory to a new file named Cover.jpg or cover.png (depending on the image format).</maml:para>
+				<maml:para>This command exports the cover art for song.wav in the current directory to a new file named Cover.jpg or Cover.png (depending on the image format).</maml:para>
 				<maml:para />
 				<maml:para />
 				<maml:para></maml:para>
@@ -2265,7 +1943,7 @@
 	<command:details>
 		<command:name>Get-AudioCoverArt</command:name>
 		<maml:description>
-			<maml:para>Gets the cover art for one or more audio files.</maml:para>
+			<maml:para>Gets one or more cover art files located on a file system drive.</maml:para>
 		</maml:description>
 		<maml:copyright>
 			<maml:para />
@@ -2275,7 +1953,8 @@
 		<dev:version />
 	</command:details>
 	<maml:description>
-		<maml:para>The Get-AudioCoverArt cmdlet simply returns the Metadata.CoverArt property for the audio files.</maml:para>
+		<maml:para>The Get-AudioCoverArt cmdlet gets one or more cover art files in a specified directory. Relative paths and wildcards are supported.</maml:para>
+		<maml:para>For more complex operations, such as recursively searching through a directory tree, you can use Get-ChildItem and then pipe the results into Get-AudioCoverArt.</maml:para>
 	</maml:description>
 	<command:syntax>
 		<command:syntaxItem>
@@ -2290,22 +1969,22 @@
 		</command:syntaxItem>
 		<command:syntaxItem>
 			<maml:name>Get-AudioCoverArt</maml:name>
-			<command:parameter required="true" variableLength="false" globbing="false" pipelineInput="true (ByValue)" position="0">
-				<maml:name>FileInfo</maml:name>
-				<maml:description>
-					<maml:para />
-				</maml:description>
-				<command:parameterValue required="true" variableLength="false">FileInfo</command:parameterValue>
-			</command:parameter>
-		</command:syntaxItem>
-		<command:syntaxItem>
-			<maml:name>Get-AudioCoverArt</maml:name>
 			<command:parameter required="true" variableLength="false" globbing="false" pipelineInput="false" position="0">
 				<maml:name>LiteralPath</maml:name>
 				<maml:description>
 					<maml:para />
 				</maml:description>
 				<command:parameterValue required="true" variableLength="false">String</command:parameterValue>
+			</command:parameter>
+		</command:syntaxItem>
+		<command:syntaxItem>
+			<maml:name>Get-AudioCoverArt</maml:name>
+			<command:parameter required="true" variableLength="false" globbing="false" pipelineInput="true (ByValue)" position="0">
+				<maml:name>FileInfo</maml:name>
+				<maml:description>
+					<maml:para />
+				</maml:description>
+				<command:parameterValue required="true" variableLength="false">FileInfo</command:parameterValue>
 			</command:parameter>
 		</command:syntaxItem>
 	</command:syntax>
@@ -2385,7 +2064,1017 @@
 			<maml:introduction>
 				<maml:paragraph>PS C:\&gt;</maml:paragraph>
 			</maml:introduction>
-			<dev:code>Get-AudioFile song.flac | Get-AudioCoverArt</dev:code>
+			<dev:code>Get-AudioCoverArt Folder.jpg</dev:code>
+			<dev:remarks>
+				<maml:para>This command gets a cover art object from a file named Folder.jpg in the current directory.</maml:para>
+				<maml:para />
+				<maml:para />
+				<maml:para></maml:para>
+			</dev:remarks>
+			<command:commandLines>
+				<command:commandLine>
+					<command:commandText>
+						<maml:para />
+					</command:commandText>
+				</command:commandLine>
+			</command:commandLines>
+		</command:example>
+		<command:example>
+			<maml:title>--------------------------  Example 2  --------------------------</maml:title>
+			<maml:introduction>
+				<maml:paragraph>PS C:\&gt;</maml:paragraph>
+			</maml:introduction>
+			<dev:code>Get-AudioCoverArt *.jpg</dev:code>
+			<dev:remarks>
+				<maml:para>This command gets the cover art for all audio files with the .jpg extension in the current directory.</maml:para>
+				<maml:para />
+				<maml:para />
+				<maml:para></maml:para>
+			</dev:remarks>
+			<command:commandLines>
+				<command:commandLine>
+					<command:commandText>
+						<maml:para />
+					</command:commandText>
+				</command:commandLine>
+			</command:commandLines>
+		</command:example>
+		<command:example>
+			<maml:title>--------------------------  Example 3  --------------------------</maml:title>
+			<maml:introduction>
+				<maml:paragraph>PS C:\&gt;</maml:paragraph>
+			</maml:introduction>
+			<dev:code>Get-AudioFile C:\Users\Myself\Music\*.jpg</dev:code>
+			<dev:remarks>
+				<maml:para>This command gets the cover art for all audio files with the .jpg extension in the Myself user&#39;s Music directory.</maml:para>
+				<maml:para />
+				<maml:para />
+				<maml:para></maml:para>
+			</dev:remarks>
+			<command:commandLines>
+				<command:commandLine>
+					<command:commandText>
+						<maml:para />
+					</command:commandText>
+				</command:commandLine>
+			</command:commandLines>
+		</command:example>
+		<command:example>
+			<maml:title>--------------------------  Example 4  --------------------------</maml:title>
+			<maml:introduction>
+				<maml:paragraph>PS C:\&gt;</maml:paragraph>
+			</maml:introduction>
+			<dev:code>Get-ChildItem C:\Users\Myself\Music -Filter *.jpg -Recurse | Get-AudioCoverArt</dev:code>
+			<dev:remarks>
+				<maml:para>This command recursively gets all cover art files with a .jpg extension in the Myself user&#39;s Music directory and all subfolders.</maml:para>
+				<maml:para />
+				<maml:para />
+				<maml:para></maml:para>
+			</dev:remarks>
+			<command:commandLines>
+				<command:commandLine>
+					<command:commandText>
+						<maml:para />
+					</command:commandText>
+				</command:commandLine>
+			</command:commandLines>
+		</command:example>
+	</command:examples>
+	<maml:relatedLinks>
+	</maml:relatedLinks>
+</command:command>
+<command:command xmlns:maml="http://schemas.microsoft.com/maml/2004/10" xmlns:command="http://schemas.microsoft.com/maml/dev/command/2004/10" xmlns:dev="http://schemas.microsoft.com/maml/dev/2004/10" xmlns:MSHelp="http://msdn.microsoft.com/mshelp">
+<!--Generated by PS Cmdlet Help Editor-->
+	<command:details>
+		<command:name>Clear-AudioFileMetadata</command:name>
+		<maml:description>
+			<maml:para>Clears the metadata on one or more audio files.</maml:para>
+		</maml:description>
+		<maml:copyright>
+			<maml:para />
+		</maml:copyright>
+		<command:verb>Clear</command:verb>
+		<command:noun>AudioFileMetadata</command:noun>
+		<dev:version />
+	</command:details>
+	<maml:description>
+		<maml:para>The Clear-AudioFileMetadata cmdlet clears metadata on one or more audio files. You can limit what is cleared by specifying one or more keys.</maml:para>
+	</maml:description>
+	<command:syntax>
+		<command:syntaxItem>
+			<maml:name>Clear-AudioFileMetadata</maml:name>
+			<command:parameter required="false" variableLength="true" globbing="false" pipelineInput="false" position="0">
+				<maml:name>Key</maml:name>
+				<maml:description>
+					<maml:para />
+				</maml:description>
+				<command:parameterValue required="true" variableLength="true">String[]</command:parameterValue>
+			</command:parameter>
+			<command:parameter required="true" variableLength="false" globbing="false" pipelineInput="true (ByValue)" position="1">
+				<maml:name>AudioFile</maml:name>
+				<maml:description>
+					<maml:para />
+				</maml:description>
+				<command:parameterValue required="true" variableLength="false">AudioFile</command:parameterValue>
+			</command:parameter>
+			<command:parameter required="false" variableLength="false" globbing="false" pipelineInput="false" position="named">
+				<maml:name>PassThru</maml:name>
+				<maml:description>
+					<maml:para />
+				</maml:description>
+				<command:parameterValue required="false" variableLength="false">SwitchParameter</command:parameterValue>
+			</command:parameter>
+		</command:syntaxItem>
+	</command:syntax>
+	<command:parameters>
+		<command:parameter required="false" variableLength="true" globbing="false" pipelineInput="false" position="0">
+			<maml:name>Key</maml:name>
+			<maml:description>
+				<maml:para />
+			</maml:description>
+			<command:parameterValue required="true" variableLength="true">String[]</command:parameterValue>
+			<dev:type>
+				<maml:name>String[]</maml:name>
+				<maml:uri/>
+			</dev:type>
+			<dev:defaultValue></dev:defaultValue>
+		</command:parameter>
+		<command:parameter required="true" variableLength="false" globbing="false" pipelineInput="true (ByValue)" position="1">
+			<maml:name>AudioFile</maml:name>
+			<maml:description>
+				<maml:para />
+			</maml:description>
+			<command:parameterValue required="true" variableLength="false">AudioFile</command:parameterValue>
+			<dev:type>
+				<maml:name>AudioFile</maml:name>
+				<maml:uri/>
+			</dev:type>
+			<dev:defaultValue></dev:defaultValue>
+		</command:parameter>
+		<command:parameter required="false" variableLength="false" globbing="false" pipelineInput="false" position="named">
+			<maml:name>PassThru</maml:name>
+			<maml:description>
+				<maml:para />
+			</maml:description>
+			<command:parameterValue required="false" variableLength="false">SwitchParameter</command:parameterValue>
+			<dev:type>
+				<maml:name>SwitchParameter</maml:name>
+				<maml:uri/>
+			</dev:type>
+			<dev:defaultValue></dev:defaultValue>
+		</command:parameter>
+	</command:parameters>
+	<command:inputTypes>
+		<command:inputType>
+			<dev:type>
+				<maml:name></maml:name>
+				<maml:uri></maml:uri>
+				<maml:description/>
+			</dev:type>
+			<maml:description>
+<maml:para />
+			</maml:description>
+		</command:inputType>
+	</command:inputTypes>
+	<command:returnValues>
+		<command:returnValue>
+			<dev:type>
+				<maml:name></maml:name>
+				<maml:uri></maml:uri>
+				<maml:description/>
+			</dev:type>
+			<maml:description>
+<maml:para />
+			</maml:description>
+		</command:returnValue>
+	</command:returnValues>
+	<command:terminatingErrors></command:terminatingErrors>
+	<command:nonTerminatingErrors></command:nonTerminatingErrors>
+	<maml:alertSet>
+		<maml:title></maml:title>
+		<maml:alert>
+			<maml:para />
+		</maml:alert>
+	</maml:alertSet>
+	<command:examples>
+		<command:example>
+			<maml:title>--------------------------  Example 1  --------------------------</maml:title>
+			<maml:introduction>
+				<maml:paragraph>PS C:\&gt;</maml:paragraph>
+			</maml:introduction>
+			<dev:code>Get-AudioFile song.flac | Clear-AudioFileMetadata</dev:code>
+			<dev:remarks>
+				<maml:para>This command clears the metadata on song.flac.</maml:para>
+				<maml:para />
+				<maml:para />
+				<maml:para></maml:para>
+			</dev:remarks>
+			<command:commandLines>
+				<command:commandLine>
+					<command:commandText>
+						<maml:para />
+					</command:commandText>
+				</command:commandLine>
+			</command:commandLines>
+		</command:example>
+		<command:example>
+			<maml:title>--------------------------  Example 2  --------------------------</maml:title>
+			<maml:introduction>
+				<maml:paragraph>PS C:\&gt;</maml:paragraph>
+			</maml:introduction>
+			<dev:code>Get-AudioFile song.flac | Clear-AudioFileMetadata -PassThru | Save-AudioFileMetadata</dev:code>
+			<dev:remarks>
+				<maml:para>This command clears the metadata on song.flac and then persists the change to disk.</maml:para>
+				<maml:para />
+				<maml:para />
+				<maml:para></maml:para>
+			</dev:remarks>
+			<command:commandLines>
+				<command:commandLine>
+					<command:commandText>
+						<maml:para />
+					</command:commandText>
+				</command:commandLine>
+			</command:commandLines>
+		</command:example>
+		<command:example>
+			<maml:title>--------------------------  Example 3  --------------------------</maml:title>
+			<maml:introduction>
+				<maml:paragraph>PS C:\&gt;</maml:paragraph>
+			</maml:introduction>
+			<dev:code>Get-AudioFile song.flac | Clear-AudioFileMetadata -Key Genre,CoverArt</dev:code>
+			<dev:remarks>
+				<maml:para>This command clears Genre and CoverArt metadata from song.flac.</maml:para>
+				<maml:para />
+				<maml:para />
+				<maml:para></maml:para>
+			</dev:remarks>
+			<command:commandLines>
+				<command:commandLine>
+					<command:commandText>
+						<maml:para />
+					</command:commandText>
+				</command:commandLine>
+			</command:commandLines>
+		</command:example>
+	</command:examples>
+	<maml:relatedLinks>
+	</maml:relatedLinks>
+</command:command>
+<command:command xmlns:maml="http://schemas.microsoft.com/maml/2004/10" xmlns:command="http://schemas.microsoft.com/maml/dev/command/2004/10" xmlns:dev="http://schemas.microsoft.com/maml/dev/2004/10" xmlns:MSHelp="http://msdn.microsoft.com/mshelp">
+<!--Generated by PS Cmdlet Help Editor-->
+	<command:details>
+		<command:name>Convert-AudioCoverArt</command:name>
+		<maml:description>
+			<maml:para>Converts cover art to a different image size and/or format.</maml:para>
+		</maml:description>
+		<maml:copyright>
+			<maml:para />
+		</maml:copyright>
+		<command:verb>Convert</command:verb>
+		<command:noun>AudioCoverArt</command:noun>
+		<dev:version />
+	</command:details>
+	<maml:description>
+		<maml:para>The Convert-AudioCoverArt cmdlet converts an existing CoverArt object into a image format. This can be used to limit image sizes on disk.</maml:para>
+	</maml:description>
+	<command:syntax>
+		<command:syntaxItem>
+			<maml:name>Convert-AudioCoverArt</maml:name>
+			<command:parameter required="true" variableLength="false" globbing="false" pipelineInput="true (ByValue)" position="0">
+				<maml:name>CoverArt</maml:name>
+				<maml:description>
+					<maml:para />
+				</maml:description>
+				<command:parameterValue required="true" variableLength="false">CoverArt</command:parameterValue>
+			</command:parameter>
+			<command:parameter required="false" variableLength="false" globbing="false" pipelineInput="false" position="named">
+				<maml:name>MaxWidth</maml:name>
+				<maml:description>
+					<maml:para />
+				</maml:description>
+				<command:parameterValue required="true" variableLength="false">Int32</command:parameterValue>
+			</command:parameter>
+			<command:parameter required="false" variableLength="false" globbing="false" pipelineInput="false" position="named">
+				<maml:name>ConvertToLossy</maml:name>
+				<maml:description>
+					<maml:para />
+				</maml:description>
+				<command:parameterValue required="false" variableLength="false">SwitchParameter</command:parameterValue>
+			</command:parameter>
+			<command:parameter required="false" variableLength="false" globbing="false" pipelineInput="false" position="named">
+				<maml:name>Quality</maml:name>
+				<maml:description>
+					<maml:para />
+				</maml:description>
+				<command:parameterValue required="true" variableLength="false">Int32</command:parameterValue>
+			</command:parameter>
+		</command:syntaxItem>
+	</command:syntax>
+	<command:parameters>
+		<command:parameter required="true" variableLength="false" globbing="false" pipelineInput="true (ByValue)" position="0">
+			<maml:name>CoverArt</maml:name>
+			<maml:description>
+				<maml:para />
+			</maml:description>
+			<command:parameterValue required="true" variableLength="false">CoverArt</command:parameterValue>
+			<dev:type>
+				<maml:name>CoverArt</maml:name>
+				<maml:uri/>
+			</dev:type>
+			<dev:defaultValue></dev:defaultValue>
+		</command:parameter>
+		<command:parameter required="false" variableLength="false" globbing="false" pipelineInput="false" position="named">
+			<maml:name>MaxWidth</maml:name>
+			<maml:description>
+				<maml:para />
+			</maml:description>
+			<command:parameterValue required="true" variableLength="false">Int32</command:parameterValue>
+			<dev:type>
+				<maml:name>Int32</maml:name>
+				<maml:uri/>
+			</dev:type>
+			<dev:defaultValue></dev:defaultValue>
+		</command:parameter>
+		<command:parameter required="false" variableLength="false" globbing="false" pipelineInput="false" position="named">
+			<maml:name>ConvertToLossy</maml:name>
+			<maml:description>
+				<maml:para />
+			</maml:description>
+			<command:parameterValue required="false" variableLength="false">SwitchParameter</command:parameterValue>
+			<dev:type>
+				<maml:name>SwitchParameter</maml:name>
+				<maml:uri/>
+			</dev:type>
+			<dev:defaultValue></dev:defaultValue>
+		</command:parameter>
+		<command:parameter required="false" variableLength="false" globbing="false" pipelineInput="false" position="named">
+			<maml:name>Quality</maml:name>
+			<maml:description>
+				<maml:para />
+			</maml:description>
+			<command:parameterValue required="true" variableLength="false">Int32</command:parameterValue>
+			<dev:type>
+				<maml:name>Int32</maml:name>
+				<maml:uri/>
+			</dev:type>
+			<dev:defaultValue></dev:defaultValue>
+		</command:parameter>
+	</command:parameters>
+	<command:inputTypes>
+		<command:inputType>
+			<dev:type>
+				<maml:name></maml:name>
+				<maml:uri></maml:uri>
+				<maml:description/>
+			</dev:type>
+			<maml:description>
+<maml:para />
+			</maml:description>
+		</command:inputType>
+	</command:inputTypes>
+	<command:returnValues>
+		<command:returnValue>
+			<dev:type>
+				<maml:name></maml:name>
+				<maml:uri></maml:uri>
+				<maml:description/>
+			</dev:type>
+			<maml:description>
+<maml:para />
+			</maml:description>
+		</command:returnValue>
+	</command:returnValues>
+	<command:terminatingErrors></command:terminatingErrors>
+	<command:nonTerminatingErrors></command:nonTerminatingErrors>
+	<maml:alertSet>
+		<maml:title></maml:title>
+		<maml:alert>
+			<maml:para />
+		</maml:alert>
+	</maml:alertSet>
+	<command:examples>
+		<command:example>
+			<maml:title>--------------------------  Example 1  --------------------------</maml:title>
+			<maml:introduction>
+				<maml:paragraph>PS C:\&gt;</maml:paragraph>
+			</maml:introduction>
+			<dev:code>Get-AudioCoverArt Folder.jpg | Convert-AudioCoverArt -MaxWidth 600</dev:code>
+			<dev:remarks>
+				<maml:para>This command converts Folder.jpg into a new image, resized (if necessary) to not exceed 600 pixels in width.</maml:para>
+				<maml:para />
+				<maml:para />
+				<maml:para></maml:para>
+			</dev:remarks>
+			<command:commandLines>
+				<command:commandLine>
+					<command:commandText>
+						<maml:para />
+					</command:commandText>
+				</command:commandLine>
+			</command:commandLines>
+		</command:example>
+		<command:example>
+			<maml:title>--------------------------  Example 2  --------------------------</maml:title>
+			<maml:introduction>
+				<maml:paragraph>PS C:\&gt;</maml:paragraph>
+			</maml:introduction>
+			<dev:code>Get-AudioCoverArt Folder.jpg | Convert-AudioCoverArt -ConvertToLossy</dev:code>
+			<dev:remarks>
+				<maml:para>This command converts Folder.jpg into a new image, re-encoding it as a lossy JPEG image if it isn&#39;t already.</maml:para>
+				<maml:para />
+				<maml:para />
+				<maml:para></maml:para>
+			</dev:remarks>
+			<command:commandLines>
+				<command:commandLine>
+					<command:commandText>
+						<maml:para />
+					</command:commandText>
+				</command:commandLine>
+			</command:commandLines>
+		</command:example>
+	</command:examples>
+	<maml:relatedLinks>
+	</maml:relatedLinks>
+</command:command>
+<command:command xmlns:maml="http://schemas.microsoft.com/maml/2004/10" xmlns:command="http://schemas.microsoft.com/maml/dev/command/2004/10" xmlns:dev="http://schemas.microsoft.com/maml/dev/2004/10" xmlns:MSHelp="http://msdn.microsoft.com/mshelp">
+<!--Generated by PS Cmdlet Help Editor-->
+	<command:details>
+		<command:name>Convert-AudioFileCoverArt</command:name>
+		<maml:description>
+			<maml:para>Converts an audio file&#39;s cover art to a different image size and/or format.</maml:para>
+		</maml:description>
+		<maml:copyright>
+			<maml:para />
+		</maml:copyright>
+		<command:verb>Convert</command:verb>
+		<command:noun>AudioFileCoverArt</command:noun>
+		<dev:version />
+	</command:details>
+	<maml:description>
+		<maml:para>The Convert-AudioFileCoverArt cmdlet converts an audio file&#39;s CoverArt metadata into a new image format. This can be used to limit image sizes on disk.</maml:para>
+	</maml:description>
+	<command:syntax>
+		<command:syntaxItem>
+			<maml:name>Convert-AudioFileCoverArt</maml:name>
+			<command:parameter required="true" variableLength="false" globbing="false" pipelineInput="true (ByValue)" position="0">
+				<maml:name>AudioFile</maml:name>
+				<maml:description>
+					<maml:para />
+				</maml:description>
+				<command:parameterValue required="true" variableLength="false">AudioFile</command:parameterValue>
+			</command:parameter>
+			<command:parameter required="false" variableLength="false" globbing="false" pipelineInput="false" position="named">
+				<maml:name>MaxWidth</maml:name>
+				<maml:description>
+					<maml:para />
+				</maml:description>
+				<command:parameterValue required="true" variableLength="false">Int32</command:parameterValue>
+			</command:parameter>
+			<command:parameter required="false" variableLength="false" globbing="false" pipelineInput="false" position="named">
+				<maml:name>ConvertToLossy</maml:name>
+				<maml:description>
+					<maml:para />
+				</maml:description>
+				<command:parameterValue required="false" variableLength="false">SwitchParameter</command:parameterValue>
+			</command:parameter>
+			<command:parameter required="false" variableLength="false" globbing="false" pipelineInput="false" position="named">
+				<maml:name>Quality</maml:name>
+				<maml:description>
+					<maml:para />
+				</maml:description>
+				<command:parameterValue required="true" variableLength="false">Int32</command:parameterValue>
+			</command:parameter>
+			<command:parameter required="false" variableLength="false" globbing="false" pipelineInput="false" position="named">
+				<maml:name>PassThru</maml:name>
+				<maml:description>
+					<maml:para />
+				</maml:description>
+				<command:parameterValue required="false" variableLength="false">SwitchParameter</command:parameterValue>
+			</command:parameter>
+		</command:syntaxItem>
+	</command:syntax>
+	<command:parameters>
+		<command:parameter required="true" variableLength="false" globbing="false" pipelineInput="true (ByValue)" position="0">
+			<maml:name>AudioFile</maml:name>
+			<maml:description>
+				<maml:para />
+			</maml:description>
+			<command:parameterValue required="true" variableLength="false">AudioFile</command:parameterValue>
+			<dev:type>
+				<maml:name>AudioFile</maml:name>
+				<maml:uri/>
+			</dev:type>
+			<dev:defaultValue></dev:defaultValue>
+		</command:parameter>
+		<command:parameter required="false" variableLength="false" globbing="false" pipelineInput="false" position="named">
+			<maml:name>MaxWidth</maml:name>
+			<maml:description>
+				<maml:para />
+			</maml:description>
+			<command:parameterValue required="true" variableLength="false">Int32</command:parameterValue>
+			<dev:type>
+				<maml:name>Int32</maml:name>
+				<maml:uri/>
+			</dev:type>
+			<dev:defaultValue></dev:defaultValue>
+		</command:parameter>
+		<command:parameter required="false" variableLength="false" globbing="false" pipelineInput="false" position="named">
+			<maml:name>ConvertToLossy</maml:name>
+			<maml:description>
+				<maml:para />
+			</maml:description>
+			<command:parameterValue required="false" variableLength="false">SwitchParameter</command:parameterValue>
+			<dev:type>
+				<maml:name>SwitchParameter</maml:name>
+				<maml:uri/>
+			</dev:type>
+			<dev:defaultValue></dev:defaultValue>
+		</command:parameter>
+		<command:parameter required="false" variableLength="false" globbing="false" pipelineInput="false" position="named">
+			<maml:name>Quality</maml:name>
+			<maml:description>
+				<maml:para />
+			</maml:description>
+			<command:parameterValue required="true" variableLength="false">Int32</command:parameterValue>
+			<dev:type>
+				<maml:name>Int32</maml:name>
+				<maml:uri/>
+			</dev:type>
+			<dev:defaultValue></dev:defaultValue>
+		</command:parameter>
+		<command:parameter required="false" variableLength="false" globbing="false" pipelineInput="false" position="named">
+			<maml:name>PassThru</maml:name>
+			<maml:description>
+				<maml:para />
+			</maml:description>
+			<command:parameterValue required="false" variableLength="false">SwitchParameter</command:parameterValue>
+			<dev:type>
+				<maml:name>SwitchParameter</maml:name>
+				<maml:uri/>
+			</dev:type>
+			<dev:defaultValue></dev:defaultValue>
+		</command:parameter>
+	</command:parameters>
+	<command:inputTypes>
+		<command:inputType>
+			<dev:type>
+				<maml:name></maml:name>
+				<maml:uri></maml:uri>
+				<maml:description/>
+			</dev:type>
+			<maml:description>
+<maml:para />
+			</maml:description>
+		</command:inputType>
+	</command:inputTypes>
+	<command:returnValues>
+		<command:returnValue>
+			<dev:type>
+				<maml:name></maml:name>
+				<maml:uri></maml:uri>
+				<maml:description/>
+			</dev:type>
+			<maml:description>
+<maml:para />
+			</maml:description>
+		</command:returnValue>
+	</command:returnValues>
+	<command:terminatingErrors></command:terminatingErrors>
+	<command:nonTerminatingErrors></command:nonTerminatingErrors>
+	<maml:alertSet>
+		<maml:title></maml:title>
+		<maml:alert>
+			<maml:para />
+		</maml:alert>
+	</maml:alertSet>
+	<command:examples>
+		<command:example>
+			<maml:title>--------------------------  Example 1  --------------------------</maml:title>
+			<maml:introduction>
+				<maml:paragraph>PS C:\&gt;</maml:paragraph>
+			</maml:introduction>
+			<dev:code>Get-AudioFile song.flac | Convert-AudioFileCoverArt -MaxWidth 600</dev:code>
+			<dev:remarks>
+				<maml:para>This command converts the cover art metadata on song.flac into a new image, resized (if necessary) to not exceed 600 pixels in width.</maml:para>
+				<maml:para />
+				<maml:para />
+				<maml:para></maml:para>
+			</dev:remarks>
+			<command:commandLines>
+				<command:commandLine>
+					<command:commandText>
+						<maml:para />
+					</command:commandText>
+				</command:commandLine>
+			</command:commandLines>
+		</command:example>
+		<command:example>
+			<maml:title>--------------------------  Example 2  --------------------------</maml:title>
+			<maml:introduction>
+				<maml:paragraph>PS C:\&gt;</maml:paragraph>
+			</maml:introduction>
+			<dev:code>Get-AudioFile song.flac | Convert-AudioFileCoverArt -ConvertToLossy</dev:code>
+			<dev:remarks>
+				<maml:para>This command converts the cover art metadata on song.flac into a new image, re-encoding it as a lossy JPEG image if it isn&#39;t already.</maml:para>
+				<maml:para />
+				<maml:para />
+				<maml:para></maml:para>
+			</dev:remarks>
+			<command:commandLines>
+				<command:commandLine>
+					<command:commandText>
+						<maml:para />
+					</command:commandText>
+				</command:commandLine>
+			</command:commandLines>
+		</command:example>
+		<command:example>
+			<maml:title>--------------------------  Example 3  --------------------------</maml:title>
+			<maml:introduction>
+				<maml:paragraph>PS C:\&gt;</maml:paragraph>
+			</maml:introduction>
+			<dev:code>Get-AudioFile song.flac | Convert-AudioFileCoverArt -ConvertToLossy -PassThru | Save-AudioFileMetadata</dev:code>
+			<dev:remarks>
+				<maml:para>This command converts the cover art metadata on song.flac into a new image, re-encodes it as a lossy JPEG image if it isn&#39;t already, and then persists the change to disk.</maml:para>
+				<maml:para />
+				<maml:para />
+				<maml:para></maml:para>
+			</dev:remarks>
+			<command:commandLines>
+				<command:commandLine>
+					<command:commandText>
+						<maml:para />
+					</command:commandText>
+				</command:commandLine>
+			</command:commandLines>
+		</command:example>
+	</command:examples>
+	<maml:relatedLinks>
+	</maml:relatedLinks>
+</command:command>
+<command:command xmlns:maml="http://schemas.microsoft.com/maml/2004/10" xmlns:command="http://schemas.microsoft.com/maml/dev/command/2004/10" xmlns:dev="http://schemas.microsoft.com/maml/dev/2004/10" xmlns:MSHelp="http://msdn.microsoft.com/mshelp">
+<!--Generated by PS Cmdlet Help Editor-->
+	<command:details>
+		<command:name>Export-AudioFileCoverArt</command:name>
+		<maml:description>
+			<maml:para>Saves the cover art for one or more audio files as image files.</maml:para>
+		</maml:description>
+		<maml:copyright>
+			<maml:para />
+		</maml:copyright>
+		<command:verb>Export</command:verb>
+		<command:noun>AudioFileCoverArt</command:noun>
+		<dev:version />
+	</command:details>
+	<maml:description>
+		<maml:para>The Export-AudioFileCoverArt cmdlet saves the cover art for one or more audio files as JPEG or PNG files.</maml:para>
+		<maml:para>The resulting file name(s) and/or directory can be generated from metadata by specifying keys inside curly braces. For more information, type &quot;Get-Help Export-AudioFile -Examples&quot;.</maml:para>
+	</maml:description>
+	<command:syntax>
+		<command:syntaxItem>
+			<maml:name>Export-AudioFileCoverArt</maml:name>
+			<command:parameter required="true" variableLength="false" globbing="false" pipelineInput="false" position="0">
+				<maml:name>Name</maml:name>
+				<maml:description>
+					<maml:para />
+				</maml:description>
+				<command:parameterValue required="true" variableLength="false">String</command:parameterValue>
+			</command:parameter>
+			<command:parameter required="true" variableLength="false" globbing="false" pipelineInput="false" position="1">
+				<maml:name>Path</maml:name>
+				<maml:description>
+					<maml:para />
+				</maml:description>
+				<command:parameterValue required="true" variableLength="false">String</command:parameterValue>
+			</command:parameter>
+			<command:parameter required="true" variableLength="false" globbing="false" pipelineInput="true (ByValue)" position="2">
+				<maml:name>AudioFile</maml:name>
+				<maml:description>
+					<maml:para />
+				</maml:description>
+				<command:parameterValue required="true" variableLength="false">AudioFile</command:parameterValue>
+			</command:parameter>
+			<command:parameter required="false" variableLength="false" globbing="false" pipelineInput="false" position="named">
+				<maml:name>Replace</maml:name>
+				<maml:description>
+					<maml:para />
+				</maml:description>
+				<command:parameterValue required="false" variableLength="false">SwitchParameter</command:parameterValue>
+			</command:parameter>
+			<command:parameter required="false" variableLength="false" globbing="false" pipelineInput="false" position="named">
+				<maml:name>PassThru</maml:name>
+				<maml:description>
+					<maml:para />
+				</maml:description>
+				<command:parameterValue required="false" variableLength="false">SwitchParameter</command:parameterValue>
+			</command:parameter>
+			<command:parameter required="false" variableLength="false" globbing="false" pipelineInput="false" position="named">
+				<maml:name>WhatIf</maml:name>
+				<maml:description>
+					<maml:para />
+				</maml:description>
+				<command:parameterValue required="false" variableLength="false">SwitchParameter</command:parameterValue>
+			</command:parameter>
+			<command:parameter required="false" variableLength="false" globbing="false" pipelineInput="false" position="named">
+				<maml:name>Confirm</maml:name>
+				<maml:description>
+					<maml:para />
+				</maml:description>
+				<command:parameterValue required="false" variableLength="false">SwitchParameter</command:parameterValue>
+			</command:parameter>
+		</command:syntaxItem>
+		<command:syntaxItem>
+			<maml:name>Export-AudioFileCoverArt</maml:name>
+			<command:parameter required="true" variableLength="false" globbing="false" pipelineInput="false" position="0">
+				<maml:name>Name</maml:name>
+				<maml:description>
+					<maml:para />
+				</maml:description>
+				<command:parameterValue required="true" variableLength="false">String</command:parameterValue>
+			</command:parameter>
+			<command:parameter required="true" variableLength="false" globbing="false" pipelineInput="false" position="1">
+				<maml:name>LiteralPath</maml:name>
+				<maml:description>
+					<maml:para />
+				</maml:description>
+				<command:parameterValue required="true" variableLength="false">String</command:parameterValue>
+			</command:parameter>
+			<command:parameter required="true" variableLength="false" globbing="false" pipelineInput="true (ByValue)" position="2">
+				<maml:name>AudioFile</maml:name>
+				<maml:description>
+					<maml:para />
+				</maml:description>
+				<command:parameterValue required="true" variableLength="false">AudioFile</command:parameterValue>
+			</command:parameter>
+			<command:parameter required="false" variableLength="false" globbing="false" pipelineInput="false" position="named">
+				<maml:name>Replace</maml:name>
+				<maml:description>
+					<maml:para />
+				</maml:description>
+				<command:parameterValue required="false" variableLength="false">SwitchParameter</command:parameterValue>
+			</command:parameter>
+			<command:parameter required="false" variableLength="false" globbing="false" pipelineInput="false" position="named">
+				<maml:name>PassThru</maml:name>
+				<maml:description>
+					<maml:para />
+				</maml:description>
+				<command:parameterValue required="false" variableLength="false">SwitchParameter</command:parameterValue>
+			</command:parameter>
+			<command:parameter required="false" variableLength="false" globbing="false" pipelineInput="false" position="named">
+				<maml:name>WhatIf</maml:name>
+				<maml:description>
+					<maml:para />
+				</maml:description>
+				<command:parameterValue required="false" variableLength="false">SwitchParameter</command:parameterValue>
+			</command:parameter>
+			<command:parameter required="false" variableLength="false" globbing="false" pipelineInput="false" position="named">
+				<maml:name>Confirm</maml:name>
+				<maml:description>
+					<maml:para />
+				</maml:description>
+				<command:parameterValue required="false" variableLength="false">SwitchParameter</command:parameterValue>
+			</command:parameter>
+		</command:syntaxItem>
+	</command:syntax>
+	<command:parameters>
+		<command:parameter required="true" variableLength="false" globbing="false" pipelineInput="false" position="0">
+			<maml:name>Name</maml:name>
+			<maml:description>
+				<maml:para />
+			</maml:description>
+			<command:parameterValue required="true" variableLength="false">String</command:parameterValue>
+			<dev:type>
+				<maml:name>String</maml:name>
+				<maml:uri/>
+			</dev:type>
+			<dev:defaultValue></dev:defaultValue>
+		</command:parameter>
+		<command:parameter required="true" variableLength="false" globbing="false" pipelineInput="false" position="1">
+			<maml:name>Path</maml:name>
+			<maml:description>
+				<maml:para />
+			</maml:description>
+			<command:parameterValue required="true" variableLength="false">String</command:parameterValue>
+			<dev:type>
+				<maml:name>String</maml:name>
+				<maml:uri/>
+			</dev:type>
+			<dev:defaultValue></dev:defaultValue>
+		</command:parameter>
+		<command:parameter required="true" variableLength="false" globbing="false" pipelineInput="true (ByValue)" position="2">
+			<maml:name>AudioFile</maml:name>
+			<maml:description>
+				<maml:para />
+			</maml:description>
+			<command:parameterValue required="true" variableLength="false">AudioFile</command:parameterValue>
+			<dev:type>
+				<maml:name>AudioFile</maml:name>
+				<maml:uri/>
+			</dev:type>
+			<dev:defaultValue></dev:defaultValue>
+		</command:parameter>
+		<command:parameter required="false" variableLength="false" globbing="false" pipelineInput="false" position="named">
+			<maml:name>Replace</maml:name>
+			<maml:description>
+				<maml:para />
+			</maml:description>
+			<command:parameterValue required="false" variableLength="false">SwitchParameter</command:parameterValue>
+			<dev:type>
+				<maml:name>SwitchParameter</maml:name>
+				<maml:uri/>
+			</dev:type>
+			<dev:defaultValue></dev:defaultValue>
+		</command:parameter>
+		<command:parameter required="false" variableLength="false" globbing="false" pipelineInput="false" position="named">
+			<maml:name>PassThru</maml:name>
+			<maml:description>
+				<maml:para />
+			</maml:description>
+			<command:parameterValue required="false" variableLength="false">SwitchParameter</command:parameterValue>
+			<dev:type>
+				<maml:name>SwitchParameter</maml:name>
+				<maml:uri/>
+			</dev:type>
+			<dev:defaultValue></dev:defaultValue>
+		</command:parameter>
+		<command:parameter required="false" variableLength="false" globbing="false" pipelineInput="false" position="named">
+			<maml:name>WhatIf</maml:name>
+			<maml:description>
+				<maml:para />
+			</maml:description>
+			<command:parameterValue required="false" variableLength="false">SwitchParameter</command:parameterValue>
+			<dev:type>
+				<maml:name>SwitchParameter</maml:name>
+				<maml:uri/>
+			</dev:type>
+			<dev:defaultValue></dev:defaultValue>
+		</command:parameter>
+		<command:parameter required="false" variableLength="false" globbing="false" pipelineInput="false" position="named">
+			<maml:name>Confirm</maml:name>
+			<maml:description>
+				<maml:para />
+			</maml:description>
+			<command:parameterValue required="false" variableLength="false">SwitchParameter</command:parameterValue>
+			<dev:type>
+				<maml:name>SwitchParameter</maml:name>
+				<maml:uri/>
+			</dev:type>
+			<dev:defaultValue></dev:defaultValue>
+		</command:parameter>
+		<command:parameter required="true" variableLength="false" globbing="false" pipelineInput="false" position="1">
+			<maml:name>LiteralPath</maml:name>
+			<maml:description>
+				<maml:para />
+			</maml:description>
+			<command:parameterValue required="true" variableLength="false">String</command:parameterValue>
+			<dev:type>
+				<maml:name>String</maml:name>
+				<maml:uri/>
+			</dev:type>
+			<dev:defaultValue></dev:defaultValue>
+		</command:parameter>
+	</command:parameters>
+	<command:inputTypes>
+		<command:inputType>
+			<dev:type>
+				<maml:name></maml:name>
+				<maml:uri></maml:uri>
+				<maml:description/>
+			</dev:type>
+			<maml:description>
+<maml:para />
+			</maml:description>
+		</command:inputType>
+	</command:inputTypes>
+	<command:returnValues>
+		<command:returnValue>
+			<dev:type>
+				<maml:name></maml:name>
+				<maml:uri></maml:uri>
+				<maml:description/>
+			</dev:type>
+			<maml:description>
+<maml:para />
+			</maml:description>
+		</command:returnValue>
+	</command:returnValues>
+	<command:terminatingErrors></command:terminatingErrors>
+	<command:nonTerminatingErrors></command:nonTerminatingErrors>
+	<maml:alertSet>
+		<maml:title></maml:title>
+		<maml:alert>
+			<maml:para />
+		</maml:alert>
+	</maml:alertSet>
+	<command:examples>
+		<command:example>
+			<maml:title>--------------------------  Example 1  --------------------------</maml:title>
+			<maml:introduction>
+				<maml:paragraph>PS C:\&gt;</maml:paragraph>
+			</maml:introduction>
+			<dev:code>Get-AudioFile song.flac | Export-AudioFileCoverArt &quot;Cover&quot;</dev:code>
+			<dev:remarks>
+				<maml:para>This command exports the cover art for song.wav in the current directory to a new file named Cover.jpg or Cover.png (depending on the image format).</maml:para>
+				<maml:para />
+				<maml:para />
+				<maml:para></maml:para>
+			</dev:remarks>
+			<command:commandLines>
+				<command:commandLine>
+					<command:commandText>
+						<maml:para />
+					</command:commandText>
+				</command:commandLine>
+			</command:commandLines>
+		</command:example>
+	</command:examples>
+	<maml:relatedLinks>
+	</maml:relatedLinks>
+</command:command>
+<command:command xmlns:maml="http://schemas.microsoft.com/maml/2004/10" xmlns:command="http://schemas.microsoft.com/maml/dev/command/2004/10" xmlns:dev="http://schemas.microsoft.com/maml/dev/2004/10" xmlns:MSHelp="http://msdn.microsoft.com/mshelp">
+<!--Generated by PS Cmdlet Help Editor-->
+	<command:details>
+		<command:name>Get-AudioFileCoverArt</command:name>
+		<maml:description>
+			<maml:para>Gets the cover art for one or more audio files.</maml:para>
+		</maml:description>
+		<maml:copyright>
+			<maml:para />
+		</maml:copyright>
+		<command:verb>Get</command:verb>
+		<command:noun>AudioFileCoverArt</command:noun>
+		<dev:version />
+	</command:details>
+	<maml:description>
+		<maml:para>The Get-AudioCoverArt cmdlet simply returns the Metadata.CoverArt property for the audio files.</maml:para>
+	</maml:description>
+	<command:syntax>
+		<command:syntaxItem>
+			<maml:name>Get-AudioFileCoverArt</maml:name>
+			<command:parameter required="true" variableLength="false" globbing="false" pipelineInput="true (ByValue)" position="0">
+				<maml:name>AudioFile</maml:name>
+				<maml:description>
+					<maml:para />
+				</maml:description>
+				<command:parameterValue required="true" variableLength="false">AudioFile</command:parameterValue>
+			</command:parameter>
+		</command:syntaxItem>
+	</command:syntax>
+	<command:parameters>
+		<command:parameter required="true" variableLength="false" globbing="false" pipelineInput="true (ByValue)" position="0">
+			<maml:name>AudioFile</maml:name>
+			<maml:description>
+				<maml:para />
+			</maml:description>
+			<command:parameterValue required="true" variableLength="false">AudioFile</command:parameterValue>
+			<dev:type>
+				<maml:name>AudioFile</maml:name>
+				<maml:uri/>
+			</dev:type>
+			<dev:defaultValue></dev:defaultValue>
+		</command:parameter>
+	</command:parameters>
+	<command:inputTypes>
+		<command:inputType>
+			<dev:type>
+				<maml:name></maml:name>
+				<maml:uri></maml:uri>
+				<maml:description/>
+			</dev:type>
+			<maml:description>
+<maml:para />
+			</maml:description>
+		</command:inputType>
+	</command:inputTypes>
+	<command:returnValues>
+		<command:returnValue>
+			<dev:type>
+				<maml:name></maml:name>
+				<maml:uri></maml:uri>
+				<maml:description/>
+			</dev:type>
+			<maml:description>
+<maml:para />
+			</maml:description>
+		</command:returnValue>
+	</command:returnValues>
+	<command:terminatingErrors></command:terminatingErrors>
+	<command:nonTerminatingErrors></command:nonTerminatingErrors>
+	<maml:alertSet>
+		<maml:title></maml:title>
+		<maml:alert>
+			<maml:para />
+		</maml:alert>
+	</maml:alertSet>
+	<command:examples>
+		<command:example>
+			<maml:title>--------------------------  Example 1  --------------------------</maml:title>
+			<maml:introduction>
+				<maml:paragraph>PS C:\&gt;</maml:paragraph>
+			</maml:introduction>
+			<dev:code>Get-AudioFile song.flac | Get-AudioFileCoverArt</dev:code>
 			<dev:remarks>
 				<maml:para>This command gets the cover art for an audio file named song.flac in the current directory.</maml:para>
 				<maml:para />
@@ -2405,9 +3094,680 @@
 			<maml:introduction>
 				<maml:paragraph>PS C:\&gt;</maml:paragraph>
 			</maml:introduction>
-			<dev:code>Get-AudioFile *.flac | Get-AudioCoverArt</dev:code>
+			<dev:code>Get-AudioFile *.flac | Get-AudioFileCoverArt</dev:code>
 			<dev:remarks>
 				<maml:para>This command gets the cover art for all audio files with the .flac extension in the current directory.</maml:para>
+				<maml:para />
+				<maml:para />
+				<maml:para></maml:para>
+			</dev:remarks>
+			<command:commandLines>
+				<command:commandLine>
+					<command:commandText>
+						<maml:para />
+					</command:commandText>
+				</command:commandLine>
+			</command:commandLines>
+		</command:example>
+	</command:examples>
+	<maml:relatedLinks>
+	</maml:relatedLinks>
+</command:command>
+<command:command xmlns:maml="http://schemas.microsoft.com/maml/2004/10" xmlns:command="http://schemas.microsoft.com/maml/dev/command/2004/10" xmlns:dev="http://schemas.microsoft.com/maml/dev/2004/10" xmlns:MSHelp="http://msdn.microsoft.com/mshelp">
+<!--Generated by PS Cmdlet Help Editor-->
+	<command:details>
+		<command:name>Get-AudioFileMetadata</command:name>
+		<maml:description>
+			<maml:para>Gets metadata (&quot;tags&quot;) associated with one or more audio files.</maml:para>
+		</maml:description>
+		<maml:copyright>
+			<maml:para />
+		</maml:copyright>
+		<command:verb>Get</command:verb>
+		<command:noun>AudioFileMetadata</command:noun>
+		<dev:version />
+	</command:details>
+	<maml:description>
+		<maml:para>The Get-AudioFileMetadata cmdlet returns metadata for one or more audio files. You can limit the results by specifying one or more keys.</maml:para>
+	</maml:description>
+	<command:syntax>
+		<command:syntaxItem>
+			<maml:name>Get-AudioFileMetadata</maml:name>
+			<command:parameter required="false" variableLength="true" globbing="false" pipelineInput="false" position="0">
+				<maml:name>Key</maml:name>
+				<maml:description>
+					<maml:para />
+				</maml:description>
+				<command:parameterValue required="true" variableLength="true">String[]</command:parameterValue>
+			</command:parameter>
+			<command:parameter required="true" variableLength="false" globbing="false" pipelineInput="true (ByValue)" position="1">
+				<maml:name>AudioFile</maml:name>
+				<maml:description>
+					<maml:para />
+				</maml:description>
+				<command:parameterValue required="true" variableLength="false">AudioFile</command:parameterValue>
+			</command:parameter>
+		</command:syntaxItem>
+	</command:syntax>
+	<command:parameters>
+		<command:parameter required="false" variableLength="true" globbing="false" pipelineInput="false" position="0">
+			<maml:name>Key</maml:name>
+			<maml:description>
+				<maml:para />
+			</maml:description>
+			<command:parameterValue required="true" variableLength="true">String[]</command:parameterValue>
+			<dev:type>
+				<maml:name>String[]</maml:name>
+				<maml:uri/>
+			</dev:type>
+			<dev:defaultValue></dev:defaultValue>
+		</command:parameter>
+		<command:parameter required="true" variableLength="false" globbing="false" pipelineInput="true (ByValue)" position="1">
+			<maml:name>AudioFile</maml:name>
+			<maml:description>
+				<maml:para />
+			</maml:description>
+			<command:parameterValue required="true" variableLength="false">AudioFile</command:parameterValue>
+			<dev:type>
+				<maml:name>AudioFile</maml:name>
+				<maml:uri/>
+			</dev:type>
+			<dev:defaultValue></dev:defaultValue>
+		</command:parameter>
+	</command:parameters>
+	<command:inputTypes>
+		<command:inputType>
+			<dev:type>
+				<maml:name></maml:name>
+				<maml:uri></maml:uri>
+				<maml:description/>
+			</dev:type>
+			<maml:description>
+<maml:para />
+			</maml:description>
+		</command:inputType>
+	</command:inputTypes>
+	<command:returnValues>
+		<command:returnValue>
+			<dev:type>
+				<maml:name></maml:name>
+				<maml:uri></maml:uri>
+				<maml:description/>
+			</dev:type>
+			<maml:description>
+<maml:para />
+			</maml:description>
+		</command:returnValue>
+	</command:returnValues>
+	<command:terminatingErrors></command:terminatingErrors>
+	<command:nonTerminatingErrors></command:nonTerminatingErrors>
+	<maml:alertSet>
+		<maml:title></maml:title>
+		<maml:alert>
+			<maml:para />
+		</maml:alert>
+	</maml:alertSet>
+	<command:examples>
+		<command:example>
+			<maml:title>--------------------------  Example 1  --------------------------</maml:title>
+			<maml:introduction>
+				<maml:paragraph>PS C:\&gt;</maml:paragraph>
+			</maml:introduction>
+			<dev:code>Get-AudioFile song.flac | Get-AudioFileMetadata -Key Title</dev:code>
+			<dev:remarks>
+				<maml:para>This command gets the title for an audio file named song.flac in the current directory.</maml:para>
+				<maml:para />
+				<maml:para />
+				<maml:para></maml:para>
+			</dev:remarks>
+			<command:commandLines>
+				<command:commandLine>
+					<command:commandText>
+						<maml:para />
+					</command:commandText>
+				</command:commandLine>
+			</command:commandLines>
+		</command:example>
+		<command:example>
+			<maml:title>--------------------------  Example 2  --------------------------</maml:title>
+			<maml:introduction>
+				<maml:paragraph>PS C:\&gt;</maml:paragraph>
+			</maml:introduction>
+			<dev:code>Get-AudioFile song.flac | Get-AudioFileMetadata -Key Title,TrackNumber</dev:code>
+			<dev:remarks>
+				<maml:para>This command gets the title and track number for an audio file named song.flac in the current directory.</maml:para>
+				<maml:para />
+				<maml:para />
+				<maml:para></maml:para>
+			</dev:remarks>
+			<command:commandLines>
+				<command:commandLine>
+					<command:commandText>
+						<maml:para />
+					</command:commandText>
+				</command:commandLine>
+			</command:commandLines>
+		</command:example>
+		<command:example>
+			<maml:title>--------------------------  Example 3  --------------------------</maml:title>
+			<maml:introduction>
+				<maml:paragraph>PS C:\&gt;</maml:paragraph>
+			</maml:introduction>
+			<dev:code>Get-AudioFile *.flac | Get-AudioFileMetadata -Key Title</dev:code>
+			<dev:remarks>
+				<maml:para>This command gets the title for all audio files with the .flac extension in the current directory.</maml:para>
+				<maml:para />
+				<maml:para />
+				<maml:para></maml:para>
+			</dev:remarks>
+			<command:commandLines>
+				<command:commandLine>
+					<command:commandText>
+						<maml:para />
+					</command:commandText>
+				</command:commandLine>
+			</command:commandLines>
+		</command:example>
+	</command:examples>
+	<maml:relatedLinks>
+	</maml:relatedLinks>
+</command:command>
+<command:command xmlns:maml="http://schemas.microsoft.com/maml/2004/10" xmlns:command="http://schemas.microsoft.com/maml/dev/command/2004/10" xmlns:dev="http://schemas.microsoft.com/maml/dev/2004/10" xmlns:MSHelp="http://msdn.microsoft.com/mshelp">
+<!--Generated by PS Cmdlet Help Editor-->
+	<command:details>
+		<command:name>Save-AudioFileMetadata</command:name>
+		<maml:description>
+			<maml:para>Persists changes or additions to one or more audio files&#39; metadata to disk.</maml:para>
+		</maml:description>
+		<maml:copyright>
+			<maml:para />
+		</maml:copyright>
+		<command:verb>Save</command:verb>
+		<command:noun>AudioFileMetadata</command:noun>
+		<dev:version />
+	</command:details>
+	<maml:description>
+		<maml:para>The Save-AudioFileMetadata cmdlet persists the current metadata to one or more audio files.</maml:para>
+	</maml:description>
+	<command:syntax>
+		<command:syntaxItem>
+			<maml:name>Save-AudioFileMetadata</maml:name>
+			<command:parameter required="true" variableLength="false" globbing="false" pipelineInput="true (ByValue)" position="0">
+				<maml:name>AudioFile</maml:name>
+				<maml:description>
+					<maml:para />
+				</maml:description>
+				<command:parameterValue required="true" variableLength="false">AudioFile</command:parameterValue>
+			</command:parameter>
+			<command:parameter required="false" variableLength="false" globbing="false" pipelineInput="false" position="named">
+				<maml:name>Setting</maml:name>
+				<maml:description>
+					<maml:para />
+				</maml:description>
+				<command:parameterValue required="true" variableLength="false">Hashtable</command:parameterValue>
+			</command:parameter>
+			<command:parameter required="false" variableLength="false" globbing="false" pipelineInput="false" position="named">
+				<maml:name>PassThru</maml:name>
+				<maml:description>
+					<maml:para />
+				</maml:description>
+				<command:parameterValue required="false" variableLength="false">SwitchParameter</command:parameterValue>
+			</command:parameter>
+			<command:parameter required="false" variableLength="false" globbing="false" pipelineInput="false" position="named">
+				<maml:name>WhatIf</maml:name>
+				<maml:description>
+					<maml:para />
+				</maml:description>
+				<command:parameterValue required="false" variableLength="false">SwitchParameter</command:parameterValue>
+			</command:parameter>
+			<command:parameter required="false" variableLength="false" globbing="false" pipelineInput="false" position="named">
+				<maml:name>Confirm</maml:name>
+				<maml:description>
+					<maml:para />
+				</maml:description>
+				<command:parameterValue required="false" variableLength="false">SwitchParameter</command:parameterValue>
+			</command:parameter>
+		</command:syntaxItem>
+	</command:syntax>
+	<command:parameters>
+		<command:parameter required="true" variableLength="false" globbing="false" pipelineInput="true (ByValue)" position="0">
+			<maml:name>AudioFile</maml:name>
+			<maml:description>
+				<maml:para />
+			</maml:description>
+			<command:parameterValue required="true" variableLength="false">AudioFile</command:parameterValue>
+			<dev:type>
+				<maml:name>AudioFile</maml:name>
+				<maml:uri/>
+			</dev:type>
+			<dev:defaultValue></dev:defaultValue>
+		</command:parameter>
+		<command:parameter required="false" variableLength="false" globbing="false" pipelineInput="false" position="named">
+			<maml:name>Setting</maml:name>
+			<maml:description>
+				<maml:para />
+			</maml:description>
+			<command:parameterValue required="true" variableLength="false">Hashtable</command:parameterValue>
+			<dev:type>
+				<maml:name>Hashtable</maml:name>
+				<maml:uri/>
+			</dev:type>
+			<dev:defaultValue></dev:defaultValue>
+		</command:parameter>
+		<command:parameter required="false" variableLength="false" globbing="false" pipelineInput="false" position="named">
+			<maml:name>PassThru</maml:name>
+			<maml:description>
+				<maml:para />
+			</maml:description>
+			<command:parameterValue required="false" variableLength="false">SwitchParameter</command:parameterValue>
+			<dev:type>
+				<maml:name>SwitchParameter</maml:name>
+				<maml:uri/>
+			</dev:type>
+			<dev:defaultValue></dev:defaultValue>
+		</command:parameter>
+		<command:parameter required="false" variableLength="false" globbing="false" pipelineInput="false" position="named">
+			<maml:name>WhatIf</maml:name>
+			<maml:description>
+				<maml:para />
+			</maml:description>
+			<command:parameterValue required="false" variableLength="false">SwitchParameter</command:parameterValue>
+			<dev:type>
+				<maml:name>SwitchParameter</maml:name>
+				<maml:uri/>
+			</dev:type>
+			<dev:defaultValue></dev:defaultValue>
+		</command:parameter>
+		<command:parameter required="false" variableLength="false" globbing="false" pipelineInput="false" position="named">
+			<maml:name>Confirm</maml:name>
+			<maml:description>
+				<maml:para />
+			</maml:description>
+			<command:parameterValue required="false" variableLength="false">SwitchParameter</command:parameterValue>
+			<dev:type>
+				<maml:name>SwitchParameter</maml:name>
+				<maml:uri/>
+			</dev:type>
+			<dev:defaultValue></dev:defaultValue>
+		</command:parameter>
+	</command:parameters>
+	<command:inputTypes>
+		<command:inputType>
+			<dev:type>
+				<maml:name></maml:name>
+				<maml:uri></maml:uri>
+				<maml:description/>
+			</dev:type>
+			<maml:description>
+<maml:para />
+			</maml:description>
+		</command:inputType>
+	</command:inputTypes>
+	<command:returnValues>
+		<command:returnValue>
+			<dev:type>
+				<maml:name></maml:name>
+				<maml:uri></maml:uri>
+				<maml:description/>
+			</dev:type>
+			<maml:description>
+<maml:para />
+			</maml:description>
+		</command:returnValue>
+	</command:returnValues>
+	<command:terminatingErrors></command:terminatingErrors>
+	<command:nonTerminatingErrors></command:nonTerminatingErrors>
+	<maml:alertSet>
+		<maml:title></maml:title>
+		<maml:alert>
+			<maml:para />
+		</maml:alert>
+	</maml:alertSet>
+	<command:examples>
+		<command:example>
+			<maml:title>--------------------------  Example 1  --------------------------</maml:title>
+			<maml:introduction>
+				<maml:paragraph>PS C:\&gt;</maml:paragraph>
+			</maml:introduction>
+			<dev:code>Get-AudioFile song.flac | Set-AudioFileMetadata @{Title = &quot;Test Song&quot;} -PassThru | Save-AudioFileMetadata</dev:code>
+			<dev:remarks>
+				<maml:para>This command sets the title on song.flac to &quot;Test Song&quot; and then persists the change to disk.</maml:para>
+				<maml:para />
+				<maml:para />
+				<maml:para></maml:para>
+			</dev:remarks>
+			<command:commandLines>
+				<command:commandLine>
+					<command:commandText>
+						<maml:para />
+					</command:commandText>
+				</command:commandLine>
+			</command:commandLines>
+		</command:example>
+		<command:example>
+			<maml:title>--------------------------  Example 2  --------------------------</maml:title>
+			<maml:introduction>
+				<maml:paragraph>PS C:\&gt;</maml:paragraph>
+			</maml:introduction>
+			<dev:code>Get-AudioFile song.mp3 | Save-AudioFileMetadata -Setting @{ID3Version = &quot;2.4&quot;; AddSoundCheck = &quot;Album&quot;}</dev:code>
+			<dev:remarks>
+				<maml:para>This command updates song.mp3 with a new tag suitable for iTunes.</maml:para>
+				<maml:para />
+				<maml:para />
+				<maml:para></maml:para>
+			</dev:remarks>
+			<command:commandLines>
+				<command:commandLine>
+					<command:commandText>
+						<maml:para />
+					</command:commandText>
+				</command:commandLine>
+			</command:commandLines>
+		</command:example>
+	</command:examples>
+	<maml:relatedLinks>
+	</maml:relatedLinks>
+</command:command>
+<command:command xmlns:maml="http://schemas.microsoft.com/maml/2004/10" xmlns:command="http://schemas.microsoft.com/maml/dev/command/2004/10" xmlns:dev="http://schemas.microsoft.com/maml/dev/2004/10" xmlns:MSHelp="http://msdn.microsoft.com/mshelp">
+<!--Generated by PS Cmdlet Help Editor-->
+	<command:details>
+		<command:name>Set-AudioFileCoverArt</command:name>
+		<maml:description>
+			<maml:para>Sets the cover art on one or more audio files.</maml:para>
+		</maml:description>
+		<maml:copyright>
+			<maml:para />
+		</maml:copyright>
+		<command:verb>Set</command:verb>
+		<command:noun>AudioFileCoverArt</command:noun>
+		<dev:version />
+	</command:details>
+	<maml:description>
+		<maml:para>The Set-AudioFileCoverArt cmdlet sets the cover art on one or more audio files.</maml:para>
+	</maml:description>
+	<command:syntax>
+		<command:syntaxItem>
+			<maml:name>Set-AudioFileCoverArt</maml:name>
+			<command:parameter required="true" variableLength="false" globbing="false" pipelineInput="false" position="0">
+				<maml:name>CoverArt</maml:name>
+				<maml:description>
+					<maml:para />
+				</maml:description>
+				<command:parameterValue required="true" variableLength="false">CoverArt</command:parameterValue>
+			</command:parameter>
+			<command:parameter required="true" variableLength="false" globbing="false" pipelineInput="true (ByValue)" position="1">
+				<maml:name>AudioFile</maml:name>
+				<maml:description>
+					<maml:para />
+				</maml:description>
+				<command:parameterValue required="true" variableLength="false">AudioFile</command:parameterValue>
+			</command:parameter>
+			<command:parameter required="false" variableLength="false" globbing="false" pipelineInput="false" position="named">
+				<maml:name>PassThru</maml:name>
+				<maml:description>
+					<maml:para />
+				</maml:description>
+				<command:parameterValue required="false" variableLength="false">SwitchParameter</command:parameterValue>
+			</command:parameter>
+		</command:syntaxItem>
+	</command:syntax>
+	<command:parameters>
+		<command:parameter required="true" variableLength="false" globbing="false" pipelineInput="false" position="0">
+			<maml:name>CoverArt</maml:name>
+			<maml:description>
+				<maml:para />
+			</maml:description>
+			<command:parameterValue required="true" variableLength="false">CoverArt</command:parameterValue>
+			<dev:type>
+				<maml:name>CoverArt</maml:name>
+				<maml:uri/>
+			</dev:type>
+			<dev:defaultValue></dev:defaultValue>
+		</command:parameter>
+		<command:parameter required="true" variableLength="false" globbing="false" pipelineInput="true (ByValue)" position="1">
+			<maml:name>AudioFile</maml:name>
+			<maml:description>
+				<maml:para />
+			</maml:description>
+			<command:parameterValue required="true" variableLength="false">AudioFile</command:parameterValue>
+			<dev:type>
+				<maml:name>AudioFile</maml:name>
+				<maml:uri/>
+			</dev:type>
+			<dev:defaultValue></dev:defaultValue>
+		</command:parameter>
+		<command:parameter required="false" variableLength="false" globbing="false" pipelineInput="false" position="named">
+			<maml:name>PassThru</maml:name>
+			<maml:description>
+				<maml:para />
+			</maml:description>
+			<command:parameterValue required="false" variableLength="false">SwitchParameter</command:parameterValue>
+			<dev:type>
+				<maml:name>SwitchParameter</maml:name>
+				<maml:uri/>
+			</dev:type>
+			<dev:defaultValue></dev:defaultValue>
+		</command:parameter>
+	</command:parameters>
+	<command:inputTypes>
+		<command:inputType>
+			<dev:type>
+				<maml:name></maml:name>
+				<maml:uri></maml:uri>
+				<maml:description/>
+			</dev:type>
+			<maml:description>
+<maml:para />
+			</maml:description>
+		</command:inputType>
+	</command:inputTypes>
+	<command:returnValues>
+		<command:returnValue>
+			<dev:type>
+				<maml:name></maml:name>
+				<maml:uri></maml:uri>
+				<maml:description/>
+			</dev:type>
+			<maml:description>
+<maml:para />
+			</maml:description>
+		</command:returnValue>
+	</command:returnValues>
+	<command:terminatingErrors></command:terminatingErrors>
+	<command:nonTerminatingErrors></command:nonTerminatingErrors>
+	<maml:alertSet>
+		<maml:title></maml:title>
+		<maml:alert>
+			<maml:para />
+		</maml:alert>
+	</maml:alertSet>
+	<command:examples>
+		<command:example>
+			<maml:title>--------------------------  Example 1  --------------------------</maml:title>
+			<maml:introduction>
+				<maml:paragraph>PS C:\&gt;</maml:paragraph>
+			</maml:introduction>
+			<dev:code>Get-AudioFile song.flac | Set-AudioFileCoverArt (Get-AudioCoverArt Folder.jpg)</dev:code>
+			<dev:remarks>
+				<maml:para>This command sets the cover art on song.flac to the image from Folder.jpg in the current directory.</maml:para>
+				<maml:para />
+				<maml:para />
+				<maml:para></maml:para>
+			</dev:remarks>
+			<command:commandLines>
+				<command:commandLine>
+					<command:commandText>
+						<maml:para />
+					</command:commandText>
+				</command:commandLine>
+			</command:commandLines>
+		</command:example>
+		<command:example>
+			<maml:title>--------------------------  Example 2  --------------------------</maml:title>
+			<maml:introduction>
+				<maml:paragraph>PS C:\&gt;</maml:paragraph>
+			</maml:introduction>
+			<dev:code>Get-AudioFile song.flac | Set-AudioFileCoverArt (Get-AudioCoverArt Folder.jpg) -PassThru | Save-AudioFileMetadata</dev:code>
+			<dev:remarks>
+				<maml:para>This command sets the cover art on song.flac to the image from Folder.jpg in the current directory, and then persists the change to disk.</maml:para>
+				<maml:para />
+				<maml:para />
+				<maml:para></maml:para>
+			</dev:remarks>
+			<command:commandLines>
+				<command:commandLine>
+					<command:commandText>
+						<maml:para />
+					</command:commandText>
+				</command:commandLine>
+			</command:commandLines>
+		</command:example>
+	</command:examples>
+	<maml:relatedLinks>
+	</maml:relatedLinks>
+</command:command>
+<command:command xmlns:maml="http://schemas.microsoft.com/maml/2004/10" xmlns:command="http://schemas.microsoft.com/maml/dev/command/2004/10" xmlns:dev="http://schemas.microsoft.com/maml/dev/2004/10" xmlns:MSHelp="http://msdn.microsoft.com/mshelp">
+<!--Generated by PS Cmdlet Help Editor-->
+	<command:details>
+		<command:name>Set-AudioFileMetadata</command:name>
+		<maml:description>
+			<maml:para>Sets the metadata on one or more audio files.</maml:para>
+		</maml:description>
+		<maml:copyright>
+			<maml:para />
+		</maml:copyright>
+		<command:verb>Set</command:verb>
+		<command:noun>AudioFileMetadata</command:noun>
+		<dev:version />
+	</command:details>
+	<maml:description>
+		<maml:para>The Set-AudioFileMetadata cmdlet sets metadata on one or more audio files using HashTable syntax.</maml:para>
+	</maml:description>
+	<command:syntax>
+		<command:syntaxItem>
+			<maml:name>Set-AudioFileMetadata</maml:name>
+			<command:parameter required="true" variableLength="false" globbing="false" pipelineInput="false" position="0">
+				<maml:name>Metadata</maml:name>
+				<maml:description>
+					<maml:para />
+				</maml:description>
+				<command:parameterValue required="true" variableLength="false">Hashtable</command:parameterValue>
+			</command:parameter>
+			<command:parameter required="true" variableLength="false" globbing="false" pipelineInput="true (ByValue)" position="1">
+				<maml:name>AudioFile</maml:name>
+				<maml:description>
+					<maml:para />
+				</maml:description>
+				<command:parameterValue required="true" variableLength="false">AudioFile</command:parameterValue>
+			</command:parameter>
+			<command:parameter required="false" variableLength="false" globbing="false" pipelineInput="false" position="named">
+				<maml:name>PassThru</maml:name>
+				<maml:description>
+					<maml:para />
+				</maml:description>
+				<command:parameterValue required="false" variableLength="false">SwitchParameter</command:parameterValue>
+			</command:parameter>
+		</command:syntaxItem>
+	</command:syntax>
+	<command:parameters>
+		<command:parameter required="true" variableLength="false" globbing="false" pipelineInput="false" position="0">
+			<maml:name>Metadata</maml:name>
+			<maml:description>
+				<maml:para />
+			</maml:description>
+			<command:parameterValue required="true" variableLength="false">Hashtable</command:parameterValue>
+			<dev:type>
+				<maml:name>Hashtable</maml:name>
+				<maml:uri/>
+			</dev:type>
+			<dev:defaultValue></dev:defaultValue>
+		</command:parameter>
+		<command:parameter required="true" variableLength="false" globbing="false" pipelineInput="true (ByValue)" position="1">
+			<maml:name>AudioFile</maml:name>
+			<maml:description>
+				<maml:para />
+			</maml:description>
+			<command:parameterValue required="true" variableLength="false">AudioFile</command:parameterValue>
+			<dev:type>
+				<maml:name>AudioFile</maml:name>
+				<maml:uri/>
+			</dev:type>
+			<dev:defaultValue></dev:defaultValue>
+		</command:parameter>
+		<command:parameter required="false" variableLength="false" globbing="false" pipelineInput="false" position="named">
+			<maml:name>PassThru</maml:name>
+			<maml:description>
+				<maml:para />
+			</maml:description>
+			<command:parameterValue required="false" variableLength="false">SwitchParameter</command:parameterValue>
+			<dev:type>
+				<maml:name>SwitchParameter</maml:name>
+				<maml:uri/>
+			</dev:type>
+			<dev:defaultValue></dev:defaultValue>
+		</command:parameter>
+	</command:parameters>
+	<command:inputTypes>
+		<command:inputType>
+			<dev:type>
+				<maml:name></maml:name>
+				<maml:uri></maml:uri>
+				<maml:description/>
+			</dev:type>
+			<maml:description>
+<maml:para />
+			</maml:description>
+		</command:inputType>
+	</command:inputTypes>
+	<command:returnValues>
+		<command:returnValue>
+			<dev:type>
+				<maml:name></maml:name>
+				<maml:uri></maml:uri>
+				<maml:description/>
+			</dev:type>
+			<maml:description>
+<maml:para />
+			</maml:description>
+		</command:returnValue>
+	</command:returnValues>
+	<command:terminatingErrors></command:terminatingErrors>
+	<command:nonTerminatingErrors></command:nonTerminatingErrors>
+	<maml:alertSet>
+		<maml:title></maml:title>
+		<maml:alert>
+			<maml:para />
+		</maml:alert>
+	</maml:alertSet>
+	<command:examples>
+		<command:example>
+			<maml:title>--------------------------  Example 1  --------------------------</maml:title>
+			<maml:introduction>
+				<maml:paragraph>PS C:\&gt;</maml:paragraph>
+			</maml:introduction>
+			<dev:code>Get-AudioFile song.flac | Set-AudioFileMetadata @{Title = &quot;Test Song&quot;}</dev:code>
+			<dev:remarks>
+				<maml:para />
+				<maml:para />
+				<maml:para />
+				<maml:para></maml:para>
+			</dev:remarks>
+			<command:commandLines>
+				<command:commandLine>
+					<command:commandText>
+						<maml:para />
+					</command:commandText>
+				</command:commandLine>
+			</command:commandLines>
+		</command:example>
+		<command:example>
+			<maml:title>--------------------------  Example 2  --------------------------</maml:title>
+			<maml:introduction>
+				<maml:paragraph>PS C:\&gt;</maml:paragraph>
+			</maml:introduction>
+			<dev:code>Get-AudioFile song.flac | Set-AudioFileMetadata @{Title = &quot;Test Song&quot;} -PassThru | Save-AudioFileMetadata</dev:code>
+			<dev:remarks>
+				<maml:para>This command sets the title on song.flac to &quot;Test Song&quot; and then persists the change to disk.</maml:para>
 				<maml:para />
 				<maml:para />
 				<maml:para></maml:para>
