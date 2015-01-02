@@ -93,7 +93,8 @@ namespace PowerShellAudio
         /// </param>
         protected virtual void Dispose(bool disposing)
         {
-            resetEvent.Dispose();
+            if (disposing)
+                resetEvent.Dispose();
         }
 
         [ContractInvariantMethod]

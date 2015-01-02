@@ -23,6 +23,7 @@ using System.Drawing;
 using System.Drawing.Imaging;
 using System.Globalization;
 using System.IO;
+using System.Security;
 
 namespace PowerShellAudio
 {
@@ -31,7 +32,8 @@ namespace PowerShellAudio
     /// </summary>
     public class CoverArt
     {
-        byte[] _data;
+        WeakReference<byte[]> _dataReference;
+        FileInfo _tempFile;
 
         /// <summary>
         /// Gets the MIME type for this image format.
@@ -82,8 +84,7 @@ namespace PowerShellAudio
         public CoverArt(CoverArt coverArt)
         {
             Contract.Requires<ArgumentNullException>(coverArt != null);
-            Contract.Ensures(_data != null);
-            Contract.Ensures(_data.Length > 0);
+            Contract.Ensures(_dataReference != null);
             Contract.Ensures(!string.IsNullOrEmpty(MimeType));
             Contract.Ensures(!string.IsNullOrEmpty(Extension));
 
@@ -108,8 +109,7 @@ namespace PowerShellAudio
         {
             Contract.Requires<ArgumentNullException>(data != null);
             Contract.Requires<ArgumentOutOfRangeException>(data.Length > 0);
-            Contract.Ensures(_data != null);
-            Contract.Ensures(_data.Length > 0);
+            Contract.Ensures(_dataReference != null);
             Contract.Ensures(!string.IsNullOrEmpty(MimeType));
             Contract.Ensures(!string.IsNullOrEmpty(Extension));
 
@@ -140,8 +140,7 @@ namespace PowerShellAudio
             Contract.Requires<ArgumentException>(!string.IsNullOrEmpty(fileInfo.FullName));
             Contract.Requires<FileNotFoundException>(fileInfo.Exists);
             Contract.Requires<ArgumentOutOfRangeException>(fileInfo.Length > 0);
-            Contract.Ensures(_data != null);
-            Contract.Ensures(_data.Length > 0);
+            Contract.Ensures(_dataReference != null);
 
             Initialize(File.ReadAllBytes(fileInfo.FullName), false);
         }
@@ -153,9 +152,20 @@ namespace PowerShellAudio
         public byte[] GetData()
         {
             Contract.Ensures(Contract.Result<byte[]>() != null);
-            Contract.Ensures(Contract.Result<byte[]>().Length == _data.Length);
 
-            return (byte[])_data.Clone();
+            byte[] result;
+
+            // If the reference is still valid, return a clone of the data:
+            if (_dataReference.TryGetTarget(out result))
+                return (byte[])result.Clone();
+
+            // Otherwise, load the temporary file and update the reference:
+            result = File.ReadAllBytes(_tempFile.FullName);
+            if (_dataReference == null)
+                _dataReference = new WeakReference<byte[]>(result);
+            else
+                _dataReference.SetTarget(result);
+            return result;
         }
 
         /// <summary>
@@ -181,15 +191,29 @@ namespace PowerShellAudio
             if (!replaceExisting && File.Exists(outputName))
                 throw new IOException(string.Format(CultureInfo.CurrentCulture, Resources.CoverArtFileExistsError, outputName));
 
-            File.WriteAllBytes(outputName, _data);
+            File.WriteAllBytes(outputName, GetData());
+        }
+
+        /// <summary>
+        /// Finalizes an instance of the <see cref="CoverArt"/> class.
+        /// </summary>
+        ~CoverArt()
+        {
+            try
+            {
+                _tempFile.Delete();
+            }
+            catch (IOException)
+            { }
+            catch (SecurityException)
+            { }
         }
 
         void Initialize(byte[] data, bool copy)
         {
             Contract.Requires(data != null);
             Contract.Requires(data.Length > 0);
-            Contract.Ensures(_data != null);
-            Contract.Ensures(_data.Length > 0);
+            Contract.Ensures(_dataReference != null);
             Contract.Ensures(!string.IsNullOrEmpty(MimeType));
             Contract.Ensures(!string.IsNullOrEmpty(Extension));
 
@@ -203,16 +227,16 @@ namespace PowerShellAudio
                     {
                         image.Save(pngStream, ImageFormat.Png);
                         
-                        _data = pngStream.ToArray();
+                        SetData(pngStream.ToArray());
                         MimeType = "image/png";
                         Extension = ".png";
                     }
                 else
                 {
                     if (copy)
-                        _data = (byte[])data.Clone();
+                        SetData((byte[])data.Clone());
                     else
-                        _data = data;
+                        SetData(data);
 
                     if (image.RawFormat.Guid == ImageFormat.Png.Guid)
                     {
@@ -263,11 +287,27 @@ namespace PowerShellAudio
             }
         }
 
+        void SetData(byte[] data)
+        {
+            Contract.Requires(data != null);
+            Contract.Ensures(_dataReference != null);
+            Contract.Ensures(_tempFile != null);
+            Contract.Ensures(_tempFile.Exists);
+
+            // To limit memory usage store a weak reference, and cache the data in a temporary file:
+            if (_dataReference == null)
+                _dataReference = new WeakReference<byte[]>(data);
+            else
+                _dataReference.SetTarget(data);
+            _tempFile = new FileInfo(Path.Combine(Path.GetTempPath(), "AudioShell", Path.GetRandomFileName()));
+            _tempFile.Directory.Create();
+            File.WriteAllBytes(_tempFile.FullName, data);
+        }
+
         [ContractInvariantMethod]
         void ObjectInvariant()
         {
-            Contract.Invariant(_data != null);
-            Contract.Invariant(_data.Length > 0);
+            Contract.Invariant(_dataReference != null);
             Contract.Invariant(!string.IsNullOrEmpty(MimeType));
             Contract.Invariant(!string.IsNullOrEmpty(Extension));
         }
