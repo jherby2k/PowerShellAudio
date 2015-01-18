@@ -95,8 +95,9 @@ namespace PowerShellAudio
             Contract.Requires<ArgumentOutOfRangeException>(quality >= 0);
             Contract.Requires<ArgumentOutOfRangeException>(quality <= 100);
 
-            using (Image image = GetResizedImage(maxWidth))
             using (var outputStream = new MemoryStream())
+            using (var sourceStream = new MemoryStream(GetData()))
+            using (Image image = GetResizedImage(maxWidth, sourceStream))
             {
                 if (MimeType == "image/jpeg" || convertToLossy)
                 {
@@ -114,28 +115,26 @@ namespace PowerShellAudio
         }
 
         [SuppressMessage("Microsoft.Reliability", "CA2000:Dispose objects before losing scope", Justification = "Result should be disposed by the calling method")]
-        Image GetResizedImage(int maxWidth)
+        Image GetResizedImage(int maxWidth, MemoryStream sourceStream)
         {
             Contract.Requires(maxWidth > 0);
 
             // If maxWidth isn't exceeded, just return the original image:
             if (Width <= maxWidth)
-                using (var memoryStream = new MemoryStream(GetData()))
-                    return Image.FromStream(memoryStream);
+                return Image.FromStream(sourceStream);
 
             // Preserve the aspect ratio:
             var result = new Bitmap(maxWidth, (int)(Height / (float)Width * maxWidth));
 
             result.SetResolution(Width, Height);
 
-            using (var memoryStream = new MemoryStream(GetData()))
-            using (var image = Image.FromStream(memoryStream))
+            using (var sourceImage = Image.FromStream(sourceStream))
             using (var graphics = Graphics.FromImage(result))
             {
                 graphics.CompositingQuality = CompositingQuality.HighQuality;
                 graphics.InterpolationMode = InterpolationMode.HighQualityBicubic;
                 graphics.SmoothingMode = SmoothingMode.HighQuality;
-                graphics.DrawImage(image, 0, 0, result.Width, result.Height);
+                graphics.DrawImage(sourceImage, 0, 0, result.Width, result.Height);
             }
 
             return result;
