@@ -11,7 +11,7 @@ using System.Resources;
 [assembly: AssemblyConfiguration("")]
 [assembly: AssemblyCompany("")]
 [assembly: AssemblyProduct("PowerShellAudio")]
-[assembly: AssemblyCopyright("Copyright © 2014 Jeremy Herbison")]
+[assembly: AssemblyCopyright("Copyright © 2014, 2015 Jeremy Herbison")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]
 
