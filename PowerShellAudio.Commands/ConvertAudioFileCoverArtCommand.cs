@@ -56,7 +56,8 @@ namespace PowerShellAudio.Commands
         protected override void ProcessRecord()
         {
             var taggedAudioFile = new TaggedAudioFile(AudioFile);
-            taggedAudioFile.Metadata.CoverArt = new ConvertibleCoverArt(taggedAudioFile.Metadata.CoverArt).Convert(_maxWidth, _convertToLossy, _quality);
+            if (taggedAudioFile.Metadata.CoverArt != null)
+                taggedAudioFile.Metadata.CoverArt = new ConvertibleCoverArt(taggedAudioFile.Metadata.CoverArt).Convert(_maxWidth, _convertToLossy, _quality);
             if (PassThru)
                 WriteObject(taggedAudioFile);
         }

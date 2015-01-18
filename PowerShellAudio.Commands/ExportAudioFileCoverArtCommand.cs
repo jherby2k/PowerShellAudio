@@ -57,7 +57,7 @@ namespace PowerShellAudio.Commands
                 outputDirectory = new DirectoryInfo(e.ItemName);
             }
 
-            if (ShouldProcess(AudioFile.FileInfo.FullName))
+            if (ShouldProcess(AudioFile.FileInfo.FullName) && taggedAudioFile.Metadata.CoverArt != null)
                 taggedAudioFile.Metadata.CoverArt.Export(outputDirectory, substituter.Substitute(Name), Replace);
 
             if (PassThru)
