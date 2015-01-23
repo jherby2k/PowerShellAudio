@@ -23,28 +23,28 @@
 			<command:parameter required="true" variableLength="false" globbing="false" pipelineInput="false" position="0">
 				<maml:name>Path</maml:name>
 				<maml:description>
-					<maml:para />
+					<maml:para>Specifies a path to the output directory. Wildcards are permitted. The default location is the current directory (.).</maml:para>
 				</maml:description>
 				<command:parameterValue required="true" variableLength="false">String</command:parameterValue>
 			</command:parameter>
 			<command:parameter required="true" variableLength="false" globbing="false" pipelineInput="true (ByValue)" position="1">
 				<maml:name>AudioFile</maml:name>
 				<maml:description>
-					<maml:para />
+					<maml:para>The audio file to be copied.</maml:para>
 				</maml:description>
 				<command:parameterValue required="true" variableLength="false">AudioFile</command:parameterValue>
 			</command:parameter>
 			<command:parameter required="false" variableLength="false" globbing="false" pipelineInput="false" position="named">
 				<maml:name>Name</maml:name>
 				<maml:description>
-					<maml:para />
+					<maml:para>The new file name, without extension.</maml:para>
 				</maml:description>
 				<command:parameterValue required="true" variableLength="false">String</command:parameterValue>
 			</command:parameter>
 			<command:parameter required="false" variableLength="false" globbing="false" pipelineInput="false" position="named">
 				<maml:name>Replace</maml:name>
 				<maml:description>
-					<maml:para />
+					<maml:para>If specified and the destination file already exists, it will be replaced. If not specified and the destination file already exists, an exception will be thrown.</maml:para>
 				</maml:description>
 				<command:parameterValue required="false" variableLength="false">SwitchParameter</command:parameterValue>
 			</command:parameter>
@@ -68,28 +68,28 @@
 			<command:parameter required="true" variableLength="false" globbing="false" pipelineInput="false" position="0">
 				<maml:name>LiteralPath</maml:name>
 				<maml:description>
-					<maml:para />
+					<maml:para>Specifies a path to the output directory. Unlike the Path parameter, the value of the LiteralPath parameter is used exactly as it is typed. No characters are interpreted as wildcards. If the path includes escape characters, enclose it in single quotation marks. Single quotation marks tell Windows PowerShell not to interpret any characters as escape sequences.</maml:para>
 				</maml:description>
 				<command:parameterValue required="true" variableLength="false">String</command:parameterValue>
 			</command:parameter>
 			<command:parameter required="true" variableLength="false" globbing="false" pipelineInput="true (ByValue)" position="1">
 				<maml:name>AudioFile</maml:name>
 				<maml:description>
-					<maml:para />
+					<maml:para>The audio file to be copied.</maml:para>
 				</maml:description>
 				<command:parameterValue required="true" variableLength="false">AudioFile</command:parameterValue>
 			</command:parameter>
 			<command:parameter required="false" variableLength="false" globbing="false" pipelineInput="false" position="named">
 				<maml:name>Name</maml:name>
 				<maml:description>
-					<maml:para />
+					<maml:para>The new file name, without extension.</maml:para>
 				</maml:description>
 				<command:parameterValue required="true" variableLength="false">String</command:parameterValue>
 			</command:parameter>
 			<command:parameter required="false" variableLength="false" globbing="false" pipelineInput="false" position="named">
 				<maml:name>Replace</maml:name>
 				<maml:description>
-					<maml:para />
+					<maml:para>If specified and the destination file already exists, it will be replaced. If not specified and the destination file already exists, an exception will be thrown.</maml:para>
 				</maml:description>
 				<command:parameterValue required="false" variableLength="false">SwitchParameter</command:parameterValue>
 			</command:parameter>
@@ -113,7 +113,7 @@
 		<command:parameter required="true" variableLength="false" globbing="false" pipelineInput="true (ByValue)" position="1">
 			<maml:name>AudioFile</maml:name>
 			<maml:description>
-				<maml:para />
+				<maml:para>The audio file to be copied.</maml:para>
 			</maml:description>
 			<command:parameterValue required="true" variableLength="false">AudioFile</command:parameterValue>
 			<dev:type>
@@ -125,7 +125,7 @@
 		<command:parameter required="false" variableLength="false" globbing="false" pipelineInput="false" position="named">
 			<maml:name>Name</maml:name>
 			<maml:description>
-				<maml:para />
+				<maml:para>The new file name, without extension.</maml:para>
 			</maml:description>
 			<command:parameterValue required="true" variableLength="false">String</command:parameterValue>
 			<dev:type>
@@ -137,7 +137,7 @@
 		<command:parameter required="false" variableLength="false" globbing="false" pipelineInput="false" position="named">
 			<maml:name>Replace</maml:name>
 			<maml:description>
-				<maml:para />
+				<maml:para>If specified and the destination file already exists, it will be replaced. If not specified and the destination file already exists, an exception will be thrown.</maml:para>
 			</maml:description>
 			<command:parameterValue required="false" variableLength="false">SwitchParameter</command:parameterValue>
 			<dev:type>
@@ -173,7 +173,7 @@
 		<command:parameter required="true" variableLength="false" globbing="false" pipelineInput="false" position="0">
 			<maml:name>Path</maml:name>
 			<maml:description>
-				<maml:para />
+				<maml:para>Specifies a path to the output directory. Wildcards are permitted. The default location is the current directory (.).</maml:para>
 			</maml:description>
 			<command:parameterValue required="true" variableLength="false">String</command:parameterValue>
 			<dev:type>
@@ -185,7 +185,7 @@
 		<command:parameter required="true" variableLength="false" globbing="false" pipelineInput="false" position="0">
 			<maml:name>LiteralPath</maml:name>
 			<maml:description>
-				<maml:para />
+				<maml:para>Specifies a path to the output directory. Unlike the Path parameter, the value of the LiteralPath parameter is used exactly as it is typed. No characters are interpreted as wildcards. If the path includes escape characters, enclose it in single quotation marks. Single quotation marks tell Windows PowerShell not to interpret any characters as escape sequences.</maml:para>
 			</maml:description>
 			<command:parameterValue required="true" variableLength="false">String</command:parameterValue>
 			<dev:type>
@@ -336,7 +336,7 @@
 			<command:parameter required="true" variableLength="false" globbing="false" pipelineInput="true (ByValue)" position="0">
 				<maml:name>Path</maml:name>
 				<maml:description>
-					<maml:para />
+					<maml:para>Specifies a path to one or more files. Wildcards are permitted. The default location is the current directory (.).</maml:para>
 				</maml:description>
 				<command:parameterValue required="true" variableLength="false">String</command:parameterValue>
 			</command:parameter>
@@ -346,7 +346,7 @@
 			<command:parameter required="true" variableLength="false" globbing="false" pipelineInput="false" position="0">
 				<maml:name>LiteralPath</maml:name>
 				<maml:description>
-					<maml:para />
+					<maml:para>Specifies a path to one or more files. Unlike the Path parameter, the value of the LiteralPath parameter is used exactly as it is typed. No characters are interpreted as wildcards. If the path includes escape characters, enclose it in single quotation marks. Single quotation marks tell Windows PowerShell not to interpret any characters as escape sequences.</maml:para>
 				</maml:description>
 				<command:parameterValue required="true" variableLength="false">String</command:parameterValue>
 			</command:parameter>
@@ -356,7 +356,7 @@
 			<command:parameter required="true" variableLength="false" globbing="false" pipelineInput="true (ByValue)" position="0">
 				<maml:name>FileInfo</maml:name>
 				<maml:description>
-					<maml:para />
+					<maml:para>Specifies one or more files.</maml:para>
 				</maml:description>
 				<command:parameterValue required="true" variableLength="false">FileInfo</command:parameterValue>
 			</command:parameter>
@@ -366,7 +366,7 @@
 		<command:parameter required="true" variableLength="false" globbing="false" pipelineInput="true (ByValue)" position="0">
 			<maml:name>Path</maml:name>
 			<maml:description>
-				<maml:para />
+				<maml:para>Specifies a path to one or more files. Wildcards are permitted. The default location is the current directory (.).</maml:para>
 			</maml:description>
 			<command:parameterValue required="true" variableLength="false">String</command:parameterValue>
 			<dev:type>
@@ -378,7 +378,7 @@
 		<command:parameter required="true" variableLength="false" globbing="false" pipelineInput="true (ByValue)" position="0">
 			<maml:name>FileInfo</maml:name>
 			<maml:description>
-				<maml:para />
+				<maml:para>Specifies one or more files.</maml:para>
 			</maml:description>
 			<command:parameterValue required="true" variableLength="false">FileInfo</command:parameterValue>
 			<dev:type>
@@ -390,7 +390,7 @@
 		<command:parameter required="true" variableLength="false" globbing="false" pipelineInput="false" position="0">
 			<maml:name>LiteralPath</maml:name>
 			<maml:description>
-				<maml:para />
+				<maml:para>Specifies a path to one or more files. Unlike the Path parameter, the value of the LiteralPath parameter is used exactly as it is typed. No characters are interpreted as wildcards. If the path includes escape characters, enclose it in single quotation marks. Single quotation marks tell Windows PowerShell not to interpret any characters as escape sequences.</maml:para>
 			</maml:description>
 			<command:parameterValue required="true" variableLength="false">String</command:parameterValue>
 			<dev:type>
@@ -540,7 +540,7 @@
 			<command:parameter required="true" variableLength="false" globbing="false" pipelineInput="true (ByValue)" position="0">
 				<maml:name>AudioFile</maml:name>
 				<maml:description>
-					<maml:para />
+					<maml:para>The audio file.</maml:para>
 				</maml:description>
 				<command:parameterValue required="true" variableLength="false">AudioFile</command:parameterValue>
 			</command:parameter>
@@ -550,7 +550,7 @@
 		<command:parameter required="true" variableLength="false" globbing="false" pipelineInput="true (ByValue)" position="0">
 			<maml:name>AudioFile</maml:name>
 			<maml:description>
-				<maml:para />
+				<maml:para>The audio file.</maml:para>
 			</maml:description>
 			<command:parameterValue required="true" variableLength="false">AudioFile</command:parameterValue>
 			<dev:type>
@@ -653,8 +653,8 @@
 	</command:details>
 	<maml:description>
 		<maml:para>The Measure-AudioFile cmdlet generates metadata about one or more audio files by examining the audio streams with the specified analyzer. Passing multiple audio files to a single cmdlet instance will treat them as a single album, or grouping. This cmdlet will never modify the audio itself.</maml:para>
-		<maml:para>To get a list of available analyzers, use the Get-MeasureAudioFileAnalyzer cmdlet.</maml:para>
-		<maml:para>The results can be retrieved with the Get-AudioMetadata cmdlet, or by accessing the Metadata property directly. To persist the results to disk, use the Save-AudioMetadata cmdlet.</maml:para>
+		<maml:para>To get a list of available analyzers, use the Get-AudioAnalyzerInfo cmdlet.</maml:para>
+		<maml:para>The results can be retrieved with the Get-AudioFileMetadata cmdlet, or by accessing the Metadata property directly. To persist the results to disk, use the Save-AudioFileMetadata cmdlet.</maml:para>
 	</maml:description>
 	<command:syntax>
 		<command:syntaxItem>
@@ -662,14 +662,14 @@
 			<command:parameter required="true" variableLength="false" globbing="false" pipelineInput="false" position="0">
 				<maml:name>Analyzer</maml:name>
 				<maml:description>
-					<maml:para />
+					<maml:para>The name of the analyzer to use. To get a list of available analyzers, use the Get-AudioAnalyzerInfo cmdlet.</maml:para>
 				</maml:description>
 				<command:parameterValue required="true" variableLength="false">String</command:parameterValue>
 			</command:parameter>
 			<command:parameter required="true" variableLength="false" globbing="false" pipelineInput="true (ByValue)" position="1">
 				<maml:name>AudioFile</maml:name>
 				<maml:description>
-					<maml:para />
+					<maml:para>The audio file to be measured.</maml:para>
 				</maml:description>
 				<command:parameterValue required="true" variableLength="false">AudioFile</command:parameterValue>
 			</command:parameter>
@@ -686,7 +686,7 @@
 		<command:parameter required="true" variableLength="false" globbing="false" pipelineInput="false" position="0">
 			<maml:name>Analyzer</maml:name>
 			<maml:description>
-				<maml:para />
+				<maml:para>The name of the analyzer to use. To get a list of available analyzers, use the Get-AudioAnalyzerInfo cmdlet.</maml:para>
 			</maml:description>
 			<command:parameterValue required="true" variableLength="false">String</command:parameterValue>
 			<dev:type>
@@ -698,7 +698,7 @@
 		<command:parameter required="true" variableLength="false" globbing="false" pipelineInput="true (ByValue)" position="1">
 			<maml:name>AudioFile</maml:name>
 			<maml:description>
-				<maml:para />
+				<maml:para>The audio file to be measured.</maml:para>
 			</maml:description>
 			<command:parameterValue required="true" variableLength="false">AudioFile</command:parameterValue>
 			<dev:type>
@@ -881,14 +881,14 @@
 			<command:parameter required="true" variableLength="false" globbing="false" pipelineInput="false" position="0">
 				<maml:name>Name</maml:name>
 				<maml:description>
-					<maml:para />
+					<maml:para>The new file name, without extension.</maml:para>
 				</maml:description>
 				<command:parameterValue required="true" variableLength="false">String</command:parameterValue>
 			</command:parameter>
 			<command:parameter required="true" variableLength="false" globbing="false" pipelineInput="true (ByValue)" position="1">
 				<maml:name>AudioFile</maml:name>
 				<maml:description>
-					<maml:para />
+					<maml:para>The audio file to be renamed.</maml:para>
 				</maml:description>
 				<command:parameterValue required="true" variableLength="false">AudioFile</command:parameterValue>
 			</command:parameter>
@@ -919,7 +919,7 @@
 		<command:parameter required="true" variableLength="false" globbing="false" pipelineInput="false" position="0">
 			<maml:name>Name</maml:name>
 			<maml:description>
-				<maml:para />
+				<maml:para>The new file name, without extension.</maml:para>
 			</maml:description>
 			<command:parameterValue required="true" variableLength="false">String</command:parameterValue>
 			<dev:type>
@@ -931,7 +931,7 @@
 		<command:parameter required="true" variableLength="false" globbing="false" pipelineInput="true (ByValue)" position="1">
 			<maml:name>AudioFile</maml:name>
 			<maml:description>
-				<maml:para />
+				<maml:para>The audio file to be renamed.</maml:para>
 			</maml:description>
 			<command:parameterValue required="true" variableLength="false">AudioFile</command:parameterValue>
 			<dev:type>
@@ -1070,7 +1070,7 @@
 	</command:details>
 	<maml:description>
 		<maml:para>The Export-AudioFile cmdlet encodes one or more audio files using the specified encoder, and saves the resulting files in a specified directory.</maml:para>
-		<maml:para>To get a list of available encoders, use the Get-AudioEncoderList cmdlet.</maml:para>
+		<maml:para>To get a list of available encoders, use the Get-AudioEncoderInfo cmdlet.</maml:para>
 		<maml:para>The resulting file name(s) and/or directory can be generated from metadata by specifying keys inside curly braces. For more information, type &quot;Get-Help Export-AudioFile -Examples&quot;.</maml:para>
 	</maml:description>
 	<command:syntax>
@@ -1079,42 +1079,42 @@
 			<command:parameter required="true" variableLength="false" globbing="false" pipelineInput="false" position="0">
 				<maml:name>Encoder</maml:name>
 				<maml:description>
-					<maml:para />
+					<maml:para>The name of the encoder to use. To get a list of available encoders, use the Get-AudioEncoderInfo cmdlet.</maml:para>
 				</maml:description>
 				<command:parameterValue required="true" variableLength="false">String</command:parameterValue>
 			</command:parameter>
 			<command:parameter required="true" variableLength="false" globbing="false" pipelineInput="false" position="1">
 				<maml:name>Path</maml:name>
 				<maml:description>
-					<maml:para />
+					<maml:para>Specifies a path to the output directory. Wildcards are permitted. The default location is the current directory (.).</maml:para>
 				</maml:description>
 				<command:parameterValue required="true" variableLength="false">String</command:parameterValue>
 			</command:parameter>
 			<command:parameter required="true" variableLength="false" globbing="false" pipelineInput="true (ByValue)" position="2">
 				<maml:name>AudioFile</maml:name>
 				<maml:description>
-					<maml:para />
+					<maml:para>The audio file to be exported.</maml:para>
 				</maml:description>
 				<command:parameterValue required="true" variableLength="false">AudioFile</command:parameterValue>
 			</command:parameter>
 			<command:parameter required="false" variableLength="false" globbing="false" pipelineInput="false" position="named">
 				<maml:name>Name</maml:name>
 				<maml:description>
-					<maml:para />
+					<maml:para>The new file name, without extension.</maml:para>
 				</maml:description>
 				<command:parameterValue required="true" variableLength="false">String</command:parameterValue>
 			</command:parameter>
 			<command:parameter required="false" variableLength="false" globbing="false" pipelineInput="false" position="named">
 				<maml:name>Setting</maml:name>
 				<maml:description>
-					<maml:para />
+					<maml:para>Encoder-specific settings to apply. To see the available and default settings for an encoder, use the Get-AudioEncoderInfo cmdlet.</maml:para>
 				</maml:description>
 				<command:parameterValue required="true" variableLength="false">Hashtable</command:parameterValue>
 			</command:parameter>
 			<command:parameter required="false" variableLength="false" globbing="false" pipelineInput="false" position="named">
 				<maml:name>Replace</maml:name>
 				<maml:description>
-					<maml:para />
+					<maml:para>If specified and the destination file already exists, it will be replaced. If not specified and the destination file already exists, an exception will be thrown.</maml:para>
 				</maml:description>
 				<command:parameterValue required="false" variableLength="false">SwitchParameter</command:parameterValue>
 			</command:parameter>
@@ -1138,42 +1138,42 @@
 			<command:parameter required="true" variableLength="false" globbing="false" pipelineInput="false" position="0">
 				<maml:name>Encoder</maml:name>
 				<maml:description>
-					<maml:para />
+					<maml:para>The name of the encoder to use. To get a list of available encoders, use the Get-AudioEncoderInfo cmdlet.</maml:para>
 				</maml:description>
 				<command:parameterValue required="true" variableLength="false">String</command:parameterValue>
 			</command:parameter>
 			<command:parameter required="true" variableLength="false" globbing="false" pipelineInput="false" position="1">
 				<maml:name>LiteralPath</maml:name>
 				<maml:description>
-					<maml:para />
+					<maml:para>Specifies a path to the output directory. Unlike the Path parameter, the value of the LiteralPath parameter is used exactly as it is typed. No characters are interpreted as wildcards. If the path includes escape characters, enclose it in single quotation marks. Single quotation marks tell Windows PowerShell not to interpret any characters as escape sequences.</maml:para>
 				</maml:description>
 				<command:parameterValue required="true" variableLength="false">String</command:parameterValue>
 			</command:parameter>
 			<command:parameter required="true" variableLength="false" globbing="false" pipelineInput="true (ByValue)" position="2">
 				<maml:name>AudioFile</maml:name>
 				<maml:description>
-					<maml:para />
+					<maml:para>The audio file to be exported.</maml:para>
 				</maml:description>
 				<command:parameterValue required="true" variableLength="false">AudioFile</command:parameterValue>
 			</command:parameter>
 			<command:parameter required="false" variableLength="false" globbing="false" pipelineInput="false" position="named">
 				<maml:name>Name</maml:name>
 				<maml:description>
-					<maml:para />
+					<maml:para>The new file name, without extension.</maml:para>
 				</maml:description>
 				<command:parameterValue required="true" variableLength="false">String</command:parameterValue>
 			</command:parameter>
 			<command:parameter required="false" variableLength="false" globbing="false" pipelineInput="false" position="named">
 				<maml:name>Setting</maml:name>
 				<maml:description>
-					<maml:para />
+					<maml:para>Encoder-specific settings to apply. To see the available and default settings for an encoder, use the Get-AudioEncoderInfo cmdlet.</maml:para>
 				</maml:description>
 				<command:parameterValue required="true" variableLength="false">Hashtable</command:parameterValue>
 			</command:parameter>
 			<command:parameter required="false" variableLength="false" globbing="false" pipelineInput="false" position="named">
 				<maml:name>Replace</maml:name>
 				<maml:description>
-					<maml:para />
+					<maml:para>If specified and the destination file already exists, it will be replaced. If not specified and the destination file already exists, an exception will be thrown.</maml:para>
 				</maml:description>
 				<command:parameterValue required="false" variableLength="false">SwitchParameter</command:parameterValue>
 			</command:parameter>
@@ -1197,7 +1197,7 @@
 		<command:parameter required="true" variableLength="false" globbing="false" pipelineInput="false" position="0">
 			<maml:name>Encoder</maml:name>
 			<maml:description>
-				<maml:para />
+				<maml:para>The name of the encoder to use. To get a list of available encoders, use the Get-AudioEncoderInfo cmdlet.</maml:para>
 			</maml:description>
 			<command:parameterValue required="true" variableLength="false">String</command:parameterValue>
 			<dev:type>
@@ -1209,7 +1209,7 @@
 		<command:parameter required="true" variableLength="false" globbing="false" pipelineInput="true (ByValue)" position="2">
 			<maml:name>AudioFile</maml:name>
 			<maml:description>
-				<maml:para />
+				<maml:para>The audio file to be exported.</maml:para>
 			</maml:description>
 			<command:parameterValue required="true" variableLength="false">AudioFile</command:parameterValue>
 			<dev:type>
@@ -1221,7 +1221,7 @@
 		<command:parameter required="false" variableLength="false" globbing="false" pipelineInput="false" position="named">
 			<maml:name>Setting</maml:name>
 			<maml:description>
-				<maml:para />
+				<maml:para>Encoder-specific settings to apply. To see the available and default settings for an encoder, use the Get-AudioEncoderInfo cmdlet.</maml:para>
 			</maml:description>
 			<command:parameterValue required="true" variableLength="false">Hashtable</command:parameterValue>
 			<dev:type>
@@ -1233,7 +1233,7 @@
 		<command:parameter required="false" variableLength="false" globbing="false" pipelineInput="false" position="named">
 			<maml:name>Name</maml:name>
 			<maml:description>
-				<maml:para />
+				<maml:para>The new file name, without extension.</maml:para>
 			</maml:description>
 			<command:parameterValue required="true" variableLength="false">String</command:parameterValue>
 			<dev:type>
@@ -1245,7 +1245,7 @@
 		<command:parameter required="false" variableLength="false" globbing="false" pipelineInput="false" position="named">
 			<maml:name>Replace</maml:name>
 			<maml:description>
-				<maml:para />
+				<maml:para>If specified and the destination file already exists, it will be replaced. If not specified and the destination file already exists, an exception will be thrown.</maml:para>
 			</maml:description>
 			<command:parameterValue required="false" variableLength="false">SwitchParameter</command:parameterValue>
 			<dev:type>
@@ -1281,7 +1281,7 @@
 		<command:parameter required="true" variableLength="false" globbing="false" pipelineInput="false" position="1">
 			<maml:name>Path</maml:name>
 			<maml:description>
-				<maml:para />
+				<maml:para>Specifies a path to the output directory. Wildcards are permitted. The default location is the current directory (.).</maml:para>
 			</maml:description>
 			<command:parameterValue required="true" variableLength="false">String</command:parameterValue>
 			<dev:type>
@@ -1293,7 +1293,7 @@
 		<command:parameter required="true" variableLength="false" globbing="false" pipelineInput="false" position="1">
 			<maml:name>LiteralPath</maml:name>
 			<maml:description>
-				<maml:para />
+				<maml:para>Specifies a path to the output directory. Unlike the Path parameter, the value of the LiteralPath parameter is used exactly as it is typed. No characters are interpreted as wildcards. If the path includes escape characters, enclose it in single quotation marks. Single quotation marks tell Windows PowerShell not to interpret any characters as escape sequences.</maml:para>
 			</maml:description>
 			<command:parameterValue required="true" variableLength="false">String</command:parameterValue>
 			<dev:type>
@@ -1443,7 +1443,7 @@
 			<command:parameter required="false" variableLength="false" globbing="false" pipelineInput="false" position="0">
 				<maml:name>Name</maml:name>
 				<maml:description>
-					<maml:para />
+					<maml:para>The name of the encoder. If not specified, all available encoders are returned.</maml:para>
 				</maml:description>
 				<command:parameterValue required="true" variableLength="false">String</command:parameterValue>
 			</command:parameter>
@@ -1453,7 +1453,7 @@
 		<command:parameter required="false" variableLength="false" globbing="false" pipelineInput="false" position="0">
 			<maml:name>Name</maml:name>
 			<maml:description>
-				<maml:para />
+				<maml:para>The name of the encoder. If not specified, all available encoders are returned.</maml:para>
 			</maml:description>
 			<command:parameterValue required="true" variableLength="false">String</command:parameterValue>
 			<dev:type>
@@ -1523,7 +1523,7 @@
 			<command:parameter required="false" variableLength="false" globbing="false" pipelineInput="false" position="0">
 				<maml:name>Extension</maml:name>
 				<maml:description>
-					<maml:para />
+					<maml:para>The audio file extension. If not specified, all available metadata encoders are returned.</maml:para>
 				</maml:description>
 				<command:parameterValue required="true" variableLength="false">String</command:parameterValue>
 			</command:parameter>
@@ -1533,7 +1533,7 @@
 		<command:parameter required="false" variableLength="false" globbing="false" pipelineInput="false" position="0">
 			<maml:name>Extension</maml:name>
 			<maml:description>
-				<maml:para />
+				<maml:para>The audio file extension. If not specified, all available metadata encoders are returned.</maml:para>
 			</maml:description>
 			<command:parameterValue required="true" variableLength="false">String</command:parameterValue>
 			<dev:type>
@@ -1603,7 +1603,7 @@
 			<command:parameter required="false" variableLength="false" globbing="false" pipelineInput="false" position="0">
 				<maml:name>Name</maml:name>
 				<maml:description>
-					<maml:para />
+					<maml:para>The name of the analyzer. If not specified, all available analyzers are returned.</maml:para>
 				</maml:description>
 				<command:parameterValue required="true" variableLength="false">String</command:parameterValue>
 			</command:parameter>
@@ -1613,7 +1613,7 @@
 		<command:parameter required="false" variableLength="false" globbing="false" pipelineInput="false" position="0">
 			<maml:name>Name</maml:name>
 			<maml:description>
-				<maml:para />
+				<maml:para>The name of the analyzer. If not specified, all available analyzers are returned.</maml:para>
 			</maml:description>
 			<command:parameterValue required="true" variableLength="false">String</command:parameterValue>
 			<dev:type>
@@ -1683,49 +1683,49 @@
 			<command:parameter required="true" variableLength="false" globbing="false" pipelineInput="false" position="0">
 				<maml:name>Name</maml:name>
 				<maml:description>
-					<maml:para />
+					<maml:para>The new file name, without extension.</maml:para>
 				</maml:description>
 				<command:parameterValue required="true" variableLength="false">String</command:parameterValue>
 			</command:parameter>
 			<command:parameter required="true" variableLength="false" globbing="false" pipelineInput="false" position="1">
 				<maml:name>Path</maml:name>
 				<maml:description>
-					<maml:para />
+					<maml:para>Specifies a path to the output directory. Wildcards are permitted. The default location is the current directory (.).</maml:para>
 				</maml:description>
 				<command:parameterValue required="true" variableLength="false">String</command:parameterValue>
 			</command:parameter>
 			<command:parameter required="true" variableLength="false" globbing="false" pipelineInput="true (ByValue)" position="2">
 				<maml:name>CoverArt</maml:name>
 				<maml:description>
-					<maml:para />
+					<maml:para>The cover art to be exported.</maml:para>
 				</maml:description>
 				<command:parameterValue required="true" variableLength="false">CoverArt</command:parameterValue>
 			</command:parameter>
 			<command:parameter required="false" variableLength="false" globbing="false" pipelineInput="false" position="named">
 				<maml:name>Replace</maml:name>
 				<maml:description>
-					<maml:para />
+					<maml:para>If specified and the destination file already exists, it will be replaced. If not specified and the destination file already exists, an exception will be thrown.</maml:para>
 				</maml:description>
 				<command:parameterValue required="false" variableLength="false">SwitchParameter</command:parameterValue>
 			</command:parameter>
 			<command:parameter required="false" variableLength="false" globbing="false" pipelineInput="false" position="named">
 				<maml:name>PassThru</maml:name>
 				<maml:description>
-					<maml:para />
+					<maml:para>Writes the cover art to the console. By default, this cmdlet does not generate any output.</maml:para>
 				</maml:description>
 				<command:parameterValue required="false" variableLength="false">SwitchParameter</command:parameterValue>
 			</command:parameter>
 			<command:parameter required="false" variableLength="false" globbing="false" pipelineInput="false" position="named">
 				<maml:name>WhatIf</maml:name>
 				<maml:description>
-					<maml:para />
+					<maml:para>Shows what would happen if the cmdlet runs. The cmdlet is not run.</maml:para>
 				</maml:description>
 				<command:parameterValue required="false" variableLength="false">SwitchParameter</command:parameterValue>
 			</command:parameter>
 			<command:parameter required="false" variableLength="false" globbing="false" pipelineInput="false" position="named">
 				<maml:name>Confirm</maml:name>
 				<maml:description>
-					<maml:para />
+					<maml:para>Prompts you for confirmation before running the cmdlet.</maml:para>
 				</maml:description>
 				<command:parameterValue required="false" variableLength="false">SwitchParameter</command:parameterValue>
 			</command:parameter>
@@ -1735,49 +1735,49 @@
 			<command:parameter required="true" variableLength="false" globbing="false" pipelineInput="false" position="0">
 				<maml:name>Name</maml:name>
 				<maml:description>
-					<maml:para />
+					<maml:para>The new file name, without extension.</maml:para>
 				</maml:description>
 				<command:parameterValue required="true" variableLength="false">String</command:parameterValue>
 			</command:parameter>
 			<command:parameter required="true" variableLength="false" globbing="false" pipelineInput="false" position="1">
 				<maml:name>LiteralPath</maml:name>
 				<maml:description>
-					<maml:para />
+					<maml:para>Specifies a path to the output directory. Unlike the Path parameter, the value of the LiteralPath parameter is used exactly as it is typed. No characters are interpreted as wildcards. If the path includes escape characters, enclose it in single quotation marks. Single quotation marks tell Windows PowerShell not to interpret any characters as escape sequences.</maml:para>
 				</maml:description>
 				<command:parameterValue required="true" variableLength="false">String</command:parameterValue>
 			</command:parameter>
 			<command:parameter required="true" variableLength="false" globbing="false" pipelineInput="true (ByValue)" position="2">
 				<maml:name>CoverArt</maml:name>
 				<maml:description>
-					<maml:para />
+					<maml:para>The cover art to be exported.</maml:para>
 				</maml:description>
 				<command:parameterValue required="true" variableLength="false">CoverArt</command:parameterValue>
 			</command:parameter>
 			<command:parameter required="false" variableLength="false" globbing="false" pipelineInput="false" position="named">
 				<maml:name>Replace</maml:name>
 				<maml:description>
-					<maml:para />
+					<maml:para>If specified and the destination file already exists, it will be replaced. If not specified and the destination file already exists, an exception will be thrown.</maml:para>
 				</maml:description>
 				<command:parameterValue required="false" variableLength="false">SwitchParameter</command:parameterValue>
 			</command:parameter>
 			<command:parameter required="false" variableLength="false" globbing="false" pipelineInput="false" position="named">
 				<maml:name>PassThru</maml:name>
 				<maml:description>
-					<maml:para />
+					<maml:para>Writes the cover art to the console. By default, this cmdlet does not generate any output.</maml:para>
 				</maml:description>
 				<command:parameterValue required="false" variableLength="false">SwitchParameter</command:parameterValue>
 			</command:parameter>
 			<command:parameter required="false" variableLength="false" globbing="false" pipelineInput="false" position="named">
 				<maml:name>WhatIf</maml:name>
 				<maml:description>
-					<maml:para />
+					<maml:para>Shows what would happen if the cmdlet runs. The cmdlet is not run.</maml:para>
 				</maml:description>
 				<command:parameterValue required="false" variableLength="false">SwitchParameter</command:parameterValue>
 			</command:parameter>
 			<command:parameter required="false" variableLength="false" globbing="false" pipelineInput="false" position="named">
 				<maml:name>Confirm</maml:name>
 				<maml:description>
-					<maml:para />
+					<maml:para>Prompts you for confirmation before running the cmdlet.</maml:para>
 				</maml:description>
 				<command:parameterValue required="false" variableLength="false">SwitchParameter</command:parameterValue>
 			</command:parameter>
@@ -1787,7 +1787,7 @@
 		<command:parameter required="true" variableLength="false" globbing="false" pipelineInput="false" position="0">
 			<maml:name>Name</maml:name>
 			<maml:description>
-				<maml:para />
+				<maml:para>The new file name, without extension.</maml:para>
 			</maml:description>
 			<command:parameterValue required="true" variableLength="false">String</command:parameterValue>
 			<dev:type>
@@ -1799,7 +1799,7 @@
 		<command:parameter required="false" variableLength="false" globbing="false" pipelineInput="false" position="named">
 			<maml:name>Replace</maml:name>
 			<maml:description>
-				<maml:para />
+				<maml:para>If specified and the destination file already exists, it will be replaced. If not specified and the destination file already exists, an exception will be thrown.</maml:para>
 			</maml:description>
 			<command:parameterValue required="false" variableLength="false">SwitchParameter</command:parameterValue>
 			<dev:type>
@@ -1811,7 +1811,7 @@
 		<command:parameter required="false" variableLength="false" globbing="false" pipelineInput="false" position="named">
 			<maml:name>WhatIf</maml:name>
 			<maml:description>
-				<maml:para />
+				<maml:para>Shows what would happen if the cmdlet runs. The cmdlet is not run.</maml:para>
 			</maml:description>
 			<command:parameterValue required="false" variableLength="false">SwitchParameter</command:parameterValue>
 			<dev:type>
@@ -1823,7 +1823,7 @@
 		<command:parameter required="false" variableLength="false" globbing="false" pipelineInput="false" position="named">
 			<maml:name>Confirm</maml:name>
 			<maml:description>
-				<maml:para />
+				<maml:para>Prompts you for confirmation before running the cmdlet.</maml:para>
 			</maml:description>
 			<command:parameterValue required="false" variableLength="false">SwitchParameter</command:parameterValue>
 			<dev:type>
@@ -1835,7 +1835,7 @@
 		<command:parameter required="true" variableLength="false" globbing="false" pipelineInput="false" position="1">
 			<maml:name>Path</maml:name>
 			<maml:description>
-				<maml:para />
+				<maml:para>Specifies a path to the output directory. Wildcards are permitted. The default location is the current directory (.).</maml:para>
 			</maml:description>
 			<command:parameterValue required="true" variableLength="false">String</command:parameterValue>
 			<dev:type>
@@ -1847,7 +1847,7 @@
 		<command:parameter required="true" variableLength="false" globbing="false" pipelineInput="true (ByValue)" position="2">
 			<maml:name>CoverArt</maml:name>
 			<maml:description>
-				<maml:para />
+				<maml:para>The cover art to be exported.</maml:para>
 			</maml:description>
 			<command:parameterValue required="true" variableLength="false">CoverArt</command:parameterValue>
 			<dev:type>
@@ -1859,7 +1859,7 @@
 		<command:parameter required="false" variableLength="false" globbing="false" pipelineInput="false" position="named">
 			<maml:name>PassThru</maml:name>
 			<maml:description>
-				<maml:para />
+				<maml:para>Writes the cover art to the console. By default, this cmdlet does not generate any output.</maml:para>
 			</maml:description>
 			<command:parameterValue required="false" variableLength="false">SwitchParameter</command:parameterValue>
 			<dev:type>
@@ -1871,7 +1871,7 @@
 		<command:parameter required="true" variableLength="false" globbing="false" pipelineInput="false" position="1">
 			<maml:name>LiteralPath</maml:name>
 			<maml:description>
-				<maml:para />
+				<maml:para>Specifies a path to the output directory. Unlike the Path parameter, the value of the LiteralPath parameter is used exactly as it is typed. No characters are interpreted as wildcards. If the path includes escape characters, enclose it in single quotation marks. Single quotation marks tell Windows PowerShell not to interpret any characters as escape sequences.</maml:para>
 			</maml:description>
 			<command:parameterValue required="true" variableLength="false">String</command:parameterValue>
 			<dev:type>
@@ -1962,7 +1962,7 @@
 			<command:parameter required="true" variableLength="false" globbing="false" pipelineInput="true (ByValue)" position="0">
 				<maml:name>Path</maml:name>
 				<maml:description>
-					<maml:para />
+					<maml:para>Specifies a path to one or more files. Wildcards are permitted. The default location is the current directory (.).</maml:para>
 				</maml:description>
 				<command:parameterValue required="true" variableLength="false">String</command:parameterValue>
 			</command:parameter>
@@ -1972,7 +1972,7 @@
 			<command:parameter required="true" variableLength="false" globbing="false" pipelineInput="false" position="0">
 				<maml:name>LiteralPath</maml:name>
 				<maml:description>
-					<maml:para />
+					<maml:para>Specifies a path to one or more files. Unlike the Path parameter, the value of the LiteralPath parameter is used exactly as it is typed. No characters are interpreted as wildcards. If the path includes escape characters, enclose it in single quotation marks. Single quotation marks tell Windows PowerShell not to interpret any characters as escape sequences.</maml:para>
 				</maml:description>
 				<command:parameterValue required="true" variableLength="false">String</command:parameterValue>
 			</command:parameter>
@@ -1982,7 +1982,7 @@
 			<command:parameter required="true" variableLength="false" globbing="false" pipelineInput="true (ByValue)" position="0">
 				<maml:name>FileInfo</maml:name>
 				<maml:description>
-					<maml:para />
+					<maml:para>Specifies one or more files.</maml:para>
 				</maml:description>
 				<command:parameterValue required="true" variableLength="false">FileInfo</command:parameterValue>
 			</command:parameter>
@@ -1992,7 +1992,7 @@
 		<command:parameter required="true" variableLength="false" globbing="false" pipelineInput="true (ByValue)" position="0">
 			<maml:name>Path</maml:name>
 			<maml:description>
-				<maml:para />
+				<maml:para>Specifies a path to one or more files. Wildcards are permitted. The default location is the current directory (.).</maml:para>
 			</maml:description>
 			<command:parameterValue required="true" variableLength="false">String</command:parameterValue>
 			<dev:type>
@@ -2004,7 +2004,7 @@
 		<command:parameter required="true" variableLength="false" globbing="false" pipelineInput="true (ByValue)" position="0">
 			<maml:name>FileInfo</maml:name>
 			<maml:description>
-				<maml:para />
+				<maml:para>Specifies one or more files.</maml:para>
 			</maml:description>
 			<command:parameterValue required="true" variableLength="false">FileInfo</command:parameterValue>
 			<dev:type>
@@ -2016,7 +2016,7 @@
 		<command:parameter required="true" variableLength="false" globbing="false" pipelineInput="false" position="0">
 			<maml:name>LiteralPath</maml:name>
 			<maml:description>
-				<maml:para />
+				<maml:para>Specifies a path to one or more files. Unlike the Path parameter, the value of the LiteralPath parameter is used exactly as it is typed. No characters are interpreted as wildcards. If the path includes escape characters, enclose it in single quotation marks. Single quotation marks tell Windows PowerShell not to interpret any characters as escape sequences.</maml:para>
 			</maml:description>
 			<command:parameterValue required="true" variableLength="false">String</command:parameterValue>
 			<dev:type>
@@ -2166,21 +2166,22 @@
 			<command:parameter required="false" variableLength="true" globbing="false" pipelineInput="false" position="0">
 				<maml:name>Key</maml:name>
 				<maml:description>
-					<maml:para />
+					<maml:para>The name(s) of the metadata item(s) to be cleared. If not specified, all items are cleared.</maml:para>
+					<maml:para>To clear the cover art, specify &quot;CoverArt&quot;.</maml:para>
 				</maml:description>
 				<command:parameterValue required="true" variableLength="true">String[]</command:parameterValue>
 			</command:parameter>
 			<command:parameter required="true" variableLength="false" globbing="false" pipelineInput="true (ByValue)" position="1">
 				<maml:name>AudioFile</maml:name>
 				<maml:description>
-					<maml:para />
+					<maml:para>The audio file that has the metadata to be cleared.</maml:para>
 				</maml:description>
 				<command:parameterValue required="true" variableLength="false">AudioFile</command:parameterValue>
 			</command:parameter>
 			<command:parameter required="false" variableLength="false" globbing="false" pipelineInput="false" position="named">
 				<maml:name>PassThru</maml:name>
 				<maml:description>
-					<maml:para />
+					<maml:para>Writes the modified audio file to the console. By default, this cmdlet does not generate any output.</maml:para>
 				</maml:description>
 				<command:parameterValue required="false" variableLength="false">SwitchParameter</command:parameterValue>
 			</command:parameter>
@@ -2190,7 +2191,8 @@
 		<command:parameter required="false" variableLength="true" globbing="false" pipelineInput="false" position="0">
 			<maml:name>Key</maml:name>
 			<maml:description>
-				<maml:para />
+				<maml:para>The name(s) of the metadata item(s) to be cleared. If not specified, all items are cleared.</maml:para>
+				<maml:para>To clear the cover art, specify &quot;CoverArt&quot;.</maml:para>
 			</maml:description>
 			<command:parameterValue required="true" variableLength="true">String[]</command:parameterValue>
 			<dev:type>
@@ -2202,7 +2204,7 @@
 		<command:parameter required="true" variableLength="false" globbing="false" pipelineInput="true (ByValue)" position="1">
 			<maml:name>AudioFile</maml:name>
 			<maml:description>
-				<maml:para />
+				<maml:para>The audio file that has the metadata to be cleared.</maml:para>
 			</maml:description>
 			<command:parameterValue required="true" variableLength="false">AudioFile</command:parameterValue>
 			<dev:type>
@@ -2214,7 +2216,7 @@
 		<command:parameter required="false" variableLength="false" globbing="false" pipelineInput="false" position="named">
 			<maml:name>PassThru</maml:name>
 			<maml:description>
-				<maml:para />
+				<maml:para>Writes the modified audio file to the console. By default, this cmdlet does not generate any output.</maml:para>
 			</maml:description>
 			<command:parameterValue required="false" variableLength="false">SwitchParameter</command:parameterValue>
 			<dev:type>
@@ -2344,28 +2346,28 @@
 			<command:parameter required="true" variableLength="false" globbing="false" pipelineInput="true (ByValue)" position="0">
 				<maml:name>CoverArt</maml:name>
 				<maml:description>
-					<maml:para />
+					<maml:para>The cover art to be converted.</maml:para>
 				</maml:description>
 				<command:parameterValue required="true" variableLength="false">CoverArt</command:parameterValue>
 			</command:parameter>
 			<command:parameter required="false" variableLength="false" globbing="false" pipelineInput="false" position="named">
 				<maml:name>MaxWidth</maml:name>
 				<maml:description>
-					<maml:para />
+					<maml:para>The maximum width, in pixels. If an image is wider than the specified value, it will be scaled to match the indicated value.</maml:para>
 				</maml:description>
 				<command:parameterValue required="true" variableLength="false">Int32</command:parameterValue>
 			</command:parameter>
 			<command:parameter required="false" variableLength="false" globbing="false" pipelineInput="false" position="named">
 				<maml:name>ConvertToLossy</maml:name>
 				<maml:description>
-					<maml:para />
+					<maml:para>If specified, and the image is currently lossless (PNG format), it will be converted to lossy (JPEG). This usually results in significant space savings.</maml:para>
 				</maml:description>
 				<command:parameterValue required="false" variableLength="false">SwitchParameter</command:parameterValue>
 			</command:parameter>
 			<command:parameter required="false" variableLength="false" globbing="false" pipelineInput="false" position="named">
 				<maml:name>Quality</maml:name>
 				<maml:description>
-					<maml:para />
+					<maml:para>Specified the quality level, if the image is being converted to lossy (JPEG) format. The valid range is 0 to 100.</maml:para>
 				</maml:description>
 				<command:parameterValue required="true" variableLength="false">Int32</command:parameterValue>
 			</command:parameter>
@@ -2375,7 +2377,7 @@
 		<command:parameter required="true" variableLength="false" globbing="false" pipelineInput="true (ByValue)" position="0">
 			<maml:name>CoverArt</maml:name>
 			<maml:description>
-				<maml:para />
+				<maml:para>The cover art to be converted.</maml:para>
 			</maml:description>
 			<command:parameterValue required="true" variableLength="false">CoverArt</command:parameterValue>
 			<dev:type>
@@ -2387,7 +2389,7 @@
 		<command:parameter required="false" variableLength="false" globbing="false" pipelineInput="false" position="named">
 			<maml:name>MaxWidth</maml:name>
 			<maml:description>
-				<maml:para />
+				<maml:para>The maximum width, in pixels. If an image is wider than the specified value, it will be scaled to match the indicated value.</maml:para>
 			</maml:description>
 			<command:parameterValue required="true" variableLength="false">Int32</command:parameterValue>
 			<dev:type>
@@ -2399,7 +2401,7 @@
 		<command:parameter required="false" variableLength="false" globbing="false" pipelineInput="false" position="named">
 			<maml:name>ConvertToLossy</maml:name>
 			<maml:description>
-				<maml:para />
+				<maml:para>If specified, and the image is currently lossless (PNG format), it will be converted to lossy (JPEG). This usually results in significant space savings.</maml:para>
 			</maml:description>
 			<command:parameterValue required="false" variableLength="false">SwitchParameter</command:parameterValue>
 			<dev:type>
@@ -2411,14 +2413,14 @@
 		<command:parameter required="false" variableLength="false" globbing="false" pipelineInput="false" position="named">
 			<maml:name>Quality</maml:name>
 			<maml:description>
-				<maml:para />
+				<maml:para>Specified the quality level, if the image is being converted to lossy (JPEG) format. The valid range is 0 to 100.</maml:para>
 			</maml:description>
 			<command:parameterValue required="true" variableLength="false">Int32</command:parameterValue>
 			<dev:type>
 				<maml:name>Int32</maml:name>
 				<maml:uri/>
 			</dev:type>
-			<dev:defaultValue></dev:defaultValue>
+			<dev:defaultValue>75</dev:defaultValue>
 		</command:parameter>
 	</command:parameters>
 	<command:inputTypes>
@@ -2521,35 +2523,35 @@
 			<command:parameter required="true" variableLength="false" globbing="false" pipelineInput="true (ByValue)" position="0">
 				<maml:name>AudioFile</maml:name>
 				<maml:description>
-					<maml:para />
+					<maml:para>The audio file that has the cover art to be converted.</maml:para>
 				</maml:description>
 				<command:parameterValue required="true" variableLength="false">AudioFile</command:parameterValue>
 			</command:parameter>
 			<command:parameter required="false" variableLength="false" globbing="false" pipelineInput="false" position="named">
 				<maml:name>MaxWidth</maml:name>
 				<maml:description>
-					<maml:para />
+					<maml:para>The maximum width, in pixels. If an image is wider than the specified value, it will be scaled to match the indicated value.</maml:para>
 				</maml:description>
 				<command:parameterValue required="true" variableLength="false">Int32</command:parameterValue>
 			</command:parameter>
 			<command:parameter required="false" variableLength="false" globbing="false" pipelineInput="false" position="named">
 				<maml:name>ConvertToLossy</maml:name>
 				<maml:description>
-					<maml:para />
+					<maml:para>If specified, and the image is currently lossless (PNG format), it will be converted to lossy (JPEG). This usually results in significant space savings.</maml:para>
 				</maml:description>
 				<command:parameterValue required="false" variableLength="false">SwitchParameter</command:parameterValue>
 			</command:parameter>
 			<command:parameter required="false" variableLength="false" globbing="false" pipelineInput="false" position="named">
 				<maml:name>Quality</maml:name>
 				<maml:description>
-					<maml:para />
+					<maml:para>Specified the quality level, if the image is being converted to lossy (JPEG) format. The valid range is 0 to 100.</maml:para>
 				</maml:description>
 				<command:parameterValue required="true" variableLength="false">Int32</command:parameterValue>
 			</command:parameter>
 			<command:parameter required="false" variableLength="false" globbing="false" pipelineInput="false" position="named">
 				<maml:name>PassThru</maml:name>
 				<maml:description>
-					<maml:para />
+					<maml:para>Writes the modified audio file to the console. By default, this cmdlet does not generate any output.</maml:para>
 				</maml:description>
 				<command:parameterValue required="false" variableLength="false">SwitchParameter</command:parameterValue>
 			</command:parameter>
@@ -2559,7 +2561,7 @@
 		<command:parameter required="true" variableLength="false" globbing="false" pipelineInput="true (ByValue)" position="0">
 			<maml:name>AudioFile</maml:name>
 			<maml:description>
-				<maml:para />
+				<maml:para>The audio file that has the cover art to be converted.</maml:para>
 			</maml:description>
 			<command:parameterValue required="true" variableLength="false">AudioFile</command:parameterValue>
 			<dev:type>
@@ -2571,7 +2573,7 @@
 		<command:parameter required="false" variableLength="false" globbing="false" pipelineInput="false" position="named">
 			<maml:name>MaxWidth</maml:name>
 			<maml:description>
-				<maml:para />
+				<maml:para>The maximum width, in pixels. If an image is wider than the specified value, it will be scaled to match the indicated value.</maml:para>
 			</maml:description>
 			<command:parameterValue required="true" variableLength="false">Int32</command:parameterValue>
 			<dev:type>
@@ -2583,7 +2585,7 @@
 		<command:parameter required="false" variableLength="false" globbing="false" pipelineInput="false" position="named">
 			<maml:name>ConvertToLossy</maml:name>
 			<maml:description>
-				<maml:para />
+				<maml:para>If specified, and the image is currently lossless (PNG format), it will be converted to lossy (JPEG). This usually results in significant space savings.</maml:para>
 			</maml:description>
 			<command:parameterValue required="false" variableLength="false">SwitchParameter</command:parameterValue>
 			<dev:type>
@@ -2595,7 +2597,7 @@
 		<command:parameter required="false" variableLength="false" globbing="false" pipelineInput="false" position="named">
 			<maml:name>Quality</maml:name>
 			<maml:description>
-				<maml:para />
+				<maml:para>Specified the quality level, if the image is being converted to lossy (JPEG) format. The valid range is 0 to 100.</maml:para>
 			</maml:description>
 			<command:parameterValue required="true" variableLength="false">Int32</command:parameterValue>
 			<dev:type>
@@ -2607,7 +2609,7 @@
 		<command:parameter required="false" variableLength="false" globbing="false" pipelineInput="false" position="named">
 			<maml:name>PassThru</maml:name>
 			<maml:description>
-				<maml:para />
+				<maml:para>Writes the modified audio file to the console. By default, this cmdlet does not generate any output.</maml:para>
 			</maml:description>
 			<command:parameterValue required="false" variableLength="false">SwitchParameter</command:parameterValue>
 			<dev:type>
@@ -2738,49 +2740,49 @@
 			<command:parameter required="true" variableLength="false" globbing="false" pipelineInput="false" position="0">
 				<maml:name>Name</maml:name>
 				<maml:description>
-					<maml:para />
+					<maml:para>The new file name, without extension.</maml:para>
 				</maml:description>
 				<command:parameterValue required="true" variableLength="false">String</command:parameterValue>
 			</command:parameter>
 			<command:parameter required="true" variableLength="false" globbing="false" pipelineInput="false" position="1">
 				<maml:name>Path</maml:name>
 				<maml:description>
-					<maml:para />
+					<maml:para>Specifies a path to the output directory. Wildcards are permitted. The default location is the current directory (.).</maml:para>
 				</maml:description>
 				<command:parameterValue required="true" variableLength="false">String</command:parameterValue>
 			</command:parameter>
 			<command:parameter required="true" variableLength="false" globbing="false" pipelineInput="true (ByValue)" position="2">
 				<maml:name>AudioFile</maml:name>
 				<maml:description>
-					<maml:para />
+					<maml:para>The audio file that has the cover art to be exported.</maml:para>
 				</maml:description>
 				<command:parameterValue required="true" variableLength="false">AudioFile</command:parameterValue>
 			</command:parameter>
 			<command:parameter required="false" variableLength="false" globbing="false" pipelineInput="false" position="named">
 				<maml:name>Replace</maml:name>
 				<maml:description>
-					<maml:para />
+					<maml:para>If specified and the destination file already exists, it will be replaced. If not specified and the destination file already exists, an exception will be thrown.</maml:para>
 				</maml:description>
 				<command:parameterValue required="false" variableLength="false">SwitchParameter</command:parameterValue>
 			</command:parameter>
 			<command:parameter required="false" variableLength="false" globbing="false" pipelineInput="false" position="named">
 				<maml:name>PassThru</maml:name>
 				<maml:description>
-					<maml:para />
+					<maml:para>Writes the audio file to the console. By default, this cmdlet does not generate any output.</maml:para>
 				</maml:description>
 				<command:parameterValue required="false" variableLength="false">SwitchParameter</command:parameterValue>
 			</command:parameter>
 			<command:parameter required="false" variableLength="false" globbing="false" pipelineInput="false" position="named">
 				<maml:name>WhatIf</maml:name>
 				<maml:description>
-					<maml:para />
+					<maml:para>Shows what would happen if the cmdlet runs. The cmdlet is not run.</maml:para>
 				</maml:description>
 				<command:parameterValue required="false" variableLength="false">SwitchParameter</command:parameterValue>
 			</command:parameter>
 			<command:parameter required="false" variableLength="false" globbing="false" pipelineInput="false" position="named">
 				<maml:name>Confirm</maml:name>
 				<maml:description>
-					<maml:para />
+					<maml:para>Prompts you for confirmation before running the cmdlet.</maml:para>
 				</maml:description>
 				<command:parameterValue required="false" variableLength="false">SwitchParameter</command:parameterValue>
 			</command:parameter>
@@ -2790,49 +2792,49 @@
 			<command:parameter required="true" variableLength="false" globbing="false" pipelineInput="false" position="0">
 				<maml:name>Name</maml:name>
 				<maml:description>
-					<maml:para />
+					<maml:para>The new file name, without extension.</maml:para>
 				</maml:description>
 				<command:parameterValue required="true" variableLength="false">String</command:parameterValue>
 			</command:parameter>
 			<command:parameter required="true" variableLength="false" globbing="false" pipelineInput="false" position="1">
 				<maml:name>LiteralPath</maml:name>
 				<maml:description>
-					<maml:para />
+					<maml:para>Specifies a path to the output directory. Unlike the Path parameter, the value of the LiteralPath parameter is used exactly as it is typed. No characters are interpreted as wildcards. If the path includes escape characters, enclose it in single quotation marks. Single quotation marks tell Windows PowerShell not to interpret any characters as escape sequences.</maml:para>
 				</maml:description>
 				<command:parameterValue required="true" variableLength="false">String</command:parameterValue>
 			</command:parameter>
 			<command:parameter required="true" variableLength="false" globbing="false" pipelineInput="true (ByValue)" position="2">
 				<maml:name>AudioFile</maml:name>
 				<maml:description>
-					<maml:para />
+					<maml:para>The audio file that has the cover art to be exported.</maml:para>
 				</maml:description>
 				<command:parameterValue required="true" variableLength="false">AudioFile</command:parameterValue>
 			</command:parameter>
 			<command:parameter required="false" variableLength="false" globbing="false" pipelineInput="false" position="named">
 				<maml:name>Replace</maml:name>
 				<maml:description>
-					<maml:para />
+					<maml:para>If specified and the destination file already exists, it will be replaced. If not specified and the destination file already exists, an exception will be thrown.</maml:para>
 				</maml:description>
 				<command:parameterValue required="false" variableLength="false">SwitchParameter</command:parameterValue>
 			</command:parameter>
 			<command:parameter required="false" variableLength="false" globbing="false" pipelineInput="false" position="named">
 				<maml:name>PassThru</maml:name>
 				<maml:description>
-					<maml:para />
+					<maml:para>Writes the audio file to the console. By default, this cmdlet does not generate any output.</maml:para>
 				</maml:description>
 				<command:parameterValue required="false" variableLength="false">SwitchParameter</command:parameterValue>
 			</command:parameter>
 			<command:parameter required="false" variableLength="false" globbing="false" pipelineInput="false" position="named">
 				<maml:name>WhatIf</maml:name>
 				<maml:description>
-					<maml:para />
+					<maml:para>Shows what would happen if the cmdlet runs. The cmdlet is not run.</maml:para>
 				</maml:description>
 				<command:parameterValue required="false" variableLength="false">SwitchParameter</command:parameterValue>
 			</command:parameter>
 			<command:parameter required="false" variableLength="false" globbing="false" pipelineInput="false" position="named">
 				<maml:name>Confirm</maml:name>
 				<maml:description>
-					<maml:para />
+					<maml:para>Prompts you for confirmation before running the cmdlet.</maml:para>
 				</maml:description>
 				<command:parameterValue required="false" variableLength="false">SwitchParameter</command:parameterValue>
 			</command:parameter>
@@ -2842,7 +2844,7 @@
 		<command:parameter required="true" variableLength="false" globbing="false" pipelineInput="false" position="0">
 			<maml:name>Name</maml:name>
 			<maml:description>
-				<maml:para />
+				<maml:para>The new file name, without extension.</maml:para>
 			</maml:description>
 			<command:parameterValue required="true" variableLength="false">String</command:parameterValue>
 			<dev:type>
@@ -2854,7 +2856,7 @@
 		<command:parameter required="true" variableLength="false" globbing="false" pipelineInput="false" position="1">
 			<maml:name>Path</maml:name>
 			<maml:description>
-				<maml:para />
+				<maml:para>Specifies a path to the output directory. Wildcards are permitted. The default location is the current directory (.).</maml:para>
 			</maml:description>
 			<command:parameterValue required="true" variableLength="false">String</command:parameterValue>
 			<dev:type>
@@ -2866,7 +2868,7 @@
 		<command:parameter required="true" variableLength="false" globbing="false" pipelineInput="true (ByValue)" position="2">
 			<maml:name>AudioFile</maml:name>
 			<maml:description>
-				<maml:para />
+				<maml:para>The audio file that has the cover art to be exported.</maml:para>
 			</maml:description>
 			<command:parameterValue required="true" variableLength="false">AudioFile</command:parameterValue>
 			<dev:type>
@@ -2878,7 +2880,7 @@
 		<command:parameter required="false" variableLength="false" globbing="false" pipelineInput="false" position="named">
 			<maml:name>Replace</maml:name>
 			<maml:description>
-				<maml:para />
+				<maml:para>If specified and the destination file already exists, it will be replaced. If not specified and the destination file already exists, an exception will be thrown.</maml:para>
 			</maml:description>
 			<command:parameterValue required="false" variableLength="false">SwitchParameter</command:parameterValue>
 			<dev:type>
@@ -2890,7 +2892,7 @@
 		<command:parameter required="false" variableLength="false" globbing="false" pipelineInput="false" position="named">
 			<maml:name>PassThru</maml:name>
 			<maml:description>
-				<maml:para />
+				<maml:para>Writes the audio file to the console. By default, this cmdlet does not generate any output.</maml:para>
 			</maml:description>
 			<command:parameterValue required="false" variableLength="false">SwitchParameter</command:parameterValue>
 			<dev:type>
@@ -2902,7 +2904,7 @@
 		<command:parameter required="false" variableLength="false" globbing="false" pipelineInput="false" position="named">
 			<maml:name>WhatIf</maml:name>
 			<maml:description>
-				<maml:para />
+				<maml:para>Shows what would happen if the cmdlet runs. The cmdlet is not run.</maml:para>
 			</maml:description>
 			<command:parameterValue required="false" variableLength="false">SwitchParameter</command:parameterValue>
 			<dev:type>
@@ -2914,7 +2916,7 @@
 		<command:parameter required="false" variableLength="false" globbing="false" pipelineInput="false" position="named">
 			<maml:name>Confirm</maml:name>
 			<maml:description>
-				<maml:para />
+				<maml:para>Prompts you for confirmation before running the cmdlet.</maml:para>
 			</maml:description>
 			<command:parameterValue required="false" variableLength="false">SwitchParameter</command:parameterValue>
 			<dev:type>
@@ -2926,7 +2928,7 @@
 		<command:parameter required="true" variableLength="false" globbing="false" pipelineInput="false" position="1">
 			<maml:name>LiteralPath</maml:name>
 			<maml:description>
-				<maml:para />
+				<maml:para>Specifies a path to the output directory. Unlike the Path parameter, the value of the LiteralPath parameter is used exactly as it is typed. No characters are interpreted as wildcards. If the path includes escape characters, enclose it in single quotation marks. Single quotation marks tell Windows PowerShell not to interpret any characters as escape sequences.</maml:para>
 			</maml:description>
 			<command:parameterValue required="true" variableLength="false">String</command:parameterValue>
 			<dev:type>
@@ -3016,7 +3018,7 @@
 			<command:parameter required="true" variableLength="false" globbing="false" pipelineInput="true (ByValue)" position="0">
 				<maml:name>AudioFile</maml:name>
 				<maml:description>
-					<maml:para />
+					<maml:para>The audio file.</maml:para>
 				</maml:description>
 				<command:parameterValue required="true" variableLength="false">AudioFile</command:parameterValue>
 			</command:parameter>
@@ -3026,7 +3028,7 @@
 		<command:parameter required="true" variableLength="false" globbing="false" pipelineInput="true (ByValue)" position="0">
 			<maml:name>AudioFile</maml:name>
 			<maml:description>
-				<maml:para />
+				<maml:para>The audio file.</maml:para>
 			</maml:description>
 			<command:parameterValue required="true" variableLength="false">AudioFile</command:parameterValue>
 			<dev:type>
@@ -3136,14 +3138,14 @@
 			<command:parameter required="false" variableLength="true" globbing="false" pipelineInput="false" position="0">
 				<maml:name>Key</maml:name>
 				<maml:description>
-					<maml:para />
+					<maml:para>The name(s) of the metadata item(s) to be included. If not specified, the whole metadata dictionary is returned.</maml:para>
 				</maml:description>
 				<command:parameterValue required="true" variableLength="true">String[]</command:parameterValue>
 			</command:parameter>
 			<command:parameter required="true" variableLength="false" globbing="false" pipelineInput="true (ByValue)" position="1">
 				<maml:name>AudioFile</maml:name>
 				<maml:description>
-					<maml:para />
+					<maml:para>The audio file.</maml:para>
 				</maml:description>
 				<command:parameterValue required="true" variableLength="false">AudioFile</command:parameterValue>
 			</command:parameter>
@@ -3153,7 +3155,7 @@
 		<command:parameter required="false" variableLength="true" globbing="false" pipelineInput="false" position="0">
 			<maml:name>Key</maml:name>
 			<maml:description>
-				<maml:para />
+				<maml:para>The name(s) of the metadata item(s) to be included. If not specified, the whole metadata dictionary is returned.</maml:para>
 			</maml:description>
 			<command:parameterValue required="true" variableLength="true">String[]</command:parameterValue>
 			<dev:type>
@@ -3165,7 +3167,7 @@
 		<command:parameter required="true" variableLength="false" globbing="false" pipelineInput="true (ByValue)" position="1">
 			<maml:name>AudioFile</maml:name>
 			<maml:description>
-				<maml:para />
+				<maml:para>The audio file.</maml:para>
 			</maml:description>
 			<command:parameterValue required="true" variableLength="false">AudioFile</command:parameterValue>
 			<dev:type>
@@ -3295,35 +3297,35 @@
 			<command:parameter required="true" variableLength="false" globbing="false" pipelineInput="true (ByValue)" position="0">
 				<maml:name>AudioFile</maml:name>
 				<maml:description>
-					<maml:para />
+					<maml:para>The audio file that has the metadata to be saved.</maml:para>
 				</maml:description>
 				<command:parameterValue required="true" variableLength="false">AudioFile</command:parameterValue>
 			</command:parameter>
 			<command:parameter required="false" variableLength="false" globbing="false" pipelineInput="false" position="named">
 				<maml:name>Setting</maml:name>
 				<maml:description>
-					<maml:para />
+					<maml:para>Encoder-specific settings to apply. To see the available and default settings for an encoder, use the Get-AudioMetadataEncoderInfo cmdlet.</maml:para>
 				</maml:description>
 				<command:parameterValue required="true" variableLength="false">Hashtable</command:parameterValue>
 			</command:parameter>
 			<command:parameter required="false" variableLength="false" globbing="false" pipelineInput="false" position="named">
 				<maml:name>PassThru</maml:name>
 				<maml:description>
-					<maml:para />
+					<maml:para>Writes the audio file to the console. By default, this cmdlet does not generate any output.</maml:para>
 				</maml:description>
 				<command:parameterValue required="false" variableLength="false">SwitchParameter</command:parameterValue>
 			</command:parameter>
 			<command:parameter required="false" variableLength="false" globbing="false" pipelineInput="false" position="named">
 				<maml:name>WhatIf</maml:name>
 				<maml:description>
-					<maml:para />
+					<maml:para>Shows what would happen if the cmdlet runs. The cmdlet is not run.</maml:para>
 				</maml:description>
 				<command:parameterValue required="false" variableLength="false">SwitchParameter</command:parameterValue>
 			</command:parameter>
 			<command:parameter required="false" variableLength="false" globbing="false" pipelineInput="false" position="named">
 				<maml:name>Confirm</maml:name>
 				<maml:description>
-					<maml:para />
+					<maml:para>Prompts you for confirmation before running the cmdlet.</maml:para>
 				</maml:description>
 				<command:parameterValue required="false" variableLength="false">SwitchParameter</command:parameterValue>
 			</command:parameter>
@@ -3333,7 +3335,7 @@
 		<command:parameter required="true" variableLength="false" globbing="false" pipelineInput="true (ByValue)" position="0">
 			<maml:name>AudioFile</maml:name>
 			<maml:description>
-				<maml:para />
+				<maml:para>The audio file that has the metadata to be saved.</maml:para>
 			</maml:description>
 			<command:parameterValue required="true" variableLength="false">AudioFile</command:parameterValue>
 			<dev:type>
@@ -3345,7 +3347,7 @@
 		<command:parameter required="false" variableLength="false" globbing="false" pipelineInput="false" position="named">
 			<maml:name>Setting</maml:name>
 			<maml:description>
-				<maml:para />
+				<maml:para>Encoder-specific settings to apply. To see the available and default settings for an encoder, use the Get-AudioMetadataEncoderInfo cmdlet.</maml:para>
 			</maml:description>
 			<command:parameterValue required="true" variableLength="false">Hashtable</command:parameterValue>
 			<dev:type>
@@ -3357,7 +3359,7 @@
 		<command:parameter required="false" variableLength="false" globbing="false" pipelineInput="false" position="named">
 			<maml:name>PassThru</maml:name>
 			<maml:description>
-				<maml:para />
+				<maml:para>Writes the audio file to the console. By default, this cmdlet does not generate any output.</maml:para>
 			</maml:description>
 			<command:parameterValue required="false" variableLength="false">SwitchParameter</command:parameterValue>
 			<dev:type>
@@ -3369,7 +3371,7 @@
 		<command:parameter required="false" variableLength="false" globbing="false" pipelineInput="false" position="named">
 			<maml:name>WhatIf</maml:name>
 			<maml:description>
-				<maml:para />
+				<maml:para>Shows what would happen if the cmdlet runs. The cmdlet is not run.</maml:para>
 			</maml:description>
 			<command:parameterValue required="false" variableLength="false">SwitchParameter</command:parameterValue>
 			<dev:type>
@@ -3381,7 +3383,7 @@
 		<command:parameter required="false" variableLength="false" globbing="false" pipelineInput="false" position="named">
 			<maml:name>Confirm</maml:name>
 			<maml:description>
-				<maml:para />
+				<maml:para>Prompts you for confirmation before running the cmdlet.</maml:para>
 			</maml:description>
 			<command:parameterValue required="false" variableLength="false">SwitchParameter</command:parameterValue>
 			<dev:type>
@@ -3491,21 +3493,21 @@
 			<command:parameter required="true" variableLength="false" globbing="false" pipelineInput="false" position="0">
 				<maml:name>CoverArt</maml:name>
 				<maml:description>
-					<maml:para />
+					<maml:para>The cover art.</maml:para>
 				</maml:description>
 				<command:parameterValue required="true" variableLength="false">CoverArt</command:parameterValue>
 			</command:parameter>
 			<command:parameter required="true" variableLength="false" globbing="false" pipelineInput="true (ByValue)" position="1">
 				<maml:name>AudioFile</maml:name>
 				<maml:description>
-					<maml:para />
+					<maml:para>The audio file upon which the cover art is to be set.</maml:para>
 				</maml:description>
 				<command:parameterValue required="true" variableLength="false">AudioFile</command:parameterValue>
 			</command:parameter>
 			<command:parameter required="false" variableLength="false" globbing="false" pipelineInput="false" position="named">
 				<maml:name>PassThru</maml:name>
 				<maml:description>
-					<maml:para />
+					<maml:para>Writes the modified audio file to the console. By default, this cmdlet does not generate any output.</maml:para>
 				</maml:description>
 				<command:parameterValue required="false" variableLength="false">SwitchParameter</command:parameterValue>
 			</command:parameter>
@@ -3515,7 +3517,7 @@
 		<command:parameter required="true" variableLength="false" globbing="false" pipelineInput="false" position="0">
 			<maml:name>CoverArt</maml:name>
 			<maml:description>
-				<maml:para />
+				<maml:para>The cover art.</maml:para>
 			</maml:description>
 			<command:parameterValue required="true" variableLength="false">CoverArt</command:parameterValue>
 			<dev:type>
@@ -3527,7 +3529,7 @@
 		<command:parameter required="true" variableLength="false" globbing="false" pipelineInput="true (ByValue)" position="1">
 			<maml:name>AudioFile</maml:name>
 			<maml:description>
-				<maml:para />
+				<maml:para>The audio file upon which the cover art is to be set.</maml:para>
 			</maml:description>
 			<command:parameterValue required="true" variableLength="false">AudioFile</command:parameterValue>
 			<dev:type>
@@ -3539,7 +3541,7 @@
 		<command:parameter required="false" variableLength="false" globbing="false" pipelineInput="false" position="named">
 			<maml:name>PassThru</maml:name>
 			<maml:description>
-				<maml:para />
+				<maml:para>Writes the modified audio file to the console. By default, this cmdlet does not generate any output.</maml:para>
 			</maml:description>
 			<command:parameterValue required="false" variableLength="false">SwitchParameter</command:parameterValue>
 			<dev:type>
@@ -3649,21 +3651,21 @@
 			<command:parameter required="true" variableLength="false" globbing="false" pipelineInput="false" position="0">
 				<maml:name>Metadata</maml:name>
 				<maml:description>
-					<maml:para />
+					<maml:para>The metadata.</maml:para>
 				</maml:description>
 				<command:parameterValue required="true" variableLength="false">Hashtable</command:parameterValue>
 			</command:parameter>
 			<command:parameter required="true" variableLength="false" globbing="false" pipelineInput="true (ByValue)" position="1">
 				<maml:name>AudioFile</maml:name>
 				<maml:description>
-					<maml:para />
+					<maml:para>The audio file upon which the metadata is to be set.</maml:para>
 				</maml:description>
 				<command:parameterValue required="true" variableLength="false">AudioFile</command:parameterValue>
 			</command:parameter>
 			<command:parameter required="false" variableLength="false" globbing="false" pipelineInput="false" position="named">
 				<maml:name>PassThru</maml:name>
 				<maml:description>
-					<maml:para />
+					<maml:para>Writes the modified audio file to the console. By default, this cmdlet does not generate any output.</maml:para>
 				</maml:description>
 				<command:parameterValue required="false" variableLength="false">SwitchParameter</command:parameterValue>
 			</command:parameter>
@@ -3673,7 +3675,7 @@
 		<command:parameter required="true" variableLength="false" globbing="false" pipelineInput="false" position="0">
 			<maml:name>Metadata</maml:name>
 			<maml:description>
-				<maml:para />
+				<maml:para>The metadata.</maml:para>
 			</maml:description>
 			<command:parameterValue required="true" variableLength="false">Hashtable</command:parameterValue>
 			<dev:type>
@@ -3685,7 +3687,7 @@
 		<command:parameter required="true" variableLength="false" globbing="false" pipelineInput="true (ByValue)" position="1">
 			<maml:name>AudioFile</maml:name>
 			<maml:description>
-				<maml:para />
+				<maml:para>The audio file upon which the metadata is to be set.</maml:para>
 			</maml:description>
 			<command:parameterValue required="true" variableLength="false">AudioFile</command:parameterValue>
 			<dev:type>
@@ -3697,7 +3699,7 @@
 		<command:parameter required="false" variableLength="false" globbing="false" pipelineInput="false" position="named">
 			<maml:name>PassThru</maml:name>
 			<maml:description>
-				<maml:para />
+				<maml:para>Writes the modified audio file to the console. By default, this cmdlet does not generate any output.</maml:para>
 			</maml:description>
 			<command:parameterValue required="false" variableLength="false">SwitchParameter</command:parameterValue>
 			<dev:type>

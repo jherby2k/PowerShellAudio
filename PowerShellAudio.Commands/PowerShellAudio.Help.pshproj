@@ -23,21 +23,6 @@ The new file name(s) and/or directory can be generated from metadata by specifyi
         <ReturnTypeDescription />
       </GeneralHelp>
       <ParamSets>
-        <CommandParameterSetInfo2 Name="__AllParameterSets" Params="Directory AudioFile Name Replace PassThru Verbose Debug ErrorAction WarningAction ErrorVariable WarningVariable OutVariable OutBuffer PipelineVariable WhatIf Confirm" />
-        <CommandParameterSetInfo2 Name="__AllParameterSets" Params="Directory AudioFile Name Replace PassThru Verbose Debug ErrorAction WarningAction ErrorVariable WarningVariable OutVariable OutBuffer PipelineVariable WhatIf Confirm" />
-        <CommandParameterSetInfo2 Name="__AllParameterSets" Params="Directory AudioFile Name Replace PassThru Verbose Debug ErrorAction WarningAction ErrorVariable WarningVariable OutVariable OutBuffer PipelineVariable WhatIf Confirm" />
-        <CommandParameterSetInfo2 Name="__AllParameterSets" Params="Directory AudioFile Name Replace PassThru Verbose Debug ErrorAction WarningAction ErrorVariable WarningVariable OutVariable OutBuffer PipelineVariable WhatIf Confirm" />
-        <CommandParameterSetInfo2 Name="__AllParameterSets" Params="Directory AudioFile Name Replace PassThru Verbose Debug ErrorAction WarningAction ErrorVariable WarningVariable OutVariable OutBuffer PipelineVariable WhatIf Confirm" />
-        <CommandParameterSetInfo2 Name="__AllParameterSets" Params="Directory AudioFile Name Replace PassThru Verbose Debug ErrorAction WarningAction ErrorVariable WarningVariable OutVariable OutBuffer PipelineVariable WhatIf Confirm" />
-        <CommandParameterSetInfo2 Name="__AllParameterSets" Params="Directory AudioFile Name Replace PassThru Verbose Debug ErrorAction WarningAction ErrorVariable WarningVariable OutVariable OutBuffer PipelineVariable WhatIf Confirm" />
-        <CommandParameterSetInfo2 Name="__AllParameterSets" Params="Directory AudioFile Name Replace PassThru Verbose Debug ErrorAction WarningAction ErrorVariable WarningVariable OutVariable OutBuffer PipelineVariable WhatIf Confirm" />
-        <CommandParameterSetInfo2 Name="__AllParameterSets" Params="Directory AudioFile Name Replace PassThru Verbose Debug ErrorAction WarningAction ErrorVariable WarningVariable OutVariable OutBuffer PipelineVariable WhatIf Confirm" />
-        <CommandParameterSetInfo2 Name="__AllParameterSets" Params="Directory AudioFile Name Replace PassThru Verbose Debug ErrorAction WarningAction ErrorVariable WarningVariable OutVariable OutBuffer PipelineVariable WhatIf Confirm" />
-        <CommandParameterSetInfo2 Name="__AllParameterSets" Params="Directory AudioFile Name Replace PassThru Verbose Debug ErrorAction WarningAction ErrorVariable WarningVariable OutVariable OutBuffer PipelineVariable WhatIf Confirm" />
-        <CommandParameterSetInfo2 Name="__AllParameterSets" Params="Directory AudioFile Name Replace PassThru Verbose Debug ErrorAction WarningAction ErrorVariable WarningVariable OutVariable OutBuffer PipelineVariable WhatIf Confirm" />
-        <CommandParameterSetInfo2 Name="__AllParameterSets" Params="Directory AudioFile Name Replace PassThru Verbose Debug ErrorAction WarningAction ErrorVariable WarningVariable OutVariable OutBuffer PipelineVariable WhatIf Confirm" />
-        <CommandParameterSetInfo2 Name="__AllParameterSets" Params="Directory AudioFile Name Replace PassThru Verbose Debug ErrorAction WarningAction ErrorVariable WarningVariable OutVariable OutBuffer PipelineVariable WhatIf Confirm" />
-        <CommandParameterSetInfo2 Name="__AllParameterSets" Params="Directory AudioFile Name Replace PassThru Verbose Debug ErrorAction WarningAction ErrorVariable WarningVariable OutVariable OutBuffer PipelineVariable WhatIf Confirm" />
         <CommandParameterSetInfo2 Name="ByPath" Params="Path AudioFile Name Replace Verbose Debug ErrorAction WarningAction ErrorVariable WarningVariable OutVariable OutBuffer PipelineVariable WhatIf Confirm" />
         <CommandParameterSetInfo2 Name="ByLiteralPath" Params="LiteralPath AudioFile Name Replace Verbose Debug ErrorAction WarningAction ErrorVariable WarningVariable OutVariable OutBuffer PipelineVariable WhatIf Confirm" />
       </ParamSets>
@@ -46,22 +31,13 @@ The new file name(s) and/or directory can be generated from metadata by specifyi
         <string>Copy-AudioFile [-LiteralPath] &lt;String&gt; [-AudioFile] &lt;AudioFile&gt; [-Name &lt;String&gt;] [-Replace] [-WhatIf] [-Confirm]</string>
       </Syntax>
       <Parameters>
-        <ParameterDescription type="DirectoryInfo" varLen="false" required="true" dynamic="false" pipeRemaining="false" pipe="false" pipeProp="false" isPos="true" pos="0" globbing="false">
-          <Name>Directory</Name>
-          <Attributes>
-            <string>System.Management.Automation.ParameterAttribute</string>
-          </Attributes>
-          <Aliases />
-          <Description />
-          <DefaultValue />
-        </ParameterDescription>
         <ParameterDescription type="AudioFile" varLen="false" required="true" dynamic="false" pipeRemaining="false" pipe="true" pipeProp="false" isPos="true" pos="1" globbing="false">
           <Name>AudioFile</Name>
           <Attributes>
             <string>System.Management.Automation.ParameterAttribute</string>
           </Attributes>
           <Aliases />
-          <Description />
+          <Description>The audio file to be copied.</Description>
           <DefaultValue />
         </ParameterDescription>
         <ParameterDescription type="String" varLen="false" required="false" dynamic="false" pipeRemaining="false" pipe="false" pipeProp="false" isPos="false" pos="named" globbing="false">
@@ -70,7 +46,7 @@ The new file name(s) and/or directory can be generated from metadata by specifyi
             <string>System.Management.Automation.ParameterAttribute</string>
           </Attributes>
           <Aliases />
-          <Description />
+          <Description>The new file name, without extension.</Description>
           <DefaultValue />
         </ParameterDescription>
         <ParameterDescription type="SwitchParameter" varLen="false" required="false" dynamic="false" pipeRemaining="false" pipe="false" pipeProp="false" isPos="false" pos="named" globbing="false">
@@ -79,16 +55,7 @@ The new file name(s) and/or directory can be generated from metadata by specifyi
             <string>System.Management.Automation.ParameterAttribute</string>
           </Attributes>
           <Aliases />
-          <Description />
-          <DefaultValue />
-        </ParameterDescription>
-        <ParameterDescription type="SwitchParameter" varLen="false" required="false" dynamic="false" pipeRemaining="false" pipe="false" pipeProp="false" isPos="false" pos="named" globbing="false">
-          <Name>PassThru</Name>
-          <Attributes>
-            <string>System.Management.Automation.ParameterAttribute</string>
-          </Attributes>
-          <Aliases />
-          <Description>Writes the resulting audio file to the console. By default, this cmdlet does not generate any output.</Description>
+          <Description>If specified and the destination file already exists, it will be replaced. If not specified and the destination file already exists, an exception will be thrown.</Description>
           <DefaultValue />
         </ParameterDescription>
         <ParameterDescription type="SwitchParameter" varLen="false" required="false" dynamic="false" pipeRemaining="false" pipe="false" pipeProp="false" isPos="false" pos="named" globbing="false">
@@ -121,7 +88,7 @@ The new file name(s) and/or directory can be generated from metadata by specifyi
             <string>System.Management.Automation.ParameterAttribute</string>
           </Attributes>
           <Aliases />
-          <Description />
+          <Description>Specifies a path to the output directory. Wildcards are permitted. The default location is the current directory (.).</Description>
           <DefaultValue />
         </ParameterDescription>
         <ParameterDescription type="String" varLen="false" required="true" dynamic="false" pipeRemaining="false" pipe="false" pipeProp="false" isPos="true" pos="0" globbing="false">
@@ -133,7 +100,7 @@ The new file name(s) and/or directory can be generated from metadata by specifyi
           <Aliases>
             <string>PSPath</string>
           </Aliases>
-          <Description />
+          <Description>Specifies a path to the output directory. Unlike the Path parameter, the value of the LiteralPath parameter is used exactly as it is typed. No characters are interpreted as wildcards. If the path includes escape characters, enclose it in single quotation marks. Single quotation marks tell Windows PowerShell not to interpret any characters as escape sequences.</Description>
           <DefaultValue />
         </ParameterDescription>
       </Parameters>
@@ -142,21 +109,25 @@ The new file name(s) and/or directory can be generated from metadata by specifyi
           <Name>Example 1</Name>
           <Cmd>Get-AudioFile song.wav | Copy-AudioFile C:\Output</Cmd>
           <Description>This command copies song.wav from the current directory to C:\Output\song.wav</Description>
+          <Output />
         </Example>
         <Example>
           <Name>Example 2</Name>
           <Cmd>Get-AudioFile song.wav | Copy-AudioFile C:\Output -Name copiedsong</Cmd>
           <Description>This command copies song.wav from the current directory to C:\Output\copiedsong.wav</Description>
+          <Output />
         </Example>
         <Example>
           <Name>Example 3</Name>
           <Cmd>Get-AudioFile *.flac | Copy-AudioFile "C:\Output\{Artist}\{Album}" -Name "{TrackNumber} - {Title}"</Cmd>
           <Description>This command copies all the .flac files in the current directory to a new directory structure under C:\Output, using metadata to construct the directory structure and file names.</Description>
+          <Output />
         </Example>
         <Example>
           <Name>Example 4</Name>
           <Cmd>Get-ChildItem C:\Users\Myself\Music -Filter *.flac -Recurse | Get-AudioFile | Copy-AudioFile "C:\Output\{Artist}\{Album}" -Name "{TrackNumber} - {Title}"</Cmd>
           <Description>This command copies all the .flac files found anywhere under the Myself user's Music directory to a new directory structure under C:\Output, using metadata to construct the directory structure and file names.</Description>
+          <Output />
         </Example>
       </Examples>
       <RelatedLinks />
@@ -180,51 +151,6 @@ For more complex operations, such as recursively searching through a directory t
       </GeneralHelp>
       <ParamSets>
         <CommandParameterSetInfo2 Name="ByPath" Params="Path Verbose Debug ErrorAction WarningAction ErrorVariable WarningVariable OutVariable OutBuffer PipelineVariable" />
-        <CommandParameterSetInfo2 Name="ByFileInfo" Params="FileInfo Verbose Debug ErrorAction WarningAction ErrorVariable WarningVariable OutVariable OutBuffer PipelineVariable" />
-        <CommandParameterSetInfo2 Name="ByLiteralPath" Params="LiteralPath Verbose Debug ErrorAction WarningAction ErrorVariable WarningVariable OutVariable OutBuffer PipelineVariable" />
-        <CommandParameterSetInfo2 Name="ByPath" Params="Path Verbose Debug ErrorAction WarningAction ErrorVariable WarningVariable OutVariable OutBuffer PipelineVariable" />
-        <CommandParameterSetInfo2 Name="ByFileInfo" Params="FileInfo Verbose Debug ErrorAction WarningAction ErrorVariable WarningVariable OutVariable OutBuffer PipelineVariable" />
-        <CommandParameterSetInfo2 Name="ByLiteralPath" Params="LiteralPath Verbose Debug ErrorAction WarningAction ErrorVariable WarningVariable OutVariable OutBuffer PipelineVariable" />
-        <CommandParameterSetInfo2 Name="ByPath" Params="Path Verbose Debug ErrorAction WarningAction ErrorVariable WarningVariable OutVariable OutBuffer PipelineVariable" />
-        <CommandParameterSetInfo2 Name="ByFileInfo" Params="FileInfo Verbose Debug ErrorAction WarningAction ErrorVariable WarningVariable OutVariable OutBuffer PipelineVariable" />
-        <CommandParameterSetInfo2 Name="ByLiteralPath" Params="LiteralPath Verbose Debug ErrorAction WarningAction ErrorVariable WarningVariable OutVariable OutBuffer PipelineVariable" />
-        <CommandParameterSetInfo2 Name="ByPath" Params="Path Verbose Debug ErrorAction WarningAction ErrorVariable WarningVariable OutVariable OutBuffer PipelineVariable" />
-        <CommandParameterSetInfo2 Name="ByFileInfo" Params="FileInfo Verbose Debug ErrorAction WarningAction ErrorVariable WarningVariable OutVariable OutBuffer PipelineVariable" />
-        <CommandParameterSetInfo2 Name="ByLiteralPath" Params="LiteralPath Verbose Debug ErrorAction WarningAction ErrorVariable WarningVariable OutVariable OutBuffer PipelineVariable" />
-        <CommandParameterSetInfo2 Name="ByPath" Params="Path Verbose Debug ErrorAction WarningAction ErrorVariable WarningVariable OutVariable OutBuffer PipelineVariable" />
-        <CommandParameterSetInfo2 Name="ByFileInfo" Params="FileInfo Verbose Debug ErrorAction WarningAction ErrorVariable WarningVariable OutVariable OutBuffer PipelineVariable" />
-        <CommandParameterSetInfo2 Name="ByLiteralPath" Params="LiteralPath Verbose Debug ErrorAction WarningAction ErrorVariable WarningVariable OutVariable OutBuffer PipelineVariable" />
-        <CommandParameterSetInfo2 Name="ByPath" Params="Path Verbose Debug ErrorAction WarningAction ErrorVariable WarningVariable OutVariable OutBuffer PipelineVariable" />
-        <CommandParameterSetInfo2 Name="ByFileInfo" Params="FileInfo Verbose Debug ErrorAction WarningAction ErrorVariable WarningVariable OutVariable OutBuffer PipelineVariable" />
-        <CommandParameterSetInfo2 Name="ByLiteralPath" Params="LiteralPath Verbose Debug ErrorAction WarningAction ErrorVariable WarningVariable OutVariable OutBuffer PipelineVariable" />
-        <CommandParameterSetInfo2 Name="ByPath" Params="Path Verbose Debug ErrorAction WarningAction ErrorVariable WarningVariable OutVariable OutBuffer PipelineVariable" />
-        <CommandParameterSetInfo2 Name="ByFileInfo" Params="FileInfo Verbose Debug ErrorAction WarningAction ErrorVariable WarningVariable OutVariable OutBuffer PipelineVariable" />
-        <CommandParameterSetInfo2 Name="ByLiteralPath" Params="LiteralPath Verbose Debug ErrorAction WarningAction ErrorVariable WarningVariable OutVariable OutBuffer PipelineVariable" />
-        <CommandParameterSetInfo2 Name="ByPath" Params="Path Verbose Debug ErrorAction WarningAction ErrorVariable WarningVariable OutVariable OutBuffer PipelineVariable" />
-        <CommandParameterSetInfo2 Name="ByFileInfo" Params="FileInfo Verbose Debug ErrorAction WarningAction ErrorVariable WarningVariable OutVariable OutBuffer PipelineVariable" />
-        <CommandParameterSetInfo2 Name="ByLiteralPath" Params="LiteralPath Verbose Debug ErrorAction WarningAction ErrorVariable WarningVariable OutVariable OutBuffer PipelineVariable" />
-        <CommandParameterSetInfo2 Name="ByPath" Params="Path Verbose Debug ErrorAction WarningAction ErrorVariable WarningVariable OutVariable OutBuffer PipelineVariable" />
-        <CommandParameterSetInfo2 Name="ByFileInfo" Params="FileInfo Verbose Debug ErrorAction WarningAction ErrorVariable WarningVariable OutVariable OutBuffer PipelineVariable" />
-        <CommandParameterSetInfo2 Name="ByLiteralPath" Params="LiteralPath Verbose Debug ErrorAction WarningAction ErrorVariable WarningVariable OutVariable OutBuffer PipelineVariable" />
-        <CommandParameterSetInfo2 Name="ByPath" Params="Path Verbose Debug ErrorAction WarningAction ErrorVariable WarningVariable OutVariable OutBuffer PipelineVariable" />
-        <CommandParameterSetInfo2 Name="ByFileInfo" Params="FileInfo Verbose Debug ErrorAction WarningAction ErrorVariable WarningVariable OutVariable OutBuffer PipelineVariable" />
-        <CommandParameterSetInfo2 Name="ByLiteralPath" Params="LiteralPath Verbose Debug ErrorAction WarningAction ErrorVariable WarningVariable OutVariable OutBuffer PipelineVariable" />
-        <CommandParameterSetInfo2 Name="ByPath" Params="Path Verbose Debug ErrorAction WarningAction ErrorVariable WarningVariable OutVariable OutBuffer PipelineVariable" />
-        <CommandParameterSetInfo2 Name="ByFileInfo" Params="FileInfo Verbose Debug ErrorAction WarningAction ErrorVariable WarningVariable OutVariable OutBuffer PipelineVariable" />
-        <CommandParameterSetInfo2 Name="ByLiteralPath" Params="LiteralPath Verbose Debug ErrorAction WarningAction ErrorVariable WarningVariable OutVariable OutBuffer PipelineVariable" />
-        <CommandParameterSetInfo2 Name="ByPath" Params="Path Verbose Debug ErrorAction WarningAction ErrorVariable WarningVariable OutVariable OutBuffer PipelineVariable" />
-        <CommandParameterSetInfo2 Name="ByFileInfo" Params="FileInfo Verbose Debug ErrorAction WarningAction ErrorVariable WarningVariable OutVariable OutBuffer PipelineVariable" />
-        <CommandParameterSetInfo2 Name="ByLiteralPath" Params="LiteralPath Verbose Debug ErrorAction WarningAction ErrorVariable WarningVariable OutVariable OutBuffer PipelineVariable" />
-        <CommandParameterSetInfo2 Name="ByPath" Params="Path Verbose Debug ErrorAction WarningAction ErrorVariable WarningVariable OutVariable OutBuffer PipelineVariable" />
-        <CommandParameterSetInfo2 Name="ByFileInfo" Params="FileInfo Verbose Debug ErrorAction WarningAction ErrorVariable WarningVariable OutVariable OutBuffer PipelineVariable" />
-        <CommandParameterSetInfo2 Name="ByLiteralPath" Params="LiteralPath Verbose Debug ErrorAction WarningAction ErrorVariable WarningVariable OutVariable OutBuffer PipelineVariable" />
-        <CommandParameterSetInfo2 Name="ByPath" Params="Path Verbose Debug ErrorAction WarningAction ErrorVariable WarningVariable OutVariable OutBuffer PipelineVariable" />
-        <CommandParameterSetInfo2 Name="ByFileInfo" Params="FileInfo Verbose Debug ErrorAction WarningAction ErrorVariable WarningVariable OutVariable OutBuffer PipelineVariable" />
-        <CommandParameterSetInfo2 Name="ByLiteralPath" Params="LiteralPath Verbose Debug ErrorAction WarningAction ErrorVariable WarningVariable OutVariable OutBuffer PipelineVariable" />
-        <CommandParameterSetInfo2 Name="ByPath" Params="Path Verbose Debug ErrorAction WarningAction ErrorVariable WarningVariable OutVariable OutBuffer PipelineVariable" />
-        <CommandParameterSetInfo2 Name="ByFileInfo" Params="FileInfo Verbose Debug ErrorAction WarningAction ErrorVariable WarningVariable OutVariable OutBuffer PipelineVariable" />
-        <CommandParameterSetInfo2 Name="ByLiteralPath" Params="LiteralPath Verbose Debug ErrorAction WarningAction ErrorVariable WarningVariable OutVariable OutBuffer PipelineVariable" />
-        <CommandParameterSetInfo2 Name="ByPath" Params="Path Verbose Debug ErrorAction WarningAction ErrorVariable WarningVariable OutVariable OutBuffer PipelineVariable" />
         <CommandParameterSetInfo2 Name="ByLiteralPath" Params="LiteralPath Verbose Debug ErrorAction WarningAction ErrorVariable WarningVariable OutVariable OutBuffer PipelineVariable" />
         <CommandParameterSetInfo2 Name="ByFileInfo" Params="FileInfo Verbose Debug ErrorAction WarningAction ErrorVariable WarningVariable OutVariable OutBuffer PipelineVariable" />
       </ParamSets>
@@ -240,7 +166,7 @@ For more complex operations, such as recursively searching through a directory t
             <string>System.Management.Automation.ParameterAttribute</string>
           </Attributes>
           <Aliases />
-          <Description />
+          <Description>Specifies a path to one or more files. Wildcards are permitted. The default location is the current directory (.).</Description>
           <DefaultValue />
         </ParameterDescription>
         <ParameterDescription type="FileInfo" varLen="false" required="true" dynamic="false" pipeRemaining="false" pipe="true" pipeProp="false" isPos="true" pos="0" globbing="false">
@@ -249,7 +175,7 @@ For more complex operations, such as recursively searching through a directory t
             <string>System.Management.Automation.ParameterAttribute</string>
           </Attributes>
           <Aliases />
-          <Description />
+          <Description>Specifies one or more files.</Description>
           <DefaultValue />
         </ParameterDescription>
         <ParameterDescription type="String" varLen="false" required="true" dynamic="false" pipeRemaining="false" pipe="false" pipeProp="false" isPos="true" pos="0" globbing="false">
@@ -261,7 +187,7 @@ For more complex operations, such as recursively searching through a directory t
           <Aliases>
             <string>PSPath</string>
           </Aliases>
-          <Description />
+          <Description>Specifies a path to one or more files. Unlike the Path parameter, the value of the LiteralPath parameter is used exactly as it is typed. No characters are interpreted as wildcards. If the path includes escape characters, enclose it in single quotation marks. Single quotation marks tell Windows PowerShell not to interpret any characters as escape sequences.</Description>
           <DefaultValue />
         </ParameterDescription>
       </Parameters>
@@ -270,21 +196,25 @@ For more complex operations, such as recursively searching through a directory t
           <Name>Example 1</Name>
           <Cmd>Get-AudioFile song.wav</Cmd>
           <Description>This command gets an audio file named song.wav in the current directory.</Description>
+          <Output />
         </Example>
         <Example>
           <Name>Example 2</Name>
           <Cmd>Get-AudioFile *.wav</Cmd>
           <Description>This command gets all audio files with a .wav extension in the current directory.</Description>
+          <Output />
         </Example>
         <Example>
           <Name>Example 3</Name>
           <Cmd>Get-AudioFile C:\Users\Myself\Music\*.wav</Cmd>
           <Description>This command gets all audio files with a .wav extension in the Myself user's Music directory.</Description>
+          <Output />
         </Example>
         <Example>
           <Name>Example 4</Name>
           <Cmd>Get-ChildItem C:\Users\Myself\Music -Filter *.wav -Recurse | Get-AudioFile</Cmd>
           <Description>This command recursively gets all audio files with a .wav extension in the Myself user's Music directory and all subfolders.</Description>
+          <Output />
         </Example>
       </Examples>
       <RelatedLinks />
@@ -306,21 +236,6 @@ For more complex operations, such as recursively searching through a directory t
       </GeneralHelp>
       <ParamSets>
         <CommandParameterSetInfo2 Name="__AllParameterSets" Params="AudioFile Verbose Debug ErrorAction WarningAction ErrorVariable WarningVariable OutVariable OutBuffer PipelineVariable" />
-        <CommandParameterSetInfo2 Name="__AllParameterSets" Params="AudioFile Verbose Debug ErrorAction WarningAction ErrorVariable WarningVariable OutVariable OutBuffer PipelineVariable" />
-        <CommandParameterSetInfo2 Name="__AllParameterSets" Params="AudioFile Verbose Debug ErrorAction WarningAction ErrorVariable WarningVariable OutVariable OutBuffer PipelineVariable" />
-        <CommandParameterSetInfo2 Name="__AllParameterSets" Params="AudioFile Verbose Debug ErrorAction WarningAction ErrorVariable WarningVariable OutVariable OutBuffer PipelineVariable" />
-        <CommandParameterSetInfo2 Name="__AllParameterSets" Params="AudioFile Verbose Debug ErrorAction WarningAction ErrorVariable WarningVariable OutVariable OutBuffer PipelineVariable" />
-        <CommandParameterSetInfo2 Name="__AllParameterSets" Params="AudioFile Verbose Debug ErrorAction WarningAction ErrorVariable WarningVariable OutVariable OutBuffer PipelineVariable" />
-        <CommandParameterSetInfo2 Name="__AllParameterSets" Params="AudioFile Verbose Debug ErrorAction WarningAction ErrorVariable WarningVariable OutVariable OutBuffer PipelineVariable" />
-        <CommandParameterSetInfo2 Name="__AllParameterSets" Params="AudioFile Verbose Debug ErrorAction WarningAction ErrorVariable WarningVariable OutVariable OutBuffer PipelineVariable" />
-        <CommandParameterSetInfo2 Name="__AllParameterSets" Params="AudioFile Verbose Debug ErrorAction WarningAction ErrorVariable WarningVariable OutVariable OutBuffer PipelineVariable" />
-        <CommandParameterSetInfo2 Name="__AllParameterSets" Params="AudioFile Verbose Debug ErrorAction WarningAction ErrorVariable WarningVariable OutVariable OutBuffer PipelineVariable" />
-        <CommandParameterSetInfo2 Name="__AllParameterSets" Params="AudioFile Verbose Debug ErrorAction WarningAction ErrorVariable WarningVariable OutVariable OutBuffer PipelineVariable" />
-        <CommandParameterSetInfo2 Name="__AllParameterSets" Params="AudioFile Verbose Debug ErrorAction WarningAction ErrorVariable WarningVariable OutVariable OutBuffer PipelineVariable" />
-        <CommandParameterSetInfo2 Name="__AllParameterSets" Params="AudioFile Verbose Debug ErrorAction WarningAction ErrorVariable WarningVariable OutVariable OutBuffer PipelineVariable" />
-        <CommandParameterSetInfo2 Name="__AllParameterSets" Params="AudioFile Verbose Debug ErrorAction WarningAction ErrorVariable WarningVariable OutVariable OutBuffer PipelineVariable" />
-        <CommandParameterSetInfo2 Name="__AllParameterSets" Params="AudioFile Verbose Debug ErrorAction WarningAction ErrorVariable WarningVariable OutVariable OutBuffer PipelineVariable" />
-        <CommandParameterSetInfo2 Name="__AllParameterSets" Params="AudioFile Verbose Debug ErrorAction WarningAction ErrorVariable WarningVariable OutVariable OutBuffer PipelineVariable" />
       </ParamSets>
       <Syntax>
         <string>Get-AudioInfo [-AudioFile] &lt;AudioFile&gt;</string>
@@ -332,7 +247,7 @@ For more complex operations, such as recursively searching through a directory t
             <string>System.Management.Automation.ParameterAttribute</string>
           </Attributes>
           <Aliases />
-          <Description />
+          <Description>The audio file.</Description>
           <DefaultValue />
         </ParameterDescription>
       </Parameters>
@@ -341,11 +256,13 @@ For more complex operations, such as recursively searching through a directory t
           <Name>Example 1</Name>
           <Cmd>Get-AudioFile song.wav | Get-AudioInfo</Cmd>
           <Description>This command gets the audio information for an audio file named song.wav in the current directory.</Description>
+          <Output />
         </Example>
         <Example>
           <Name>Example 2</Name>
           <Cmd>Get-AudioFile *.wav | Get-AudioInfo</Cmd>
           <Description>This command gets the audio information for all audio files with the .wav extension in the current directory.</Description>
+          <Output />
         </Example>
       </Examples>
       <RelatedLinks />
@@ -358,9 +275,9 @@ For more complex operations, such as recursively searching through a directory t
         <Synopsis>Applies an analysis algorithm to one or more audio files.</Synopsis>
         <Description>The Measure-AudioFile cmdlet generates metadata about one or more audio files by examining the audio streams with the specified analyzer. Passing multiple audio files to a single cmdlet instance will treat them as a single album, or grouping. This cmdlet will never modify the audio itself.
 
-To get a list of available analyzers, use the Get-MeasureAudioFileAnalyzer cmdlet.
+To get a list of available analyzers, use the Get-AudioAnalyzerInfo cmdlet.
 
-The results can be retrieved with the Get-AudioMetadata cmdlet, or by accessing the Metadata property directly. To persist the results to disk, use the Save-AudioMetadata cmdlet.</Description>
+The results can be retrieved with the Get-AudioFileMetadata cmdlet, or by accessing the Metadata property directly. To persist the results to disk, use the Save-AudioFileMetadata cmdlet.</Description>
         <Notes />
         <InputType />
         <InputUrl />
@@ -370,21 +287,6 @@ The results can be retrieved with the Get-AudioMetadata cmdlet, or by accessing 
         <ReturnTypeDescription />
       </GeneralHelp>
       <ParamSets>
-        <CommandParameterSetInfo2 Name="__AllParameterSets" Params="Analyzer AudioFile PassThru Verbose Debug ErrorAction WarningAction ErrorVariable WarningVariable OutVariable OutBuffer PipelineVariable" />
-        <CommandParameterSetInfo2 Name="__AllParameterSets" Params="Analyzer AudioFile PassThru Verbose Debug ErrorAction WarningAction ErrorVariable WarningVariable OutVariable OutBuffer PipelineVariable" />
-        <CommandParameterSetInfo2 Name="__AllParameterSets" Params="Analyzer AudioFile PassThru Verbose Debug ErrorAction WarningAction ErrorVariable WarningVariable OutVariable OutBuffer PipelineVariable" />
-        <CommandParameterSetInfo2 Name="__AllParameterSets" Params="Analyzer AudioFile PassThru Verbose Debug ErrorAction WarningAction ErrorVariable WarningVariable OutVariable OutBuffer PipelineVariable" />
-        <CommandParameterSetInfo2 Name="__AllParameterSets" Params="Analyzer AudioFile PassThru Verbose Debug ErrorAction WarningAction ErrorVariable WarningVariable OutVariable OutBuffer PipelineVariable" />
-        <CommandParameterSetInfo2 Name="__AllParameterSets" Params="Analyzer AudioFile PassThru Verbose Debug ErrorAction WarningAction ErrorVariable WarningVariable OutVariable OutBuffer PipelineVariable" />
-        <CommandParameterSetInfo2 Name="__AllParameterSets" Params="Analyzer AudioFile PassThru Verbose Debug ErrorAction WarningAction ErrorVariable WarningVariable OutVariable OutBuffer PipelineVariable" />
-        <CommandParameterSetInfo2 Name="__AllParameterSets" Params="Analyzer AudioFile PassThru Verbose Debug ErrorAction WarningAction ErrorVariable WarningVariable OutVariable OutBuffer PipelineVariable" />
-        <CommandParameterSetInfo2 Name="__AllParameterSets" Params="Analyzer AudioFile PassThru Verbose Debug ErrorAction WarningAction ErrorVariable WarningVariable OutVariable OutBuffer PipelineVariable" />
-        <CommandParameterSetInfo2 Name="__AllParameterSets" Params="Analyzer AudioFile PassThru Verbose Debug ErrorAction WarningAction ErrorVariable WarningVariable OutVariable OutBuffer PipelineVariable" />
-        <CommandParameterSetInfo2 Name="__AllParameterSets" Params="Analyzer AudioFile PassThru Verbose Debug ErrorAction WarningAction ErrorVariable WarningVariable OutVariable OutBuffer PipelineVariable" />
-        <CommandParameterSetInfo2 Name="__AllParameterSets" Params="Analyzer AudioFile PassThru Verbose Debug ErrorAction WarningAction ErrorVariable WarningVariable OutVariable OutBuffer PipelineVariable" />
-        <CommandParameterSetInfo2 Name="__AllParameterSets" Params="Analyzer AudioFile PassThru Verbose Debug ErrorAction WarningAction ErrorVariable WarningVariable OutVariable OutBuffer PipelineVariable" />
-        <CommandParameterSetInfo2 Name="__AllParameterSets" Params="Analyzer AudioFile PassThru Verbose Debug ErrorAction WarningAction ErrorVariable WarningVariable OutVariable OutBuffer PipelineVariable" />
-        <CommandParameterSetInfo2 Name="__AllParameterSets" Params="Analyzer AudioFile PassThru Verbose Debug ErrorAction WarningAction ErrorVariable WarningVariable OutVariable OutBuffer PipelineVariable" />
         <CommandParameterSetInfo2 Name="__AllParameterSets" Params="Analyzer AudioFile PassThru Verbose Debug ErrorAction WarningAction ErrorVariable WarningVariable OutVariable OutBuffer PipelineVariable" />
       </ParamSets>
       <Syntax>
@@ -397,7 +299,7 @@ The results can be retrieved with the Get-AudioMetadata cmdlet, or by accessing 
             <string>System.Management.Automation.ParameterAttribute</string>
           </Attributes>
           <Aliases />
-          <Description />
+          <Description>The name of the analyzer to use. To get a list of available analyzers, use the Get-AudioAnalyzerInfo cmdlet.</Description>
           <DefaultValue />
         </ParameterDescription>
         <ParameterDescription type="AudioFile" varLen="false" required="true" dynamic="false" pipeRemaining="false" pipe="true" pipeProp="false" isPos="true" pos="1" globbing="false">
@@ -406,7 +308,7 @@ The results can be retrieved with the Get-AudioMetadata cmdlet, or by accessing 
             <string>System.Management.Automation.ParameterAttribute</string>
           </Attributes>
           <Aliases />
-          <Description />
+          <Description>The audio file to be measured.</Description>
           <DefaultValue />
         </ParameterDescription>
         <ParameterDescription type="SwitchParameter" varLen="false" required="false" dynamic="false" pipeRemaining="false" pipe="false" pipeProp="false" isPos="false" pos="named" globbing="false">
@@ -424,26 +326,31 @@ The results can be retrieved with the Get-AudioMetadata cmdlet, or by accessing 
           <Name>Example 1</Name>
           <Cmd>Get-AudioFile song.wav | Measure-AudioFile "ReplayGain 2.0"</Cmd>
           <Description>This command applies ReplayGain 2.0 analysis to song.wav in the current directory.</Description>
+          <Output />
         </Example>
         <Example>
           <Name>Example 2</Name>
           <Cmd>Get-AudioFile song.wav | Measure-AudioFile "ReplayGain 2.0" -PassThru | Get-AudioFileMetadata TrackPeak</Cmd>
           <Description>This command applies ReplayGain 2.0 analysis to song.wav in the current directory, then returns the measured TrackPeak value.</Description>
+          <Output />
         </Example>
         <Example>
           <Name>Example 3</Name>
           <Cmd>Get-AudioFile song.wav | Measure-AudioFile "ReplayGain 2.0" -PassThru | Save-AudioFileMetadata</Cmd>
           <Description>This command applies ReplayGain 2.0 analysis to song.wav in the current directory, then persists the results to disk.</Description>
+          <Output />
         </Example>
         <Example>
           <Name>Example 4</Name>
           <Cmd>Get-AudioFile *.flac | Measure-AudioFile "ReplayGain 2.0"</Cmd>
           <Description>This command applies ReplayGain 2.0 analysis to all audio files with a *.flac extension in the current directory. The files are treated as a single album.</Description>
+          <Output />
         </Example>
         <Example>
           <Name>Example 5</Name>
           <Cmd>Get-ChildItem C:\Users\Myself\Music -Directory -Recurse | % { $_ | Get-ChildItem -File -Filter *.flac | Measure-AudioFile "ReplayGain 2.0" -PassThru | Save-AudioFileMetadata }</Cmd>
           <Description>This command applies ReplayGain 2.0 analysis to all audio files with a *.flac extension found anywhere under the Myself user's Music directory. Each directory is processed as a separate album. Finally, the results are persisted to disk.</Description>
+          <Output />
         </Example>
       </Examples>
       <RelatedLinks />
@@ -467,21 +374,6 @@ The new file name(s) can be generated from metadata by specifying keys inside cu
       </GeneralHelp>
       <ParamSets>
         <CommandParameterSetInfo2 Name="__AllParameterSets" Params="Name AudioFile PassThru Verbose Debug ErrorAction WarningAction ErrorVariable WarningVariable OutVariable OutBuffer PipelineVariable WhatIf Confirm" />
-        <CommandParameterSetInfo2 Name="__AllParameterSets" Params="Name AudioFile PassThru Verbose Debug ErrorAction WarningAction ErrorVariable WarningVariable OutVariable OutBuffer PipelineVariable WhatIf Confirm" />
-        <CommandParameterSetInfo2 Name="__AllParameterSets" Params="Name AudioFile PassThru Verbose Debug ErrorAction WarningAction ErrorVariable WarningVariable OutVariable OutBuffer PipelineVariable WhatIf Confirm" />
-        <CommandParameterSetInfo2 Name="__AllParameterSets" Params="Name AudioFile PassThru Verbose Debug ErrorAction WarningAction ErrorVariable WarningVariable OutVariable OutBuffer PipelineVariable WhatIf Confirm" />
-        <CommandParameterSetInfo2 Name="__AllParameterSets" Params="Name AudioFile PassThru Verbose Debug ErrorAction WarningAction ErrorVariable WarningVariable OutVariable OutBuffer PipelineVariable WhatIf Confirm" />
-        <CommandParameterSetInfo2 Name="__AllParameterSets" Params="Name AudioFile PassThru Verbose Debug ErrorAction WarningAction ErrorVariable WarningVariable OutVariable OutBuffer PipelineVariable WhatIf Confirm" />
-        <CommandParameterSetInfo2 Name="__AllParameterSets" Params="Name AudioFile PassThru Verbose Debug ErrorAction WarningAction ErrorVariable WarningVariable OutVariable OutBuffer PipelineVariable WhatIf Confirm" />
-        <CommandParameterSetInfo2 Name="__AllParameterSets" Params="Name AudioFile PassThru Verbose Debug ErrorAction WarningAction ErrorVariable WarningVariable OutVariable OutBuffer PipelineVariable WhatIf Confirm" />
-        <CommandParameterSetInfo2 Name="__AllParameterSets" Params="Name AudioFile PassThru Verbose Debug ErrorAction WarningAction ErrorVariable WarningVariable OutVariable OutBuffer PipelineVariable WhatIf Confirm" />
-        <CommandParameterSetInfo2 Name="__AllParameterSets" Params="Name AudioFile PassThru Verbose Debug ErrorAction WarningAction ErrorVariable WarningVariable OutVariable OutBuffer PipelineVariable WhatIf Confirm" />
-        <CommandParameterSetInfo2 Name="__AllParameterSets" Params="Name AudioFile PassThru Verbose Debug ErrorAction WarningAction ErrorVariable WarningVariable OutVariable OutBuffer PipelineVariable WhatIf Confirm" />
-        <CommandParameterSetInfo2 Name="__AllParameterSets" Params="Name AudioFile PassThru Verbose Debug ErrorAction WarningAction ErrorVariable WarningVariable OutVariable OutBuffer PipelineVariable WhatIf Confirm" />
-        <CommandParameterSetInfo2 Name="__AllParameterSets" Params="Name AudioFile PassThru Verbose Debug ErrorAction WarningAction ErrorVariable WarningVariable OutVariable OutBuffer PipelineVariable WhatIf Confirm" />
-        <CommandParameterSetInfo2 Name="__AllParameterSets" Params="Name AudioFile PassThru Verbose Debug ErrorAction WarningAction ErrorVariable WarningVariable OutVariable OutBuffer PipelineVariable WhatIf Confirm" />
-        <CommandParameterSetInfo2 Name="__AllParameterSets" Params="Name AudioFile PassThru Verbose Debug ErrorAction WarningAction ErrorVariable WarningVariable OutVariable OutBuffer PipelineVariable WhatIf Confirm" />
-        <CommandParameterSetInfo2 Name="__AllParameterSets" Params="Name AudioFile PassThru Verbose Debug ErrorAction WarningAction ErrorVariable WarningVariable OutVariable OutBuffer PipelineVariable WhatIf Confirm" />
       </ParamSets>
       <Syntax>
         <string>Rename-AudioFile [-Name] &lt;String&gt; [-AudioFile] &lt;AudioFile&gt; [-PassThru] [-WhatIf] [-Confirm]</string>
@@ -493,7 +385,7 @@ The new file name(s) can be generated from metadata by specifying keys inside cu
             <string>System.Management.Automation.ParameterAttribute</string>
           </Attributes>
           <Aliases />
-          <Description />
+          <Description>The new file name, without extension.</Description>
           <DefaultValue />
         </ParameterDescription>
         <ParameterDescription type="AudioFile" varLen="false" required="true" dynamic="false" pipeRemaining="false" pipe="true" pipeProp="false" isPos="true" pos="1" globbing="false">
@@ -502,7 +394,7 @@ The new file name(s) can be generated from metadata by specifying keys inside cu
             <string>System.Management.Automation.ParameterAttribute</string>
           </Attributes>
           <Aliases />
-          <Description />
+          <Description>The audio file to be renamed.</Description>
           <DefaultValue />
         </ParameterDescription>
         <ParameterDescription type="SwitchParameter" varLen="false" required="false" dynamic="false" pipeRemaining="false" pipe="false" pipeProp="false" isPos="false" pos="named" globbing="false">
@@ -544,11 +436,13 @@ The new file name(s) can be generated from metadata by specifying keys inside cu
           <Name>Example 1</Name>
           <Cmd>Get-AudioFile song.wav | Rename-AudioFile renamed</Cmd>
           <Description>This command renames song.wav in the current directory to renamed.wav.</Description>
+          <Output />
         </Example>
         <Example>
           <Name>Example 2</Name>
           <Cmd>Get-AudioFile song.flac | Rename-AudioFile "{TrackNumber} - {Title}"</Cmd>
           <Description>This command renames song.wav in the current directory to a new name based on the TrackNumber and Title metadata values.</Description>
+          <Output />
         </Example>
       </Examples>
       <RelatedLinks />
@@ -561,7 +455,7 @@ The new file name(s) can be generated from metadata by specifying keys inside cu
         <Synopsis>Encodes one or more audio files to new files located on a file system drive.</Synopsis>
         <Description>The Export-AudioFile cmdlet encodes one or more audio files using the specified encoder, and saves the resulting files in a specified directory.
 
-To get a list of available encoders, use the Get-AudioEncoderList cmdlet.
+To get a list of available encoders, use the Get-AudioEncoderInfo cmdlet.
 
 The resulting file name(s) and/or directory can be generated from metadata by specifying keys inside curly braces. For more information, type "Get-Help Export-AudioFile -Examples".</Description>
         <Notes />
@@ -573,17 +467,6 @@ The resulting file name(s) and/or directory can be generated from metadata by sp
         <ReturnTypeDescription />
       </GeneralHelp>
       <ParamSets>
-        <CommandParameterSetInfo2 Name="__AllParameterSets" Params="Encoder AudioFile Setting Directory Name Replace Verbose Debug ErrorAction WarningAction ErrorVariable WarningVariable OutVariable OutBuffer PipelineVariable WhatIf Confirm" />
-        <CommandParameterSetInfo2 Name="__AllParameterSets" Params="Encoder AudioFile Setting Directory Name Replace Verbose Debug ErrorAction WarningAction ErrorVariable WarningVariable OutVariable OutBuffer PipelineVariable WhatIf Confirm" />
-        <CommandParameterSetInfo2 Name="__AllParameterSets" Params="Encoder AudioFile Setting Directory Name Replace Verbose Debug ErrorAction WarningAction ErrorVariable WarningVariable OutVariable OutBuffer PipelineVariable WhatIf Confirm" />
-        <CommandParameterSetInfo2 Name="__AllParameterSets" Params="Encoder AudioFile Setting Directory Name Replace Verbose Debug ErrorAction WarningAction ErrorVariable WarningVariable OutVariable OutBuffer PipelineVariable WhatIf Confirm" />
-        <CommandParameterSetInfo2 Name="__AllParameterSets" Params="Encoder AudioFile Setting Directory Name Replace Verbose Debug ErrorAction WarningAction ErrorVariable WarningVariable OutVariable OutBuffer PipelineVariable WhatIf Confirm" />
-        <CommandParameterSetInfo2 Name="__AllParameterSets" Params="Encoder AudioFile Setting Directory Name Replace Verbose Debug ErrorAction WarningAction ErrorVariable WarningVariable OutVariable OutBuffer PipelineVariable WhatIf Confirm" />
-        <CommandParameterSetInfo2 Name="__AllParameterSets" Params="Encoder AudioFile Setting Directory Name Replace Verbose Debug ErrorAction WarningAction ErrorVariable WarningVariable OutVariable OutBuffer PipelineVariable WhatIf Confirm" />
-        <CommandParameterSetInfo2 Name="__AllParameterSets" Params="Encoder AudioFile Setting Directory Name Replace Verbose Debug ErrorAction WarningAction ErrorVariable WarningVariable OutVariable OutBuffer PipelineVariable WhatIf Confirm" />
-        <CommandParameterSetInfo2 Name="__AllParameterSets" Params="Encoder AudioFile Setting Directory Name Replace Verbose Debug ErrorAction WarningAction ErrorVariable WarningVariable OutVariable OutBuffer PipelineVariable WhatIf Confirm" />
-        <CommandParameterSetInfo2 Name="__AllParameterSets" Params="Encoder AudioFile Setting Directory Name Replace Verbose Debug ErrorAction WarningAction ErrorVariable WarningVariable OutVariable OutBuffer PipelineVariable WhatIf Confirm" />
-        <CommandParameterSetInfo2 Name="__AllParameterSets" Params="Encoder AudioFile Setting Directory Name Replace Verbose Debug ErrorAction WarningAction ErrorVariable WarningVariable OutVariable OutBuffer PipelineVariable WhatIf Confirm" />
         <CommandParameterSetInfo2 Name="ByPath" Params="Encoder Path AudioFile Name Setting Replace Verbose Debug ErrorAction WarningAction ErrorVariable WarningVariable OutVariable OutBuffer PipelineVariable WhatIf Confirm" />
         <CommandParameterSetInfo2 Name="ByLiteralPath" Params="Encoder LiteralPath AudioFile Name Setting Replace Verbose Debug ErrorAction WarningAction ErrorVariable WarningVariable OutVariable OutBuffer PipelineVariable WhatIf Confirm" />
       </ParamSets>
@@ -598,7 +481,7 @@ The resulting file name(s) and/or directory can be generated from metadata by sp
             <string>System.Management.Automation.ParameterAttribute</string>
           </Attributes>
           <Aliases />
-          <Description />
+          <Description>The name of the encoder to use. To get a list of available encoders, use the Get-AudioEncoderInfo cmdlet.</Description>
           <DefaultValue />
         </ParameterDescription>
         <ParameterDescription type="AudioFile" varLen="false" required="true" dynamic="false" pipeRemaining="false" pipe="true" pipeProp="false" isPos="true" pos="2" globbing="false">
@@ -607,7 +490,7 @@ The resulting file name(s) and/or directory can be generated from metadata by sp
             <string>System.Management.Automation.ParameterAttribute</string>
           </Attributes>
           <Aliases />
-          <Description />
+          <Description>The audio file to be exported.</Description>
           <DefaultValue />
         </ParameterDescription>
         <ParameterDescription type="Hashtable" varLen="false" required="false" dynamic="false" pipeRemaining="false" pipe="false" pipeProp="false" isPos="false" pos="named" globbing="false">
@@ -616,16 +499,7 @@ The resulting file name(s) and/or directory can be generated from metadata by sp
             <string>System.Management.Automation.ParameterAttribute</string>
           </Attributes>
           <Aliases />
-          <Description />
-          <DefaultValue />
-        </ParameterDescription>
-        <ParameterDescription type="DirectoryInfo" varLen="false" required="false" dynamic="false" pipeRemaining="false" pipe="false" pipeProp="false" isPos="false" pos="named" globbing="false">
-          <Name>Directory</Name>
-          <Attributes>
-            <string>System.Management.Automation.ParameterAttribute</string>
-          </Attributes>
-          <Aliases />
-          <Description />
+          <Description>Encoder-specific settings to apply. To see the available and default settings for an encoder, use the Get-AudioEncoderInfo cmdlet.</Description>
           <DefaultValue />
         </ParameterDescription>
         <ParameterDescription type="String" varLen="false" required="false" dynamic="false" pipeRemaining="false" pipe="false" pipeProp="false" isPos="false" pos="named" globbing="false">
@@ -634,7 +508,7 @@ The resulting file name(s) and/or directory can be generated from metadata by sp
             <string>System.Management.Automation.ParameterAttribute</string>
           </Attributes>
           <Aliases />
-          <Description />
+          <Description>The new file name, without extension.</Description>
           <DefaultValue />
         </ParameterDescription>
         <ParameterDescription type="SwitchParameter" varLen="false" required="false" dynamic="false" pipeRemaining="false" pipe="false" pipeProp="false" isPos="false" pos="named" globbing="false">
@@ -643,7 +517,7 @@ The resulting file name(s) and/or directory can be generated from metadata by sp
             <string>System.Management.Automation.ParameterAttribute</string>
           </Attributes>
           <Aliases />
-          <Description />
+          <Description>If specified and the destination file already exists, it will be replaced. If not specified and the destination file already exists, an exception will be thrown.</Description>
           <DefaultValue />
         </ParameterDescription>
         <ParameterDescription type="SwitchParameter" varLen="false" required="false" dynamic="false" pipeRemaining="false" pipe="false" pipeProp="false" isPos="false" pos="named" globbing="false">
@@ -676,7 +550,7 @@ The resulting file name(s) and/or directory can be generated from metadata by sp
             <string>System.Management.Automation.ParameterAttribute</string>
           </Attributes>
           <Aliases />
-          <Description />
+          <Description>Specifies a path to the output directory. Wildcards are permitted. The default location is the current directory (.).</Description>
           <DefaultValue />
         </ParameterDescription>
         <ParameterDescription type="String" varLen="false" required="true" dynamic="false" pipeRemaining="false" pipe="false" pipeProp="false" isPos="true" pos="1" globbing="false">
@@ -688,7 +562,7 @@ The resulting file name(s) and/or directory can be generated from metadata by sp
           <Aliases>
             <string>PSPath</string>
           </Aliases>
-          <Description />
+          <Description>Specifies a path to the output directory. Unlike the Path parameter, the value of the LiteralPath parameter is used exactly as it is typed. No characters are interpreted as wildcards. If the path includes escape characters, enclose it in single quotation marks. Single quotation marks tell Windows PowerShell not to interpret any characters as escape sequences.</Description>
           <DefaultValue />
         </ParameterDescription>
       </Parameters>
@@ -697,21 +571,25 @@ The resulting file name(s) and/or directory can be generated from metadata by sp
           <Name>Example 1</Name>
           <Cmd>Get-AudioFile song.wav | Export-AudioFile FLAC</Cmd>
           <Description>This command exports song.wav in the current directory to a new FLAC file with the same name, using default settings.</Description>
+          <Output />
         </Example>
         <Example>
           <Name>Example 2</Name>
           <Cmd>Get-AudioFile song.wav | Export-AudioFile Wave -Replace</Cmd>
           <Description>This command exports song.wav in the current directory to a new Wave file, replacing the original.</Description>
+          <Output />
         </Example>
         <Example>
           <Name>Example 3</Name>
           <Cmd>Get-AudioFile song.wav | Export-AudioFile FLAC -Setting @{CompressionLevel = 8}</Cmd>
           <Description>This command exports song.wav in the current directory to a new FLAC file with the same name, using compression level 8.</Description>
+          <Output />
         </Example>
         <Example>
           <Name>Example 4</Name>
           <Cmd>Get-AudioFile *.flac | Export-AudioFile "Lame MP3" "C:\Output\{Artist}\{Album}" -Name "{TrackNumber} - {Title}"</Cmd>
           <Description>This command exports all the .flac files in the current directory to MP3 files under C:\Output, using metadata to construct the directory structure as well as the file names.</Description>
+          <Output />
         </Example>
       </Examples>
       <RelatedLinks />
@@ -732,13 +610,6 @@ The resulting file name(s) and/or directory can be generated from metadata by sp
         <ReturnTypeDescription />
       </GeneralHelp>
       <ParamSets>
-        <CommandParameterSetInfo2 Name="__AllParameterSets" Params="Encoder Verbose Debug ErrorAction WarningAction ErrorVariable WarningVariable OutVariable OutBuffer PipelineVariable" />
-        <CommandParameterSetInfo2 Name="__AllParameterSets" Params="Encoder Verbose Debug ErrorAction WarningAction ErrorVariable WarningVariable OutVariable OutBuffer PipelineVariable" />
-        <CommandParameterSetInfo2 Name="__AllParameterSets" Params="Encoder Verbose Debug ErrorAction WarningAction ErrorVariable WarningVariable OutVariable OutBuffer PipelineVariable" />
-        <CommandParameterSetInfo2 Name="__AllParameterSets" Params="Name Verbose Debug ErrorAction WarningAction ErrorVariable WarningVariable OutVariable OutBuffer PipelineVariable" />
-        <CommandParameterSetInfo2 Name="__AllParameterSets" Params="Name Verbose Debug ErrorAction WarningAction ErrorVariable WarningVariable OutVariable OutBuffer PipelineVariable" />
-        <CommandParameterSetInfo2 Name="__AllParameterSets" Params="Name Verbose Debug ErrorAction WarningAction ErrorVariable WarningVariable OutVariable OutBuffer PipelineVariable" />
-        <CommandParameterSetInfo2 Name="__AllParameterSets" Params="Name Verbose Debug ErrorAction WarningAction ErrorVariable WarningVariable OutVariable OutBuffer PipelineVariable" />
         <CommandParameterSetInfo2 Name="__AllParameterSets" Params="Name Verbose Debug ErrorAction WarningAction ErrorVariable WarningVariable OutVariable OutBuffer PipelineVariable" />
       </ParamSets>
       <Syntax>
@@ -751,7 +622,7 @@ The resulting file name(s) and/or directory can be generated from metadata by sp
             <string>System.Management.Automation.ParameterAttribute</string>
           </Attributes>
           <Aliases />
-          <Description />
+          <Description>The name of the encoder. If not specified, all available encoders are returned.</Description>
           <DefaultValue />
         </ParameterDescription>
       </Parameters>
@@ -775,11 +646,6 @@ The resulting file name(s) and/or directory can be generated from metadata by sp
       </GeneralHelp>
       <ParamSets>
         <CommandParameterSetInfo2 Name="__AllParameterSets" Params="Extension Verbose Debug ErrorAction WarningAction ErrorVariable WarningVariable OutVariable OutBuffer PipelineVariable" />
-        <CommandParameterSetInfo2 Name="__AllParameterSets" Params="Extension Verbose Debug ErrorAction WarningAction ErrorVariable WarningVariable OutVariable OutBuffer PipelineVariable" />
-        <CommandParameterSetInfo2 Name="__AllParameterSets" Params="Extension Verbose Debug ErrorAction WarningAction ErrorVariable WarningVariable OutVariable OutBuffer PipelineVariable" />
-        <CommandParameterSetInfo2 Name="__AllParameterSets" Params="Extension Verbose Debug ErrorAction WarningAction ErrorVariable WarningVariable OutVariable OutBuffer PipelineVariable" />
-        <CommandParameterSetInfo2 Name="__AllParameterSets" Params="Extension Verbose Debug ErrorAction WarningAction ErrorVariable WarningVariable OutVariable OutBuffer PipelineVariable" />
-        <CommandParameterSetInfo2 Name="__AllParameterSets" Params="Extension Verbose Debug ErrorAction WarningAction ErrorVariable WarningVariable OutVariable OutBuffer PipelineVariable" />
       </ParamSets>
       <Syntax>
         <string>Get-AudioMetadataEncoderInfo [[-Extension] &lt;String&gt;]</string>
@@ -791,7 +657,7 @@ The resulting file name(s) and/or directory can be generated from metadata by sp
             <string>System.Management.Automation.ParameterAttribute</string>
           </Attributes>
           <Aliases />
-          <Description />
+          <Description>The audio file extension. If not specified, all available metadata encoders are returned.</Description>
           <DefaultValue />
         </ParameterDescription>
       </Parameters>
@@ -815,9 +681,6 @@ The resulting file name(s) and/or directory can be generated from metadata by sp
       </GeneralHelp>
       <ParamSets>
         <CommandParameterSetInfo2 Name="__AllParameterSets" Params="Name Verbose Debug ErrorAction WarningAction ErrorVariable WarningVariable OutVariable OutBuffer PipelineVariable" />
-        <CommandParameterSetInfo2 Name="__AllParameterSets" Params="Name Verbose Debug ErrorAction WarningAction ErrorVariable WarningVariable OutVariable OutBuffer PipelineVariable" />
-        <CommandParameterSetInfo2 Name="__AllParameterSets" Params="Name Verbose Debug ErrorAction WarningAction ErrorVariable WarningVariable OutVariable OutBuffer PipelineVariable" />
-        <CommandParameterSetInfo2 Name="__AllParameterSets" Params="Name Verbose Debug ErrorAction WarningAction ErrorVariable WarningVariable OutVariable OutBuffer PipelineVariable" />
       </ParamSets>
       <Syntax>
         <string>Get-AudioAnalyzerInfo [[-Name] &lt;String&gt;]</string>
@@ -829,7 +692,7 @@ The resulting file name(s) and/or directory can be generated from metadata by sp
             <string>System.Management.Automation.ParameterAttribute</string>
           </Attributes>
           <Aliases />
-          <Description />
+          <Description>The name of the analyzer. If not specified, all available analyzers are returned.</Description>
           <DefaultValue />
         </ParameterDescription>
       </Parameters>
@@ -852,8 +715,6 @@ The resulting file name(s) and/or directory can be generated from metadata by sp
         <ReturnTypeDescription />
       </GeneralHelp>
       <ParamSets>
-        <CommandParameterSetInfo2 Name="__AllParameterSets" Params="AudioFile Name Directory Replace Verbose Debug ErrorAction WarningAction ErrorVariable WarningVariable OutVariable OutBuffer PipelineVariable WhatIf Confirm" />
-        <CommandParameterSetInfo2 Name="__AllParameterSets" Params="Name AudioFile Directory Replace Verbose Debug ErrorAction WarningAction ErrorVariable WarningVariable OutVariable OutBuffer PipelineVariable WhatIf Confirm" />
         <CommandParameterSetInfo2 Name="ByPath" Params="Name Path CoverArt Replace PassThru Verbose Debug ErrorAction WarningAction ErrorVariable WarningVariable OutVariable OutBuffer PipelineVariable WhatIf Confirm" />
         <CommandParameterSetInfo2 Name="ByLiteralPath" Params="Name LiteralPath CoverArt Replace PassThru Verbose Debug ErrorAction WarningAction ErrorVariable WarningVariable OutVariable OutBuffer PipelineVariable WhatIf Confirm" />
       </ParamSets>
@@ -862,31 +723,13 @@ The resulting file name(s) and/or directory can be generated from metadata by sp
         <string>Export-AudioCoverArt [-Name] &lt;String&gt; [-LiteralPath] &lt;String&gt; [-CoverArt] &lt;CoverArt&gt; [-Replace] [-PassThru] [-WhatIf] [-Confirm]</string>
       </Syntax>
       <Parameters>
-        <ParameterDescription type="AudioFile" varLen="false" required="true" dynamic="false" pipeRemaining="false" pipe="true" pipeProp="false" isPos="true" pos="1" globbing="false">
-          <Name>AudioFile</Name>
-          <Attributes>
-            <string>System.Management.Automation.ParameterAttribute</string>
-          </Attributes>
-          <Aliases />
-          <Description />
-          <DefaultValue />
-        </ParameterDescription>
         <ParameterDescription type="String" varLen="false" required="true" dynamic="false" pipeRemaining="false" pipe="false" pipeProp="false" isPos="true" pos="0" globbing="false">
           <Name>Name</Name>
           <Attributes>
             <string>System.Management.Automation.ParameterAttribute</string>
           </Attributes>
           <Aliases />
-          <Description />
-          <DefaultValue />
-        </ParameterDescription>
-        <ParameterDescription type="DirectoryInfo" varLen="false" required="false" dynamic="false" pipeRemaining="false" pipe="false" pipeProp="false" isPos="true" pos="2" globbing="false">
-          <Name>Directory</Name>
-          <Attributes>
-            <string>System.Management.Automation.ParameterAttribute</string>
-          </Attributes>
-          <Aliases />
-          <Description />
+          <Description>The new file name, without extension.</Description>
           <DefaultValue />
         </ParameterDescription>
         <ParameterDescription type="SwitchParameter" varLen="false" required="false" dynamic="false" pipeRemaining="false" pipe="false" pipeProp="false" isPos="false" pos="named" globbing="false">
@@ -895,7 +738,7 @@ The resulting file name(s) and/or directory can be generated from metadata by sp
             <string>System.Management.Automation.ParameterAttribute</string>
           </Attributes>
           <Aliases />
-          <Description />
+          <Description>If specified and the destination file already exists, it will be replaced. If not specified and the destination file already exists, an exception will be thrown.</Description>
           <DefaultValue />
         </ParameterDescription>
         <ParameterDescription type="SwitchParameter" varLen="false" required="false" dynamic="false" pipeRemaining="false" pipe="false" pipeProp="false" isPos="false" pos="named" globbing="false">
@@ -907,7 +750,7 @@ The resulting file name(s) and/or directory can be generated from metadata by sp
           <Aliases>
             <string>wi</string>
           </Aliases>
-          <Description />
+          <Description>Shows what would happen if the cmdlet runs. The cmdlet is not run.</Description>
           <DefaultValue />
         </ParameterDescription>
         <ParameterDescription type="SwitchParameter" varLen="false" required="false" dynamic="false" pipeRemaining="false" pipe="false" pipeProp="false" isPos="false" pos="named" globbing="false">
@@ -919,7 +762,7 @@ The resulting file name(s) and/or directory can be generated from metadata by sp
           <Aliases>
             <string>cf</string>
           </Aliases>
-          <Description />
+          <Description>Prompts you for confirmation before running the cmdlet.</Description>
           <DefaultValue />
         </ParameterDescription>
         <ParameterDescription type="String" varLen="false" required="true" dynamic="false" pipeRemaining="false" pipe="false" pipeProp="false" isPos="true" pos="1" globbing="false">
@@ -928,7 +771,7 @@ The resulting file name(s) and/or directory can be generated from metadata by sp
             <string>System.Management.Automation.ParameterAttribute</string>
           </Attributes>
           <Aliases />
-          <Description />
+          <Description>Specifies a path to the output directory. Wildcards are permitted. The default location is the current directory (.).</Description>
           <DefaultValue />
         </ParameterDescription>
         <ParameterDescription type="CoverArt" varLen="false" required="true" dynamic="false" pipeRemaining="false" pipe="true" pipeProp="false" isPos="true" pos="2" globbing="false">
@@ -937,7 +780,7 @@ The resulting file name(s) and/or directory can be generated from metadata by sp
             <string>System.Management.Automation.ParameterAttribute</string>
           </Attributes>
           <Aliases />
-          <Description />
+          <Description>The cover art to be exported.</Description>
           <DefaultValue />
         </ParameterDescription>
         <ParameterDescription type="SwitchParameter" varLen="false" required="false" dynamic="false" pipeRemaining="false" pipe="false" pipeProp="false" isPos="false" pos="named" globbing="false">
@@ -946,7 +789,7 @@ The resulting file name(s) and/or directory can be generated from metadata by sp
             <string>System.Management.Automation.ParameterAttribute</string>
           </Attributes>
           <Aliases />
-          <Description />
+          <Description>Writes the cover art to the console. By default, this cmdlet does not generate any output.</Description>
           <DefaultValue />
         </ParameterDescription>
         <ParameterDescription type="String" varLen="false" required="true" dynamic="false" pipeRemaining="false" pipe="false" pipeProp="false" isPos="true" pos="1" globbing="false">
@@ -958,7 +801,7 @@ The resulting file name(s) and/or directory can be generated from metadata by sp
           <Aliases>
             <string>PSPath</string>
           </Aliases>
-          <Description />
+          <Description>Specifies a path to the output directory. Unlike the Path parameter, the value of the LiteralPath parameter is used exactly as it is typed. No characters are interpreted as wildcards. If the path includes escape characters, enclose it in single quotation marks. Single quotation marks tell Windows PowerShell not to interpret any characters as escape sequences.</Description>
           <DefaultValue />
         </ParameterDescription>
       </Parameters>
@@ -967,6 +810,7 @@ The resulting file name(s) and/or directory can be generated from metadata by sp
           <Name>Example 1</Name>
           <Cmd>Get-AudioFile song.flac | Get-AudioFileCoverArt | Export-AudioCoverArt "Cover"</Cmd>
           <Description>This command exports the cover art for song.wav in the current directory to a new file named Cover.jpg or Cover.png (depending on the image format).</Description>
+          <Output />
         </Example>
       </Examples>
       <RelatedLinks />
@@ -990,12 +834,6 @@ For more complex operations, such as recursively searching through a directory t
       </GeneralHelp>
       <ParamSets>
         <CommandParameterSetInfo2 Name="ByPath" Params="Path Verbose Debug ErrorAction WarningAction ErrorVariable WarningVariable OutVariable OutBuffer PipelineVariable" />
-        <CommandParameterSetInfo2 Name="ByFileInfo" Params="FileInfo Verbose Debug ErrorAction WarningAction ErrorVariable WarningVariable OutVariable OutBuffer PipelineVariable" />
-        <CommandParameterSetInfo2 Name="ByLiteralPath" Params="LiteralPath Verbose Debug ErrorAction WarningAction ErrorVariable WarningVariable OutVariable OutBuffer PipelineVariable" />
-        <CommandParameterSetInfo2 Name="ByPath" Params="Path Verbose Debug ErrorAction WarningAction ErrorVariable WarningVariable OutVariable OutBuffer PipelineVariable" />
-        <CommandParameterSetInfo2 Name="ByFileInfo" Params="FileInfo Verbose Debug ErrorAction WarningAction ErrorVariable WarningVariable OutVariable OutBuffer PipelineVariable" />
-        <CommandParameterSetInfo2 Name="ByLiteralPath" Params="LiteralPath Verbose Debug ErrorAction WarningAction ErrorVariable WarningVariable OutVariable OutBuffer PipelineVariable" />
-        <CommandParameterSetInfo2 Name="ByPath" Params="Path Verbose Debug ErrorAction WarningAction ErrorVariable WarningVariable OutVariable OutBuffer PipelineVariable" />
         <CommandParameterSetInfo2 Name="ByLiteralPath" Params="LiteralPath Verbose Debug ErrorAction WarningAction ErrorVariable WarningVariable OutVariable OutBuffer PipelineVariable" />
         <CommandParameterSetInfo2 Name="ByFileInfo" Params="FileInfo Verbose Debug ErrorAction WarningAction ErrorVariable WarningVariable OutVariable OutBuffer PipelineVariable" />
       </ParamSets>
@@ -1011,7 +849,7 @@ For more complex operations, such as recursively searching through a directory t
             <string>System.Management.Automation.ParameterAttribute</string>
           </Attributes>
           <Aliases />
-          <Description />
+          <Description>Specifies a path to one or more files. Wildcards are permitted. The default location is the current directory (.).</Description>
           <DefaultValue />
         </ParameterDescription>
         <ParameterDescription type="FileInfo" varLen="false" required="true" dynamic="false" pipeRemaining="false" pipe="true" pipeProp="false" isPos="true" pos="0" globbing="false">
@@ -1020,7 +858,7 @@ For more complex operations, such as recursively searching through a directory t
             <string>System.Management.Automation.ParameterAttribute</string>
           </Attributes>
           <Aliases />
-          <Description />
+          <Description>Specifies one or more files.</Description>
           <DefaultValue />
         </ParameterDescription>
         <ParameterDescription type="String" varLen="false" required="true" dynamic="false" pipeRemaining="false" pipe="false" pipeProp="false" isPos="true" pos="0" globbing="false">
@@ -1032,7 +870,7 @@ For more complex operations, such as recursively searching through a directory t
           <Aliases>
             <string>PSPath</string>
           </Aliases>
-          <Description />
+          <Description>Specifies a path to one or more files. Unlike the Path parameter, the value of the LiteralPath parameter is used exactly as it is typed. No characters are interpreted as wildcards. If the path includes escape characters, enclose it in single quotation marks. Single quotation marks tell Windows PowerShell not to interpret any characters as escape sequences.</Description>
           <DefaultValue />
         </ParameterDescription>
       </Parameters>
@@ -1041,21 +879,25 @@ For more complex operations, such as recursively searching through a directory t
           <Name>Example 1</Name>
           <Cmd>Get-AudioCoverArt Folder.jpg</Cmd>
           <Description>This command gets a cover art object from a file named Folder.jpg in the current directory.</Description>
+          <Output />
         </Example>
         <Example>
           <Name>Example 2</Name>
           <Cmd>Get-AudioCoverArt *.jpg</Cmd>
           <Description>This command gets the cover art for all audio files with the .jpg extension in the current directory.</Description>
+          <Output />
         </Example>
         <Example>
           <Name>Example 3</Name>
           <Cmd>Get-AudioFile C:\Users\Myself\Music\*.jpg</Cmd>
           <Description>This command gets the cover art for all audio files with the .jpg extension in the Myself user's Music directory.</Description>
+          <Output />
         </Example>
         <Example>
           <Name>Example 4</Name>
           <Cmd>Get-ChildItem C:\Users\Myself\Music -Filter *.jpg -Recurse | Get-AudioCoverArt</Cmd>
           <Description>This command recursively gets all cover art files with a .jpg extension in the Myself user's Music directory and all subfolders.</Description>
+          <Output />
         </Example>
       </Examples>
       <RelatedLinks />
@@ -1088,7 +930,9 @@ For more complex operations, such as recursively searching through a directory t
             <string>System.Management.Automation.ParameterAttribute</string>
           </Attributes>
           <Aliases />
-          <Description />
+          <Description>The name(s) of the metadata item(s) to be cleared. If not specified, all items are cleared.
+
+To clear the cover art, specify "CoverArt".</Description>
           <DefaultValue />
         </ParameterDescription>
         <ParameterDescription type="AudioFile" varLen="false" required="true" dynamic="false" pipeRemaining="false" pipe="true" pipeProp="false" isPos="true" pos="1" globbing="false">
@@ -1097,7 +941,7 @@ For more complex operations, such as recursively searching through a directory t
             <string>System.Management.Automation.ParameterAttribute</string>
           </Attributes>
           <Aliases />
-          <Description />
+          <Description>The audio file that has the metadata to be cleared.</Description>
           <DefaultValue />
         </ParameterDescription>
         <ParameterDescription type="SwitchParameter" varLen="false" required="false" dynamic="false" pipeRemaining="false" pipe="false" pipeProp="false" isPos="false" pos="named" globbing="false">
@@ -1106,7 +950,7 @@ For more complex operations, such as recursively searching through a directory t
             <string>System.Management.Automation.ParameterAttribute</string>
           </Attributes>
           <Aliases />
-          <Description />
+          <Description>Writes the modified audio file to the console. By default, this cmdlet does not generate any output.</Description>
           <DefaultValue />
         </ParameterDescription>
       </Parameters>
@@ -1115,16 +959,19 @@ For more complex operations, such as recursively searching through a directory t
           <Name>Example 1</Name>
           <Cmd>Get-AudioFile song.flac | Clear-AudioFileMetadata</Cmd>
           <Description>This command clears the metadata on song.flac.</Description>
+          <Output />
         </Example>
         <Example>
           <Name>Example 2</Name>
           <Cmd>Get-AudioFile song.flac | Clear-AudioFileMetadata -PassThru | Save-AudioFileMetadata</Cmd>
           <Description>This command clears the metadata on song.flac and then persists the change to disk.</Description>
+          <Output />
         </Example>
         <Example>
           <Name>Example 3</Name>
           <Cmd>Get-AudioFile song.flac | Clear-AudioFileMetadata -Key Genre,CoverArt</Cmd>
           <Description>This command clears Genre and CoverArt metadata from song.flac.</Description>
+          <Output />
         </Example>
       </Examples>
       <RelatedLinks />
@@ -1157,7 +1004,7 @@ For more complex operations, such as recursively searching through a directory t
             <string>System.Management.Automation.ParameterAttribute</string>
           </Attributes>
           <Aliases />
-          <Description />
+          <Description>The cover art to be converted.</Description>
           <DefaultValue />
         </ParameterDescription>
         <ParameterDescription type="Int32" varLen="false" required="false" dynamic="false" pipeRemaining="false" pipe="false" pipeProp="false" isPos="false" pos="named" globbing="false">
@@ -1166,7 +1013,7 @@ For more complex operations, such as recursively searching through a directory t
             <string>System.Management.Automation.ParameterAttribute</string>
           </Attributes>
           <Aliases />
-          <Description />
+          <Description>The maximum width, in pixels. If an image is wider than the specified value, it will be scaled to match the indicated value.</Description>
           <DefaultValue />
         </ParameterDescription>
         <ParameterDescription type="SwitchParameter" varLen="false" required="false" dynamic="false" pipeRemaining="false" pipe="false" pipeProp="false" isPos="false" pos="named" globbing="false">
@@ -1175,7 +1022,7 @@ For more complex operations, such as recursively searching through a directory t
             <string>System.Management.Automation.ParameterAttribute</string>
           </Attributes>
           <Aliases />
-          <Description />
+          <Description>If specified, and the image is currently lossless (PNG format), it will be converted to lossy (JPEG). This usually results in significant space savings.</Description>
           <DefaultValue />
         </ParameterDescription>
         <ParameterDescription type="Int32" varLen="false" required="false" dynamic="false" pipeRemaining="false" pipe="false" pipeProp="false" isPos="false" pos="named" globbing="false">
@@ -1184,8 +1031,8 @@ For more complex operations, such as recursively searching through a directory t
             <string>System.Management.Automation.ParameterAttribute</string>
           </Attributes>
           <Aliases />
-          <Description />
-          <DefaultValue />
+          <Description>Specified the quality level, if the image is being converted to lossy (JPEG) format. The valid range is 0 to 100.</Description>
+          <DefaultValue>75</DefaultValue>
         </ParameterDescription>
       </Parameters>
       <Examples>
@@ -1193,11 +1040,13 @@ For more complex operations, such as recursively searching through a directory t
           <Name>Example 1</Name>
           <Cmd>Get-AudioCoverArt Folder.jpg | Convert-AudioCoverArt -MaxWidth 600</Cmd>
           <Description>This command converts Folder.jpg into a new image, resized (if necessary) to not exceed 600 pixels in width.</Description>
+          <Output />
         </Example>
         <Example>
           <Name>Example 2</Name>
           <Cmd>Get-AudioCoverArt Folder.jpg | Convert-AudioCoverArt -ConvertToLossy</Cmd>
           <Description>This command converts Folder.jpg into a new image, re-encoding it as a lossy JPEG image if it isn't already.</Description>
+          <Output />
         </Example>
       </Examples>
       <RelatedLinks />
@@ -1230,7 +1079,7 @@ For more complex operations, such as recursively searching through a directory t
             <string>System.Management.Automation.ParameterAttribute</string>
           </Attributes>
           <Aliases />
-          <Description />
+          <Description>The audio file that has the cover art to be converted.</Description>
           <DefaultValue />
         </ParameterDescription>
         <ParameterDescription type="Int32" varLen="false" required="false" dynamic="false" pipeRemaining="false" pipe="false" pipeProp="false" isPos="false" pos="named" globbing="false">
@@ -1239,7 +1088,7 @@ For more complex operations, such as recursively searching through a directory t
             <string>System.Management.Automation.ParameterAttribute</string>
           </Attributes>
           <Aliases />
-          <Description />
+          <Description>The maximum width, in pixels. If an image is wider than the specified value, it will be scaled to match the indicated value.</Description>
           <DefaultValue />
         </ParameterDescription>
         <ParameterDescription type="SwitchParameter" varLen="false" required="false" dynamic="false" pipeRemaining="false" pipe="false" pipeProp="false" isPos="false" pos="named" globbing="false">
@@ -1248,7 +1097,7 @@ For more complex operations, such as recursively searching through a directory t
             <string>System.Management.Automation.ParameterAttribute</string>
           </Attributes>
           <Aliases />
-          <Description />
+          <Description>If specified, and the image is currently lossless (PNG format), it will be converted to lossy (JPEG). This usually results in significant space savings.</Description>
           <DefaultValue />
         </ParameterDescription>
         <ParameterDescription type="Int32" varLen="false" required="false" dynamic="false" pipeRemaining="false" pipe="false" pipeProp="false" isPos="false" pos="named" globbing="false">
@@ -1257,7 +1106,7 @@ For more complex operations, such as recursively searching through a directory t
             <string>System.Management.Automation.ParameterAttribute</string>
           </Attributes>
           <Aliases />
-          <Description />
+          <Description>Specified the quality level, if the image is being converted to lossy (JPEG) format. The valid range is 0 to 100.</Description>
           <DefaultValue />
         </ParameterDescription>
         <ParameterDescription type="SwitchParameter" varLen="false" required="false" dynamic="false" pipeRemaining="false" pipe="false" pipeProp="false" isPos="false" pos="named" globbing="false">
@@ -1266,7 +1115,7 @@ For more complex operations, such as recursively searching through a directory t
             <string>System.Management.Automation.ParameterAttribute</string>
           </Attributes>
           <Aliases />
-          <Description />
+          <Description>Writes the modified audio file to the console. By default, this cmdlet does not generate any output.</Description>
           <DefaultValue />
         </ParameterDescription>
       </Parameters>
@@ -1275,16 +1124,19 @@ For more complex operations, such as recursively searching through a directory t
           <Name>Example 1</Name>
           <Cmd>Get-AudioFile song.flac | Convert-AudioFileCoverArt -MaxWidth 600</Cmd>
           <Description>This command converts the cover art metadata on song.flac into a new image, resized (if necessary) to not exceed 600 pixels in width.</Description>
+          <Output />
         </Example>
         <Example>
           <Name>Example 2</Name>
           <Cmd>Get-AudioFile song.flac | Convert-AudioFileCoverArt -ConvertToLossy</Cmd>
           <Description>This command converts the cover art metadata on song.flac into a new image, re-encoding it as a lossy JPEG image if it isn't already.</Description>
+          <Output />
         </Example>
         <Example>
           <Name>Example 3</Name>
           <Cmd>Get-AudioFile song.flac | Convert-AudioFileCoverArt -ConvertToLossy -PassThru | Save-AudioFileMetadata</Cmd>
           <Description>This command converts the cover art metadata on song.flac into a new image, re-encodes it as a lossy JPEG image if it isn't already, and then persists the change to disk.</Description>
+          <Output />
         </Example>
       </Examples>
       <RelatedLinks />
@@ -1321,7 +1173,7 @@ The resulting file name(s) and/or directory can be generated from metadata by sp
             <string>System.Management.Automation.ParameterAttribute</string>
           </Attributes>
           <Aliases />
-          <Description />
+          <Description>The new file name, without extension.</Description>
           <DefaultValue />
         </ParameterDescription>
         <ParameterDescription type="String" varLen="false" required="true" dynamic="false" pipeRemaining="false" pipe="false" pipeProp="false" isPos="true" pos="1" globbing="false">
@@ -1330,7 +1182,7 @@ The resulting file name(s) and/or directory can be generated from metadata by sp
             <string>System.Management.Automation.ParameterAttribute</string>
           </Attributes>
           <Aliases />
-          <Description />
+          <Description>Specifies a path to the output directory. Wildcards are permitted. The default location is the current directory (.).</Description>
           <DefaultValue />
         </ParameterDescription>
         <ParameterDescription type="AudioFile" varLen="false" required="true" dynamic="false" pipeRemaining="false" pipe="true" pipeProp="false" isPos="true" pos="2" globbing="false">
@@ -1339,7 +1191,7 @@ The resulting file name(s) and/or directory can be generated from metadata by sp
             <string>System.Management.Automation.ParameterAttribute</string>
           </Attributes>
           <Aliases />
-          <Description />
+          <Description>The audio file that has the cover art to be exported.</Description>
           <DefaultValue />
         </ParameterDescription>
         <ParameterDescription type="SwitchParameter" varLen="false" required="false" dynamic="false" pipeRemaining="false" pipe="false" pipeProp="false" isPos="false" pos="named" globbing="false">
@@ -1348,7 +1200,7 @@ The resulting file name(s) and/or directory can be generated from metadata by sp
             <string>System.Management.Automation.ParameterAttribute</string>
           </Attributes>
           <Aliases />
-          <Description />
+          <Description>If specified and the destination file already exists, it will be replaced. If not specified and the destination file already exists, an exception will be thrown.</Description>
           <DefaultValue />
         </ParameterDescription>
         <ParameterDescription type="SwitchParameter" varLen="false" required="false" dynamic="false" pipeRemaining="false" pipe="false" pipeProp="false" isPos="false" pos="named" globbing="false">
@@ -1357,7 +1209,7 @@ The resulting file name(s) and/or directory can be generated from metadata by sp
             <string>System.Management.Automation.ParameterAttribute</string>
           </Attributes>
           <Aliases />
-          <Description />
+          <Description>Writes the audio file to the console. By default, this cmdlet does not generate any output.</Description>
           <DefaultValue />
         </ParameterDescription>
         <ParameterDescription type="SwitchParameter" varLen="false" required="false" dynamic="false" pipeRemaining="false" pipe="false" pipeProp="false" isPos="false" pos="named" globbing="false">
@@ -1369,7 +1221,7 @@ The resulting file name(s) and/or directory can be generated from metadata by sp
           <Aliases>
             <string>wi</string>
           </Aliases>
-          <Description />
+          <Description>Shows what would happen if the cmdlet runs. The cmdlet is not run.</Description>
           <DefaultValue />
         </ParameterDescription>
         <ParameterDescription type="SwitchParameter" varLen="false" required="false" dynamic="false" pipeRemaining="false" pipe="false" pipeProp="false" isPos="false" pos="named" globbing="false">
@@ -1381,7 +1233,7 @@ The resulting file name(s) and/or directory can be generated from metadata by sp
           <Aliases>
             <string>cf</string>
           </Aliases>
-          <Description />
+          <Description>Prompts you for confirmation before running the cmdlet.</Description>
           <DefaultValue />
         </ParameterDescription>
         <ParameterDescription type="String" varLen="false" required="true" dynamic="false" pipeRemaining="false" pipe="false" pipeProp="false" isPos="true" pos="1" globbing="false">
@@ -1393,7 +1245,7 @@ The resulting file name(s) and/or directory can be generated from metadata by sp
           <Aliases>
             <string>PSPath</string>
           </Aliases>
-          <Description />
+          <Description>Specifies a path to the output directory. Unlike the Path parameter, the value of the LiteralPath parameter is used exactly as it is typed. No characters are interpreted as wildcards. If the path includes escape characters, enclose it in single quotation marks. Single quotation marks tell Windows PowerShell not to interpret any characters as escape sequences.</Description>
           <DefaultValue />
         </ParameterDescription>
       </Parameters>
@@ -1402,6 +1254,7 @@ The resulting file name(s) and/or directory can be generated from metadata by sp
           <Name>Example 1</Name>
           <Cmd>Get-AudioFile song.flac | Export-AudioFileCoverArt "Cover"</Cmd>
           <Description>This command exports the cover art for song.wav in the current directory to a new file named Cover.jpg or Cover.png (depending on the image format).</Description>
+          <Output />
         </Example>
       </Examples>
       <RelatedLinks />
@@ -1434,7 +1287,7 @@ The resulting file name(s) and/or directory can be generated from metadata by sp
             <string>System.Management.Automation.ParameterAttribute</string>
           </Attributes>
           <Aliases />
-          <Description />
+          <Description>The audio file.</Description>
           <DefaultValue />
         </ParameterDescription>
       </Parameters>
@@ -1443,11 +1296,13 @@ The resulting file name(s) and/or directory can be generated from metadata by sp
           <Name>Example 1</Name>
           <Cmd>Get-AudioFile song.flac | Get-AudioFileCoverArt</Cmd>
           <Description>This command gets the cover art for an audio file named song.flac in the current directory.</Description>
+          <Output />
         </Example>
         <Example>
           <Name>Example 2</Name>
           <Cmd>Get-AudioFile *.flac | Get-AudioFileCoverArt</Cmd>
           <Description>This command gets the cover art for all audio files with the .flac extension in the current directory.</Description>
+          <Output />
         </Example>
       </Examples>
       <RelatedLinks />
@@ -1480,7 +1335,7 @@ The resulting file name(s) and/or directory can be generated from metadata by sp
             <string>System.Management.Automation.ParameterAttribute</string>
           </Attributes>
           <Aliases />
-          <Description />
+          <Description>The name(s) of the metadata item(s) to be included. If not specified, the whole metadata dictionary is returned.</Description>
           <DefaultValue />
         </ParameterDescription>
         <ParameterDescription type="AudioFile" varLen="false" required="true" dynamic="false" pipeRemaining="false" pipe="true" pipeProp="false" isPos="true" pos="1" globbing="false">
@@ -1489,7 +1344,7 @@ The resulting file name(s) and/or directory can be generated from metadata by sp
             <string>System.Management.Automation.ParameterAttribute</string>
           </Attributes>
           <Aliases />
-          <Description />
+          <Description>The audio file.</Description>
           <DefaultValue />
         </ParameterDescription>
       </Parameters>
@@ -1498,16 +1353,19 @@ The resulting file name(s) and/or directory can be generated from metadata by sp
           <Name>Example 1</Name>
           <Cmd>Get-AudioFile song.flac | Get-AudioFileMetadata -Key Title</Cmd>
           <Description>This command gets the title for an audio file named song.flac in the current directory.</Description>
+          <Output />
         </Example>
         <Example>
           <Name>Example 2</Name>
           <Cmd>Get-AudioFile song.flac | Get-AudioFileMetadata -Key Title,TrackNumber</Cmd>
           <Description>This command gets the title and track number for an audio file named song.flac in the current directory.</Description>
+          <Output />
         </Example>
         <Example>
           <Name>Example 3</Name>
           <Cmd>Get-AudioFile *.flac | Get-AudioFileMetadata -Key Title</Cmd>
           <Description>This command gets the title for all audio files with the .flac extension in the current directory.</Description>
+          <Output />
         </Example>
       </Examples>
       <RelatedLinks />
@@ -1540,7 +1398,7 @@ The resulting file name(s) and/or directory can be generated from metadata by sp
             <string>System.Management.Automation.ParameterAttribute</string>
           </Attributes>
           <Aliases />
-          <Description />
+          <Description>The audio file that has the metadata to be saved.</Description>
           <DefaultValue />
         </ParameterDescription>
         <ParameterDescription type="Hashtable" varLen="false" required="false" dynamic="false" pipeRemaining="false" pipe="false" pipeProp="false" isPos="false" pos="named" globbing="false">
@@ -1549,7 +1407,7 @@ The resulting file name(s) and/or directory can be generated from metadata by sp
             <string>System.Management.Automation.ParameterAttribute</string>
           </Attributes>
           <Aliases />
-          <Description />
+          <Description>Encoder-specific settings to apply. To see the available and default settings for an encoder, use the Get-AudioMetadataEncoderInfo cmdlet.</Description>
           <DefaultValue />
         </ParameterDescription>
         <ParameterDescription type="SwitchParameter" varLen="false" required="false" dynamic="false" pipeRemaining="false" pipe="false" pipeProp="false" isPos="false" pos="named" globbing="false">
@@ -1558,7 +1416,7 @@ The resulting file name(s) and/or directory can be generated from metadata by sp
             <string>System.Management.Automation.ParameterAttribute</string>
           </Attributes>
           <Aliases />
-          <Description />
+          <Description>Writes the audio file to the console. By default, this cmdlet does not generate any output.</Description>
           <DefaultValue />
         </ParameterDescription>
         <ParameterDescription type="SwitchParameter" varLen="false" required="false" dynamic="false" pipeRemaining="false" pipe="false" pipeProp="false" isPos="false" pos="named" globbing="false">
@@ -1570,7 +1428,7 @@ The resulting file name(s) and/or directory can be generated from metadata by sp
           <Aliases>
             <string>wi</string>
           </Aliases>
-          <Description />
+          <Description>Shows what would happen if the cmdlet runs. The cmdlet is not run.</Description>
           <DefaultValue />
         </ParameterDescription>
         <ParameterDescription type="SwitchParameter" varLen="false" required="false" dynamic="false" pipeRemaining="false" pipe="false" pipeProp="false" isPos="false" pos="named" globbing="false">
@@ -1582,7 +1440,7 @@ The resulting file name(s) and/or directory can be generated from metadata by sp
           <Aliases>
             <string>cf</string>
           </Aliases>
-          <Description />
+          <Description>Prompts you for confirmation before running the cmdlet.</Description>
           <DefaultValue />
         </ParameterDescription>
       </Parameters>
@@ -1591,11 +1449,13 @@ The resulting file name(s) and/or directory can be generated from metadata by sp
           <Name>Example 1</Name>
           <Cmd>Get-AudioFile song.flac | Set-AudioFileMetadata @{Title = "Test Song"} -PassThru | Save-AudioFileMetadata</Cmd>
           <Description>This command sets the title on song.flac to "Test Song" and then persists the change to disk.</Description>
+          <Output />
         </Example>
         <Example>
           <Name>Example 2</Name>
           <Cmd>Get-AudioFile song.mp3 | Save-AudioFileMetadata -Setting @{ID3Version = "2.4"; AddSoundCheck = "Album"}</Cmd>
           <Description>This command updates song.mp3 with a new tag suitable for iTunes.</Description>
+          <Output />
         </Example>
       </Examples>
       <RelatedLinks />
@@ -1628,7 +1488,7 @@ The resulting file name(s) and/or directory can be generated from metadata by sp
             <string>System.Management.Automation.ParameterAttribute</string>
           </Attributes>
           <Aliases />
-          <Description />
+          <Description>The cover art.</Description>
           <DefaultValue />
         </ParameterDescription>
         <ParameterDescription type="AudioFile" varLen="false" required="true" dynamic="false" pipeRemaining="false" pipe="true" pipeProp="false" isPos="true" pos="1" globbing="false">
@@ -1637,7 +1497,7 @@ The resulting file name(s) and/or directory can be generated from metadata by sp
             <string>System.Management.Automation.ParameterAttribute</string>
           </Attributes>
           <Aliases />
-          <Description />
+          <Description>The audio file upon which the cover art is to be set.</Description>
           <DefaultValue />
         </ParameterDescription>
         <ParameterDescription type="SwitchParameter" varLen="false" required="false" dynamic="false" pipeRemaining="false" pipe="false" pipeProp="false" isPos="false" pos="named" globbing="false">
@@ -1646,7 +1506,7 @@ The resulting file name(s) and/or directory can be generated from metadata by sp
             <string>System.Management.Automation.ParameterAttribute</string>
           </Attributes>
           <Aliases />
-          <Description />
+          <Description>Writes the modified audio file to the console. By default, this cmdlet does not generate any output.</Description>
           <DefaultValue />
         </ParameterDescription>
       </Parameters>
@@ -1655,11 +1515,13 @@ The resulting file name(s) and/or directory can be generated from metadata by sp
           <Name>Example 1</Name>
           <Cmd>Get-AudioFile song.flac | Set-AudioFileCoverArt (Get-AudioCoverArt Folder.jpg)</Cmd>
           <Description>This command sets the cover art on song.flac to the image from Folder.jpg in the current directory.</Description>
+          <Output />
         </Example>
         <Example>
           <Name>Example 2</Name>
           <Cmd>Get-AudioFile song.flac | Set-AudioFileCoverArt (Get-AudioCoverArt Folder.jpg) -PassThru | Save-AudioFileMetadata</Cmd>
           <Description>This command sets the cover art on song.flac to the image from Folder.jpg in the current directory, and then persists the change to disk.</Description>
+          <Output />
         </Example>
       </Examples>
       <RelatedLinks />
@@ -1692,7 +1554,7 @@ The resulting file name(s) and/or directory can be generated from metadata by sp
             <string>System.Management.Automation.ParameterAttribute</string>
           </Attributes>
           <Aliases />
-          <Description />
+          <Description>The metadata.</Description>
           <DefaultValue />
         </ParameterDescription>
         <ParameterDescription type="AudioFile" varLen="false" required="true" dynamic="false" pipeRemaining="false" pipe="true" pipeProp="false" isPos="true" pos="1" globbing="false">
@@ -1701,7 +1563,7 @@ The resulting file name(s) and/or directory can be generated from metadata by sp
             <string>System.Management.Automation.ParameterAttribute</string>
           </Attributes>
           <Aliases />
-          <Description />
+          <Description>The audio file upon which the metadata is to be set.</Description>
           <DefaultValue />
         </ParameterDescription>
         <ParameterDescription type="SwitchParameter" varLen="false" required="false" dynamic="false" pipeRemaining="false" pipe="false" pipeProp="false" isPos="false" pos="named" globbing="false">
@@ -1710,7 +1572,7 @@ The resulting file name(s) and/or directory can be generated from metadata by sp
             <string>System.Management.Automation.ParameterAttribute</string>
           </Attributes>
           <Aliases />
-          <Description />
+          <Description>Writes the modified audio file to the console. By default, this cmdlet does not generate any output.</Description>
           <DefaultValue />
         </ParameterDescription>
       </Parameters>
@@ -1719,11 +1581,13 @@ The resulting file name(s) and/or directory can be generated from metadata by sp
           <Name>Example 1</Name>
           <Cmd>Get-AudioFile song.flac | Set-AudioFileMetadata @{Title = "Test Song"}</Cmd>
           <Description />
+          <Output />
         </Example>
         <Example>
           <Name>Example 2</Name>
           <Cmd>Get-AudioFile song.flac | Set-AudioFileMetadata @{Title = "Test Song"} -PassThru | Save-AudioFileMetadata</Cmd>
           <Description>This command sets the title on song.flac to "Test Song" and then persists the change to disk.</Description>
+          <Output />
         </Example>
       </Examples>
       <RelatedLinks />
