@@ -164,7 +164,7 @@ namespace PowerShellAudio
                 }
             }
 
-            throw new UnsupportedAudioException(Resources.AudioFileDecodeError);
+            throw new UnsupportedAudioException(String.Format(Resources.AudioFileDecodeError, FileInfo.FullName));
         }
     }
 }

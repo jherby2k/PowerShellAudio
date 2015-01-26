@@ -143,7 +143,7 @@ namespace PowerShellAudio
                 }
             }
 
-            throw new UnsupportedAudioException(Resources.TaggedAudioFileUnsupportedError);
+            throw new UnsupportedAudioException(String.Format(Resources.TaggedAudioFileUnsupportedError, FileInfo.Extension));
         }
 
         static void ValidateSettings(SettingsDictionary settings, IMetadataEncoder encoder)

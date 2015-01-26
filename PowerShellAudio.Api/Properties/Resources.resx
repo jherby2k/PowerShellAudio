@@ -121,7 +121,7 @@
     <value>There is no analyzer named '{0}' available</value>
   </data>
   <data name="AudioFileDecodeError" xml:space="preserve">
-    <value>No decoders were able to read this file</value>
+    <value>No decoders were able to read this file: '{0}'</value>
   </data>
   <data name="ExportableAudioFileFactoryError" xml:space="preserve">
     <value>There is no encoder named '{0}' available</value>
@@ -136,6 +136,6 @@
     <value>The setting '{0}' is not recognized by this metadata format</value>
   </data>
   <data name="TaggedAudioFileUnsupportedError" xml:space="preserve">
-    <value>No metadata encoders are able to save metadata to this type of file</value>
+    <value>No metadata encoders are able to save metadata to this type of file ({0})</value>
   </data>
 </root>
