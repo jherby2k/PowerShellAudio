@@ -11,7 +11,7 @@ An extensible, multi-format audio conversion and tagging module for Windows Powe
 2. Visual Studio Community Edition (free), or any higher version of Visual Studio 2013.
 3. Windows Management Framework 4.0 (if you are building on Windows 7).
 4. The Code Contracts extension (http://research.microsoft.com/en-us/projects/contracts)
-5. The WiX Toolset extension v3.9 (http://wixtoolset.org)
+5. The WiX Toolset extension v3.9 R2 (http://wixtoolset.org)
 
 ## Acknowledgements
 This project uses libraries from several high-quality open source projects.
