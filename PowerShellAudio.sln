@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio 2013
-VisualStudioVersion = 12.0.31101.0
+# Visual Studio 14
+VisualStudioVersion = 14.0.23107.0
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PowerShellAudio.Api", "PowerShellAudio.Api\PowerShellAudio.Api.csproj", "{B122F71F-58CA-4CDB-91F0-ED91DB6FE3FB}"
 EndProject
@@ -71,6 +71,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution 
 		COPYING = COPYING
 		COPYING.LESSER = COPYING.LESSER
 		Default.runsettings = Default.runsettings
+		PowerShellAudio.sln.DotSettings = PowerShellAudio.sln.DotSettings
 	EndProjectSection
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Deployment", "Deployment", "{8143544E-CC91-4945-8FC6-ADB1ECE47B19}"
