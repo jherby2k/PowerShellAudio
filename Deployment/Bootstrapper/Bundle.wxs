@@ -34,7 +34,7 @@ You should have received a copy of the GNU Lesser General Public License along w
     <util:RegistrySearch Variable="VCRedist_x64" Win64="yes" Root="HKLM" Key="SOFTWARE\Microsoft\DevDiv\VC\Servicing\12.0\RuntimeMinimum" Value="Version" Result="value" />
 
     <Chain>
-      <PackageGroupRef Id="NetFx452Web" />
+      <PackageGroupRef Id="NetFx46Web" />
       
       <MsuPackage DisplayName="Windows Management Framework 4.0"
                   KB="KB2819745"
