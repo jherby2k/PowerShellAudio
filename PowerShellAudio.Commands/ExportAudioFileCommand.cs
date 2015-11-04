@@ -68,13 +68,17 @@ namespace PowerShellAudio.Commands
         {
             if (_audioFiles.Count > 0)
             {
-                int completed = 0;
+                var completed = 0;
 
                 using (var outputQueue = new BlockingCollection<object>())
                 {
-                    outputQueue.Add(new ProgressRecord(0, string.Format(CultureInfo.CurrentCulture, Resources.ExportAudioFileCommandActivityMessage, Encoder), string.Format(CultureInfo.CurrentCulture, Resources.ExportAudioFileCommandStatusMessage, 0, _audioFiles.Count)) { PercentComplete = 0 });
+                    outputQueue.Add(new ProgressRecord(0,
+                        string.Format(CultureInfo.CurrentCulture, Resources.ExportAudioFileCommandActivityMessage,
+                            Encoder),
+                        string.Format(CultureInfo.CurrentCulture, Resources.ExportAudioFileCommandStatusMessage,
+                            0, _audioFiles.Count)) {PercentComplete = 0});
 
-                    Task.Run(() => Parallel.ForEach(_audioFiles, new ParallelOptions() { CancellationToken = _cancelSource.Token }, audioFile =>
+                    Task.Run(() => Parallel.ForEach(_audioFiles, new ParallelOptions { CancellationToken = _cancelSource.Token }, audioFile =>
                     {
                         try
                         {
@@ -90,11 +94,22 @@ namespace PowerShellAudio.Commands
                                 outputDirectory = new DirectoryInfo(e.ItemName);
                             }
 
-                            ExportableAudioFile result = audioFile.Export(Encoder, _cancelSource.Token, new HashTableToSettingsDictionaryAdapter(Setting), outputDirectory, string.IsNullOrEmpty(Name) ? null : substituter.Substitute(Name), Replace);
+                            ExportableAudioFile result = audioFile.Export(Encoder, _cancelSource.Token,
+                                new HashTableToSettingsDictionaryAdapter(Setting), outputDirectory,
+                                string.IsNullOrEmpty(Name) ? null : substituter.Substitute(Name), Replace);
+
                             Interlocked.Increment(ref completed);
 
                             outputQueue.Add(result);
-                            outputQueue.Add(new ProgressRecord(0, string.Format(CultureInfo.CurrentCulture, Resources.ExportAudioFileCommandActivityMessage, Encoder), string.Format(CultureInfo.CurrentCulture, Resources.ExportAudioFileCommandStatusMessage, completed, _audioFiles.Count)) { PercentComplete = completed.GetPercent(_audioFiles.Count) });
+
+                            outputQueue.Add(new ProgressRecord(0,
+                                string.Format(CultureInfo.CurrentCulture, Resources.ExportAudioFileCommandActivityMessage,
+                                    Encoder),
+                                string.Format(CultureInfo.CurrentCulture, Resources.ExportAudioFileCommandStatusMessage,
+                                    completed, _audioFiles.Count))
+                            {
+                                PercentComplete = completed.GetPercent(_audioFiles.Count)
+                            });
                         }
                         catch (Exception e)
                         {

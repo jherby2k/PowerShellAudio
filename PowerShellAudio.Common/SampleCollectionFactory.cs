@@ -71,8 +71,8 @@ namespace PowerShellAudio
             Contract.Ensures(Contract.Result<SampleCollection>() != null);
             Contract.Ensures(Contract.Result<SampleCollection>().SampleCount == sampleCount);
 
-            float[][] samples = new float[channels][];
-            for (int channel = 0; channel < channels; channel++)
+            var samples = new float[channels][];
+            for (var channel = 0; channel < channels; channel++)
                 samples[channel] = CreateOrGetCachedArray(sampleCount);
 
             return new SampleCollection(samples);
@@ -87,9 +87,11 @@ namespace PowerShellAudio
         {
             Contract.Requires<ArgumentNullException>(samples != null);
 
-            if (samples.SampleCount > 0)
-                foreach (float[] channel in samples)
-                    CacheArray(channel);
+            if (samples.SampleCount == 0)
+                return;
+
+            foreach (float[] channel in samples)
+                CacheArray(channel);
         }
 
         /// <summary>
@@ -106,7 +108,7 @@ namespace PowerShellAudio
             Contract.Requires<ArgumentOutOfRangeException>(sampleCount > 0);
             Contract.Ensures(samples.SampleCount == sampleCount);
 
-            for (int channel = 0; channel < samples.Channels; channel++)
+            for (var channel = 0; channel < samples.Channels; channel++)
             {
                 float[] newArray = CreateOrGetCachedArray(sampleCount);
                 Array.Copy(samples[channel], newArray, Math.Min(sampleCount, samples.SampleCount));

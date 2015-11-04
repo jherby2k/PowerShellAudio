@@ -92,37 +92,37 @@ namespace PowerShellAudio
         /// <value>
         /// A description of the audio stream format.
         /// </value>
-        public string Format { get; private set; }
+        public string Format { get; }
 
         /// <summary>
         /// Gets the number of channels.
         /// </summary>
         /// <value>The number of channels.</value>
-        public int Channels { get; private set; }
+        public int Channels { get; }
 
         /// <summary>
         /// Gets the number of bits per sample, or 0 if the audio is compressed in a lossy fashion.
         /// </summary>
         /// <value>The number of bits per sample.</value>
-        public int BitsPerSample { get; private set; }
+        public int BitsPerSample { get; }
 
         /// <summary>
         /// Gets the sample rate.
         /// </summary>
         /// <value>The sample rate.</value>
-        public int SampleRate { get; private set; }
+        public int SampleRate { get; }
 
         /// <summary>
         /// Gets the total sample count, or 0 if it is unavailable.
         /// </summary>
         /// <value>The total sample count.</value>
-        public long SampleCount { get; private set; }
+        public long SampleCount { get; }
 
         /// <summary>
         /// Gets the length of the audio. Returns 0 if the total sample count is unavailable.
         /// </summary>
         /// <value>The length of the audio.</value>
-        public TimeSpan Length { get; private set; }
+        public TimeSpan Length { get; }
 
         /// <summary>
         /// Initializes a new instance of the <see cref="AudioInfo"/> class.
@@ -169,7 +169,7 @@ namespace PowerShellAudio
         {
             Contract.Ensures(!string.IsNullOrEmpty(Contract.Result<string>()));
 
-            StringBuilder result = new StringBuilder();
+            var result = new StringBuilder();
 
             if (BitsPerSample > 0)
             {
@@ -188,15 +188,15 @@ namespace PowerShellAudio
                     break;
             }
             result.Append(Format);
-            if (Length.TotalSeconds > 0)
-            {
-                result.Append(" [");
-                if (Length.Hours < 1)
-                    result.Append(Length.ToString(@"%m\:ss", CultureInfo.CurrentCulture));
-                else
-                    result.Append(Length.ToString(@"%h\:mm\:ss", CultureInfo.CurrentCulture));
-                result.Append("]");
-            }
+
+            if (Length.TotalSeconds < 1)
+                return result.ToString();
+
+            result.Append(" [");
+            result.Append(Length.Hours < 1
+                ? Length.ToString(@"%m\:ss", CultureInfo.CurrentCulture)
+                : Length.ToString(@"%h\:mm\:ss", CultureInfo.CurrentCulture));
+            result.Append("]");
 
             return result.ToString();
         }

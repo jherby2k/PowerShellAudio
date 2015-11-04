@@ -23,11 +23,14 @@ namespace PowerShellAudio.Commands
 {
     class HashTableToSettingsDictionaryAdapter : SettingsDictionary
     {
-        internal HashTableToSettingsDictionaryAdapter(Hashtable hashtable)
+        internal HashTableToSettingsDictionaryAdapter(IEnumerable hashtable)
         {
-            if (hashtable != null)
-                foreach (var entry in hashtable.Cast<DictionaryEntry>().Select(entry => new KeyValuePair<string, string>(entry.Key.ToString(), entry.Value.ToString())))
-                    base.Add(entry);
+            if (hashtable == null)
+                return;
+
+            foreach (var entry in hashtable.Cast<DictionaryEntry>().Select(entry =>
+                new KeyValuePair<string, string>(entry.Key.ToString(), entry.Value.ToString())))
+                Add(entry);
         }
     }
 }

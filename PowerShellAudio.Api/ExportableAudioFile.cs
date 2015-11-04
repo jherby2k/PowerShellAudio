@@ -117,13 +117,16 @@ namespace PowerShellAudio
             if (settings == null)
                 settings = new SettingsDictionary();
 
-            var encoderFactory = ExtensionProvider.GetFactories<ISampleEncoder>("Name", encoder).SingleOrDefault();
+            ExportFactory<ISampleEncoder> encoderFactory =
+                ExtensionProvider.GetFactories<ISampleEncoder>("Name", encoder).SingleOrDefault();
             if (encoderFactory == null)
-                throw new ArgumentException(string.Format(CultureInfo.CurrentCulture, Resources.ExportableAudioFileFactoryError, encoder), "encoder");
+                throw new ArgumentException(
+                    string.Format(CultureInfo.CurrentCulture, Resources.ExportableAudioFileFactoryError, encoder),
+                    nameof(encoder));
 
             ExportLifetimeContext<ISampleEncoder> encoderLifetime = null;
             FileInfo outputFileInfo = null;
-            FileInfo finalOutputFileInfo = null;
+            FileInfo finalOutputFileInfo;
             FileStream outputStream = null;
 
             try
@@ -139,10 +142,11 @@ namespace PowerShellAudio
                     // If the output file already exists, write to a temporary file first:
                     if (outputFileInfo.Exists)
                     {
-                        outputFileInfo = new FileInfo(Path.Combine(outputFileInfo.DirectoryName, Path.GetRandomFileName()));
+                        outputFileInfo = new FileInfo(Path.Combine(outputFileInfo.DirectoryName ?? string.Empty, Path.GetRandomFileName()));
 
                         if (!replaceExisting)
-                            throw new IOException(string.Format(CultureInfo.CurrentCulture, Resources.ExportableAudioFileFileExistsError, finalOutputFileInfo.FullName));
+                            throw new IOException(string.Format(CultureInfo.CurrentCulture,
+                                Resources.ExportableAudioFileFileExistsError, finalOutputFileInfo.FullName));
                     }
 
                     outputStream = new FileStream(outputFileInfo.FullName, replaceExisting ? FileMode.Create : FileMode.CreateNew, FileAccess.ReadWrite);
@@ -152,15 +156,13 @@ namespace PowerShellAudio
                 finally
                 {
                     // Dispose the encoder before closing the output stream:
-                    if (encoderLifetime != null)
-                        encoderLifetime.Dispose();
-                    if (outputStream != null)
-                        outputStream.Dispose();
+                    encoderLifetime?.Dispose();
+                    outputStream?.Dispose();
                 }
             }
             catch (Exception)
             {
-                outputFileInfo.Delete();
+                outputFileInfo?.Delete();
                 throw;
             }
 
@@ -186,11 +188,12 @@ namespace PowerShellAudio
             using (FileStream inputStream = FileInfo.OpenRead())
             {
                 // Try each decoder that supports this file extension:
-                foreach (var decoderFactory in ExtensionProvider.GetFactories<ISampleDecoder>("Extension", FileInfo.Extension))
+                foreach (ExportFactory<ISampleDecoder> decoderFactory in
+                    ExtensionProvider.GetFactories<ISampleDecoder>("Extension", FileInfo.Extension))
                 {
                     try
                     {
-                        using (var decoderLifetime = decoderFactory.CreateExport())
+                        using (ExportLifetimeContext<ISampleDecoder> decoderLifetime = decoderFactory.CreateExport())
                         {
                             ISampleDecoder sampleDecoder = decoderLifetime.Value;
 
@@ -216,8 +219,10 @@ namespace PowerShellAudio
             Contract.Requires(settings != null);
             Contract.Requires(encoder != null);
 
-            foreach (var unsupportedKey in settings.Keys.Where(setting => !encoder.EncoderInfo.AvailableSettings.Contains(setting, StringComparer.OrdinalIgnoreCase)))
-                throw new ArgumentException(string.Format(CultureInfo.CurrentCulture, Resources.ExportableAudioFileSettingsError, unsupportedKey));
+            foreach (string unsupportedKey in settings.Keys.Where(setting =>
+                !encoder.EncoderInfo.AvailableSettings.Contains(setting, StringComparer.OrdinalIgnoreCase)))
+                throw new ArgumentException(string.Format(CultureInfo.CurrentCulture,
+                    Resources.ExportableAudioFileSettingsError, unsupportedKey));
         }
 
         static FileInfo GetOutputFileInfo(FileInfo inputFileInfo, DirectoryInfo outputDirectory, string outputFileName, ISampleEncoder sampleEncoder)
@@ -232,7 +237,7 @@ namespace PowerShellAudio
 
             // Use the input file's directory if the output directory wasn't specified:
             if (outputDirectory == null)
-                outputDirectory = new DirectoryInfo(inputFileInfo.DirectoryName);
+                outputDirectory = new DirectoryInfo(inputFileInfo.DirectoryName ?? string.Empty);
             else
                 outputDirectory.Create();
 

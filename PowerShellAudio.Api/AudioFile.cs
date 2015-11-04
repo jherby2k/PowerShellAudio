@@ -112,7 +112,7 @@ namespace PowerShellAudio
             Contract.Ensures(!string.IsNullOrEmpty(FileInfo.Extension));
             Contract.Ensures(FileInfo.Exists);
 
-            string newFileName = Path.Combine(FileInfo.DirectoryName, fileName);
+            string newFileName = Path.Combine(FileInfo.DirectoryName ?? string.Empty, fileName);
 
             // If no extension was specified, append the current one:
             if (string.IsNullOrEmpty(Path.GetExtension(fileName)))
@@ -130,7 +130,8 @@ namespace PowerShellAudio
             using (FileStream fileStream = FileInfo.OpenRead())
             {
                 // Try each info decoder that supports this file extension:
-                foreach (var decoderFactory in ExtensionProvider.GetFactories<IAudioInfoDecoder>("Extension", FileInfo.Extension))
+                foreach (ExportFactory<IAudioInfoDecoder> decoderFactory in
+                    ExtensionProvider.GetFactories<IAudioInfoDecoder>("Extension", FileInfo.Extension))
                 {
                     try
                     {

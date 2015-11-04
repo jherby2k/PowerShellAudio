@@ -15,6 +15,7 @@
  * <http://www.gnu.org/licenses/>.
  */
 
+using System.ComponentModel.Composition;
 using System.Management.Automation;
 
 namespace PowerShellAudio.Commands
@@ -27,8 +28,10 @@ namespace PowerShellAudio.Commands
 
         protected override void ProcessRecord()
         {
-            foreach (var factory in string.IsNullOrEmpty(Extension) ? ExtensionProvider.GetFactories<IMetadataEncoder>() : ExtensionProvider.GetFactories<IMetadataEncoder>("Extension", Extension))
-                using (var encoderLifetime = factory.CreateExport())
+            foreach (ExportFactory<IMetadataEncoder> factory in string.IsNullOrEmpty(Extension)
+                ? ExtensionProvider.GetFactories<IMetadataEncoder>() 
+                : ExtensionProvider.GetFactories<IMetadataEncoder>("Extension", Extension))
+                using (ExportLifetimeContext<IMetadataEncoder> encoderLifetime = factory.CreateExport())
                     WriteObject(encoderLifetime.Value.EncoderInfo);
         }
     }

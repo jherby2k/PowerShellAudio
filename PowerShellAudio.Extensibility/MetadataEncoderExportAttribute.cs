@@ -40,7 +40,7 @@ namespace PowerShellAudio
         /// <value>
         /// The file extension supported by the attributed <see cref="IMetadataEncoder"/>.
         /// </value>
-        public string Extension { get; private set; }
+        public string Extension { get; }
 
         /// <summary>
         /// Initializes a new instance of the <see cref="MetadataEncoderExportAttribute"/> class.
@@ -59,9 +59,9 @@ namespace PowerShellAudio
         {
             Contract.Requires<ArgumentNullException>(!string.IsNullOrEmpty(extension));
             Contract.Requires<ArgumentException>(extension.StartsWith(".", StringComparison.OrdinalIgnoreCase));
-            Contract.Requires<ArgumentException>(!extension.Any(character => char.IsWhiteSpace(character)));
+            Contract.Requires<ArgumentException>(!extension.Any(char.IsWhiteSpace));
             Contract.Requires<ArgumentException>(!extension.Any(character => Path.GetInvalidFileNameChars().Contains(character)));
-            Contract.Requires<ArgumentException>(!extension.Any(character => char.IsUpper(character)));
+            Contract.Requires<ArgumentException>(!extension.Any(char.IsUpper));
             Contract.Ensures(Extension == extension);
 
             Extension = extension;
@@ -72,9 +72,9 @@ namespace PowerShellAudio
         {
             Contract.Invariant(!string.IsNullOrEmpty(Extension));
             Contract.Invariant(Extension.StartsWith(".", StringComparison.OrdinalIgnoreCase));
-            Contract.Invariant(!Extension.Any(character => char.IsWhiteSpace(character)));
+            Contract.Invariant(!Extension.Any(char.IsWhiteSpace));
             Contract.Invariant(!Extension.Any(character => Path.GetInvalidFileNameChars().Contains(character)));
-            Contract.Invariant(!Extension.Any(character => char.IsUpper(character)));
+            Contract.Invariant(!Extension.Any(char.IsUpper));
         }
     }
 }

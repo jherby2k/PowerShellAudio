@@ -54,11 +54,11 @@ namespace PowerShellAudio.Commands
                 outputDirectory = e.ItemName;
             }
 
-            if (ShouldProcess(AudioFile.FileInfo.FullName))
-            {
-                Directory.CreateDirectory(outputDirectory);
-                WriteObject(new TaggedAudioFile(taggedAudioFile.FileInfo.CopyTo(System.IO.Path.Combine(outputDirectory, substituter.Substitute(Name == null ? System.IO.Path.GetFileNameWithoutExtension(taggedAudioFile.FileInfo.Name) : Name) + taggedAudioFile.FileInfo.Extension), Replace)));
-            }
+            if (!ShouldProcess(AudioFile.FileInfo.FullName))
+                return;
+
+            Directory.CreateDirectory(outputDirectory);
+            WriteObject(new TaggedAudioFile(taggedAudioFile.FileInfo.CopyTo(System.IO.Path.Combine(outputDirectory, substituter.Substitute(Name == null ? System.IO.Path.GetFileNameWithoutExtension(taggedAudioFile.FileInfo.Name) : Name) + taggedAudioFile.FileInfo.Extension), Replace)));
         }
     }
 }

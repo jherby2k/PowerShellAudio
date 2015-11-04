@@ -48,9 +48,9 @@ namespace PowerShellAudio
         public void Add(string key, string value)
         {
             if (string.IsNullOrEmpty(key))
-                throw new ArgumentNullException("key");
+                throw new ArgumentNullException(nameof(key));
             if (string.IsNullOrEmpty(value))
-                throw new ArgumentNullException("value");
+                throw new ArgumentNullException(nameof(value));
 
             this[key] = value;
         }
@@ -66,7 +66,7 @@ namespace PowerShellAudio
         public bool ContainsKey(string key)
         {
             if (string.IsNullOrEmpty(key))
-                throw new ArgumentNullException("key");
+                throw new ArgumentNullException(nameof(key));
 
             return _internalDictionary.ContainsKey(key);
         }
@@ -99,7 +99,7 @@ namespace PowerShellAudio
         public bool Remove(string key)
         {
             if (string.IsNullOrEmpty(key))
-                throw new ArgumentNullException("key");
+                throw new ArgumentNullException(nameof(key));
 
             return _internalDictionary.Remove(key);
         }
@@ -119,7 +119,7 @@ namespace PowerShellAudio
         public bool TryGetValue(string key, out string value)
         {
             if (string.IsNullOrEmpty(key))
-                throw new ArgumentNullException("key");
+                throw new ArgumentNullException(nameof(key));
 
             return _internalDictionary.TryGetValue(key, out value);
         }
@@ -157,18 +157,15 @@ namespace PowerShellAudio
                 Contract.Ensures(Contract.Result<string>() != null);
 
                 if (string.IsNullOrEmpty(key))
-                    throw new ArgumentNullException("key");
+                    throw new ArgumentNullException(nameof(key));
 
                 string result;
-                if (_internalDictionary.TryGetValue(key, out result))
-                    return result;
-                else
-                    return string.Empty;
+                return _internalDictionary.TryGetValue(key, out result) ? result : string.Empty;
             }
             set
             {
                 if (string.IsNullOrEmpty(key))
-                    throw new ArgumentNullException("key");
+                    throw new ArgumentNullException(nameof(key));
 
                 if (_internalDictionary.ContainsKey(key))
                 {
@@ -194,7 +191,7 @@ namespace PowerShellAudio
         public void Add(KeyValuePair<string, string> item)
         {
             if (string.IsNullOrEmpty(item.Key) || string.IsNullOrEmpty(item.Value))
-                throw new ArgumentException(Resources.SettingsDictionaryItemError, "item");
+                throw new ArgumentException(Resources.SettingsDictionaryItemError, nameof(item));
 
             this[item.Key] = item.Value;
         }
@@ -223,7 +220,7 @@ namespace PowerShellAudio
         public bool Contains(KeyValuePair<string, string> item)
         {
             if (string.IsNullOrEmpty(item.Key) || string.IsNullOrEmpty(item.Value))
-                throw new ArgumentException(Resources.SettingsDictionaryItemError, "item");
+                throw new ArgumentException(Resources.SettingsDictionaryItemError, nameof(item));
 
             return _internalDictionary.Contains(item);
         }
@@ -269,19 +266,13 @@ namespace PowerShellAudio
         /// Gets the number of elements contained in the <see cref="SettingsDictionary"/>.
         /// </summary>
         /// <returns>The number of elements contained in the <see cref="SettingsDictionary"/>.</returns>
-        public int Count
-        {
-            get { return _internalDictionary.Count; }
-        }
+        public int Count => _internalDictionary.Count;
 
         /// <summary>
         /// Gets a value indicating whether the <see cref="SettingsDictionary"/> is read-only.
         /// </summary>
         /// <returns>true if the <see cref="SettingsDictionary"/> is read-only; otherwise, false.</returns>
-        public bool IsReadOnly
-        {
-            get { return false; }
-        }
+        public bool IsReadOnly => false;
 
         /// <summary>
         /// Removes the first occurrence of a specific <see cref="KeyValuePair{TKey, TValue}"/> from the
@@ -301,7 +292,7 @@ namespace PowerShellAudio
         public bool Remove(KeyValuePair<string, string> item)
         {
             if (string.IsNullOrEmpty(item.Key) || string.IsNullOrEmpty(item.Value))
-                throw new ArgumentException(Resources.SettingsDictionaryItemError, "item");
+                throw new ArgumentException(Resources.SettingsDictionaryItemError, nameof(item));
 
             return _internalDictionary.Remove(item.Key);
         }

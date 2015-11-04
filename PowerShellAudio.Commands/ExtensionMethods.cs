@@ -19,6 +19,7 @@ using Microsoft.PowerShell.Commands;
 using System;
 using System.Collections.Concurrent;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.Management.Automation;
 using System.Threading;
 
@@ -50,7 +51,7 @@ namespace PowerShellAudio.Commands
 
             if (!string.IsNullOrEmpty(path))
             {
-                var providerPaths = cmdlet.GetResolvedProviderPathFromPSPath(path, out provider);
+                Collection<string> providerPaths = cmdlet.GetResolvedProviderPathFromPSPath(path, out provider);
 
                 if (provider.ImplementingType == typeof(FileSystemProvider))
                     return providerPaths;
@@ -60,7 +61,8 @@ namespace PowerShellAudio.Commands
             {
                 PSDriveInfo drive;
 
-                string providerPath = cmdlet.SessionState.Path.GetUnresolvedProviderPathFromPSPath(literalPath, out provider, out drive);
+                string providerPath = cmdlet.SessionState.Path.GetUnresolvedProviderPathFromPSPath(literalPath,
+                    out provider, out drive);
                 if (provider.ImplementingType == typeof(FileSystemProvider))
                     return new[] { providerPath };
             }

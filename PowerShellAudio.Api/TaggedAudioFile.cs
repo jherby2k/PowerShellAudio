@@ -130,7 +130,8 @@ namespace PowerShellAudio
                 }
 
                 // Try each encoder that supports the file extension:
-                foreach (var encoderFactory in ExtensionProvider.GetFactories<IMetadataEncoder>("Extension", FileInfo.Extension))
+                foreach (ExportFactory<IMetadataEncoder> encoderFactory in
+                    ExtensionProvider.GetFactories<IMetadataEncoder>("Extension", FileInfo.Extension))
                 {
                     using (ExportLifetimeContext<IMetadataEncoder> lifetimeContext = encoderFactory.CreateExport())
                     {
@@ -151,8 +152,10 @@ namespace PowerShellAudio
             Contract.Requires(settings != null);
             Contract.Requires(encoder != null);
 
-            foreach (var unsupportedKey in settings.Keys.Where(setting => !encoder.EncoderInfo.AvailableSettings.Contains(setting, StringComparer.OrdinalIgnoreCase)))
-                throw new ArgumentException(string.Format(CultureInfo.CurrentCulture, Resources.TaggedAudioFileSettingsError, unsupportedKey));
+            foreach (string unsupportedKey in settings.Keys.Where(setting =>
+                !encoder.EncoderInfo.AvailableSettings.Contains(setting, StringComparer.OrdinalIgnoreCase)))
+                throw new ArgumentException(string.Format(CultureInfo.CurrentCulture,
+                    Resources.TaggedAudioFileSettingsError, unsupportedKey));
         }
 
         void LoadMetadata(Stream stream)
@@ -163,7 +166,8 @@ namespace PowerShellAudio
             Contract.Ensures(_metadata != null);
 
             // Try each decoder that supports this file extension:
-            foreach (var decoderFactory in ExtensionProvider.GetFactories<IMetadataDecoder>("Extension", FileInfo.Extension))
+            foreach (ExportFactory<IMetadataDecoder> decoderFactory in
+                ExtensionProvider.GetFactories<IMetadataDecoder>("Extension", FileInfo.Extension))
             {
                 try
                 {

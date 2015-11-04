@@ -41,20 +41,14 @@ namespace PowerShellAudio
             {
                 Contract.Ensures(!string.IsNullOrEmpty(Contract.Result<string>()));
                 Contract.Ensures(Contract.Result<string>().StartsWith(".", StringComparison.OrdinalIgnoreCase));
-                Contract.Ensures(!Contract.Result<string>().Any(character => char.IsWhiteSpace(character)));
+                Contract.Ensures(!Contract.Result<string>().Any(char.IsWhiteSpace));
                 Contract.Ensures(!Contract.Result<string>().Any(character => Path.GetInvalidFileNameChars().Contains(character)));
-                Contract.Ensures(!Contract.Result<string>().Any(character => char.IsUpper(character)));
+                Contract.Ensures(!Contract.Result<string>().Any(char.IsUpper));
 
                 return default(string);
             }
         }
 
-        public override bool IsLossless
-        {
-            get
-            {
-                return default(bool);
-            }
-        }
+        public override bool IsLossless => default(bool);
     }
 }

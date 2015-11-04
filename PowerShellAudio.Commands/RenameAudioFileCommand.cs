@@ -33,13 +33,13 @@ namespace PowerShellAudio.Commands
 
         protected override void ProcessRecord()
         {
-            if (ShouldProcess(AudioFile.FileInfo.FullName))
-            {
-                var taggedAudioFile = new TaggedAudioFile(AudioFile);
-                taggedAudioFile.Rename(new MetadataSubstituter(taggedAudioFile.Metadata).Substitute(Name));
-                if (PassThru)
-                    WriteObject(taggedAudioFile);
-            }
+            if (!ShouldProcess(AudioFile.FileInfo.FullName))
+                return;
+
+            var taggedAudioFile = new TaggedAudioFile(AudioFile);
+            taggedAudioFile.Rename(new MetadataSubstituter(taggedAudioFile.Metadata).Substitute(Name));
+            if (PassThru)
+                WriteObject(taggedAudioFile);
         }
     }
 }

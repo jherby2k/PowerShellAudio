@@ -118,13 +118,7 @@ namespace PowerShellAudio
         /// equivalent to checking if SampleCount equals 0.
         /// </summary>
         /// <value>True if this instance is last; otherwise, false.</value>
-        public bool IsLast
-        {
-            get
-            {
-                return _samples[0].Length == 0 ? true : false;
-            }
-        }
+        public bool IsLast => _samples[0].Length == 0;
 
         /// <summary>
         /// Returns an enumerator that iterates through the collection.

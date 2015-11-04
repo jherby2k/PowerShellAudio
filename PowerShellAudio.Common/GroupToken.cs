@@ -26,7 +26,7 @@ namespace PowerShellAudio
     /// </summary>
     public class GroupToken : IDisposable
     {
-        readonly ManualResetEventSlim resetEvent = new ManualResetEventSlim();
+        readonly ManualResetEventSlim _resetEvent = new ManualResetEventSlim();
         int _remainingMembers;
 
         /// <summary>
@@ -35,10 +35,7 @@ namespace PowerShellAudio
         /// <value>
         /// The member count.
         /// </value>
-        /// <exception cref="ArgumentOutOfRangeException">
-        /// Thrown if <paramref name="value"/> is less than 1.
-        /// </exception>
-        public int Count { get; private set; }
+        public int Count { get; }
 
         /// <summary>
         /// Initializes a new instance of the <see cref="GroupToken"/> class.
@@ -64,7 +61,7 @@ namespace PowerShellAudio
             Contract.Ensures(_remainingMembers == Contract.OldValue<int>(_remainingMembers) - 1);
 
             if (Interlocked.Decrement(ref _remainingMembers) <= 0)
-                resetEvent.Set();
+                _resetEvent.Set();
         }
 
         /// <summary>
@@ -72,7 +69,7 @@ namespace PowerShellAudio
         /// </summary>
         public void WaitForMembers()
         {
-            resetEvent.Wait();
+            _resetEvent.Wait();
         }
 
         /// <summary>
@@ -94,7 +91,7 @@ namespace PowerShellAudio
         protected virtual void Dispose(bool disposing)
         {
             if (disposing)
-                resetEvent.Dispose();
+                _resetEvent.Dispose();
         }
 
         [ContractInvariantMethod]

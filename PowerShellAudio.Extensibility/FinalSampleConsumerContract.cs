@@ -22,10 +22,7 @@ namespace PowerShellAudio
     [ContractClassFor(typeof(IFinalSampleConsumer))]
     abstract class FinalSampleConsumerContract : IFinalSampleConsumer
     {
-        public bool ManuallyFreesSamples
-        {
-            get { return default(bool); }
-        }
+        public bool ManuallyFreesSamples => default(bool);
 
         public abstract void Submit(SampleCollection samples);
     }

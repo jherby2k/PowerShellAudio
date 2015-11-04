@@ -37,7 +37,7 @@ namespace PowerShellAudio
         /// <value>
         /// The name of the audio format.
         /// </value>
-        public string Name { get; private set; }
+        public string Name { get; }
 
         /// <summary>
         /// Initializes a new instance of the <see cref="SampleEncoderExportAttribute"/> class.

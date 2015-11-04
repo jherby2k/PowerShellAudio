@@ -17,6 +17,7 @@
 
 using PowerShellAudio.Properties;
 using System;
+using System.ComponentModel.Composition;
 using System.Diagnostics.CodeAnalysis;
 using System.Diagnostics.Contracts;
 using System.Globalization;
@@ -109,7 +110,7 @@ namespace PowerShellAudio
         {
             Contract.Requires<ArgumentNullException>(!string.IsNullOrEmpty(analyzer));
 
-            bool groupTokenOwned = false;
+            var groupTokenOwned = false;
             try
             {
                 if (groupToken == null)
@@ -118,16 +119,19 @@ namespace PowerShellAudio
                     groupTokenOwned = true;
                 }
 
-                var analyzerFactory = ExtensionProvider.GetFactories<ISampleAnalyzer>("Name", analyzer).SingleOrDefault();
+                ExportFactory<ISampleAnalyzer> analyzerFactory =
+                    ExtensionProvider.GetFactories<ISampleAnalyzer>("Name", analyzer).SingleOrDefault();
                 if (analyzerFactory == null)
-                    throw new ArgumentException(string.Format(CultureInfo.CurrentCulture, Resources.AnalyzableAudioFileFactoryError, analyzer), "analyzer");
+                    throw new ArgumentException(
+                        string.Format(CultureInfo.CurrentCulture, Resources.AnalyzableAudioFileFactoryError, analyzer),
+                        nameof(analyzer));
 
-                using (var analyzerLifetime = analyzerFactory.CreateExport())
+                using (ExportLifetimeContext<ISampleAnalyzer> analyzerLifetime = analyzerFactory.CreateExport())
                     DoAnalyze(analyzerLifetime.Value, cancelToken, groupToken);
             }
             finally
             {
-                if (groupTokenOwned && groupToken != null)
+                if (groupTokenOwned)
                     groupToken.Dispose();
             }
         }
@@ -142,16 +146,18 @@ namespace PowerShellAudio
             using (FileStream fileStream = FileInfo.OpenRead())
             {
                 // Try each decoder that supports this file extension:
-                foreach (var decoderFactory in ExtensionProvider.GetFactories<ISampleDecoder>("Extension", FileInfo.Extension))
+                foreach (ExportFactory<ISampleDecoder> decoderFactory in
+                    ExtensionProvider.GetFactories<ISampleDecoder>("Extension", FileInfo.Extension))
                 {
                     try
                     {
-                        using (var decoderLifetime = decoderFactory.CreateExport())
+                        using (ExportLifetimeContext<ISampleDecoder> decoderLifetime = decoderFactory.CreateExport())
                         {
                             ISampleDecoder sampleDecoder = decoderLifetime.Value;
 
                             sampleDecoder.Initialize(fileStream);
-                            sampleDecoder.ReadWriteParallel(sampleAnalyzer, cancelToken, sampleAnalyzer.ManuallyFreesSamples);
+                            sampleDecoder.ReadWriteParallel(sampleAnalyzer, cancelToken,
+                                sampleAnalyzer.ManuallyFreesSamples);
                             sampleAnalyzer.GetResult().CopyTo(Metadata);
                             return;
                         }

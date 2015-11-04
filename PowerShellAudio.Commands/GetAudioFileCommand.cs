@@ -34,7 +34,7 @@ namespace PowerShellAudio.Commands
 
         protected override void ProcessRecord()
         {
-            foreach (var path in this.GetFileSystemPaths(Path, LiteralPath))
+            foreach (string path in this.GetFileSystemPaths(Path, LiteralPath))
                 WriteObject(new TaggedAudioFile(new FileInfo(path)));
 
             if (FileInfo != null)

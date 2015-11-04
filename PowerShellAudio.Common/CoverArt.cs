@@ -223,7 +223,7 @@ namespace PowerShellAudio
             {
                 // Convert bitmaps to PNG format:
                 if (image.RawFormat.Guid == ImageFormat.Bmp.Guid)
-                    using (MemoryStream pngStream = new MemoryStream())
+                    using (var pngStream = new MemoryStream())
                     {
                         image.Save(pngStream, ImageFormat.Png);
                         
@@ -300,7 +300,7 @@ namespace PowerShellAudio
             else
                 _dataReference.SetTarget(data);
             _tempFile = new FileInfo(Path.Combine(Path.GetTempPath(), "AudioShell", Path.GetRandomFileName()));
-            _tempFile.Directory.Create();
+            _tempFile.Directory?.Create();
             File.WriteAllBytes(_tempFile.FullName, data);
         }
 

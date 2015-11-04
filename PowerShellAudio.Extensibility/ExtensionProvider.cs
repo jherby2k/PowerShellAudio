@@ -46,7 +46,8 @@ namespace PowerShellAudio
         /// <returns>The factories.</returns>
         public static IEnumerable<ExportFactory<T>> GetFactories<T>(string key, string value) where T : class
         {
-            return ExtensionContainer<T>.Instance.Factories.Where(factory => string.Compare((string)factory.Metadata[key], value, StringComparison.OrdinalIgnoreCase) == 0);
+            return ExtensionContainer<T>.Instance.Factories.Where(factory =>
+                string.Compare((string) factory.Metadata[key], value, StringComparison.OrdinalIgnoreCase) == 0);
         }
     }
 }

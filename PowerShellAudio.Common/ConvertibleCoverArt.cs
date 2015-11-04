@@ -41,10 +41,7 @@ namespace PowerShellAudio
         /// <value>
         /// The default maximum width.
         /// </value>
-        public static int DefaultMaxWidth
-        {
-            get { return _defaultMaxWidth; }
-        }
+        public static int DefaultMaxWidth => _defaultMaxWidth;
 
         /// <summary>
         /// Gets a value indicating whether to convert to lossy by default.
@@ -52,10 +49,7 @@ namespace PowerShellAudio
         /// <value>
         /// <c>true</c> if lossy conversion is the default; otherwise, <c>false</c>.
         /// </value>
-        public static bool DefaultConvertToLossy
-        {
-            get { return _defaultConvertToLossy; }
-        }
+        public static bool DefaultConvertToLossy => _defaultConvertToLossy;
 
         /// <summary>
         /// Gets the default lossy compression quality.
@@ -63,10 +57,7 @@ namespace PowerShellAudio
         /// <value>
         /// The default quality.
         /// </value>
-        public static int DefaultQuality
-        {
-            get { return _defaultQuality; }
-        }
+        public static int DefaultQuality => _defaultQuality;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="ConvertibleCoverArt"/> class from an existing
@@ -103,8 +94,9 @@ namespace PowerShellAudio
                 {
                     using (var parameters = new EncoderParameters(1))
                     {
-                        parameters.Param[0] = new EncoderParameter(Encoder.Quality, (long)quality);
-                        image.Save(outputStream, ImageCodecInfo.GetImageEncoders().Where(codecInfo => string.Compare(codecInfo.MimeType, "image/jpeg", StringComparison.OrdinalIgnoreCase) == 0).First(), parameters);
+                        parameters.Param[0] = new EncoderParameter(Encoder.Quality, quality);
+                        image.Save(outputStream, ImageCodecInfo.GetImageEncoders().First(codecInfo =>
+                            string.Compare(codecInfo.MimeType, "image/jpeg", StringComparison.OrdinalIgnoreCase) == 0), parameters);
                     }
                 }
                 else
@@ -128,8 +120,8 @@ namespace PowerShellAudio
 
             result.SetResolution(Width, Height);
 
-            using (var sourceImage = Image.FromStream(sourceStream))
-            using (var graphics = Graphics.FromImage(result))
+            using (Image sourceImage = Image.FromStream(sourceStream))
+            using (Graphics graphics = Graphics.FromImage(result))
             {
                 graphics.CompositingQuality = CompositingQuality.HighQuality;
                 graphics.InterpolationMode = InterpolationMode.HighQualityBicubic;

@@ -41,6 +41,7 @@ namespace PowerShellAudio
         }
 
         [ImportMany]
+        // ReSharper disable once UnusedAutoPropertyAccessor.Local
         internal IEnumerable<ExportFactory<T, IDictionary<string, object>>> Factories { get; private set; }
 
         ExtensionContainer()
@@ -55,7 +56,7 @@ namespace PowerShellAudio
         {
             Contract.Ensures(Factories != null);
 
-            var mainDir = Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location);
+            string mainDir = Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location) ?? string.Empty;
             using (var catalog = new AggregateCatalog())
             {
                 // Add the root directory as well, so extension references can be found:

@@ -23,8 +23,8 @@ namespace PowerShellAudio.Commands
 {
     class MetadataSubstituter
     {
-        static readonly char[] invalidChars = Path.GetInvalidFileNameChars();
-        static readonly Regex replacer = new Regex(@"\{[^{]+\}");
+        static readonly char[] _invalidChars = Path.GetInvalidFileNameChars();
+        static readonly Regex _replacer = new Regex(@"\{[^{]+\}");
 
         readonly MetadataDictionary _metadata;
 
@@ -35,9 +35,11 @@ namespace PowerShellAudio.Commands
 
         internal string Substitute(string path)
         {
-            if (path != null)
-                return replacer.Replace(path, match => new string(_metadata[match.Value.Substring(1, match.Value.Length - 2)].Where(character => !invalidChars.Contains(character)).ToArray()));
-            return null;
+            return path != null
+                ? _replacer.Replace(path, match =>
+                    new string(_metadata[match.Value.Substring(1, match.Value.Length - 2)].Where(character =>
+                        !_invalidChars.Contains(character)).ToArray()))
+                : null;
         }
     }
 }

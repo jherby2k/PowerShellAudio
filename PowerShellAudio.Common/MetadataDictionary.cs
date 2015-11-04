@@ -87,16 +87,16 @@ namespace PowerShellAudio
 
                 if (!string.IsNullOrEmpty(value))
                 {
-                    foreach (var item in _acceptedKeys)
-                        if (string.Compare(key, item.Key, StringComparison.OrdinalIgnoreCase) == 0)
-                        {
-                            base[item.Key] = item.Value(value);
-                            return;
-                        }
+                    foreach (var item in _acceptedKeys.Where(item =>
+                        string.Compare(key, item.Key, StringComparison.OrdinalIgnoreCase) == 0))
+                    {
+                        base[item.Key] = item.Value(value);
+                        return;
+                    }
 
                     throw new ArgumentException(string.Format(CultureInfo.CurrentCulture, "Unsupported key '{0}'", key));
                 }
-                
+
                 // If the value is null or empty:
                 Remove(key);
             }
@@ -125,31 +125,50 @@ namespace PowerShellAudio
 
             var result = new Dictionary<string, Func<string, string>>(12);
 
-            Func<string, string> validateDefault = new Func<string, string>(value => value);
-            Func<string, string> validateGain = new Func<string, string>(value => string.Format(CultureInfo.InvariantCulture, "{0:0.00} dB", Convert.ToSingle(value.Replace(" dB", string.Empty), CultureInfo.InvariantCulture)));
-            Func<string, string> validatePeak = new Func<string, string>(value => string.Format(CultureInfo.InvariantCulture, "{0:0.000000}", Convert.ToSingle(value, CultureInfo.InvariantCulture)));
-            Func<string, string> validateTrackNumber = new Func<string, string>(value => Convert.ToInt32(value, CultureInfo.InvariantCulture).ToString("00", CultureInfo.InvariantCulture));
-            Func<string, string> validateDay = new Func<string, string>(value =>
+            var validateDefault = new Func<string, string>(value => value);
+
+            var validateGain = new Func<string, string>(value =>
+                string.Format(CultureInfo.InvariantCulture, "{0:0.00} dB",
+                    Convert.ToSingle(value.Replace(" dB", string.Empty), CultureInfo.InvariantCulture)));
+
+            var validatePeak = new Func<string, string>(value =>
+                string.Format(CultureInfo.InvariantCulture, "{0:0.000000}",
+                    Convert.ToSingle(value, CultureInfo.InvariantCulture)));
+
+            var validateTrackNumber = new Func<string, string>(value =>
+                Convert.ToInt32(value, CultureInfo.InvariantCulture).ToString("00", CultureInfo.InvariantCulture));
+
+            var validateDay = new Func<string, string>(value =>
             {
-                if (Convert.ToInt32(value, CultureInfo.InvariantCulture) < 1 || Convert.ToInt32(value, CultureInfo.InvariantCulture) > 31)
-                    throw new ArgumentException(string.Format(CultureInfo.CurrentCulture, Resources.MetadataDictionaryDayError, value));
+                if (Convert.ToInt32(value, CultureInfo.InvariantCulture) < 1 ||
+                    Convert.ToInt32(value, CultureInfo.InvariantCulture) > 31)
+                    throw new ArgumentException(string.Format(CultureInfo.CurrentCulture,
+                        Resources.MetadataDictionaryDayError, value));
+
                 Contract.EndContractBlock();
 
                 return Convert.ToInt32(value, CultureInfo.InvariantCulture).ToString("00", CultureInfo.InvariantCulture);
             });
-            Func<string, string> validateMonth = new Func<string, string>(value =>
+
+            var validateMonth = new Func<string, string>(value =>
             {
-                if (Convert.ToInt32(value, CultureInfo.InvariantCulture) < 1 || Convert.ToInt32(value, CultureInfo.InvariantCulture) > 12)
-                    throw new ArgumentException(string.Format(CultureInfo.CurrentCulture, Resources.MetadataDictionaryMonthError, value));
+                if (Convert.ToInt32(value, CultureInfo.InvariantCulture) < 1 ||
+                    Convert.ToInt32(value, CultureInfo.InvariantCulture) > 12)
+                    throw new ArgumentException(string.Format(CultureInfo.CurrentCulture,
+                        Resources.MetadataDictionaryMonthError, value));
+
                 Contract.EndContractBlock();
 
                 return Convert.ToInt32(value, CultureInfo.InvariantCulture).ToString("00", CultureInfo.InvariantCulture);
             });
-            Func<string, string> validateYear = new Func<string, string>(value =>
+
+            var validateYear = new Func<string, string>(value =>
             {
                 // Accept any years from 1000 through 2999:
                 if (!Regex.IsMatch(value, "^[12][0-9]{3}$"))
-                    throw new ArgumentException(string.Format(CultureInfo.CurrentCulture, Resources.MetadataDictionaryYearError, value));
+                    throw new ArgumentException(string.Format(CultureInfo.CurrentCulture,
+                        Resources.MetadataDictionaryYearError, value));
+
                 Contract.EndContractBlock();
 
                 return value;

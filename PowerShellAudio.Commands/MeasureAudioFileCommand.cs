@@ -57,9 +57,13 @@ namespace PowerShellAudio.Commands
                 using (var groupToken = new GroupToken(_audioFiles.Count))
                 using (var outputQueue = new BlockingCollection<object>())
                 {
-                    outputQueue.Add(new ProgressRecord(0, string.Format(CultureInfo.CurrentCulture, Resources.MeasureAudioFileCommandActivityMessage, Analyzer), string.Format(CultureInfo.CurrentCulture, Resources.MeasureAudioFileCommandStatusMessage, 0, _audioFiles.Count)) { PercentComplete = 0 });
+                    outputQueue.Add(new ProgressRecord(0,
+                        string.Format(CultureInfo.CurrentCulture, Resources.MeasureAudioFileCommandActivityMessage,
+                            Analyzer),
+                        string.Format(CultureInfo.CurrentCulture, Resources.MeasureAudioFileCommandStatusMessage,
+                            0, _audioFiles.Count)) {PercentComplete = 0});
 
-                    Task.Run(() => Parallel.ForEach(_audioFiles, new ParallelOptions() { CancellationToken = _cancelSource.Token }, audioFile =>
+                    Task.Run(() => Parallel.ForEach(_audioFiles, new ParallelOptions { CancellationToken = _cancelSource.Token }, audioFile =>
                     {
                         try
                         {
@@ -68,7 +72,15 @@ namespace PowerShellAudio.Commands
 
                             if (PassThru)
                                 outputQueue.Add(audioFile);
-                            outputQueue.Add(new ProgressRecord(0, string.Format(CultureInfo.CurrentCulture, Resources.MeasureAudioFileCommandActivityMessage, Analyzer), string.Format(CultureInfo.CurrentCulture, Resources.MeasureAudioFileCommandStatusMessage, completed, _audioFiles.Count)) { PercentComplete = completed.GetPercent(_audioFiles.Count) });
+
+                            outputQueue.Add(new ProgressRecord(0,
+                                string.Format(CultureInfo.CurrentCulture, Resources.MeasureAudioFileCommandActivityMessage,
+                                    Analyzer),
+                                string.Format(CultureInfo.CurrentCulture, Resources.MeasureAudioFileCommandStatusMessage,
+                                    completed, _audioFiles.Count))
+                            {
+                                PercentComplete = completed.GetPercent(_audioFiles.Count)
+                            });
                         }
                         catch (Exception e)
                         {

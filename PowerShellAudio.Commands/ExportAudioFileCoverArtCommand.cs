@@ -50,15 +50,16 @@ namespace PowerShellAudio.Commands
             DirectoryInfo outputDirectory;
             try
             {
-                outputDirectory = new DirectoryInfo(this.GetFileSystemPaths(substituter.Substitute(Path), substituter.Substitute(LiteralPath)).First());
+                outputDirectory = new DirectoryInfo(
+                    this.GetFileSystemPaths(substituter.Substitute(Path), substituter.Substitute(LiteralPath)).First());
             }
             catch (ItemNotFoundException e)
             {
                 outputDirectory = new DirectoryInfo(e.ItemName);
             }
 
-            if (ShouldProcess(AudioFile.FileInfo.FullName) && taggedAudioFile.Metadata.CoverArt != null)
-                taggedAudioFile.Metadata.CoverArt.Export(outputDirectory, substituter.Substitute(Name), Replace);
+            if (ShouldProcess(AudioFile.FileInfo.FullName))
+                taggedAudioFile.Metadata.CoverArt?.Export(outputDirectory, substituter.Substitute(Name), Replace);
 
             if (PassThru)
                 WriteObject(taggedAudioFile);
