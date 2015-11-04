@@ -165,11 +165,8 @@
   <data name="NativeExtendedAudioFileInitializationError" xml:space="preserve">
     <value>Extended Audio File Services encountered an error while initializing the audio file: {0}</value>
   </data>
-  <data name="SafeNativeMethods64BitError" xml:space="preserve">
-    <value>The Apple extension cannot be accessed from a 64-bit process</value>
-  </data>
   <data name="SafeNativeMethodsDllsMissing" xml:space="preserve">
-    <value>Apple Application Support (included with iTunes) is not installed</value>
+    <value>Apple Application Support ({0}-bit), a component of iTunes, is not installed</value>
   </data>
   <data name="SampleEncoderConverterBitRateError" xml:space="preserve">
     <value>Audio Converter Services encountered an error while setting the bit rate: {0}</value>

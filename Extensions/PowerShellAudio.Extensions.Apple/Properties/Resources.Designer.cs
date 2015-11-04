@@ -205,16 +205,7 @@ namespace PowerShellAudio.Extensions.Apple.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to The Apple extension cannot be accessed from a 64-bit process.
-        /// </summary>
-        internal static string SafeNativeMethods64BitError {
-            get {
-                return ResourceManager.GetString("SafeNativeMethods64BitError", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Apple Application Support (included with iTunes) is not installed.
+        ///   Looks up a localized string similar to Apple Application Support ({0}-bit), a component of iTunes, is not installed.
         /// </summary>
         internal static string SafeNativeMethodsDllsMissing {
             get {

@@ -24,6 +24,7 @@ using System.Runtime.InteropServices;
 using System.Security;
 using System.Text;
 using System.Diagnostics;
+using System.Globalization;
 
 namespace PowerShellAudio.Extensions.Apple
 {
@@ -37,23 +38,20 @@ namespace PowerShellAudio.Extensions.Apple
         [SuppressMessage("Microsoft.Design", "CA1065:DoNotRaiseExceptionsInUnexpectedLocations", Justification = "This type is unusable if accessed from a 64-bit process, if the unmanaged DLL can't be loaded")]
         static SafeNativeMethods()
         {
-            if (Environment.Is64BitProcess)
-                throw new ExtensionInitializationException(Resources.SafeNativeMethods64BitError);
+            _coreAudioInstallDir = Registry.LocalMachine.OpenSubKey("SOFTWARE")?
+                .OpenSubKey("Apple Inc.")?
+                .OpenSubKey("Apple Application Support")?
+                .GetValue("InstallDir")?.ToString() ?? string.Empty;
 
-            try
-            {
-                _coreAudioInstallDir = (string)Registry.LocalMachine.OpenSubKey("SOFTWARE").OpenSubKey("Apple Inc.").OpenSubKey("Apple Application Support").GetValue("InstallDir");
+            if (string.IsNullOrEmpty(_coreAudioInstallDir))
+                throw new ExtensionInitializationException(string.Format(CultureInfo.CurrentCulture,
+                    Resources.SafeNativeMethodsDllsMissing, Environment.Is64BitProcess ? "64" : "32"));
 
-                // Prefix the PATH variable with the Apple Application Support installation directory:
-                var newPath = new StringBuilder(_coreAudioInstallDir);
-                newPath.Append(Path.PathSeparator);
-                newPath.Append(Environment.GetEnvironmentVariable("PATH"));
-                Environment.SetEnvironmentVariable("PATH", newPath.ToString());
-            }
-            catch (NullReferenceException e)
-            {
-                throw new ExtensionInitializationException(Resources.SafeNativeMethodsDllsMissing, e);
-            }
+            // Prefix the PATH variable with the Apple Application Support installation directory:
+            var newPath = new StringBuilder(_coreAudioInstallDir);
+            newPath.Append(Path.PathSeparator);
+            newPath.Append(Environment.GetEnvironmentVariable("PATH"));
+            Environment.SetEnvironmentVariable("PATH", newPath.ToString());
         }
 
         internal static string GetCoreAudioToolboxVersion()
