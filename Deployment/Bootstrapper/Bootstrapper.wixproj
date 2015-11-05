@@ -41,8 +41,8 @@
     <Content Include="Logo.ico" />
     <Content Include="Logo.png" />
     <Content Include="LogoSide.png" />
-    <Content Include="vcredist_x64.exe" />
-    <Content Include="vcredist_x86.exe" />
+    <Content Include="vc_redist.x64.exe" />
+    <Content Include="vc_redist.x86.exe" />
     <Content Include="Windows6.1-KB2819745-x64-MultiPkg.msu" />
     <Content Include="Windows6.1-KB2819745-x86-MultiPkg.msu" />
   </ItemGroup>

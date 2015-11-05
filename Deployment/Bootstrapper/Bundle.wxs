@@ -30,8 +30,8 @@ You should have received a copy of the GNU Lesser General Public License along w
     </bal:Condition>
     
     <util:RegistrySearch Variable="PSVersion" Root="HKLM" Key="SOFTWARE\Microsoft\PowerShell\3\PowerShellEngine" Value="PowerShellVersion" Result="value" />
-    <util:RegistrySearch Variable="VCRedist_x86" Root="HKLM" Key="SOFTWARE\Microsoft\DevDiv\VC\Servicing\12.0\RuntimeMinimum" Value="Version" Result="value" />
-    <util:RegistrySearch Variable="VCRedist_x64" Win64="yes" Root="HKLM" Key="SOFTWARE\Microsoft\DevDiv\VC\Servicing\12.0\RuntimeMinimum" Value="Version" Result="value" />
+    <util:RegistrySearch Variable="VCRedist_x86" Root="HKLM" Key="SOFTWARE\Microsoft\DevDiv\vc\Servicing\14.0\RuntimeMinimum" Value="Version" Result="value" />
+    <util:RegistrySearch Variable="VCRedist_x64" Win64="yes" Root="HKLM" Key="SOFTWARE\Microsoft\DevDiv\vc\Servicing\14.0\RuntimeMinimum" Value="Version" Result="value" />
 
     <Chain>
       <PackageGroupRef Id="NetFx46Web" />
@@ -49,19 +49,19 @@ You should have received a copy of the GNU Lesser General Public License along w
                   InstallCondition="VersionNT=v6.1 AND VersionNT64"
                   DetectCondition="PSVersion&gt;=v4.0" />
       
-      <ExePackage DisplayName="Microsoft Visual C++ 2013 Redistributable (x86)"
+      <ExePackage DisplayName="Microsoft Visual C++ 2015 Redistributable (x86)"
                   InstallCommand="/quiet /norestart"
                   Protocol="burn"
                   Permanent="yes"
-                  SourceFile="vcredist_x86.exe"
-                  DetectCondition="VCRedist_x86&gt;=v12.0.21005" />
-      <ExePackage DisplayName="Microsoft Visual C++ 2013 Redistributable (x64)"
+                  SourceFile="vc_redist.x86.exe"
+                  DetectCondition="VCRedist_x86&gt;=v14.0.23026" />
+      <ExePackage DisplayName="Microsoft Visual C++ 2015 Redistributable (x64)"
                   InstallCommand="/quiet /norestart"
                   Protocol="burn"
                   Permanent="yes"
-                  SourceFile="vcredist_x64.exe"
+                  SourceFile="vc_redist.x64.exe"
                   InstallCondition="VersionNT64"
-                  DetectCondition="VCRedist_x64&gt;=v12.0.21005" />
+                  DetectCondition="VCRedist_x64&gt;=v14.0.23026" />
       
       <MsiPackage SourceFile="$(var.Setup.TargetPath)" />
       <MsiPackage SourceFile="$(var.Setup64.TargetPath)"
