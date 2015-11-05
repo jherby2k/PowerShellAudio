@@ -25,12 +25,9 @@ namespace PowerShellAudio.Extensions.ReplayGain
     {
         int _membersDisposed;
 
-        internal int MembersDisposed
-        {
-            get { return _membersDisposed; }
-        }
+        internal int MembersDisposed => _membersDisposed;
 
-        internal ConcurrentBag<NativeStateHandle> Handles { get; private set; }
+        internal ConcurrentBag<NativeStateHandle> Handles { get; }
 
         internal NativeR128GroupState()
         {

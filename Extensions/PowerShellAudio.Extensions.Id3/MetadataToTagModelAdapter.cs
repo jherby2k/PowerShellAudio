@@ -28,12 +28,13 @@ namespace PowerShellAudio.Extensions.Id3
 {
     class MetadataToTagModelAdapter : TagModel
     {
-        static readonly Dictionary<string, string> _map = new Dictionary<string, string>() {
-            { "Album", "TALB"  },   
+        static readonly Dictionary<string, string> _map = new Dictionary<string, string>
+        {
+            { "Album", "TALB" },
             { "Artist", "TPE1" },
-            { "Genre", "TCON"  },
-            { "Title", "TIT2"  },
-            { "Year", "TYER"   }
+            { "Genre", "TCON" },
+            { "Title", "TIT2" },
+            { "Year", "TYER" }
         };
 
         internal MetadataToTagModelAdapter(MetadataDictionary metadata, SettingsDictionary settings)
@@ -128,7 +129,8 @@ namespace PowerShellAudio.Extensions.Id3
             if (!string.IsNullOrEmpty(tdatFrame.Text))
                 Add(tdatFrame);
 
-            if (!string.IsNullOrEmpty(settings["AddSoundCheck"]) && string.Compare(settings["AddSoundCheck"], bool.FalseString, StringComparison.OrdinalIgnoreCase) != 0)
+            if (!string.IsNullOrEmpty(settings["AddSoundCheck"]) &&
+                string.Compare(settings["AddSoundCheck"], bool.FalseString, StringComparison.OrdinalIgnoreCase) != 0)
             {
                 if (string.Compare(settings["AddSoundCheck"], "Album", StringComparison.OrdinalIgnoreCase) == 0)
                 {
@@ -149,7 +151,8 @@ namespace PowerShellAudio.Extensions.Id3
                     Add(trackSoundCheckFrame);
                 }
                 else
-                    throw new InvalidSettingException(string.Format(CultureInfo.CurrentCulture, Resources.MetadataToTagModelAdapterBadAddSoundCheck, settings["AddSoundCheck"]));
+                    throw new InvalidSettingException(string.Format(CultureInfo.CurrentCulture,
+                        Resources.MetadataToTagModelAdapterBadAddSoundCheck, settings["AddSoundCheck"]));
             }
 
             if (metadata.CoverArt != null)
@@ -163,9 +166,7 @@ namespace PowerShellAudio.Extensions.Id3
                 return this.Any(frame =>
                 {
                     var fullTextFrame = frame as FrameFullText;
-                    if (fullTextFrame != null && fullTextFrame.Description == "iTunNORM")
-                        return true;
-                    return false;
+                    return fullTextFrame != null && fullTextFrame.Description == "iTunNORM";
                 });
             }
         }

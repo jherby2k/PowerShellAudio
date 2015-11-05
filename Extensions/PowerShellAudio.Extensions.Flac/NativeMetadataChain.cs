@@ -17,7 +17,6 @@
 
 using System;
 using System.Diagnostics.Contracts;
-using System.Globalization;
 using System.IO;
 using System.Runtime.InteropServices;
 
@@ -27,7 +26,7 @@ namespace PowerShellAudio.Extensions.Flac
     {
         readonly IoCallbacks _callbacks;
 
-        internal NativeMetadataChainHandle Handle { get; private set; }
+        internal NativeMetadataChainHandle Handle { get; }
 
         internal NativeMetadataChain(Stream stream)
         {
@@ -37,7 +36,7 @@ namespace PowerShellAudio.Extensions.Flac
             Contract.Requires(stream.CanSeek);
             Contract.Ensures(Handle != null);
             Contract.Ensures(!Handle.IsClosed);
-            Contract.Ensures(GetStatus() == MetadataChainStatus.OK);
+            Contract.Ensures(GetStatus() == MetadataChainStatus.Ok);
 
             _callbacks = InitializeCallbacks(stream);
             Handle = SafeNativeMethods.MetadataChainNew();
@@ -65,7 +64,8 @@ namespace PowerShellAudio.Extensions.Flac
             Contract.Requires(tempStream.CanSeek);
             Contract.Requires(!Handle.IsClosed);
 
-            return SafeNativeMethods.MetadataChainWriteWithTempFile(Handle, usePadding, IntPtr.Zero, _callbacks, IntPtr.Zero, InitializeCallbacks(tempStream));
+            return SafeNativeMethods.MetadataChainWriteWithTempFile(Handle, usePadding, IntPtr.Zero, _callbacks,
+                IntPtr.Zero, InitializeCallbacks(tempStream));
         }
 
         internal bool Write(bool usePadding)
@@ -97,40 +97,35 @@ namespace PowerShellAudio.Extensions.Flac
 
         static IoCallbacks InitializeCallbacks(Stream stream)
         {
-            var result = new IoCallbacks();
-
-            result.Read = new SafeNativeMethods.IOCallbacksReadCallback((readBuffer, bufferSize, numberOfRecords, handle) =>
+            return new IoCallbacks
             {
-                var totalBufferSize = (ulong)bufferSize.ToInt64() * (ulong)numberOfRecords.ToInt64();
-                var managedBuffer = new byte[totalBufferSize];
-                int bytesRead = stream.Read(managedBuffer, 0, (int)totalBufferSize);
+                Read = (readBuffer, bufferSize, numberOfRecords, handle) =>
+                {
+                    ulong totalBufferSize = (ulong)bufferSize.ToInt64() * (ulong)numberOfRecords.ToInt64();
+                    var managedBuffer = new byte[totalBufferSize];
+                    int bytesRead = stream.Read(managedBuffer, 0, (int)totalBufferSize);
 
-                Marshal.Copy(managedBuffer, 0, readBuffer, (int)totalBufferSize);
-                return new IntPtr(bytesRead);
-            });
+                    Marshal.Copy(managedBuffer, 0, readBuffer, (int)totalBufferSize);
+                    return new IntPtr(bytesRead);
+                },
+                Write = (writeBuffer, bufferSize, numberOfRecords, handle) =>
+                {
+                    var castNumberOfRecords = (ulong)numberOfRecords.ToInt64();
+                    ulong totalBufferSize = (ulong)bufferSize.ToInt64() * castNumberOfRecords;
+                    var managedBuffer = new byte[totalBufferSize];
+                    Marshal.Copy(writeBuffer, managedBuffer, 0, (int)totalBufferSize);
 
-            result.Write = new SafeNativeMethods.IOCallbacksWriteCallback((writeBuffer, bufferSize, numberOfRecords, handle) =>
-            {
-                var castNumberOfRecords = (ulong)numberOfRecords.ToInt64();
-                var totalBufferSize = (ulong)bufferSize.ToInt64() * castNumberOfRecords;
-                var managedBuffer = new byte[totalBufferSize];
-                Marshal.Copy(writeBuffer, managedBuffer, 0, (int)totalBufferSize);
-
-                stream.Write(managedBuffer, 0, (int)totalBufferSize);
-                return new IntPtr((long)castNumberOfRecords);
-            });
-
-            result.Seek = new SafeNativeMethods.IOCallbacksSeekCallback((handle, offset, whence) =>
-            {
-                stream.Seek(offset, whence);
-                return 0;
-            });
-
-            result.Tell = new SafeNativeMethods.IOCallbacksTellCallback(handle => stream.Position);
-
-            result.Eof = new SafeNativeMethods.IOCallbacksEofCallback(handle => stream.Position < stream.Length ? 0 : 1);
-
-            return result;
+                    stream.Write(managedBuffer, 0, (int)totalBufferSize);
+                    return new IntPtr((long)castNumberOfRecords);
+                },
+                Seek = (handle, offset, whence) =>
+                {
+                    stream.Seek(offset, whence);
+                    return 0;
+                },
+                Tell = handle => stream.Position,
+                Eof = handle => stream.Position < stream.Length ? 0 : 1
+            };
         }
 
         [ContractInvariantMethod]
@@ -138,7 +133,7 @@ namespace PowerShellAudio.Extensions.Flac
         {
             Contract.Invariant(Handle != null);
             Contract.Invariant(!Handle.IsInvalid);
-            Contract.Invariant(GetStatus() == MetadataChainStatus.OK);
+            Contract.Invariant(GetStatus() == MetadataChainStatus.Ok);
         }
     }
 }

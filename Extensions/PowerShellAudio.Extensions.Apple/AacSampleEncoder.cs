@@ -30,7 +30,7 @@ namespace PowerShellAudio.Extensions.Apple
     public class AacSampleEncoder : ISampleEncoder, IDisposable
     {
         static readonly SampleEncoderInfo _encoderInfo = new AacSampleEncoderInfo();
-        static readonly uint[] _vbrQualities = new uint[] { 0, 5, 14, 23, 32, 41, 50, 59, 69, 78, 87, 96, 105, 114, 123 };
+        static readonly uint[] _vbrQualities = { 0, 5, 14, 23, 32, 41, 50, 59, 69, 78, 87, 96, 105, 114, 123 };
 
         Stream _stream;
         ExportLifetimeContext<ISampleFilter> _replayGainFilterLifetime;
@@ -64,7 +64,8 @@ namespace PowerShellAudio.Extensions.Apple
             _settings = settings;
 
             // Load the external gain filter:
-            var sampleFilterFactory = ExtensionProvider.GetFactories<ISampleFilter>("Name", "ReplayGain").SingleOrDefault();
+            ExportFactory<ISampleFilter> sampleFilterFactory =
+                ExtensionProvider.GetFactories<ISampleFilter>("Name", "ReplayGain").SingleOrDefault();
             if (sampleFilterFactory == null)
                 throw new ExtensionInitializationException(Resources.AacSampleEncoderReplayGainFilterError);
             _replayGainFilterLifetime = sampleFilterFactory.CreateExport();
@@ -75,19 +76,24 @@ namespace PowerShellAudio.Extensions.Apple
 
             try
             {
-                _audioFile = new NativeExtendedAudioFile(outputDescription, AudioFileType.M4a, stream);
+                _audioFile = new NativeExtendedAudioFile(outputDescription, AudioFileType.M4A, stream);
 
-                ExtendedAudioFileStatus status = _audioFile.SetProperty<AudioStreamBasicDescription>(ExtendedAudioFilePropertyID.ClientDataFormat, inputDescription);
-                if (status != ExtendedAudioFileStatus.OK)
-                    throw new IOException(string.Format(CultureInfo.CurrentCulture, Resources.SampleEncoderInitializationError, status));
+                ExtendedAudioFileStatus status = _audioFile.SetProperty(ExtendedAudioFilePropertyId.ClientDataFormat,
+                    inputDescription);
+                if (status != ExtendedAudioFileStatus.Ok)
+                    throw new IOException(string.Format(CultureInfo.CurrentCulture,
+                        Resources.SampleEncoderInitializationError, status));
 
                 // Configure the audio converter:
-                ConfigureConverter(settings, audioInfo.Channels, _audioFile.GetProperty<IntPtr>(ExtendedAudioFilePropertyID.AudioConverter));
+                ConfigureConverter(settings, audioInfo.Channels,
+                    _audioFile.GetProperty<IntPtr>(ExtendedAudioFilePropertyId.AudioConverter));
 
                 // Setting the ConverterConfig property to null resynchronizes the converter settings:
-                ExtendedAudioFileStatus fileStatus = _audioFile.SetProperty<IntPtr>(ExtendedAudioFilePropertyID.ConverterConfig, IntPtr.Zero);
-                if (fileStatus != ExtendedAudioFileStatus.OK)
-                    throw new IOException(string.Format(CultureInfo.CurrentCulture, Resources.SampleEncoderConverterError, status));
+                ExtendedAudioFileStatus fileStatus = _audioFile.SetProperty(
+                    ExtendedAudioFilePropertyId.ConverterConfig, IntPtr.Zero);
+                if (fileStatus != ExtendedAudioFileStatus.Ok)
+                    throw new IOException(string.Format(CultureInfo.CurrentCulture,
+                        Resources.SampleEncoderConverterError, status));
             }
             catch (TypeInitializationException e)
             {
@@ -97,10 +103,7 @@ namespace PowerShellAudio.Extensions.Apple
             }
         }
 
-        public bool ManuallyFreesSamples
-        {
-            get { return false; }
-        }
+        public bool ManuallyFreesSamples => false;
 
         public void Submit(SampleCollection samples)
         {
@@ -114,24 +117,28 @@ namespace PowerShellAudio.Extensions.Apple
                 // Filter by ReplayGain, depending on settings:
                 _replayGainFilterLifetime.Value.Submit(samples);
 
-                int index = 0;
-                for (int sample = 0; sample < samples.SampleCount; sample++)
-                    for (int channel = 0; channel < samples.Channels; channel++)
+                var index = 0;
+                for (var sample = 0; sample < samples.SampleCount; sample++)
+                    for (var channel = 0; channel < samples.Channels; channel++)
                         _buffer[index++] = (int)Math.Round(samples[channel][sample] * 0x7fffffff);
 
                 GCHandle handle = GCHandle.Alloc(_buffer, GCHandleType.Pinned);
 
                 try
                 {
-                    var bufferList = new AudioBufferList() { NumberBuffers = 1 };
-                    bufferList.Buffers = new AudioBuffer[1];
+                    var bufferList = new AudioBufferList
+                    {
+                        NumberBuffers = 1,
+                        Buffers = new AudioBuffer[1]
+                    };
                     bufferList.Buffers[0].NumberChannels = (uint)samples.Channels;
                     bufferList.Buffers[0].DataByteSize = (uint)(index * Marshal.SizeOf<int>());
                     bufferList.Buffers[0].Data = handle.AddrOfPinnedObject();
 
                     ExtendedAudioFileStatus status = _audioFile.Write(bufferList, (uint)samples.SampleCount);
-                    if (status != ExtendedAudioFileStatus.OK)
-                        throw new IOException(string.Format(CultureInfo.CurrentCulture, Resources.SampleEncoderWriteError, status));
+                    if (status != ExtendedAudioFileStatus.Ok)
+                        throw new IOException(string.Format(CultureInfo.CurrentCulture,
+                            Resources.SampleEncoderWriteError, status));
                 }
                 finally
                 {
@@ -144,9 +151,14 @@ namespace PowerShellAudio.Extensions.Apple
 
                 // Call an external MP4 encoder for writing iTunes-compatible atoms:
                 _stream.Position = 0;
-                var metadataEncoderFactory = ExtensionProvider.GetFactories<IMetadataEncoder>("Extension", EncoderInfo.FileExtension).SingleOrDefault();
+
+                ExportFactory<IMetadataEncoder> metadataEncoderFactory =
+                    ExtensionProvider.GetFactories<IMetadataEncoder>("Extension", EncoderInfo.FileExtension)
+                        .SingleOrDefault();
                 if (metadataEncoderFactory == null)
-                    throw new ExtensionInitializationException(string.Format(CultureInfo.CurrentCulture, Resources.SampleEncoderMetadataEncoderError, EncoderInfo.FileExtension));
+                    throw new ExtensionInitializationException(string.Format(CultureInfo.CurrentCulture,
+                        Resources.SampleEncoderMetadataEncoderError, EncoderInfo.FileExtension));
+
                 using (ExportLifetimeContext<IMetadataEncoder> metadataEncoderLifetime = metadataEncoderFactory.CreateExport())
                     metadataEncoderLifetime.Value.WriteMetadata(_stream, _metadata, _settings);
             }
@@ -160,25 +172,38 @@ namespace PowerShellAudio.Extensions.Apple
 
         protected virtual void Dispose(bool disposing)
         {
-            if (disposing)
-            {
-                if (_replayGainFilterLifetime != null)
-                    _replayGainFilterLifetime.Dispose();
-                if (_audioFile != null)
-                    _audioFile.Dispose();
-            }
+            if (!disposing)
+                return;
+
+            _replayGainFilterLifetime?.Dispose();
+            _audioFile?.Dispose();
         }
 
         static AudioStreamBasicDescription GetInputDescription(AudioInfo audioInfo)
         {
             Contract.Requires(audioInfo != null);
 
-            return new AudioStreamBasicDescription() { SampleRate = audioInfo.SampleRate, AudioFormat = AudioFormat.LinearPcm, Flags = AudioFormatFlags.PcmIsSignedInteger | AudioFormatFlags.PcmIsPacked, BytesPerPacket = 4 * (uint)audioInfo.Channels, FramesPerPacket = 1, BytesPerFrame = 4 * (uint)audioInfo.Channels, ChannelsPerFrame = (uint)audioInfo.Channels, BitsPerChannel = 32 };
+            return new AudioStreamBasicDescription
+            {
+                SampleRate = audioInfo.SampleRate,
+                AudioFormat = AudioFormat.LinearPcm,
+                Flags = AudioFormatFlags.PcmIsSignedInteger | AudioFormatFlags.PcmIsPacked,
+                BytesPerPacket = 4 * (uint)audioInfo.Channels,
+                FramesPerPacket = 1,
+                BytesPerFrame = 4 * (uint)audioInfo.Channels,
+                ChannelsPerFrame = (uint)audioInfo.Channels,
+                BitsPerChannel = 32
+            };
         }
 
         static AudioStreamBasicDescription GetOutputDescription(AudioStreamBasicDescription inputDescription)
         {
-            var result = new AudioStreamBasicDescription() { FramesPerPacket = 1024, AudioFormat = AudioFormat.AacLowComplexity, ChannelsPerFrame = inputDescription.ChannelsPerFrame };
+            var result = new AudioStreamBasicDescription
+            {
+                FramesPerPacket = 1024,
+                AudioFormat = AudioFormat.AacLowComplexity,
+                ChannelsPerFrame = inputDescription.ChannelsPerFrame
+            };
 
             // Some sample rates aren't supported on output, so a best match should be made:
             switch ((int)inputDescription.SampleRate)
@@ -221,18 +246,21 @@ namespace PowerShellAudio.Extensions.Apple
 
             // Set the quality if specified, otherwise select "High":
             Quality quality;
-            if (string.IsNullOrEmpty(settings["Quality"]) || string.Compare(settings["Quality"], "High", StringComparison.OrdinalIgnoreCase) == 0)
+            if (string.IsNullOrEmpty(settings["Quality"]) ||
+                string.Compare(settings["Quality"], "High", StringComparison.OrdinalIgnoreCase) == 0)
                 quality = Quality.High;
             else if (string.Compare(settings["Quality"], "Medium", StringComparison.OrdinalIgnoreCase) == 0)
                 quality = Quality.Medium;
             else if (string.Compare(settings["Quality"], "Low", StringComparison.OrdinalIgnoreCase) == 0)
                 quality = Quality.Low;
             else
-                throw new InvalidSettingException(string.Format(CultureInfo.CurrentCulture, Resources.AacSampleEncoderBadQuality, settings["Quality"]));
+                throw new InvalidSettingException(string.Format(CultureInfo.CurrentCulture,
+                    Resources.AacSampleEncoderBadQuality, settings["Quality"]));
 
-            AudioConverterStatus status = SetConverterProperty<uint>(converter, AudioConverterPropertyID.CodecQuality, (uint)quality);
-            if (status != AudioConverterStatus.OK)
-                throw new IOException(string.Format(CultureInfo.CurrentCulture, Resources.SampleEncoderConverterQualityError, status));
+            AudioConverterStatus status = SetConverterProperty(converter, AudioConverterPropertyId.CodecQuality, (uint)quality);
+            if (status != AudioConverterStatus.Ok)
+                throw new IOException(string.Format(CultureInfo.CurrentCulture,
+                    Resources.SampleEncoderConverterQualityError, status));
 
             // Set a bitrate only if specified. Otherwise, default to a variable bitrate:
             if (!string.IsNullOrEmpty(settings["BitRate"]))
@@ -251,25 +279,30 @@ namespace PowerShellAudio.Extensions.Apple
 
             uint bitRate;
             if (!uint.TryParse(settings["BitRate"], out bitRate) || bitRate < minBitRate || bitRate > maxBitRate)
-                throw new InvalidSettingException(string.Format(CultureInfo.CurrentCulture, Resources.AacSampleEncoderBadBitRate, settings["BitRate"], minBitRate, maxBitRate));
+                throw new InvalidSettingException(string.Format(CultureInfo.CurrentCulture,
+                    Resources.AacSampleEncoderBadBitRate, settings["BitRate"], minBitRate, maxBitRate));
 
-            AudioConverterStatus status = SetConverterProperty<uint>(converter, AudioConverterPropertyID.BitRate, bitRate * 1000);
-            if (status != AudioConverterStatus.OK)
-                throw new IOException(string.Format(CultureInfo.CurrentCulture, Resources.SampleEncoderConverterBitRateError, status));
+            AudioConverterStatus status = SetConverterProperty(converter, AudioConverterPropertyId.BitRate, bitRate * 1000);
+            if (status != AudioConverterStatus.Ok)
+                throw new IOException(string.Format(CultureInfo.CurrentCulture,
+                    Resources.SampleEncoderConverterBitRateError, status));
 
             BitrateControlMode controlMode;
-            if (string.IsNullOrEmpty(settings["ControlMode"]) || string.Compare(settings["ControlMode"], "Constrained", StringComparison.OrdinalIgnoreCase) == 0)
+            if (string.IsNullOrEmpty(settings["ControlMode"]) ||
+                string.Compare(settings["ControlMode"], "Constrained", StringComparison.OrdinalIgnoreCase) == 0)
                 controlMode = BitrateControlMode.VariableConstrained;
             else if (string.Compare(settings["ControlMode"], "Average", StringComparison.OrdinalIgnoreCase) == 0)
                 controlMode = BitrateControlMode.LongTermAverage;
             else if (string.Compare(settings["ControlMode"], "Constant", StringComparison.OrdinalIgnoreCase) == 0)
                 controlMode = BitrateControlMode.Constant;
             else
-                throw new InvalidSettingException(string.Format(CultureInfo.CurrentCulture, Resources.AacSampleEncoderBadBitRateControlMode, settings["ControlMode"]));
+                throw new InvalidSettingException(string.Format(CultureInfo.CurrentCulture,
+                    Resources.AacSampleEncoderBadBitRateControlMode, settings["ControlMode"]));
 
-            status = SetConverterProperty<uint>(converter, AudioConverterPropertyID.BitRateControlMode, (uint)controlMode);
-            if (status != AudioConverterStatus.OK)
-                throw new InvalidSettingException(string.Format(CultureInfo.CurrentCulture, Resources.SampleEncoderConverterControlModeError, status));
+            status = SetConverterProperty(converter, AudioConverterPropertyId.BitRateControlMode, (uint)controlMode);
+            if (status != AudioConverterStatus.Ok)
+                throw new InvalidSettingException(string.Format(CultureInfo.CurrentCulture,
+                    Resources.SampleEncoderConverterControlModeError, status));
         }
 
         static void ConfigureConverterForQuality(SettingsDictionary settings, IntPtr converter)
@@ -277,34 +310,39 @@ namespace PowerShellAudio.Extensions.Apple
             Contract.Requires(settings != null);
             Contract.Requires(converter != IntPtr.Zero);
 
-            if (!string.IsNullOrEmpty(settings["ControlMode"]) && string.Compare(settings["ControlMode"], "Variable", StringComparison.OrdinalIgnoreCase) != 0)
+            if (!string.IsNullOrEmpty(settings["ControlMode"]) &&
+                string.Compare(settings["ControlMode"], "Variable", StringComparison.OrdinalIgnoreCase) != 0)
                 throw new InvalidSettingException(Resources.AacSampleEncoderBadQualityControlMode);
 
-            AudioConverterStatus status = SetConverterProperty<uint>(converter, AudioConverterPropertyID.BitRateControlMode, (uint)BitrateControlMode.Variable);
-            if (status != AudioConverterStatus.OK)
-                throw new IOException(string.Format(CultureInfo.CurrentCulture, Resources.SampleEncoderConverterControlModeError, status));
+            AudioConverterStatus status = SetConverterProperty(converter, AudioConverterPropertyId.BitRateControlMode, (uint)BitrateControlMode.Variable);
+            if (status != AudioConverterStatus.Ok)
+                throw new IOException(string.Format(CultureInfo.CurrentCulture,
+                    Resources.SampleEncoderConverterControlModeError, status));
 
             // There are only 15 distinct settings actually available:
             uint vbrQualityIndex;
             if (string.IsNullOrEmpty(settings["VBRQuality"]))
                 vbrQualityIndex = 9;
-            else if (!uint.TryParse(settings["VBRQuality"], out vbrQualityIndex) || vbrQualityIndex >= _vbrQualities.Length)
-                throw new InvalidSettingException(string.Format(CultureInfo.CurrentCulture, Resources.AacSampleEncoderBadVbrQuality, settings["VBRQuality"]));
+            else if (!uint.TryParse(settings["VBRQuality"], out vbrQualityIndex) ||
+                     vbrQualityIndex >= _vbrQualities.Length)
+                throw new InvalidSettingException(string.Format(CultureInfo.CurrentCulture,
+                    Resources.AacSampleEncoderBadVbrQuality, settings["VBRQuality"]));
 
-            status = SetConverterProperty<uint>(converter, AudioConverterPropertyID.VbrQuality, _vbrQualities[vbrQualityIndex]);
-            if (status != AudioConverterStatus.OK)
-                throw new IOException(string.Format(CultureInfo.CurrentCulture, Resources.SampleEncoderConverterQualityError, status));
+            status = SetConverterProperty(converter, AudioConverterPropertyId.VbrQuality, _vbrQualities[vbrQualityIndex]);
+            if (status != AudioConverterStatus.Ok)
+                throw new IOException(string.Format(CultureInfo.CurrentCulture,
+                    Resources.SampleEncoderConverterQualityError, status));
         }
 
-        static AudioConverterStatus SetConverterProperty<T>(IntPtr converter, AudioConverterPropertyID propertyID, T value) where T : struct
+        static AudioConverterStatus SetConverterProperty<T>(IntPtr converter, AudioConverterPropertyId propertyId, T value) where T : struct
         {
             Contract.Requires(converter != IntPtr.Zero);
 
             IntPtr unmanagedValue = Marshal.AllocHGlobal(Marshal.SizeOf(typeof(T)));
             try
             {
-                Marshal.StructureToPtr<T>(value, unmanagedValue, false);
-                return SafeNativeMethods.AudioConverterSetProperty(converter, propertyID, (uint)Marshal.SizeOf(typeof(T)), unmanagedValue);
+                Marshal.StructureToPtr(value, unmanagedValue, false);
+                return SafeNativeMethods.AudioConverterSetProperty(converter, propertyId, (uint)Marshal.SizeOf(typeof(T)), unmanagedValue);
             }
             finally
             {

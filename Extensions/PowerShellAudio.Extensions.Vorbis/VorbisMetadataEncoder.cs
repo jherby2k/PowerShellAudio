@@ -107,10 +107,8 @@ namespace PowerShellAudio.Extensions.Vorbis
                 }
                 finally
                 {
-                    if (inputOggStream != null)
-                        inputOggStream.Dispose();
-                    if (outputOggStream != null)
-                        outputOggStream.Dispose();
+                    inputOggStream?.Dispose();
+                    outputOggStream?.Dispose();
                 }
             }
         }
@@ -165,7 +163,7 @@ namespace PowerShellAudio.Extensions.Vorbis
             Contract.Requires(stream.CanWrite);
             Contract.Requires(buffer != null);
 
-            int offset = 0;
+            var offset = 0;
             while (offset < length)
             {
                 int bytesCopied = Math.Min(length - offset, buffer.Length);
@@ -175,7 +173,7 @@ namespace PowerShellAudio.Extensions.Vorbis
             }
         }
 
-        static void Overwrite(Stream originalStream, MemoryStream newStream)
+        static void Overwrite(Stream originalStream, Stream newStream)
         {
             Contract.Requires(originalStream != null);
             Contract.Requires(originalStream.CanWrite);

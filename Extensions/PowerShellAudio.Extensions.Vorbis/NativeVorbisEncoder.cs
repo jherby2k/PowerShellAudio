@@ -48,8 +48,9 @@ namespace PowerShellAudio.Extensions.Vorbis
             Contract.Ensures(_block != IntPtr.Zero);
 
             Result result = SafeNativeMethods.VorbisEncodeInitializeVbr(_info, channels, sampleRate, baseQuality);
-            if (result != Result.OK)
-                throw new IOException(string.Format(CultureInfo.CurrentCulture, Resources.NativeVorbisEncoderInitializationError, result));
+            if (result != Result.Ok)
+                throw new IOException(string.Format(CultureInfo.CurrentCulture,
+                    Resources.NativeVorbisEncoderInitializationError, result));
 
             CompleteInitialization();
         }
@@ -59,25 +60,30 @@ namespace PowerShellAudio.Extensions.Vorbis
             Contract.Ensures(_dspState != IntPtr.Zero);
             Contract.Ensures(_block != IntPtr.Zero);
 
-            Result result = SafeNativeMethods.VorbisEncodeInitialize(_info, channels, sampleRate, minimumBitRate, nominalBitRate, maximumBitRate);
-            if (result != Result.OK)
-                throw new IOException(string.Format(CultureInfo.CurrentCulture, Resources.NativeVorbisEncoderInitializationError, result));
+            Result result = SafeNativeMethods.VorbisEncodeInitialize(_info, channels, sampleRate, minimumBitRate,
+                nominalBitRate, maximumBitRate);
+            if (result != Result.Ok)
+                throw new IOException(string.Format(CultureInfo.CurrentCulture,
+                    Resources.NativeVorbisEncoderInitializationError, result));
 
             CompleteInitialization();
         }
 
         internal void SetupManaged(int channels, int sampleRate, int minimumBitRate, int nominalBitRate, int maximumBitRate)
         {
-            Result result = SafeNativeMethods.VorbisEncodeSetupManaged(_info, channels, sampleRate, minimumBitRate, nominalBitRate, maximumBitRate);
-            if (result != Result.OK)
-                throw new IOException(string.Format(CultureInfo.CurrentCulture, Resources.NativeVorbisEncoderSetupError, result));
+            Result result = SafeNativeMethods.VorbisEncodeSetupManaged(_info, channels, sampleRate, minimumBitRate,
+                nominalBitRate, maximumBitRate);
+            if (result != Result.Ok)
+                throw new IOException(string.Format(CultureInfo.CurrentCulture,
+                    Resources.NativeVorbisEncoderSetupError, result));
         }
 
         internal void Control(int request, IntPtr argument)
         {
             Result result = SafeNativeMethods.VorbisEncodeControl(_info, request, argument);
-            if (result != Result.OK)
-                throw new IOException(string.Format(CultureInfo.CurrentCulture, Resources.NativeVorbisEncoderControlError, result));
+            if (result != Result.Ok)
+                throw new IOException(string.Format(CultureInfo.CurrentCulture, 
+                    Resources.NativeVorbisEncoderControlError, result));
         }
 
         internal void SetupInitialize()
@@ -86,17 +92,20 @@ namespace PowerShellAudio.Extensions.Vorbis
             Contract.Ensures(_block != IntPtr.Zero);
 
             Result result = SafeNativeMethods.VorbisEncodeSetupInitialize(_info);
-            if (result != Result.OK)
-                throw new IOException(string.Format(CultureInfo.CurrentCulture, Resources.NativeVorbisEncoderInitializationError, result));
+            if (result != Result.Ok)
+                throw new IOException(string.Format(CultureInfo.CurrentCulture, 
+                    Resources.NativeVorbisEncoderInitializationError, result));
 
             CompleteInitialization();
         }
 
         internal void HeaderOut(ref VorbisComment comment, out OggPacket first, out OggPacket second, out OggPacket third)
         {
-            Result result = SafeNativeMethods.VorbisAnalysisHeaderOut(_dspState, ref comment, out first, out second, out third);
-            if (result != Result.OK)
-                throw new IOException(string.Format(CultureInfo.CurrentCulture, Resources.NativeVorbisEncoderHeaderOutError, result));
+            Result result = SafeNativeMethods.VorbisAnalysisHeaderOut(_dspState, ref comment,
+                out first, out second, out third);
+            if (result != Result.Ok)
+                throw new IOException(string.Format(CultureInfo.CurrentCulture, 
+                    Resources.NativeVorbisEncoderHeaderOutError, result));
         }
 
         internal IntPtr GetBuffer(int samples)
@@ -107,8 +116,9 @@ namespace PowerShellAudio.Extensions.Vorbis
         internal void Wrote(int samples)
         {
             Result result = SafeNativeMethods.VorbisAnalysisWrote(_dspState, samples);
-            if (result != Result.OK)
-                throw new IOException(string.Format(CultureInfo.CurrentCulture, Resources.NativeVorbisEncoderWroteError, result));
+            if (result != Result.Ok)
+                throw new IOException(string.Format(CultureInfo.CurrentCulture, 
+                    Resources.NativeVorbisEncoderWroteError, result));
         }
 
         internal bool BlockOut()
@@ -116,27 +126,30 @@ namespace PowerShellAudio.Extensions.Vorbis
             Result result = SafeNativeMethods.VorbisAnalysisBlockOut(_dspState, _block);
             switch (result)
             {
-                case Result.OK:
+                case Result.Ok:
                     return false;
-                case Result.OKMoreAvailable:
+                case Result.OkMoreAvailable:
                     return true;
                 default:
-                    throw new IOException(string.Format(CultureInfo.CurrentCulture, Resources.NativeVorbisEncoderBlockOutError, result));
+                    throw new IOException(string.Format(CultureInfo.CurrentCulture, 
+                        Resources.NativeVorbisEncoderBlockOutError, result));
             }
         }
 
         internal void Analysis(IntPtr packet)
         {
             Result result = SafeNativeMethods.VorbisAnalysis(_block, packet);
-            if (result != Result.OK)
-                throw new IOException(string.Format(CultureInfo.CurrentCulture, Resources.NativeVorbisEncoderAnalysisError, result));
+            if (result != Result.Ok)
+                throw new IOException(string.Format(CultureInfo.CurrentCulture, 
+                    Resources.NativeVorbisEncoderAnalysisError, result));
         }
 
         internal void AddBlock()
         {
             Result result = SafeNativeMethods.VorbisBitrateAddBlock(_block);
-            if (result != Result.OK)
-                throw new IOException(string.Format(CultureInfo.CurrentCulture, Resources.NativeVorbisEncoderAddBlockError, result));
+            if (result != Result.Ok)
+                throw new IOException(string.Format(CultureInfo.CurrentCulture,
+                    Resources.NativeVorbisEncoderAddBlockError, result));
         }
 
         internal bool FlushPacket(out OggPacket packet)
@@ -144,12 +157,13 @@ namespace PowerShellAudio.Extensions.Vorbis
             Result result = SafeNativeMethods.VorbisBitrateFlushPacket(_dspState, out packet);
             switch (result)
             {
-                case Result.OK:
+                case Result.Ok:
                     return false;
-                case Result.OKMoreAvailable:
+                case Result.OkMoreAvailable:
                     return true;
                 default:
-                    throw new IOException(string.Format(CultureInfo.CurrentCulture, Resources.NativeVorbisEncoderFlushPacketError, result));
+                    throw new IOException(string.Format(CultureInfo.CurrentCulture, 
+                        Resources.NativeVorbisEncoderFlushPacketError, result));
             }
         }
 
@@ -182,11 +196,11 @@ namespace PowerShellAudio.Extensions.Vorbis
             Contract.Ensures(_block != IntPtr.Zero);
 
             _dspState = Marshal.AllocHGlobal(Marshal.SizeOf(typeof(VorbisDspState)));
-            if (SafeNativeMethods.VorbisAnalysisInitialize(_dspState, _info) != Result.OK)
+            if (SafeNativeMethods.VorbisAnalysisInitialize(_dspState, _info) != Result.Ok)
                 throw new IOException(Resources.NativeVorbisEncoderAnalysisInitialize);
 
             _block = Marshal.AllocHGlobal(Marshal.SizeOf(typeof(VorbisBlock)));
-            if (SafeNativeMethods.VorbisBlockInitialize(_dspState, _block) != Result.OK)
+            if (SafeNativeMethods.VorbisBlockInitialize(_dspState, _block) != Result.Ok)
                 throw new IOException(Resources.NativeVorbisEncoderBlockInitialize);
         }
     }

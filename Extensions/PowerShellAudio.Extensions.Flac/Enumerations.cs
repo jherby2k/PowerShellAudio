@@ -19,7 +19,7 @@ namespace PowerShellAudio.Extensions.Flac
 {
     internal enum DecoderInitStatus
     {
-        OK,
+        Ok,
         UnsupportedContainer,
         InvalidCallbacks,
         ErrorAllocatingMemory,
@@ -50,21 +50,21 @@ namespace PowerShellAudio.Extensions.Flac
 
     internal enum DecoderSeekStatus
     {
-        OK,
+        Ok,
         Error,
         Unsupported
     };
 
     internal enum DecoderTellStatus
     {
-        OK,
+        Ok,
         Error,
         Unsupported
     };
 
     internal enum DecoderLengthStatus
     {
-        OK,
+        Ok,
         Error,
         Unsupported
     };
@@ -136,7 +136,7 @@ namespace PowerShellAudio.Extensions.Flac
 
     internal enum MetadataChainStatus
     {
-        OK,
+        Ok,
         IllegalInput,
         ErrorOpeningFile,
         NotAFlacFile,
@@ -156,27 +156,27 @@ namespace PowerShellAudio.Extensions.Flac
 
     internal enum EncoderWriteStatus
     {
-        OK,
+        Ok,
         FatalError
     };
 
     internal enum EncoderSeekStatus
     {
-        OK,
+        Ok,
         Error,
         Unsupported
     };
 
     internal enum EncoderTellStatus
     {
-        OK,
+        Ok,
         Error,
         Unsupported
     };
 
     internal enum EncoderInitStatus
     {
-        OK,
+        Ok,
         EncoderError,
         UnsupportedContainer,
         InvalidCallbacks,
@@ -193,7 +193,7 @@ namespace PowerShellAudio.Extensions.Flac
 
     internal enum EncoderState
     {
-        OK,
+        Ok,
         Uninitialized,
         OggError,
         DecoderError,

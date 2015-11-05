@@ -41,9 +41,9 @@ namespace PowerShellAudio.Extensions.Apple
 
             try
             {
-                var audioFile = new NativeAudioFile(AudioFileType.M4a, stream);
+                var audioFile = new NativeAudioFile(AudioFileType.M4A, stream);
 
-                _inputDescription = audioFile.GetProperty<AudioStreamBasicDescription>(AudioFilePropertyID.DataFormat);
+                _inputDescription = audioFile.GetProperty<AudioStreamBasicDescription>(AudioFilePropertyId.DataFormat);
                 if (_inputDescription.AudioFormat != AudioFormat.AppleLossless)
                     throw new UnsupportedAudioException(Resources.LosslessSampleDecoderFormatError);
 
@@ -77,22 +77,27 @@ namespace PowerShellAudio.Extensions.Apple
 
             try
             {
-                var bufferList = new AudioBufferList() { NumberBuffers = 1 };
-                bufferList.Buffers = new AudioBuffer[1];
-                bufferList.Buffers[0].NumberChannels = (uint)_inputDescription.ChannelsPerFrame;
+                var bufferList = new AudioBufferList
+                {
+                    NumberBuffers = 1,
+                    Buffers = new AudioBuffer[1]
+                };
+                bufferList.Buffers[0].NumberChannels = _inputDescription.ChannelsPerFrame;
                 bufferList.Buffers[0].DataByteSize = (uint)(_buffer.Length);
                 bufferList.Buffers[0].Data = handle.AddrOfPinnedObject();
 
                 AudioConverterStatus status = _converter.FillBuffer(ref sampleCount, ref bufferList, null);
-                if (status != AudioConverterStatus.OK)
-                    throw new IOException(string.Format(CultureInfo.CurrentCulture, Resources.LosslessSampleDecoderFillBufferError, status));
+                if (status != AudioConverterStatus.Ok)
+                    throw new IOException(string.Format(CultureInfo.CurrentCulture,
+                        Resources.LosslessSampleDecoderFillBufferError, status));
 
-                SampleCollection result = SampleCollectionFactory.Instance.Create((int)_inputDescription.ChannelsPerFrame, (int)sampleCount);
+                SampleCollection result =
+                    SampleCollectionFactory.Instance.Create((int)_inputDescription.ChannelsPerFrame, (int)sampleCount);
 
                 // De-interlace the output buffer into the new sample collection, converting to floating point values:
-                int index = 0;
-                for (int sample = 0; sample < result.SampleCount; sample++)
-                    for (int channel = 0; channel < result.Channels; channel++)
+                var index = 0;
+                for (var sample = 0; sample < result.SampleCount; sample++)
+                    for (var channel = 0; channel < result.Channels; channel++)
                         result[channel][sample] = _buffer[index++] / _divisor;
 
                 return result;
@@ -111,12 +116,11 @@ namespace PowerShellAudio.Extensions.Apple
 
         protected virtual void Dispose(bool disposing)
         {
-            if (disposing)
-            {
-                if (_converter != null)
-                    _converter.Dispose();
-                Marshal.FreeHGlobal(_magicCookie);
-            }
+            if (!disposing)
+                return;
+
+            _converter?.Dispose();
+            Marshal.FreeHGlobal(_magicCookie);
         }
 
         static AudioStreamBasicDescription InitializeOutputDescription(AudioStreamBasicDescription inputDescription)
@@ -137,10 +141,21 @@ namespace PowerShellAudio.Extensions.Apple
                     bitsPerSample = 32;
                     break;
                 default:
-                    throw new IOException(string.Format(CultureInfo.CurrentCulture, Resources.LosslessSampleDecoderFlagsError, inputDescription.Flags));
+                    throw new IOException(string.Format(CultureInfo.CurrentCulture,
+                        Resources.LosslessSampleDecoderFlagsError, inputDescription.Flags));
             }
 
-            return new AudioStreamBasicDescription() { AudioFormat = AudioFormat.LinearPcm, Flags = AudioFormatFlags.PcmIsSignedInteger, BytesPerPacket = sizeof(int) * inputDescription.ChannelsPerFrame, FramesPerPacket = 1, BytesPerFrame = sizeof(int) * inputDescription.ChannelsPerFrame, ChannelsPerFrame = inputDescription.ChannelsPerFrame, BitsPerChannel = bitsPerSample, SampleRate = inputDescription.SampleRate };
+            return new AudioStreamBasicDescription
+            {
+                AudioFormat = AudioFormat.LinearPcm,
+                Flags = AudioFormatFlags.PcmIsSignedInteger,
+                BytesPerPacket = sizeof(int) * inputDescription.ChannelsPerFrame,
+                FramesPerPacket = 1,
+                BytesPerFrame = sizeof(int) * inputDescription.ChannelsPerFrame,
+                ChannelsPerFrame = inputDescription.ChannelsPerFrame,
+                BitsPerChannel = bitsPerSample,
+                SampleRate = inputDescription.SampleRate
+            };
         }
 
         static IntPtr InitializeMagicCookie(NativeAudioFile audioFile, NativeAudioConverter converter)
@@ -151,22 +166,24 @@ namespace PowerShellAudio.Extensions.Apple
             uint dataSize;
             uint isWritable;
 
-            AudioFileStatus getStatus = audioFile.GetPropertyInfo(AudioFilePropertyID.MagicCookieData, out dataSize, out isWritable);
-            if (getStatus != AudioFileStatus.OK)
-                throw new IOException(string.Format(CultureInfo.CurrentCulture, Resources.LosslessSampleDecoderGetCookieInfoError, getStatus));
+            AudioFileStatus getStatus = audioFile.GetPropertyInfo(AudioFilePropertyId.MagicCookieData, out dataSize,
+                out isWritable);
+            if (getStatus != AudioFileStatus.Ok)
+                throw new IOException(string.Format(CultureInfo.CurrentCulture,
+                    Resources.LosslessSampleDecoderGetCookieInfoError, getStatus));
 
-            if (dataSize > 0)
-            {
-                IntPtr cookie = audioFile.GetProperty(AudioFilePropertyID.MagicCookieData, dataSize);
+            if (dataSize == 0)
+                return IntPtr.Zero;
 
-                AudioConverterStatus setStatus = converter.SetProperty(AudioConverterPropertyID.DecompressionMagicCookie, dataSize, cookie);
-                if (setStatus != AudioConverterStatus.OK)
-                    throw new IOException(string.Format(CultureInfo.CurrentCulture, Resources.LosslessSampleDecoderSetCookieError, setStatus));
+            IntPtr cookie = audioFile.GetProperty(AudioFilePropertyId.MagicCookieData, dataSize);
 
-                return cookie;
-            }
+            AudioConverterStatus setStatus = converter.SetProperty(AudioConverterPropertyId.DecompressionMagicCookie,
+                dataSize, cookie);
+            if (setStatus != AudioConverterStatus.Ok)
+                throw new IOException(string.Format(CultureInfo.CurrentCulture,
+                    Resources.LosslessSampleDecoderSetCookieError, setStatus));
 
-            return IntPtr.Zero;
+            return cookie;
         }
     }
 }

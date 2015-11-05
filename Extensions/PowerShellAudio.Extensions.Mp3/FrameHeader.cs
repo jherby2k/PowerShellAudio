@@ -19,23 +19,26 @@ using PowerShellAudio.Extensions.Mp3.Properties;
 using System.Diagnostics.CodeAnalysis;
 using System.Diagnostics.Contracts;
 using System.IO;
-using System.Linq;
 
 namespace PowerShellAudio.Extensions.Mp3
 {
     class FrameHeader
     {
-        [SuppressMessage("Microsoft.Performance", "CA1814:PreferJaggedArraysOverMultidimensional", MessageId = "Member", Justification = "Does not waste space")]
-        static readonly int[,] _bitRates = {{ 0, 32, 64, 96, 128, 160, 192, 224, 256, 288, 320, 352, 384, 416, 448 },
-                                            { 0, 32, 48, 56,  64,  80,  96, 112, 128, 160, 192, 224, 256, 320, 384 },
-                                            { 0, 32, 40, 48,  56,  64,  80,  96, 112, 128, 160, 192, 224, 256, 320 },
-                                            { 0, 32, 48, 56,  64,  80,  96, 112, 128, 144, 160, 176, 192, 224, 256 },
-                                            { 0,  8, 16, 24,  32,  40,  48,  56,  64,  80,  96, 112, 128, 144, 160 }};
+        [SuppressMessage("Microsoft.Performance", "CA1814:PreferJaggedArraysOverMultidimensional", MessageId = "Member", Justification = "Does not waste space")] static readonly int[,] _bitRates =
+        {
+            { 0, 32, 64, 96, 128, 160, 192, 224, 256, 288, 320, 352, 384, 416, 448 },
+            { 0, 32, 48, 56, 64, 80, 96, 112, 128, 160, 192, 224, 256, 320, 384 },
+            { 0, 32, 40, 48, 56, 64, 80, 96, 112, 128, 160, 192, 224, 256, 320 },
+            { 0, 32, 48, 56, 64, 80, 96, 112, 128, 144, 160, 176, 192, 224, 256 },
+            { 0, 8, 16, 24, 32, 40, 48, 56, 64, 80, 96, 112, 128, 144, 160 }
+        };
 
-        [SuppressMessage("Microsoft.Performance", "CA1814:PreferJaggedArraysOverMultidimensional", MessageId = "Member", Justification = "Does not waste space")]
-        static readonly int[,] _sampleRates = {{ 44100, 48000, 32000 },
-                                               { 22050, 24000, 16000 },
-                                               { 11025, 12000,  8000 }};
+        [SuppressMessage("Microsoft.Performance", "CA1814:PreferJaggedArraysOverMultidimensional", MessageId = "Member", Justification = "Does not waste space")] static readonly int[,] _sampleRates =
+        {
+            { 44100, 48000, 32000 },
+            { 22050, 24000, 16000 },
+            { 11025, 12000, 8000 }
+        };
 
         readonly byte[] _headerBytes;
 
@@ -79,13 +82,7 @@ namespace PowerShellAudio.Extensions.Mp3
             }
         }
 
-        internal bool HasCrc
-        {
-            get
-            {
-                return (_headerBytes[1] & 0x1) == 0 ? true : false;
-            }
-        }
+        internal bool HasCrc => (_headerBytes[1] & 0x1) == 0;
 
         internal int BitRate
         {
@@ -150,10 +147,7 @@ namespace PowerShellAudio.Extensions.Mp3
             }
         }
 
-        internal int Padding
-        {
-            get { return (_headerBytes[2] >> 1) & 0x1; }
-        }
+        internal int Padding => (_headerBytes[2] >> 1) & 0x1;
 
         internal string ChannelMode
         {
@@ -181,10 +175,9 @@ namespace PowerShellAudio.Extensions.Mp3
             {
                 if (Layer == "I")
                     return 384;
-                else if (Layer == "II" || MpegVersion == "1")
+                if (Layer == "II" || MpegVersion == "1")
                     return 1152;
-                else
-                    return 576;
+                return 576;
             }
         }
 

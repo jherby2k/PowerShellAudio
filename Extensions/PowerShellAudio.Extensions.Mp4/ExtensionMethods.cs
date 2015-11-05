@@ -33,11 +33,10 @@ namespace PowerShellAudio.Extensions.Mp4
             Contract.Requires(count > 0);
             Contract.Ensures(output.Length >= Contract.OldValue<long>(count));
 
-            byte[] buffer = new byte[1024];
-            int read;
+            var buffer = new byte[1024];
             do
             {
-                read = input.Read(buffer, 0, (int)Math.Min(buffer.Length, count));
+                int read = input.Read(buffer, 0, (int)Math.Min(buffer.Length, count));
                 output.Write(buffer, 0, read);
                 count -= read;
             } while (count > 0);
@@ -83,7 +82,7 @@ namespace PowerShellAudio.Extensions.Mp4
         {
             Contract.Requires(writer != null);
 
-            var buffer = BitConverter.GetBytes(value);
+            byte[] buffer = BitConverter.GetBytes(value);
             Array.Reverse(buffer);
             writer.Write(buffer);
         }
@@ -92,7 +91,7 @@ namespace PowerShellAudio.Extensions.Mp4
         {
             Contract.Requires(writer != null);
 
-            var buffer = BitConverter.GetBytes(value);
+            byte[] buffer = BitConverter.GetBytes(value);
             Array.Reverse(buffer);
             writer.Write(buffer);
         }

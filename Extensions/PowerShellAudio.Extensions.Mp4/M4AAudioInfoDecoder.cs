@@ -42,14 +42,17 @@ namespace PowerShellAudio.Extensions.Mp4
             mp4.DescendToAtom("moov", "trak", "mdia", "minf", "stbl", "stsd", "mp4a", "esds");
             var esds = new EsdsAtom(mp4.ReadAtom(mp4.CurrentAtom));
             if (esds.SampleRate > 0)
-                return new AudioInfo(string.Format(CultureInfo.CurrentCulture, "{0}kbps MPEG 4 AAC", esds.AverageBitrate > 0 ? (int)esds.AverageBitrate / 1000 : CalculateBitRate(dataSize, sampleCount, esds.SampleRate)), esds.Channels, 0, (int)esds.SampleRate, sampleCount);
-            else
-            {
-                // Apple Lossless files have their own atom for storing audio info:
-                mp4.DescendToAtom("moov", "trak", "mdia", "minf", "stbl", "stsd", "alac");
-                var alac = new AlacAtom(mp4.ReadAtom(mp4.CurrentAtom));
-                return new AudioInfo("Apple Lossless", alac.Channels, alac.BitsPerSample, (int)alac.SampleRate, sampleCount);
-            }
+                return new AudioInfo(string.Format(CultureInfo.CurrentCulture, "{0}kbps MPEG 4 AAC",
+                    esds.AverageBitrate > 0
+                        ? (int)esds.AverageBitrate / 1000
+                        : CalculateBitRate(dataSize, sampleCount, esds.SampleRate)), esds.Channels, 0,
+                    (int)esds.SampleRate, sampleCount);
+
+            // Apple Lossless files have their own atom for storing audio info:
+            mp4.DescendToAtom("moov", "trak", "mdia", "minf", "stbl", "stsd", "alac");
+            var alac = new AlacAtom(mp4.ReadAtom(mp4.CurrentAtom));
+            return new AudioInfo("Apple Lossless", alac.Channels, alac.BitsPerSample, (int)alac.SampleRate,
+                sampleCount);
         }
 
         static int CalculateBitRate(uint byteCount, uint sampleCount, uint sampleRate)

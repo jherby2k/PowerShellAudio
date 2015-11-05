@@ -24,11 +24,11 @@ namespace PowerShellAudio.Extensions.Mp4
 {
     class EsdsAtom
     {
-        static readonly uint[] _sampleRates = new uint[] { 96000, 88200, 64000, 48000, 44100, 32000, 24000, 22050, 16000, 12000, 11025, 8000, 7350, 0 };
+        static readonly uint[] _sampleRates = { 96000, 88200, 64000, 48000, 44100, 32000, 24000, 22050, 16000, 12000, 11025, 8000, 7350, 0 };
 
         internal uint AverageBitrate { get; private set; }
 
-        internal uint SampleRate { get; private set; }
+        internal uint SampleRate { get; }
 
         internal ushort Channels { get; private set; }
 
@@ -77,8 +77,7 @@ namespace PowerShellAudio.Extensions.Mp4
             }
             finally
             {
-                if (stream != null)
-                    stream.Dispose();
+                stream?.Dispose();
             }
         }
 

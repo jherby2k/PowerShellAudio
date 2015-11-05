@@ -24,23 +24,25 @@ using System.Linq;
 
 namespace PowerShellAudio.Extensions.Mp4
 {
-    class MetadataToAtomAdapter : List<IWritableAtom>
+    class MetadataToAtomAdapter : List<WritableAtom>
     {
-        static readonly Dictionary<string, string> _map = new Dictionary<string, string>(StringComparer.OrdinalIgnoreCase) {
-            { "Album", "©alb"   },
-            { "Artist", "©ART"  },
-            { "Comment", "©cmt" },
-            { "Genre", "©gen"   },
-            { "Title", "©nam"   }
-        };
+        static readonly Dictionary<string, string> _map =
+            new Dictionary<string, string>(StringComparer.OrdinalIgnoreCase)
+            {
+                { "Album", "©alb" },
+                { "Artist", "©ART" },
+                { "Comment", "©cmt" },
+                { "Genre", "©gen" },
+                { "Title", "©nam" }
+            };
 
         internal MetadataToAtomAdapter(MetadataDictionary metadata, SettingsDictionary settings)
         {
             Contract.Requires(metadata != null);
 
-            int day = 0;
-            int month = 0;
-            int year = 0;
+            var day = 0;
+            var month = 0;
+            var year = 0;
             var trackNumberAtom = new TrackNumberAtom();
             var trackSoundCheckAtom = new SoundCheckAtom();
             var albumSoundCheckAtom = new SoundCheckAtom();
@@ -105,7 +107,8 @@ namespace PowerShellAudio.Extensions.Mp4
             if (trackNumberAtom.IsValid)
                 Add(trackNumberAtom);
 
-            if (!string.IsNullOrEmpty(settings["AddSoundCheck"]) && string.Compare(settings["AddSoundCheck"], bool.FalseString, StringComparison.OrdinalIgnoreCase) != 0)
+            if (!string.IsNullOrEmpty(settings["AddSoundCheck"]) &&
+                string.Compare(settings["AddSoundCheck"], bool.FalseString, StringComparison.OrdinalIgnoreCase) != 0)
             {
                 if (string.Compare(settings["AddSoundCheck"], "Album", StringComparison.OrdinalIgnoreCase) == 0)
                 {
@@ -128,7 +131,8 @@ namespace PowerShellAudio.Extensions.Mp4
                     Insert(0, trackSoundCheckAtom);
                 }
                 else
-                    throw new InvalidSettingException(string.Format(CultureInfo.CurrentCulture, Resources.MetadataToAtomAdapterBadAddSoundCheck, settings["AddSoundCheck"]));
+                    throw new InvalidSettingException(string.Format(CultureInfo.CurrentCulture,
+                        Resources.MetadataToAtomAdapterBadAddSoundCheck, settings["AddSoundCheck"]));
             }
 
             if (metadata.CoverArt != null)

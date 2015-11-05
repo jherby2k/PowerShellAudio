@@ -68,11 +68,13 @@ namespace PowerShellAudio.Extensions.Apple
 
             try
             {
-                _audioFile = new NativeExtendedAudioFile(outputDescription, AudioFileType.M4a, stream);
+                _audioFile = new NativeExtendedAudioFile(outputDescription, AudioFileType.M4A, stream);
 
-                ExtendedAudioFileStatus status = _audioFile.SetProperty<AudioStreamBasicDescription>(ExtendedAudioFilePropertyID.ClientDataFormat, inputDescription);
-                if (status != ExtendedAudioFileStatus.OK)
-                    throw new IOException(string.Format(CultureInfo.CurrentCulture, Resources.SampleEncoderInitializationError, status));
+                ExtendedAudioFileStatus status = _audioFile.SetProperty(ExtendedAudioFilePropertyId.ClientDataFormat,
+                    inputDescription);
+                if (status != ExtendedAudioFileStatus.Ok)
+                    throw new IOException(string.Format(CultureInfo.CurrentCulture,
+                        Resources.SampleEncoderInitializationError, status));
             }
             catch (TypeInitializationException e)
             {
@@ -82,10 +84,7 @@ namespace PowerShellAudio.Extensions.Apple
             }
         }
 
-        public bool ManuallyFreesSamples
-        {
-            get { return false; }
-        }
+        public bool ManuallyFreesSamples => false;
 
         public void Submit(SampleCollection samples)
         {
@@ -96,24 +95,28 @@ namespace PowerShellAudio.Extensions.Apple
 
             if (!samples.IsLast)
             {
-                int index = 0;
-                for (int sample = 0; sample < samples.SampleCount; sample++)
-                    for (int channel = 0; channel < samples.Channels; channel++)
+                var index = 0;
+                for (var sample = 0; sample < samples.SampleCount; sample++)
+                    for (var channel = 0; channel < samples.Channels; channel++)
                         _buffer[index++] = (int)Math.Round(samples[channel][sample] * _multiplier);
 
                 GCHandle handle = GCHandle.Alloc(_buffer, GCHandleType.Pinned);
 
                 try
                 {
-                    var bufferList = new AudioBufferList() { NumberBuffers = 1 };
-                    bufferList.Buffers = new AudioBuffer[1];
+                    var bufferList = new AudioBufferList
+                    {
+                        NumberBuffers = 1,
+                        Buffers = new AudioBuffer[1]
+                    };
                     bufferList.Buffers[0].NumberChannels = (uint)samples.Channels;
                     bufferList.Buffers[0].DataByteSize = (uint)(index * Marshal.SizeOf<int>());
                     bufferList.Buffers[0].Data = handle.AddrOfPinnedObject();
 
                     ExtendedAudioFileStatus status = _audioFile.Write(bufferList, (uint)samples.SampleCount);
-                    if (status != ExtendedAudioFileStatus.OK)
-                        throw new IOException(string.Format(CultureInfo.CurrentCulture, Resources.SampleEncoderWriteError, status));
+                    if (status != ExtendedAudioFileStatus.Ok)
+                        throw new IOException(string.Format(CultureInfo.CurrentCulture,
+                            Resources.SampleEncoderWriteError, status));
                 }
                 finally
                 {
@@ -126,9 +129,14 @@ namespace PowerShellAudio.Extensions.Apple
 
                 // Call an external MP4 encoder for writing iTunes-compatible atoms:
                 _stream.Position = 0;
-                var metadataEncoderFactory = ExtensionProvider.GetFactories<IMetadataEncoder>("Extension", EncoderInfo.FileExtension).SingleOrDefault();
+
+                ExportFactory<IMetadataEncoder> metadataEncoderFactory =
+                    ExtensionProvider.GetFactories<IMetadataEncoder>("Extension", EncoderInfo.FileExtension)
+                        .SingleOrDefault();
                 if (metadataEncoderFactory == null)
-                    throw new ExtensionInitializationException(string.Format(CultureInfo.CurrentCulture, Resources.SampleEncoderMetadataEncoderError, EncoderInfo.FileExtension));
+                    throw new ExtensionInitializationException(string.Format(CultureInfo.CurrentCulture,
+                        Resources.SampleEncoderMetadataEncoderError, EncoderInfo.FileExtension));
+
                 using (ExportLifetimeContext<IMetadataEncoder> metadataEncoderLifetime = metadataEncoderFactory.CreateExport())
                     metadataEncoderLifetime.Value.WriteMetadata(_stream, _metadata, _settings);
             }
@@ -142,23 +150,39 @@ namespace PowerShellAudio.Extensions.Apple
 
         protected virtual void Dispose(bool disposing)
         {
-            if (disposing && _audioFile != null)
-                _audioFile.Dispose();
+            if (disposing)
+                _audioFile?.Dispose();
         }
 
         static AudioStreamBasicDescription GetInputDescription(AudioInfo audioInfo)
         {
             Contract.Requires(audioInfo != null);
 
-            return new AudioStreamBasicDescription() { SampleRate = audioInfo.SampleRate, AudioFormat = AudioFormat.LinearPcm, Flags = AudioFormatFlags.PcmIsSignedInteger, BytesPerPacket = 4 * (uint)audioInfo.Channels, FramesPerPacket = 1, BytesPerFrame = 4 * (uint)audioInfo.Channels, ChannelsPerFrame = (uint)audioInfo.Channels, BitsPerChannel = (uint)audioInfo.BitsPerSample };
+            return new AudioStreamBasicDescription
+            {
+                SampleRate = audioInfo.SampleRate,
+                AudioFormat = AudioFormat.LinearPcm,
+                Flags = AudioFormatFlags.PcmIsSignedInteger,
+                BytesPerPacket = 4 * (uint)audioInfo.Channels,
+                FramesPerPacket = 1,
+                BytesPerFrame = 4 * (uint)audioInfo.Channels,
+                ChannelsPerFrame = (uint)audioInfo.Channels,
+                BitsPerChannel = (uint)audioInfo.BitsPerSample
+            };
         }
 
         static AudioStreamBasicDescription GetOutputDescription(AudioStreamBasicDescription inputDescription)
         {
-            var result = new AudioStreamBasicDescription() { SampleRate = inputDescription.SampleRate, FramesPerPacket = 4096, AudioFormat = AudioFormat.AppleLossless, ChannelsPerFrame = inputDescription.ChannelsPerFrame };
+            var result = new AudioStreamBasicDescription()
+            {
+                SampleRate = inputDescription.SampleRate,
+                FramesPerPacket = 4096,
+                AudioFormat = AudioFormat.AppleLossless,
+                ChannelsPerFrame = inputDescription.ChannelsPerFrame
+            };
 
             // Some sample rates aren't supported on output, so a best match should be made:
-            switch ((int)inputDescription.BitsPerChannel)
+            switch (inputDescription.BitsPerChannel)
             {
                 case 16:
                     result.Flags = AudioFormatFlags.Alac16BitSourceData;

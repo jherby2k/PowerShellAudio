@@ -39,10 +39,13 @@ namespace PowerShellAudio.Extensions.ReplayGain
             if (_divisor == 1 || input.IsLast)
                 return input;
 
-            var result = SampleCollectionFactory.Instance.Create(input.Channels, input.SampleCount / _divisor);
+            SampleCollection result = SampleCollectionFactory.Instance.Create(input.Channels,
+                input.SampleCount / _divisor);
 
-            for (int channel = 0; channel < input.Channels; channel++)
-                for (int resultSample = 0, inputSample = 0; resultSample < result.SampleCount; resultSample++, inputSample += _divisor)
+            for (var channel = 0; channel < input.Channels; channel++)
+                for (int resultSample = 0, inputSample = 0;
+                    resultSample < result.SampleCount;
+                    resultSample++, inputSample += _divisor)
                     result[channel][resultSample] = input[channel][inputSample];
 
             SampleCollectionFactory.Instance.Free(input);

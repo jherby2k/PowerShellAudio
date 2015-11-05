@@ -45,45 +45,47 @@ namespace PowerShellAudio.Extensions.Id3
         public void WriteMetadata(Stream stream, MetadataDictionary metadata, SettingsDictionary settings)
         {
             TagModel currentTag = GetCurrentTag(stream);
-            uint currentTagSizeWithPadding = currentTag != null ? currentTag.Header.TagSizeWithHeaderFooter: 0;
+            uint currentTagSizeWithPadding = currentTag?.Header.TagSizeWithHeaderFooter ?? 0;
 
             TagModel newTag = GetNewTag(currentTag, metadata, settings);
-            if (newTag != null)
-            {
-                uint newTagSizeWithPadding = newTag.Header.TagSizeWithHeaderFooter + newTag.Header.PaddingSize;
+            if (newTag == null)
+                return;
 
-                // If this is a new stream, just write the tag:
-                if (stream.Length == 0)
+            uint newTagSizeWithPadding = newTag.Header.TagSizeWithHeaderFooter + newTag.Header.PaddingSize;
+
+            // If this is a new stream, just write the tag:
+            if (stream.Length == 0)
+                TagManager.Serialize(newTag, stream);
+            else
+            {
+                bool usePadding;
+                if (string.IsNullOrEmpty(settings["UsePadding"]))
+                    usePadding = false;
+                else if (!bool.TryParse(settings["UsePadding"], out usePadding))
+                    throw new InvalidSettingException(string.Format(CultureInfo.CurrentCulture,
+                        Resources.MetadataEncoderBadUsePadding, settings["UsePadding"]));
+
+                // If UsePadding = True and the new tag is smaller than the current one, or the new tag is the same size, there is no need to rewrite the whole stream:
+                if (usePadding && newTagSizeWithPadding <= currentTagSizeWithPadding ||
+                    newTagSizeWithPadding == currentTagSizeWithPadding)
+                {
+                    newTag.Header.PaddingSize += currentTagSizeWithPadding - newTagSizeWithPadding;
                     TagManager.Serialize(newTag, stream);
+                }
                 else
                 {
-                    bool usePadding;
-                    if (string.IsNullOrEmpty(settings["UsePadding"]))
-                        usePadding = false;
-                    else if (!bool.TryParse(settings["UsePadding"], out usePadding))
-                        throw new InvalidSettingException(string.Format(CultureInfo.CurrentCulture, Resources.MetadataEncoderBadUsePadding, settings["UsePadding"]));
-
-                    // If UsePadding = True and the new tag is smaller than the current one, or the new tag is the same size, there is no need to rewrite the whole stream:
-                    if (usePadding && newTagSizeWithPadding <= currentTagSizeWithPadding || newTagSizeWithPadding == currentTagSizeWithPadding)
+                    // If the new tag is larger, rewrite the whole stream:
+                    using (var tempStream = new MemoryStream())
                     {
-                        newTag.Header.PaddingSize += currentTagSizeWithPadding - newTagSizeWithPadding;
+                        stream.Position = currentTagSizeWithPadding;
+                        stream.CopyTo(tempStream);
+
+                        stream.SetLength(newTagSizeWithPadding + tempStream.Length);
+
+                        stream.Position = 0;
                         TagManager.Serialize(newTag, stream);
-                    }
-                    else
-                    {
-                        // If the new tag is larger, rewrite the whole stream:
-                        using (var tempStream = new MemoryStream())
-                        {
-                            stream.Position = currentTagSizeWithPadding;
-                            stream.CopyTo(tempStream);
-
-                            stream.SetLength(newTagSizeWithPadding + tempStream.Length);
-
-                            stream.Position = 0;
-                            TagManager.Serialize(newTag, stream);
-                            tempStream.Position = 0;
-                            tempStream.CopyTo(stream);
-                        }
+                        tempStream.Position = 0;
+                        tempStream.CopyTo(stream);
                     }
                 }
             }
@@ -117,14 +119,15 @@ namespace PowerShellAudio.Extensions.Id3
             var result = new MetadataToTagModelAdapter(metadata, settings);
 
             // Preserve an existing iTunNORM frame if a new one isn't provided, and AddSoundCheck isn't explicitly False:
-            FrameBase currentSoundCheckFrame = currentTag == null ? null : currentTag.SingleOrDefault(frame =>
+            FrameBase currentSoundCheckFrame = currentTag?.SingleOrDefault(frame =>
             {
                 var fullTextFrame = frame as FrameFullText;
                 if (fullTextFrame != null && fullTextFrame.Description == "iTunNORM")
                     return true;
                 return false;
             });
-            if (currentSoundCheckFrame != null && !result.IncludesSoundCheck && string.Compare(settings["AddSoundCheck"], bool.FalseString, StringComparison.OrdinalIgnoreCase) != 0)
+            if (currentSoundCheckFrame != null && !result.IncludesSoundCheck &&
+                string.Compare(settings["AddSoundCheck"], bool.FalseString, StringComparison.OrdinalIgnoreCase) != 0)
                 result.Add(currentSoundCheckFrame);
 
             if (result.Count == 0)
@@ -132,7 +135,7 @@ namespace PowerShellAudio.Extensions.Id3
 
             // If there is no current tag, and no requested ID3 version, default to 2.3:
             if (string.IsNullOrEmpty(settings["ID3Version"]))
-                result.Header.Version = currentTag != null ? currentTag.Header.Version : (byte)3;
+                result.Header.Version = currentTag?.Header.Version ?? 3;
             else
             {
                 switch (settings["ID3Version"])
@@ -147,7 +150,8 @@ namespace PowerShellAudio.Extensions.Id3
                         result.Header.Version = 4;
                         break;
                     default:
-                        throw new InvalidSettingException(string.Format(CultureInfo.CurrentCulture, Resources.MetadataEncoderBadID3Version, settings["ID3Version"]));
+                        throw new InvalidSettingException(string.Format(CultureInfo.CurrentCulture,
+                            Resources.MetadataEncoderBadID3Version, settings["ID3Version"]));
                 }
             }
 
@@ -155,7 +159,8 @@ namespace PowerShellAudio.Extensions.Id3
             if (string.IsNullOrEmpty(settings["PaddingSize"]))
                 paddingSize = 0;
             else if (!uint.TryParse(settings["PaddingSize"], out paddingSize))
-                throw new InvalidSettingException(string.Format(CultureInfo.CurrentCulture, Resources.MetadataEncoderBadPaddingSize, settings["Quality"]));
+                throw new InvalidSettingException(string.Format(CultureInfo.CurrentCulture,
+                    Resources.MetadataEncoderBadPaddingSize, settings["Quality"]));
             result.Header.PaddingSize = paddingSize;
 
             result.UpdateSize();

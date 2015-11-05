@@ -35,11 +35,13 @@ namespace PowerShellAudio.Extensions.Flac
             _decoder = new NativeStreamSampleDecoder(stream);
 
             DecoderInitStatus initStatus = _decoder.Initialize();
-            if (initStatus != DecoderInitStatus.OK)
-                if (initStatus == DecoderInitStatus.UnsupportedContainer)
-                    throw new UnsupportedAudioException(Resources.SampleDecoderUnsupportedContainerError);
-                else
-                    throw new IOException(string.Format(CultureInfo.CurrentCulture, Resources.SampleDecoderInitializationError, initStatus));
+            if (initStatus == DecoderInitStatus.Ok)
+                return;
+
+            if (initStatus == DecoderInitStatus.UnsupportedContainer)
+                throw new UnsupportedAudioException(Resources.SampleDecoderUnsupportedContainerError);
+            throw new IOException(string.Format(CultureInfo.CurrentCulture, Resources.SampleDecoderInitializationError,
+                initStatus));
         }
 
         public SampleCollection DecodeSamples()
@@ -49,17 +51,19 @@ namespace PowerShellAudio.Extensions.Flac
             while (_decoder.GetState() != DecoderState.EndOfStream)
             {
                 if (!_decoder.ProcessSingle())
-                    throw new IOException(string.Format(CultureInfo.CurrentCulture, Resources.SampleDecoderDecodingError, _decoder.GetState()));
+                    throw new IOException(string.Format(CultureInfo.CurrentCulture, Resources.SampleDecoderDecodingError,
+                        _decoder.GetState()));
 
                 if (_decoder.Error.HasValue)
-                    throw new IOException(string.Format(CultureInfo.CurrentCulture, Resources.SampleDecoderDecodingError, _decoder.Error.Value));
+                    throw new IOException(string.Format(CultureInfo.CurrentCulture, Resources.SampleDecoderDecodingError,
+                        _decoder.Error.Value));
 
-                if (_decoder.Samples != null)
-                {
-                    SampleCollection result = _decoder.Samples;
-                    _decoder.Samples = null;
-                    return result;
-                }
+                if (_decoder.Samples == null)
+                    continue;
+
+                SampleCollection result = _decoder.Samples;
+                _decoder.Samples = null;
+                return result;
             }
 
             _decoder.Finish();
@@ -74,8 +78,8 @@ namespace PowerShellAudio.Extensions.Flac
 
         protected virtual void Dispose(bool disposing)
         {
-            if (disposing && _decoder != null)
-                _decoder.Dispose();
+            if (disposing)
+                _decoder?.Dispose();
         }
     }
 }

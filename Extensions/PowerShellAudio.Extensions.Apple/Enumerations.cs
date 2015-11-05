@@ -21,7 +21,7 @@ namespace PowerShellAudio.Extensions.Apple
 {
     internal enum AudioFileStatus
     {
-        OK                              = 0,
+        Ok                              = 0,
         UnspecifiedError                = 0x7768743f, // 'wht?'
         UnsupportedFileTypeError        = 0x7479703f, // 'typ?'
         UnsupportedDataFormatError      = 0x666d743f, // 'fmt?'
@@ -40,7 +40,7 @@ namespace PowerShellAudio.Extensions.Apple
         FileNotFoundError               = -43
     };
 
-    internal enum AudioFilePropertyID
+    internal enum AudioFilePropertyId
     {
         DataFormat              = 0x64666d74, // 'dfmt'
         MagicCookieData         = 0x6d676963, // 'mgic'
@@ -49,7 +49,7 @@ namespace PowerShellAudio.Extensions.Apple
 
     internal enum ExtendedAudioFileStatus
     {
-        OK                          = 0,
+        Ok                          = 0,
         InvalidProperty             = -66561,
         InvalidPropertySize         = -66562,
         NonPcmClientFormat          = -66563,
@@ -62,7 +62,7 @@ namespace PowerShellAudio.Extensions.Apple
         AsyncWriteBufferOverflow    = -66570
     };
 
-    internal enum ExtendedAudioFilePropertyID
+    internal enum ExtendedAudioFilePropertyId
     {
         AudioConverter      = 0x61636e76, // 'acnv'
         ClientDataFormat    = 0x63666d74, // 'cfmt'
@@ -71,7 +71,7 @@ namespace PowerShellAudio.Extensions.Apple
 
     internal enum AudioConverterStatus
     {
-        OK                              = 0,
+        Ok                              = 0,
         FormatNotSupported              = 0x666d743f, // 'fmt?'
         OperationNotSupported           = 0x6f703f3f, // 'op??'
         PropertyNotSupported            = 0x70726f70, // 'prop'
@@ -103,7 +103,7 @@ namespace PowerShellAudio.Extensions.Apple
         Alac32BitSourceData = 4
     }
 
-    internal enum AudioConverterPropertyID : uint
+    internal enum AudioConverterPropertyId : uint
     {
         CodecQuality                = 0x63647175, // 'cdqu'
         DecompressionMagicCookie    = 0x646d6763, // 'dmgc'
@@ -129,6 +129,6 @@ namespace PowerShellAudio.Extensions.Apple
 
     internal enum AudioFileType : uint
     {
-        M4a = 0x6d346166 // 'm4af'
+        M4A = 0x6d346166 // 'm4af'
     };
 }

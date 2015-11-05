@@ -48,10 +48,7 @@ namespace PowerShellAudio.Extensions.Vorbis
             }
         }
 
-        public bool ManuallyFreesSamples
-        {
-            get { return false; }
-        }
+        public bool ManuallyFreesSamples => false;
 
         public void Initialize(Stream stream, AudioInfo audioInfo, MetadataDictionary metadata, SettingsDictionary settings)
         {
@@ -59,7 +56,8 @@ namespace PowerShellAudio.Extensions.Vorbis
             _output = stream;
 
             // Load the external gain filter:
-            var sampleFilterFactory = ExtensionProvider.GetFactories<ISampleFilter>("Name", "ReplayGain").SingleOrDefault();
+            ExportFactory<ISampleFilter> sampleFilterFactory =
+                ExtensionProvider.GetFactories<ISampleFilter>("Name", "ReplayGain").SingleOrDefault();
             if (sampleFilterFactory == null)
                 throw new ExtensionInitializationException(Resources.SampleEncoderReplayGainFilterError);
             _replayGainFilterLifetime = sampleFilterFactory.CreateExport();
@@ -73,7 +71,7 @@ namespace PowerShellAudio.Extensions.Vorbis
             else
                 ConfigureEncoderForQuality(settings, audioInfo, _encoder);
 
-            WriteHeader(metadata, settings, stream);
+            WriteHeader(metadata, stream);
         }
 
         public void Submit(SampleCollection samples)
@@ -84,10 +82,10 @@ namespace PowerShellAudio.Extensions.Vorbis
                 _replayGainFilterLifetime.Value.Submit(samples);
 
                 // Request an unmanaged buffer, then copy the samples to it:
-                IntPtr[] buffers = new IntPtr[samples.Channels];
+                var buffers = new IntPtr[samples.Channels];
                 Marshal.Copy(_encoder.GetBuffer(samples.SampleCount), buffers, 0, buffers.Length);
 
-                for (int i = 0; i < samples.Channels; i++)
+                for (var i = 0; i < samples.Channels; i++)
                     Marshal.Copy(samples[i], 0, buffers[i], samples[i].Length);
             }
 
@@ -120,19 +118,15 @@ namespace PowerShellAudio.Extensions.Vorbis
         {
             if (disposing)
             {
-                if (_encoder != null)
-                    _encoder.Dispose();
-                if (_replayGainFilterLifetime != null)
-                    _replayGainFilterLifetime.Dispose();
-                if (_oggStream != null)
-                    _oggStream.Dispose();
+                _encoder?.Dispose();
+                _replayGainFilterLifetime?.Dispose();
+                _oggStream?.Dispose();
             }
         }
 
-        void WriteHeader(MetadataDictionary metadata, SettingsDictionary settings, Stream stream)
+        void WriteHeader(MetadataDictionary metadata, Stream stream)
         {
             Contract.Requires(metadata != null);
-            Contract.Requires(settings != null);
             Contract.Requires(stream != null);
             Contract.Requires(stream.CanWrite);
 
@@ -187,7 +181,7 @@ namespace PowerShellAudio.Extensions.Vorbis
             Contract.Requires(stream != null);
             Contract.Requires(stream.CanWrite);
 
-            int offset = 0;
+            var offset = 0;
             while (offset < length)
             {
                 int bytesCopied = Math.Min(length - offset, _buffer.Length);
@@ -205,7 +199,8 @@ namespace PowerShellAudio.Extensions.Vorbis
             if (string.IsNullOrEmpty(settings["SerialNumber"]))
                 serialNumber = new Random().Next();
             else if (!int.TryParse(settings["SerialNumber"], out serialNumber) || serialNumber < 0)
-                throw new InvalidSettingException(string.Format(CultureInfo.CurrentCulture, Resources.SampleEncoderBadSerialNumber, settings["SerialNumber"]));
+                throw new InvalidSettingException(string.Format(CultureInfo.CurrentCulture,
+                    Resources.SampleEncoderBadSerialNumber, settings["SerialNumber"]));
 
             return new NativeOggStream(serialNumber);
         }
@@ -218,9 +213,11 @@ namespace PowerShellAudio.Extensions.Vorbis
 
             int bitRate;
             if (!int.TryParse(settings["BitRate"], out bitRate) || bitRate < 32 || bitRate > 500)
-                throw new InvalidSettingException(string.Format(CultureInfo.CurrentCulture, Resources.SampleEncoderBadBitRate, settings["BitRate"]));
+                throw new InvalidSettingException(string.Format(CultureInfo.CurrentCulture,
+                    Resources.SampleEncoderBadBitRate, settings["BitRate"]));
 
-            if (string.IsNullOrEmpty(settings["ControlMode"]) || string.Compare(settings["ControlMode"], "Variable", StringComparison.OrdinalIgnoreCase) == 0)
+            if (string.IsNullOrEmpty(settings["ControlMode"]) ||
+                string.Compare(settings["ControlMode"], "Variable", StringComparison.OrdinalIgnoreCase) == 0)
             {
                 // Configure the nominal bitrate, but then disable bitrate management:
                 encoder.SetupManaged(audioInfo.Channels, audioInfo.SampleRate, -1, bitRate * 1000, -1);
@@ -232,7 +229,8 @@ namespace PowerShellAudio.Extensions.Vorbis
             else if (string.Compare(settings["ControlMode"], "Constant", StringComparison.OrdinalIgnoreCase) == 0)
                 encoder.Initialize(audioInfo.Channels, audioInfo.SampleRate, bitRate, bitRate * 1000, bitRate);
             else
-                throw new InvalidSettingException(string.Format(CultureInfo.CurrentCulture, Resources.SampleEncoderBadBitRateControlMode, settings["ControlMode"]));
+                throw new InvalidSettingException(string.Format(CultureInfo.CurrentCulture,
+                    Resources.SampleEncoderBadBitRateControlMode, settings["ControlMode"]));
         }
 
         static void ConfigureEncoderForQuality(SettingsDictionary settings, AudioInfo audioInfo, NativeVorbisEncoder encoder)
@@ -241,15 +239,18 @@ namespace PowerShellAudio.Extensions.Vorbis
             Contract.Requires(audioInfo != null);
             Contract.Requires(encoder != null);
 
-            if (!string.IsNullOrEmpty(settings["ControlMode"]) && string.Compare(settings["ControlMode"], "Variable", StringComparison.OrdinalIgnoreCase) != 0)
-                throw new InvalidSettingException(string.Format(CultureInfo.CurrentCulture, Resources.SampleEncoderBadQualityControlMode, settings["ControlMode"]));
+            if (!string.IsNullOrEmpty(settings["ControlMode"]) &&
+                string.Compare(settings["ControlMode"], "Variable", StringComparison.OrdinalIgnoreCase) != 0)
+                throw new InvalidSettingException(string.Format(CultureInfo.CurrentCulture,
+                    Resources.SampleEncoderBadQualityControlMode, settings["ControlMode"]));
 
             // Set the quality if specified, otherwise select "5":
             float quality;
             if (string.IsNullOrEmpty(settings["VBRQuality"]))
                 quality = 5;
             else if (!float.TryParse(settings["VBRQuality"], out quality) || quality < -1 || quality > 10)
-                throw new InvalidSettingException(string.Format(CultureInfo.CurrentCulture, Resources.SampleEncoderBadVbrQuality, settings["VBRQuality"]));
+                throw new InvalidSettingException(string.Format(CultureInfo.CurrentCulture, 
+                    Resources.SampleEncoderBadVbrQuality, settings["VBRQuality"]));
 
             encoder.Initialize(audioInfo.Channels, audioInfo.SampleRate, quality / 10);
         }

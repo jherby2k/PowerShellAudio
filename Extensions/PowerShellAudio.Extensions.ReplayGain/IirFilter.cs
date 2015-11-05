@@ -56,12 +56,12 @@ namespace PowerShellAudio.Extensions.ReplayGain
             {
                 input[channel].CopyTo(_inputBuffer[channel], _order);
 
-                float adjustedSample;
                 for (int sample = _order; sample < _inputBuffer[channel].Length; sample++)
                 {
-                    adjustedSample = 0;
-                    for (int i = 0; i < _order; i++)
-                        adjustedSample += _inputBuffer[channel][sample - i] * _a[i] - _outputBuffer[channel][sample - i - 1] * _b[i];
+                    float adjustedSample = 0;
+                    for (var i = 0; i < _order; i++)
+                        adjustedSample += _inputBuffer[channel][sample - i] * _a[i] -
+                                          _outputBuffer[channel][sample - i - 1] * _b[i];
                     adjustedSample += _inputBuffer[channel][sample - _order] * _a[_order];
 
                     _outputBuffer[channel][sample] = adjustedSample;
@@ -93,8 +93,8 @@ namespace PowerShellAudio.Extensions.ReplayGain
             Contract.Ensures(Contract.ForAll(Contract.Result<float[][]>(), channel => channel != null));
             Contract.Ensures(Contract.ForAll(Contract.Result<float[][]>(), channel => channel.Length > 0));
 
-            float[][] result = new float[channels][];
-            for (int channel = 0; channel < channels; channel++)
+            var result = new float[channels][];
+            for (var channel = 0; channel < channels; channel++)
                 result[channel] = new float[samples];
 
             return result;

@@ -70,20 +70,19 @@ namespace PowerShellAudio.Extensions.ReplayGain
             Contract.Ensures(_analyzeAlbumPeaksBlock != null);
             Contract.Ensures(_broadcastAlbumResultsBlock != null);
 
-            var propagateLinkOptions = new DataflowLinkOptions() { PropagateCompletion = true };
+            var propagateLinkOptions = new DataflowLinkOptions { PropagateCompletion = true };
 
             // Calculate the album peak:
             var peakDetector = new PeakDetector();
             _analyzeAlbumPeaksBlock = new TransformBlock<Tuple<float, float>, Tuple<float, float>>(input =>
             {
                 // Only need to submit the peak once per track:
-                if (float.IsNaN(input.Item2))
-                {
-                    peakDetector.Submit(input.Item1);
-                    return Tuple.Create(peakDetector.Peak, input.Item2);
-                }
-                return Tuple.Create(input.Item1, input.Item2);
-            }, new ExecutionDataflowBlockOptions() { MaxDegreeOfParallelism = trackCount });
+                if (!float.IsNaN(input.Item2))
+                    return Tuple.Create(input.Item1, input.Item2);
+
+                peakDetector.Submit(input.Item1);
+                return Tuple.Create(peakDetector.Peak, input.Item2);
+            }, new ExecutionDataflowBlockOptions { MaxDegreeOfParallelism = trackCount });
 
             // Calculate the album gain:
             var windowSelector = new WindowSelector();
@@ -97,13 +96,20 @@ namespace PowerShellAudio.Extensions.ReplayGain
                 else
                     windowSelector.Submit(input.Item2);
                 return Tuple.Create(float.NaN, float.NaN);
-            }, new ExecutionDataflowBlockOptions() { MaxDegreeOfParallelism = trackCount, SingleProducerConstrained = true });
+            }, new ExecutionDataflowBlockOptions
+            {
+                MaxDegreeOfParallelism = trackCount,
+                SingleProducerConstrained = true
+            });
             _analyzeAlbumPeaksBlock.LinkTo(analyzeAlbumGainBlock, propagateLinkOptions);
 
             // Broadcast the results:
-            _broadcastAlbumResultsBlock = new BroadcastBlock<Tuple<float, float>>(input => Tuple.Create(input.Item1, input.Item2));
-            analyzeAlbumGainBlock.LinkTo(DataflowBlock.NullTarget<Tuple<float, float>>(), result => float.IsNaN(result.Item2));
-            analyzeAlbumGainBlock.LinkTo(_broadcastAlbumResultsBlock, propagateLinkOptions, result => !float.IsNaN(result.Item2));
+            _broadcastAlbumResultsBlock =
+                new BroadcastBlock<Tuple<float, float>>(input => Tuple.Create(input.Item1, input.Item2));
+            analyzeAlbumGainBlock.LinkTo(DataflowBlock.NullTarget<Tuple<float, float>>(),
+                result => float.IsNaN(result.Item2));
+            analyzeAlbumGainBlock.LinkTo(_broadcastAlbumResultsBlock, propagateLinkOptions,
+                result => !float.IsNaN(result.Item2));
         }
     }
 }

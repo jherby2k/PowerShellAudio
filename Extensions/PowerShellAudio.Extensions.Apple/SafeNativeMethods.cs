@@ -66,10 +66,10 @@ namespace PowerShellAudio.Extensions.Apple
         internal static extern AudioFileStatus AudioFileInitializeWithCallbacks(IntPtr userData, AudioFileReadCallback readCallback, AudioFileWriteCallback writeCallback, AudioFileGetSizeCallback getSizeCallback, AudioFileSetSizeCallback setSizeCallback, AudioFileType fileType, ref AudioStreamBasicDescription description, uint flags, out NativeAudioFileHandle handle);
 
         [DllImport(_coreAudioToolboxLibrary, CallingConvention = CallingConvention.Cdecl)]
-        internal static extern AudioFileStatus AudioFileGetProperty(NativeAudioFileHandle handle, AudioFilePropertyID id, ref uint size, [Out]IntPtr data);
+        internal static extern AudioFileStatus AudioFileGetProperty(NativeAudioFileHandle handle, AudioFilePropertyId id, ref uint size, [Out]IntPtr data);
 
         [DllImport(_coreAudioToolboxLibrary, CallingConvention = CallingConvention.Cdecl)]
-        internal static extern AudioFileStatus AudioFileGetPropertyInfo(NativeAudioFileHandle handle, AudioFilePropertyID id, out uint dataSize, out uint isWritable);
+        internal static extern AudioFileStatus AudioFileGetPropertyInfo(NativeAudioFileHandle handle, AudioFilePropertyId id, out uint dataSize, out uint isWritable);
 
         [DllImport(_coreAudioToolboxLibrary, CallingConvention = CallingConvention.Cdecl)]
         internal static extern AudioFileStatus AudioFileReadPackets(NativeAudioFileHandle handle, [MarshalAs(UnmanagedType.Bool)]bool useCache, out uint numBytes, [In, Out]AudioStreamPacketDescription[] packetDescriptions, long startingPacket, ref uint packets, IntPtr data);
@@ -81,10 +81,10 @@ namespace PowerShellAudio.Extensions.Apple
         internal static extern ExtendedAudioFileStatus ExtAudioFileWrapAudioFile(NativeAudioFileHandle audioFileHandle, [MarshalAs(UnmanagedType.Bool)]bool forWriting, out NativeExtendedAudioFileHandle handle);
 
         [DllImport(_coreAudioToolboxLibrary, CallingConvention = CallingConvention.Cdecl)]
-        internal static extern ExtendedAudioFileStatus ExtAudioFileGetProperty(NativeExtendedAudioFileHandle handle, ExtendedAudioFilePropertyID id, ref uint size, [Out]IntPtr data);
+        internal static extern ExtendedAudioFileStatus ExtAudioFileGetProperty(NativeExtendedAudioFileHandle handle, ExtendedAudioFilePropertyId id, ref uint size, [Out]IntPtr data);
 
         [DllImport(_coreAudioToolboxLibrary, CallingConvention = CallingConvention.Cdecl)]
-        internal static extern ExtendedAudioFileStatus ExtAudioFileSetProperty(NativeExtendedAudioFileHandle handle, ExtendedAudioFilePropertyID id, UInt32 size, IntPtr data);
+        internal static extern ExtendedAudioFileStatus ExtAudioFileSetProperty(NativeExtendedAudioFileHandle handle, ExtendedAudioFilePropertyId id, UInt32 size, IntPtr data);
 
         [DllImport(_coreAudioToolboxLibrary, CallingConvention = CallingConvention.Cdecl)]
         internal static extern ExtendedAudioFileStatus ExtAudioFileWrite(NativeExtendedAudioFileHandle handle, uint frames, ref AudioBufferList data);
@@ -96,10 +96,10 @@ namespace PowerShellAudio.Extensions.Apple
         internal static extern AudioConverterStatus AudioConverterNew(ref AudioStreamBasicDescription sourceFormat, ref AudioStreamBasicDescription destinationFormat, out NativeAudioConverterHandle handle);
 
         [DllImport(_coreAudioToolboxLibrary, CallingConvention = CallingConvention.Cdecl)]
-        internal static extern AudioConverterStatus AudioConverterSetProperty(IntPtr handle, AudioConverterPropertyID id, uint size, IntPtr data);
+        internal static extern AudioConverterStatus AudioConverterSetProperty(IntPtr handle, AudioConverterPropertyId id, uint size, IntPtr data);
 
         [DllImport(_coreAudioToolboxLibrary, CallingConvention = CallingConvention.Cdecl)]
-        internal static extern AudioConverterStatus AudioConverterSetProperty(NativeAudioConverterHandle handle, AudioConverterPropertyID id, uint size, IntPtr data);
+        internal static extern AudioConverterStatus AudioConverterSetProperty(NativeAudioConverterHandle handle, AudioConverterPropertyId id, uint size, IntPtr data);
 
         [DllImport(_coreAudioToolboxLibrary, CallingConvention = CallingConvention.Cdecl)]
         internal static extern AudioConverterStatus AudioConverterFillComplexBuffer(NativeAudioConverterHandle handle, AudioConverterComplexInputCallback inputCallback, IntPtr userData, ref uint packetSize, ref AudioBufferList outputData, [In, Out]AudioStreamPacketDescription[] packetDescriptions);

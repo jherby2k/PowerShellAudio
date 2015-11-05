@@ -56,14 +56,14 @@ namespace PowerShellAudio.Extensions.Flac
 
             _input = input;
 
-            _readCallback = new SafeNativeMethods.StreamDecoderReadCallback(ReadCallback);
-            _seekCallback = new SafeNativeMethods.StreamDecoderSeekCallback(SeekCallback);
-            _tellCallback = new SafeNativeMethods.StreamDecoderTellCallback(TellCallback);
-            _lengthCallback = new SafeNativeMethods.StreamDecoderLengthCallback(LengthCallback);
-            _eofCallback = new SafeNativeMethods.StreamDecoderEofCallback(EofCallback);
-            _writeCallback = new SafeNativeMethods.StreamDecoderWriteCallback(WriteCallback);
-            _metadataCallback = new SafeNativeMethods.StreamDecoderMetadataCallback(MetadataCallback);
-            _errorCallback = new SafeNativeMethods.StreamDecoderErrorCallback(ErrorCallback);
+            _readCallback = ReadCallback;
+            _seekCallback = SeekCallback;
+            _tellCallback = TellCallback;
+            _lengthCallback = LengthCallback;
+            _eofCallback = EofCallback;
+            _writeCallback = WriteCallback;
+            _metadataCallback = MetadataCallback;
+            _errorCallback = ErrorCallback;
         }
 
         internal void SetMetadataRespond(MetadataType type)
@@ -73,7 +73,8 @@ namespace PowerShellAudio.Extensions.Flac
 
         internal DecoderInitStatus Initialize()
         {
-            return SafeNativeMethods.StreamDecoderInitialize(_handle, _readCallback, _seekCallback, _tellCallback, _lengthCallback, _eofCallback, _writeCallback, _metadataCallback, _errorCallback, IntPtr.Zero);
+            return SafeNativeMethods.StreamDecoderInitialize(_handle, _readCallback, _seekCallback, _tellCallback,
+                _lengthCallback, _eofCallback, _writeCallback, _metadataCallback, _errorCallback, IntPtr.Zero);
         }
 
         internal bool ProcessMetadata()
@@ -131,7 +132,7 @@ namespace PowerShellAudio.Extensions.Flac
             try
             {
                 _input.Position = (long)absoluteOffset;
-                return DecoderSeekStatus.OK;
+                return DecoderSeekStatus.Ok;
             }
             catch (NotSupportedException)
             {
@@ -148,7 +149,7 @@ namespace PowerShellAudio.Extensions.Flac
             try
             {
                 absoluteOffset = (ulong)_input.Position;
-                return DecoderTellStatus.OK;
+                return DecoderTellStatus.Ok;
             }
             catch (NotSupportedException)
             {
@@ -167,7 +168,7 @@ namespace PowerShellAudio.Extensions.Flac
             try
             {
                 streamLength = (ulong)_input.Length;
-                return DecoderLengthStatus.OK;
+                return DecoderLengthStatus.Ok;
             }
             catch (NotSupportedException)
             {

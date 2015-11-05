@@ -24,13 +24,15 @@ namespace PowerShellAudio.Extensions.Mp4
 {
     class AtomToMetadataAdapter : MetadataDictionary
     {
-        static readonly Dictionary<string, string> _map = new Dictionary<string, string>(StringComparer.OrdinalIgnoreCase) {
-            { "©alb", "Album"       },
-            { "©ART", "Artist"      },
-            { "©cmt", "Comment"     },
-            { "©gen", "Genre"       },
-            { "©nam", "Title"       }
-        };
+        static readonly Dictionary<string, string> _map =
+            new Dictionary<string, string>(StringComparer.OrdinalIgnoreCase)
+            {
+                { "©alb", "Album" },
+                { "©ART", "Artist" },
+                { "©cmt", "Comment" },
+                { "©gen", "Genre" },
+                { "©nam", "Title" }
+            };
 
         internal AtomToMetadataAdapter(Mp4 mp4, AtomInfo[] atoms)
         {
@@ -41,41 +43,43 @@ namespace PowerShellAudio.Extensions.Mp4
             {
                 byte[] atomData = mp4.ReadAtom(atom);
 
-                if (atom.FourCC == "trkn")
+                switch (atom.FourCC)
                 {
-                    var trackNumberAtom = new TrackNumberAtom(atomData);
-                    Add("TrackNumber", trackNumberAtom.TrackNumber.ToString(CultureInfo.InvariantCulture));
-                    if (trackNumberAtom.TrackCount > 0)
-                        Add("TrackCount", trackNumberAtom.TrackCount.ToString(CultureInfo.InvariantCulture));
-                }
-                else if (atom.FourCC == "©day")
-                {
-                    // The ©day atom may contain a full date, or only the year:
-                    var dayAtom = new TextAtom(atomData);
-                    DateTime result;
-                    if (DateTime.TryParse(dayAtom.Value, CultureInfo.CurrentCulture, DateTimeStyles.NoCurrentDateDefault, out result) && result.Year >= 1000)
-                    {
-                        base["Day"] = result.Day.ToString(CultureInfo.InvariantCulture);
-                        base["Month"] = result.Month.ToString(CultureInfo.InvariantCulture);
-                        base["Year"] = result.Year.ToString(CultureInfo.InvariantCulture);
-                    }
-                    else
-                        base["Year"] = dayAtom.Value;
-                }
-                else if (atom.FourCC == "covr")
-                {
-                    try
-                    {
-                        CoverArt = new CoverArt(new CovrAtom(atomData).Value);
-                    }
-                    catch (UnsupportedCoverArtException)
-                    { }
-                }
-                else
-                {
-                    string mappedKey;
-                    if (_map.TryGetValue(atom.FourCC, out mappedKey))
-                        base[mappedKey] = new TextAtom(atomData).Value;
+                    case "trkn":
+                        var trackNumberAtom = new TrackNumberAtom(atomData);
+                        Add("TrackNumber", trackNumberAtom.TrackNumber.ToString(CultureInfo.InvariantCulture));
+                        if (trackNumberAtom.TrackCount > 0)
+                            Add("TrackCount", trackNumberAtom.TrackCount.ToString(CultureInfo.InvariantCulture));
+                        break;
+
+                    case "©day":
+                        // The ©day atom may contain a full date, or only the year:
+                        var dayAtom = new TextAtom(atomData);
+                        DateTime result;
+                        if (DateTime.TryParse(dayAtom.Value, CultureInfo.CurrentCulture, DateTimeStyles.NoCurrentDateDefault, out result) && result.Year >= 1000)
+                        {
+                            base["Day"] = result.Day.ToString(CultureInfo.InvariantCulture);
+                            base["Month"] = result.Month.ToString(CultureInfo.InvariantCulture);
+                            base["Year"] = result.Year.ToString(CultureInfo.InvariantCulture);
+                        }
+                        else
+                            base["Year"] = dayAtom.Value;
+                        break;
+
+                    case "covr":
+                        try
+                        {
+                            CoverArt = new CoverArt(new CovrAtom(atomData).Value);
+                        }
+                        catch (UnsupportedCoverArtException)
+                        { }
+                        break;
+
+                    default:
+                        string mappedKey;
+                        if (_map.TryGetValue(atom.FourCC, out mappedKey))
+                            base[mappedKey] = new TextAtom(atomData).Value;
+                        break;
                 }
             }
         }

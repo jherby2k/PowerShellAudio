@@ -15,14 +15,12 @@
  * <http://www.gnu.org/licenses/>.
  */
 
-using System;
-
 namespace PowerShellAudio.Extensions.Vorbis
 {
     internal enum Result
     {
-        OKMoreAvailable = 1,
-        OK = 0,
+        OkMoreAvailable = 1,
+        Ok = 0,
         FaultError = -129,
         NotImplementedError = -130,
         InValueError = -131,

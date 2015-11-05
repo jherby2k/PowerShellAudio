@@ -47,10 +47,7 @@ namespace PowerShellAudio.Extensions.Apple
             }
         }
 
-        public override bool IsLossless
-        {
-            get { return true; }
-        }
+        public override bool IsLossless => true;
 
         public override string ExternalLibrary
         {
@@ -60,13 +57,12 @@ namespace PowerShellAudio.Extensions.Apple
 
                 try
                 {
-                    return string.Format(CultureInfo.CurrentCulture, Resources.SampleEncoderDescription, SafeNativeMethods.GetCoreAudioToolboxVersion());
+                    return string.Format(CultureInfo.CurrentCulture, Resources.SampleEncoderDescription,
+                        SafeNativeMethods.GetCoreAudioToolboxVersion());
                 }
                 catch (TypeInitializationException e)
                 {
-                    if (e.InnerException != null)
-                        return e.InnerException.Message;
-                    return e.Message;
+                    return e.InnerException?.Message ?? e.Message;
                 }
             }
         }
@@ -78,7 +74,8 @@ namespace PowerShellAudio.Extensions.Apple
                 Contract.Ensures(Contract.Result<SettingsDictionary>() != null);
 
                 // Call the external MP4 encoder for writing iTunes-compatible atoms:
-                var metadataEncoderFactory = ExtensionProvider.GetFactories<IMetadataEncoder>("Extension", FileExtension).SingleOrDefault();
+                ExportFactory<IMetadataEncoder> metadataEncoderFactory =
+                    ExtensionProvider.GetFactories<IMetadataEncoder>("Extension", FileExtension).SingleOrDefault();
                 if (metadataEncoderFactory != null)
                     using (ExportLifetimeContext<IMetadataEncoder> metadataEncoderLifetime = metadataEncoderFactory.CreateExport())
                         return metadataEncoderLifetime.Value.EncoderInfo.DefaultSettings;
@@ -94,12 +91,13 @@ namespace PowerShellAudio.Extensions.Apple
                 Contract.Ensures(Contract.Result<IReadOnlyCollection<string>>() != null);
 
                 // Call the external MP4 encoder for writing iTunes-compatible atoms:
-                var metadataEncoderFactory = ExtensionProvider.GetFactories<IMetadataEncoder>("Extension", FileExtension).SingleOrDefault();
+                ExportFactory<IMetadataEncoder> metadataEncoderFactory =
+                    ExtensionProvider.GetFactories<IMetadataEncoder>("Extension", FileExtension).SingleOrDefault();
                 if (metadataEncoderFactory != null)
                     using (ExportLifetimeContext<IMetadataEncoder> metadataEncoderLifetime = metadataEncoderFactory.CreateExport())
                         return metadataEncoderLifetime.Value.EncoderInfo.AvailableSettings;
 
-                return new List<string>(1).AsReadOnly();
+                return new List<string>(0);
             }
         }
     }

@@ -48,14 +48,13 @@ namespace PowerShellAudio.Extensions.Id3
             {
                 Contract.Ensures(Contract.Result<SettingsDictionary>() != null);
 
-                var result = new SettingsDictionary();
-
-                result.Add("AddSoundCheck", bool.FalseString);
-                result.Add("ID3Version", "2.3");
-                result.Add("PaddingSize", "0");
-                result.Add("UsePadding", bool.FalseString);
-
-                return result;
+                return new SettingsDictionary
+                {
+                    { "AddSoundCheck", bool.FalseString },
+                    { "ID3Version", "2.3" },
+                    { "PaddingSize", "0" },
+                    { "UsePadding", bool.FalseString }
+                };
             }
         }
 
@@ -65,14 +64,7 @@ namespace PowerShellAudio.Extensions.Id3
             {
                 Contract.Ensures(Contract.Result<IReadOnlyCollection<string>>() != null);
 
-                var result = new List<string>(4);
-
-                result.Add("AddSoundCheck");
-                result.Add("ID3Version");
-                result.Add("PaddingSize");
-                result.Add("UsePadding");
-
-                return result.AsReadOnly();
+                return new List<string> { "AddSoundCheck", "ID3Version", "PaddingSize", "UsePadding" };
             }
         }
     }

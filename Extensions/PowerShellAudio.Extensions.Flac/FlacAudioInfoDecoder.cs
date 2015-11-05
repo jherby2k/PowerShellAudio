@@ -32,14 +32,16 @@ namespace PowerShellAudio.Extensions.Flac
             using (var decoder = new NativeStreamAudioInfoDecoder(stream))
             {
                 DecoderInitStatus initStatus = decoder.Initialize();
-                if (initStatus != DecoderInitStatus.OK)
+                if (initStatus != DecoderInitStatus.Ok)
                     if (initStatus == DecoderInitStatus.UnsupportedContainer)
                         throw new UnsupportedAudioException(Resources.AudioInfoDecoderUnsupportedContainerError);
                     else
-                        throw new IOException(string.Format(CultureInfo.CurrentCulture, Resources.AudioInfoDecoderInitializationError, initStatus));
+                        throw new IOException(string.Format(CultureInfo.CurrentCulture,
+                            Resources.AudioInfoDecoderInitializationError, initStatus));
 
                 if (!decoder.ProcessMetadata())
-                    throw new IOException(string.Format(CultureInfo.CurrentCulture, Resources.AudioInfoDecoderDecodingError, decoder.GetState()));
+                    throw new IOException(string.Format(CultureInfo.CurrentCulture,
+                        Resources.AudioInfoDecoderDecodingError, decoder.GetState()));
 
                 decoder.Finish();
 

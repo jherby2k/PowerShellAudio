@@ -44,9 +44,9 @@ namespace PowerShellAudio.Extensions.ReplayGain
 
             int sampleRateIndex = GetSampleRateIndex(sampleRate);
             int coefficientCount = coefficientMap.GetLength(1);
-            float[] result = new float[coefficientCount];
+            var result = new float[coefficientCount];
 
-            for (int coefficient = 0; coefficient < coefficientCount; coefficient++)
+            for (var coefficient = 0; coefficient < coefficientCount; coefficient++)
                 result[coefficient] = coefficientMap[sampleRateIndex, coefficient];
 
             return result;
@@ -105,7 +105,9 @@ namespace PowerShellAudio.Extensions.ReplayGain
                 case 8000:
                     return 12;
 
-                default: throw new ArgumentException(string.Format(CultureInfo.CurrentCulture, Resources.EqualLoudnessFilterSampleRateError, sampleRate));
+                default:
+                    throw new ArgumentException(string.Format(CultureInfo.CurrentCulture,
+                        Resources.EqualLoudnessFilterSampleRateError, sampleRate));
             }
         }
     }

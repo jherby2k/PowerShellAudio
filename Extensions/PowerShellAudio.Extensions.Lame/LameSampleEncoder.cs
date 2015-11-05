@@ -48,29 +48,29 @@ namespace PowerShellAudio.Extensions.Lame
             Contract.Ensures(_encoder != null);
 
             // Load the external gain filter:
-            var sampleFilterFactory = ExtensionProvider.GetFactories<ISampleFilter>("Name", "ReplayGain").SingleOrDefault();
+            ExportFactory<ISampleFilter> sampleFilterFactory =
+                ExtensionProvider.GetFactories<ISampleFilter>("Name", "ReplayGain").SingleOrDefault();
             if (sampleFilterFactory == null)
                 throw new ExtensionInitializationException(Resources.SampleEncoderReplayGainFilterError);
             _replayGainFilterLifetime = sampleFilterFactory.CreateExport();
             _replayGainFilterLifetime.Value.Initialize(metadata, settings);
 
             // Call the external ID3 encoder:
-            var metadataEncoderFactory = ExtensionProvider.GetFactories<IMetadataEncoder>("Extension", EncoderInfo.FileExtension).Single();
+            ExportFactory<IMetadataEncoder> metadataEncoderFactory =
+                ExtensionProvider.GetFactories<IMetadataEncoder>("Extension", EncoderInfo.FileExtension).Single();
             if (metadataEncoderFactory == null)
-                throw new ExtensionInitializationException(string.Format(CultureInfo.CurrentCulture, Resources.SampleEncoderMetadataEncoderError, EncoderInfo.FileExtension));
+                throw new ExtensionInitializationException(string.Format(CultureInfo.CurrentCulture,
+                    Resources.SampleEncoderMetadataEncoderError, EncoderInfo.FileExtension));
             using (ExportLifetimeContext<IMetadataEncoder> metadataEncoderLifetime = metadataEncoderFactory.CreateExport())
                 metadataEncoderLifetime.Value.WriteMetadata(stream, metadata, settings);
 
             _encoder = InitializeEncoder(audioInfo, stream);
-            ConfigureEncoder(settings, metadata, _encoder);
+            ConfigureEncoder(settings, _encoder);
             if (_encoder.InitializeParams() != 0)
                 throw new IOException(Resources.SampleEncoderFailedToInitialize);
         }
 
-        public bool ManuallyFreesSamples
-        {
-            get { return false; }
-        }
+        public bool ManuallyFreesSamples => false;
 
         public void Submit(SampleCollection samples)
         {
@@ -80,7 +80,7 @@ namespace PowerShellAudio.Extensions.Lame
                 _replayGainFilterLifetime.Value.Submit(samples);
 
                 // If there is only one channel, set the right channel to null:
-                float[] rightSamples = samples.Channels == 1 ? null : rightSamples = samples[1];
+                float[] rightSamples = samples.Channels == 1 ? null : samples[1];
                 _encoder.Encode(samples[0], rightSamples);
             }
             else
@@ -98,13 +98,11 @@ namespace PowerShellAudio.Extensions.Lame
 
         protected virtual void Dispose(bool disposing)
         {
-            if (disposing)
-            {
-                if (_encoder != null)
-                    _encoder.Dispose();
-                if (_replayGainFilterLifetime != null)
-                    _replayGainFilterLifetime.Dispose();
-            }
+            if (!disposing)
+                return;
+
+            _encoder?.Dispose();
+            _replayGainFilterLifetime?.Dispose();
         }
 
         static NativeEncoder InitializeEncoder(AudioInfo audioInfo, Stream output)
@@ -124,10 +122,9 @@ namespace PowerShellAudio.Extensions.Lame
             return result;
         }
 
-        static void ConfigureEncoder(SettingsDictionary settings, MetadataDictionary metadata, NativeEncoder encoder)
+        static void ConfigureEncoder(SettingsDictionary settings, NativeEncoder encoder)
         {
             Contract.Requires(settings != null);
-            Contract.Requires(metadata != null);
             Contract.Requires(encoder != null);
 
             // Set the quality if specified, otherwise select "3":
@@ -135,7 +132,8 @@ namespace PowerShellAudio.Extensions.Lame
             if (string.IsNullOrEmpty(settings["Quality"]))
                 quality = 3;
             else if (!uint.TryParse(settings["Quality"], out quality) || quality > 9)
-                throw new InvalidSettingException(string.Format(CultureInfo.CurrentCulture, Resources.SampleEncoderBadQuality, settings["Quality"]));
+                throw new InvalidSettingException(string.Format(CultureInfo.CurrentCulture,
+                    Resources.SampleEncoderBadQuality, settings["Quality"]));
             encoder.SetQuality((int)quality);
 
             // Set a bitrate only if specified. Otherwise, default to a variable bitrate:
@@ -152,10 +150,12 @@ namespace PowerShellAudio.Extensions.Lame
 
             uint bitRate;
             if (!uint.TryParse(settings["BitRate"], out bitRate) || bitRate < 8 || bitRate > 320)
-                throw new InvalidSettingException(string.Format(CultureInfo.CurrentCulture, Resources.SampleEncoderBadBitRate, settings["BitRate"]));
+                throw new InvalidSettingException(string.Format(CultureInfo.CurrentCulture,
+                    Resources.SampleEncoderBadBitRate, settings["BitRate"]));
 
             // Default to an average bitrate, unless a constant bitrate is specified:
-            if (string.IsNullOrEmpty(settings["ForceCBR"]) || string.Compare(settings["ForceCBR"], bool.FalseString, StringComparison.OrdinalIgnoreCase) == 0)
+            if (string.IsNullOrEmpty(settings["ForceCBR"]) ||
+                string.Compare(settings["ForceCBR"], bool.FalseString, StringComparison.OrdinalIgnoreCase) == 0)
             {
                 encoder.SetVbr(VbrMode.Abr);
                 encoder.SetMeanBitRate((int)bitRate);
@@ -163,7 +163,8 @@ namespace PowerShellAudio.Extensions.Lame
             else if (string.Compare(settings["ForceCBR"], bool.TrueString, StringComparison.OrdinalIgnoreCase) == 0)
                 encoder.SetBitRate((int)bitRate);
             else
-                throw new InvalidSettingException(string.Format(CultureInfo.CurrentCulture, Resources.SampleEncoderBadForceCBR, settings["ForceCBR"]));
+                throw new InvalidSettingException(string.Format(CultureInfo.CurrentCulture,
+                    Resources.SampleEncoderBadForceCBR, settings["ForceCBR"]));
         }
 
         static void ConfigureEncoderForQuality(SettingsDictionary settings, NativeEncoder encoder)
@@ -180,7 +181,8 @@ namespace PowerShellAudio.Extensions.Lame
             if (string.IsNullOrEmpty(settings["VBRQuality"]))
                 vbrQuality = 2;
             else if (!float.TryParse(settings["VBRQuality"], out vbrQuality) || vbrQuality < 0 || vbrQuality >= 10)
-                throw new InvalidSettingException(string.Format(CultureInfo.CurrentCulture, Resources.SampleEncoderBadVBRQuality, settings["VBRQuality"]));
+                throw new InvalidSettingException(string.Format(CultureInfo.CurrentCulture,
+                    Resources.SampleEncoderBadVBRQuality, settings["VBRQuality"]));
 
             encoder.SetVbrQuality(vbrQuality);
         }

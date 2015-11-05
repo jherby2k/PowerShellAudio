@@ -60,10 +60,7 @@ namespace PowerShellAudio.Extensions.Wave
             _writer.BeginChunk("data");
         }
 
-        public bool ManuallyFreesSamples
-        {
-            get { return false; }
-        }
+        public bool ManuallyFreesSamples => false;
 
         public void Submit(SampleCollection samples)
         {
@@ -72,17 +69,17 @@ namespace PowerShellAudio.Extensions.Wave
                 if (_bytesPerSample == 1)
                 {
                     // 1-8 bit samples are unsigned:
-                    for (long sample = 0; sample < samples.SampleCount; sample++)
-                        for (int channel = 0; channel < _channels; channel++)
+                    for (var sample = 0; sample < samples.SampleCount; sample++)
+                        for (var channel = 0; channel < _channels; channel++)
                             _writer.Write((byte)Math.Round(samples[channel][sample] * _multiplier + 128));
                 }
                 else
                 {
-                    for (long sample = 0; sample < samples.SampleCount; sample++)
-                        for (int channel = 0; channel < _channels; channel++)
+                    for (var sample = 0; sample < samples.SampleCount; sample++)
+                        for (var channel = 0; channel < _channels; channel++)
                         {
                             // Optimization - BitConverter wastes memory because you can't reuse the array:
-                            int int32Value = (int)Math.Round(samples[channel][sample] * _multiplier);
+                            var int32Value = (int)Math.Round(samples[channel][sample] * _multiplier);
                             ConvertInt32ToBytes(int32Value, _buffer);
                             _writer.Write(_buffer, 0, _bytesPerSample);
                         }
@@ -104,15 +101,15 @@ namespace PowerShellAudio.Extensions.Wave
 
         protected virtual void Dispose(bool disposing)
         {
-            if (disposing && _writer != null)
+            if (!disposing)
+                return;
+            try
             {
-                try
-                {
-                    _writer.Dispose();
-                }
-                catch (ObjectDisposedException)
-                {
-                }
+                _writer?.Dispose();
+            }
+            catch (ObjectDisposedException)
+            {
+                //TODO not sure this is necessary
             }
         }
 

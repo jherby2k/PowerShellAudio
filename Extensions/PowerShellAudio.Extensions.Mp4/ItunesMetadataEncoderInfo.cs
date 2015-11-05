@@ -48,11 +48,7 @@ namespace PowerShellAudio.Extensions.Mp4
             {
                 Contract.Ensures(Contract.Result<SettingsDictionary>() != null);
 
-                var result = new SettingsDictionary();
-
-                result.Add("AddSoundCheck", bool.FalseString);
-
-                return result;
+                return new SettingsDictionary { { "AddSoundCheck", bool.FalseString } };
             }
         }
 
@@ -62,12 +58,7 @@ namespace PowerShellAudio.Extensions.Mp4
             {
                 Contract.Ensures(Contract.Result<IReadOnlyCollection<string>>() != null);
 
-                var result = new List<string>(2);
-
-                result.Add("AddSoundCheck");
-                result.Add("CreationTime");
-
-                return result.AsReadOnly();
+                return new List<string> { "AddSoundCheck", "CreationTime" };
             }
         }
     }

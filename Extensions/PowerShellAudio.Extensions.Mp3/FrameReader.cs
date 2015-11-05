@@ -70,7 +70,8 @@ namespace PowerShellAudio.Extensions.Mp3
 
             try
             {
-                int frameLength = header.SamplesPerFrame / 8 * header.BitRate * 1000 / header.SampleRate + header.Padding;
+                int frameLength = header.SamplesPerFrame / 8 * header.BitRate * 1000 / header.SampleRate +
+                                  header.Padding;
 
                 // Seek to where the next frame should start, assuming the current position is just past the header:
                 long initialPosition = BaseStream.Position;
@@ -80,16 +81,12 @@ namespace PowerShellAudio.Extensions.Mp3
                 BaseStream.Position = initialPosition;
 
                 // If another sync is detected, return success:
-                if (firstByte == 0xff && secondByte >= 0xe0)
-                    return true;
-                return false;
+                return firstByte == 0xff && secondByte >= 0xe0;
             }
-            catch (Exception e)
+            catch (Exception e) when (e is UnsupportedAudioException || e is IOException)
             {
                 // Treat a bad header as an invalid sync:
-                if (e is UnsupportedAudioException || e is IOException)
-                    return false;
-                throw;
+                return false;
             }
         }
         
@@ -108,18 +105,18 @@ namespace PowerShellAudio.Extensions.Mp3
         {
             var result = new XingHeader();
 
-            string headerID = new string(ReadChars(4));
-            if (headerID == "Xing" || headerID == "Info")
-            {
-                // The flags DWORD indicates whether the frame and byte counts are present:
-                uint flags = ReadUInt32BigEndian();
+            var headerId = new string(ReadChars(4));
+            if (headerId != "Xing" && headerId != "Info")
+                return result;
 
-                if ((flags & 0x1) == 1)
-                    result.FrameCount = ReadUInt32BigEndian();
+            // The flags DWORD indicates whether the frame and byte counts are present:
+            uint flags = ReadUInt32BigEndian();
 
-                if ((flags >> 1 & 0x1) == 1)
-                    result.ByteCount = ReadUInt32BigEndian();
-            }
+            if ((flags & 0x1) == 1)
+                result.FrameCount = ReadUInt32BigEndian();
+
+            if ((flags >> 1 & 0x1) == 1)
+                result.ByteCount = ReadUInt32BigEndian();
 
             return result;
         }

@@ -44,7 +44,8 @@ namespace PowerShellAudio.Extensions.Flac
             if (string.IsNullOrEmpty(settings["UsePadding"]))
                 usePadding = false;
             else if (!bool.TryParse(settings["UsePadding"], out usePadding))
-                throw new InvalidSettingException(string.Format(CultureInfo.CurrentCulture, Resources.MetadataEncoderBadUsePadding, settings["UsePadding"]));
+                throw new InvalidSettingException(string.Format(CultureInfo.CurrentCulture,
+                    Resources.MetadataEncoderBadUsePadding, settings["UsePadding"]));
 
             NativeVorbisCommentBlock vorbisCommentBlock = null;
             NativePictureBlock pictureBlock = null;
@@ -59,7 +60,8 @@ namespace PowerShellAudio.Extensions.Flac
                         if (chainStatus == MetadataChainStatus.NotAFlacFile)
                             throw new UnsupportedAudioException(Resources.MetadataEncoderNotFlacError);
                         else
-                            throw new IOException(string.Format(CultureInfo.CurrentCulture, Resources.MetadataEncoderReadError, chainStatus));
+                            throw new IOException(string.Format(CultureInfo.CurrentCulture,
+                                Resources.MetadataEncoderReadError, chainStatus));
                     }
 
                     // Create a Vorbis Comment block, even if empty:
@@ -81,7 +83,8 @@ namespace PowerShellAudio.Extensions.Flac
                         using (var tempStream = new MemoryStream())
                         {
                             if (!chain.WriteWithTempFile(usePadding, tempStream))
-                                throw new IOException(string.Format(CultureInfo.CurrentCulture, Resources.MetadataEncoderTempFileError, chain.GetStatus()));
+                                throw new IOException(string.Format(CultureInfo.CurrentCulture,
+                                    Resources.MetadataEncoderTempFileError, chain.GetStatus()));
 
                             // Clear the original stream, and copy the temporary one over it:
                             stream.SetLength(tempStream.Length);
@@ -89,17 +92,15 @@ namespace PowerShellAudio.Extensions.Flac
                             tempStream.WriteTo(stream);
                         }
                     }
-                    else
-                        if (!chain.Write(usePadding))
-                            throw new IOException(string.Format(CultureInfo.CurrentCulture, Resources.MetadataEncoderWriteError, chain.GetStatus()));
+                    else if (!chain.Write(usePadding))
+                        throw new IOException(string.Format(CultureInfo.CurrentCulture,
+                            Resources.MetadataEncoderWriteError, chain.GetStatus()));
                 }
             }
             finally
             {
-                if (vorbisCommentBlock != null)
-                    vorbisCommentBlock.Dispose();
-                if (pictureBlock != null)
-                    pictureBlock.Dispose();
+                vorbisCommentBlock?.Dispose();
+                pictureBlock?.Dispose();
             }
         }
 
@@ -108,8 +109,8 @@ namespace PowerShellAudio.Extensions.Flac
             Contract.Requires(iterator != null);
             Contract.Requires(newComments != null);
 
-            bool metadataInserted = false;
-            bool pictureInserted = false;
+            var metadataInserted = false;
+            var pictureInserted = false;
 
             do
             {
@@ -138,8 +139,6 @@ namespace PowerShellAudio.Extensions.Flac
                         if (!iterator.DeleteBlock(false))
                             throw new IOException(Resources.MetadataEncoderDeleteError);
                         break;
-                    default:
-                        break;
                 }
             } while (iterator.Next());
 
@@ -152,8 +151,7 @@ namespace PowerShellAudio.Extensions.Flac
                 throw new IOException(Resources.MetadataEncoderInsertBlockError);
 
             newComments.ReleaseHandleOwnership();
-            if (newPicture != null)
-                newPicture.ReleaseHandleOwnership();
+            newPicture?.ReleaseHandleOwnership();
         }
     }
 }

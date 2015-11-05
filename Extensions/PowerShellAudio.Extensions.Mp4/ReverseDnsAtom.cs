@@ -21,14 +21,11 @@ using System.Text;
 
 namespace PowerShellAudio.Extensions.Mp4
 {
-    class ReverseDnsAtom : IWritableAtom
+    class ReverseDnsAtom : WritableAtom
     {
         readonly byte[] _data;
 
-        internal string Name
-        {
-            get { return ConvertToString(_data.Skip(48).Take(8).ToArray()); }
-        }
+        internal string Name => ConvertToString(_data.Skip(48).Take(8).ToArray());
 
         internal ReverseDnsAtom(byte[] data)
         {

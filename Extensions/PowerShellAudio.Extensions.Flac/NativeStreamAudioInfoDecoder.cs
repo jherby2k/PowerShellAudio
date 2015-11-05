@@ -37,11 +37,12 @@ namespace PowerShellAudio.Extensions.Flac
 
         protected override void MetadataCallback(IntPtr handle, IntPtr metadata, IntPtr userData)
         {
-            if ((MetadataType)Marshal.ReadInt32(metadata) == MetadataType.StreamInfo)
-            {
-                StreamInfo streamInfo = Marshal.PtrToStructure<StreamInfoMetadataBlock>(metadata).StreamInfo;
-                AudioInfo = new AudioInfo("FLAC", (int)streamInfo.Channels, (int)streamInfo.BitsPerSample, (int)streamInfo.SampleRate, (long)streamInfo.TotalSamples);
-            }
+            if ((MetadataType)Marshal.ReadInt32(metadata) != MetadataType.StreamInfo)
+                return;
+
+            StreamInfo streamInfo = Marshal.PtrToStructure<StreamInfoMetadataBlock>(metadata).StreamInfo;
+            AudioInfo = new AudioInfo("FLAC", (int)streamInfo.Channels, (int)streamInfo.BitsPerSample,
+                (int)streamInfo.SampleRate, (long)streamInfo.TotalSamples);
         }
     }
 }

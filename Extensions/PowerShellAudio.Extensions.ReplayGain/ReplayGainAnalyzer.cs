@@ -19,7 +19,7 @@ using System;
 using System.Collections.Concurrent;
 using System.Diagnostics.Contracts;
 using System.Globalization;
-using System.Threading.Tasks;
+using System.Linq;
 using System.Threading.Tasks.Dataflow;
 
 namespace PowerShellAudio.Extensions.ReplayGain
@@ -31,7 +31,8 @@ namespace PowerShellAudio.Extensions.ReplayGain
         const float _rmsWindowTime = 0.05f;
 
         static readonly SampleAnalyzerInfo _analyzerInfo = new ReplayGainSampleAnalyzerInfo();
-        static readonly ConcurrentDictionary<GroupToken, AlbumComponent> _albumComponents = new ConcurrentDictionary<GroupToken, AlbumComponent>();
+        static readonly ConcurrentDictionary<GroupToken, AlbumComponent> _albumComponents =
+            new ConcurrentDictionary<GroupToken, AlbumComponent>();
 
         GroupToken _groupToken;
         AlbumComponent _albumComponent;
@@ -56,14 +57,12 @@ namespace PowerShellAudio.Extensions.ReplayGain
             Contract.Ensures(_bufferResultsBlock != null);
 
             _groupToken = groupToken;
-            _albumComponent = _albumComponents.AddOrUpdate(groupToken, token => new AlbumComponent(token.Count), (token, result) => result);
+            _albumComponent = _albumComponents.AddOrUpdate(groupToken, token =>
+                new AlbumComponent(token.Count), (token, result) => result);
             InitializePipeline(audioInfo.Channels, audioInfo.SampleRate);
         }
 
-        public bool ManuallyFreesSamples
-        {
-            get { return true; }
-        }
+        public bool ManuallyFreesSamples => true;
 
         public void Submit(SampleCollection samples)
         {
@@ -80,9 +79,11 @@ namespace PowerShellAudio.Extensions.ReplayGain
             }
             catch (InvalidOperationException)
             {
-                if (_bufferResultsBlock.Completion.Exception != null)
-                    foreach (var innerException in _bufferResultsBlock.Completion.Exception.Flatten().InnerExceptions)
-                        throw innerException;
+                if (_bufferResultsBlock.Completion.Exception == null)
+                    throw;
+
+                foreach (Exception innerException in _bufferResultsBlock.Completion.Exception.Flatten().InnerExceptions)
+                    throw innerException;
                 throw;
             }
         }
@@ -107,13 +108,19 @@ namespace PowerShellAudio.Extensions.ReplayGain
             Contract.Requires(channels > 0);
             Contract.Requires(sampleRate > 0);
 
-            var boundedExecutionBlockOptions = new ExecutionDataflowBlockOptions() { BoundedCapacity = _boundedCapacity, SingleProducerConstrained = true };
-            var unboundedExecutionBlockOptions = new ExecutionDataflowBlockOptions() { SingleProducerConstrained = true };
-            var propogateLinkOptions = new DataflowLinkOptions() { PropagateCompletion = true };
+            var boundedExecutionBlockOptions = new ExecutionDataflowBlockOptions
+            {
+                BoundedCapacity = _boundedCapacity,
+                SingleProducerConstrained = true
+            };
+            var unboundedExecutionBlockOptions = new ExecutionDataflowBlockOptions { SingleProducerConstrained = true };
+            var propogateLinkOptions = new DataflowLinkOptions { PropagateCompletion = true };
 
             // First, resize the sample count collections to the desired window size:
             var sampleCountFilter = new SampleCountFilter(channels, (int)Math.Round(sampleRate * _rmsWindowTime));
-            _filterSampleCountBlock = new TransformManyBlock<SampleCollection, SampleCollection>(input => sampleCountFilter.Process(input), boundedExecutionBlockOptions);
+            _filterSampleCountBlock =
+                new TransformManyBlock<SampleCollection, SampleCollection>(input => sampleCountFilter.Process(input),
+                    boundedExecutionBlockOptions);
 
             // Calculate the track peaks:
             var peakDetector = new PeakDetector();
@@ -126,49 +133,53 @@ namespace PowerShellAudio.Extensions.ReplayGain
 
             // Down-convert certain samples rates (easy multiples) that aren't directly supported by ReplayGain:
             var sampleRateConverter = new SampleRateConverter(sampleRate);
-            var convertSampleRateBlock = new TransformBlock<Tuple<SampleCollection, float>, Tuple<SampleCollection, float>>(input =>
-            {
-                SampleCollection result = sampleRateConverter.Convert(input.Item1);
-                return Tuple.Create(result, input.Item2);
-            }, boundedExecutionBlockOptions);
+            var convertSampleRateBlock =
+                new TransformBlock<Tuple<SampleCollection, float>, Tuple<SampleCollection, float>>(input =>
+                {
+                    SampleCollection result = sampleRateConverter.Convert(input.Item1);
+                    return Tuple.Create(result, input.Item2);
+                }, boundedExecutionBlockOptions);
             analyzeTrackPeaksBlock.LinkTo(convertSampleRateBlock, propogateLinkOptions);
 
             // Filter the samples:
             var butterworthFilter = new ButterworthFilter(sampleRate);
-            var butterworthFilterBlock = new TransformBlock<Tuple<SampleCollection, float>, Tuple<SampleCollection, float>>(input =>
-            {
-                butterworthFilter.Process(input.Item1);
-                return input;
-            }, boundedExecutionBlockOptions);
+            var butterworthFilterBlock =
+                new TransformBlock<Tuple<SampleCollection, float>, Tuple<SampleCollection, float>>(input =>
+                {
+                    butterworthFilter.Process(input.Item1);
+                    return input;
+                }, boundedExecutionBlockOptions);
             convertSampleRateBlock.LinkTo(butterworthFilterBlock, propogateLinkOptions);
 
             var yuleWalkFilter = new YuleWalkFilter(sampleRate);
-            var yuleWalkFilterBlock = new TransformBlock<Tuple<SampleCollection, float>, Tuple<SampleCollection, float>>(input =>
-            {
-                yuleWalkFilter.Process(input.Item1);
-                return input;
-            }, boundedExecutionBlockOptions);
+            var yuleWalkFilterBlock =
+                new TransformBlock<Tuple<SampleCollection, float>, Tuple<SampleCollection, float>>(input =>
+                {
+                    yuleWalkFilter.Process(input.Item1);
+                    return input;
+                }, boundedExecutionBlockOptions);
             butterworthFilterBlock.LinkTo(yuleWalkFilterBlock, propogateLinkOptions);
 
             // Calculate the root mean square for each filtered window:
-            var calculateRmsBlock = new TransformBlock<Tuple<SampleCollection, float>, Tuple<SampleCollection, float, float>>(input =>
-            {
-                if (input.Item1.IsLast)
-                    return Tuple.Create(input.Item1, input.Item2, float.NaN);
-                return Tuple.Create(input.Item1, input.Item2, CalculateRms(input.Item1));
-            }, boundedExecutionBlockOptions);
+            var calculateRmsBlock =
+                new TransformBlock<Tuple<SampleCollection, float>, Tuple<SampleCollection, float, float>>(input =>
+                    Tuple.Create(input.Item1, input.Item2, input.Item1.IsLast
+                        ? float.NaN
+                        : CalculateRms(input.Item1)), boundedExecutionBlockOptions);
             yuleWalkFilterBlock.LinkTo(calculateRmsBlock, propogateLinkOptions);
 
             // Free the sample collections once they are no longer needed:
-            var freeSampleCollectionsBlock = new TransformBlock<Tuple<SampleCollection, float, float>, Tuple<float, float>>(input =>
-            {
-                SampleCollectionFactory.Instance.Free(input.Item1);
-                return Tuple.Create(input.Item2, input.Item3);
-            }, boundedExecutionBlockOptions);
+            var freeSampleCollectionsBlock =
+                new TransformBlock<Tuple<SampleCollection, float, float>, Tuple<float, float>>(input =>
+                {
+                    SampleCollectionFactory.Instance.Free(input.Item1);
+                    return Tuple.Create(input.Item2, input.Item3);
+                }, boundedExecutionBlockOptions);
             calculateRmsBlock.LinkTo(freeSampleCollectionsBlock, propogateLinkOptions);
 
             // Broadcast the RMS values:
-            var broadcastRmsBlock = new BroadcastBlock<Tuple<float, float>>(input => Tuple.Create(input.Item1, input.Item2));
+            var broadcastRmsBlock =
+                new BroadcastBlock<Tuple<float, float>>(input => Tuple.Create(input.Item1, input.Item2));
             freeSampleCollectionsBlock.LinkTo(broadcastRmsBlock, propogateLinkOptions);
 
             // Calculate the album gain:
@@ -187,20 +198,25 @@ namespace PowerShellAudio.Extensions.ReplayGain
 
             // Join the track and album peak and gain values all together:
             var joinResultsBlock = new JoinBlock<Tuple<float, float>, Tuple<float, float>>();
-            analyzeTrackGainBlock.LinkTo(DataflowBlock.NullTarget<Tuple<float, float>>(), result => float.IsNaN(result.Item2));
-            analyzeTrackGainBlock.LinkTo(joinResultsBlock.Target1, propogateLinkOptions, result => !float.IsNaN(result.Item2));
+            analyzeTrackGainBlock.LinkTo(DataflowBlock.NullTarget<Tuple<float, float>>(),
+                result => float.IsNaN(result.Item2));
+            analyzeTrackGainBlock.LinkTo(joinResultsBlock.Target1, propogateLinkOptions,
+                result => !float.IsNaN(result.Item2));
             _albumComponent.OutputBlock.LinkTo(joinResultsBlock.Target2, propogateLinkOptions);
 
             // Convert the results:
-            var convertToMetadataBlock = new TransformBlock<Tuple<Tuple<float, float>, Tuple<float, float>>, MetadataDictionary>(input =>
-            {
-                var result = new MetadataDictionary();
-                result["TrackPeak"] = ConvertPeakToString(input.Item1.Item1);
-                result["TrackGain"] = ConvertGainToString(input.Item1.Item2);
-                result["AlbumPeak"] = ConvertPeakToString(input.Item2.Item1);
-                result["AlbumGain"] = ConvertGainToString(input.Item2.Item2);
-                return result;
-            }, unboundedExecutionBlockOptions);
+            var convertToMetadataBlock =
+                new TransformBlock<Tuple<Tuple<float, float>, Tuple<float, float>>, MetadataDictionary>(input =>
+                {
+                    var result = new MetadataDictionary
+                    {
+                        ["TrackPeak"] = ConvertPeakToString(input.Item1.Item1),
+                        ["TrackGain"] = ConvertGainToString(input.Item1.Item2),
+                        ["AlbumPeak"] = ConvertPeakToString(input.Item2.Item1),
+                        ["AlbumGain"] = ConvertGainToString(input.Item2.Item2)
+                    };
+                    return result;
+                }, unboundedExecutionBlockOptions);
             joinResultsBlock.LinkTo(convertToMetadataBlock, propogateLinkOptions);
 
             // Buffer the results:
@@ -219,10 +235,7 @@ namespace PowerShellAudio.Extensions.ReplayGain
         {
             Contract.Requires(samples != null);
 
-            float sumOfSquares = 0;
-            foreach (float[] channel in samples)
-                foreach (float sample in channel)
-                    sumOfSquares += sample * sample;
+            float sumOfSquares = samples.SelectMany(channel => channel).Sum(sample => sample * sample);
             return 10 * (float)Math.Log10(sumOfSquares / samples.SampleCount / samples.Channels);
         }
 

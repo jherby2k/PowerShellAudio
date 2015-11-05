@@ -22,7 +22,7 @@ Index,FileName,Encoder,Settings,Metadata,CoverArt,ExpectedHashX86,ExpectedHashX6
 20,LPCM 16-bit 44100Hz Stereo.wav,FLAC,CompressionLevel=5;SeekPointInterval=10,Comment=Test Sample,,53-C6-99-19-46-74-6E-D5-F9-8F-CC-3B-25-EF-5A-45,53-C6-99-19-46-74-6E-D5-F9-8F-CC-3B-25-EF-5A-45
 21,LPCM 16-bit 44100Hz Stereo.wav,FLAC,CompressionLevel=0,Comment=Test Sample,,09-F2-77-E0-FB-0E-0E-2A-F7-BE-74-B0-0A-2B-0B-15,09-F2-77-E0-FB-0E-0E-2A-F7-BE-74-B0-0A-2B-0B-15
 22,LPCM 16-bit 44100Hz Stereo.wav,FLAC,SeekPointInterval=0,Comment=Test Sample,,48-07-E4-53-E1-86-6E-F1-DB-EF-03-4D-88-CF-63-7F,48-07-E4-53-E1-86-6E-F1-DB-EF-03-4D-88-CF-63-7F
-23,LPCM 16-bit 44100Hz Stereo.wav,FLAC,SeekPointInterval=1,Comment=Test Sample,,A2-1D-50-3C-69-EC-02-00-62-6A-A1-CD-13-45-09-F5,A2-1D-50-3C-69-EC-02-00-62-6A-A1-CD-13-45-09-F5
+23,LPCM 16-bit 44100Hz Stereo.wav,FLAC,SeekPointInterval=1,Comment=Test Sample,,5E-9E-95-5A-4B-31-2B-6E-B5-CF-52-16-7A-CA-28-12,5E-9E-95-5A-4B-31-2B-6E-B5-CF-52-16-7A-CA-28-12
 24,LPCM 16-bit 44100Hz Stereo.wav,FLAC,,Comment=Test Sample,TestCover.png,91-6C-EA-0D-91-D3-CD-3F-32-F3-F5-9A-93-C7-53-CE,91-6C-EA-0D-91-D3-CD-3F-32-F3-F5-9A-93-C7-53-CE
 25,LPCM 16-bit 44100Hz Stereo.wav,FLAC,,Comment=Test Sample,TestCover.jpg,05-BD-E5-BB-41-E1-A5-91-DA-8D-39-C9-66-1E-CB-3A,05-BD-E5-BB-41-E1-A5-91-DA-8D-39-C9-66-1E-CB-3A
 26,LPCM 8-bit 8000Hz Stereo.wav,Lame MP3,,Comment=Test Sample,,F7-99-98-46-6C-DC-8E-60-B3-06-B4-AB-68-CE-05-11,F7-99-98-46-6C-DC-8E-60-B3-06-B4-AB-68-CE-05-11

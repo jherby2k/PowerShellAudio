@@ -21,16 +21,13 @@ namespace PowerShellAudio.Extensions.Mp4
 {
     class AtomInfo
     {
-        internal uint Start { get; private set; }
+        internal uint Start { get; }
 
-        internal uint Size { get; private set; }
+        internal uint Size { get; }
 
-        internal uint End
-        {
-            get { return Start + Size; }
-        }
+        internal uint End => Start + Size;
 
-        internal string FourCC { get; private set; }
+        internal string FourCC { get; }
 
         internal AtomInfo(uint start, uint size, string fourCC)
         {

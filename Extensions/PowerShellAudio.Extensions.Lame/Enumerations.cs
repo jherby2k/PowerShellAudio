@@ -20,8 +20,8 @@ namespace PowerShellAudio.Extensions.Lame
     internal enum VbrMode
     {
         Off,
-        MT,
-        RH,
+        Mt,
+        Rh,
         Abr,
         Mtrh
     };

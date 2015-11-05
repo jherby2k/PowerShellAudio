@@ -35,14 +35,15 @@ namespace PowerShellAudio.Extensions.Apple
             Contract.Ensures(_handle != null);
             Contract.Ensures(!_handle.IsClosed);
 
-            ExtendedAudioFileStatus status = SafeNativeMethods.ExtAudioFileWrapAudioFile(base.Handle, true, out _handle);
-            if (status != ExtendedAudioFileStatus.OK)
-                throw new IOException(string.Format(CultureInfo.CurrentCulture, Resources.NativeExtendedAudioFileInitializationError, status));
+            ExtendedAudioFileStatus status = SafeNativeMethods.ExtAudioFileWrapAudioFile(Handle, true, out _handle);
+            if (status != ExtendedAudioFileStatus.Ok)
+                throw new IOException(string.Format(CultureInfo.CurrentCulture,
+                    Resources.NativeExtendedAudioFileInitializationError, status));
         }
 
-        internal T GetProperty<T>(ExtendedAudioFilePropertyID id) where T : struct
+        internal T GetProperty<T>(ExtendedAudioFilePropertyId id) where T : struct
         {
-            uint sizeOfResult = (uint)Marshal.SizeOf(typeof(T));
+            var sizeOfResult = (uint)Marshal.SizeOf(typeof(T));
             IntPtr unmanagedValue = Marshal.AllocHGlobal((int)sizeOfResult);
             try
             {
@@ -55,13 +56,14 @@ namespace PowerShellAudio.Extensions.Apple
             }
         }
 
-        internal ExtendedAudioFileStatus SetProperty<T>(ExtendedAudioFilePropertyID id, T value) where T : struct
+        internal ExtendedAudioFileStatus SetProperty<T>(ExtendedAudioFilePropertyId id, T value) where T : struct
         {
             IntPtr unmanagedValue = Marshal.AllocHGlobal(Marshal.SizeOf(typeof(T)));
             try
             {
-                Marshal.StructureToPtr<T>(value, unmanagedValue, false);
-                return SafeNativeMethods.ExtAudioFileSetProperty(_handle, id, (uint)Marshal.SizeOf(typeof(T)), unmanagedValue);
+                Marshal.StructureToPtr(value, unmanagedValue, false);
+                return SafeNativeMethods.ExtAudioFileSetProperty(_handle, id, (uint)Marshal.SizeOf(typeof(T)),
+                    unmanagedValue);
             }
             finally
             {

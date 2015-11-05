@@ -48,10 +48,7 @@ namespace PowerShellAudio.Extensions.Lame
             }
         }
 
-        public override bool IsLossless
-        {
-            get { return false; }
-        }
+        public override bool IsLossless => false;
 
         public override string ExternalLibrary
         {
@@ -61,13 +58,12 @@ namespace PowerShellAudio.Extensions.Lame
 
                 try
                 {
-                    return string.Format(CultureInfo.CurrentCulture, Resources.SampleEncoderDescription, Marshal.PtrToStringAnsi(SafeNativeMethods.GetLameVersion()));
+                    return string.Format(CultureInfo.CurrentCulture, Resources.SampleEncoderDescription,
+                        Marshal.PtrToStringAnsi(SafeNativeMethods.GetLameVersion()));
                 }
                 catch (TypeInitializationException e)
                 {
-                    if (e.InnerException != null)
-                        return e.InnerException.Message;
-                    return e.Message;
+                    return e.InnerException?.Message ?? e.Message;
                 }
             }
         }
@@ -78,19 +74,18 @@ namespace PowerShellAudio.Extensions.Lame
             {
                 Contract.Ensures(Contract.Result<SettingsDictionary>() != null);
 
-                var result = new SettingsDictionary();
-
-                result.Add("Quality", "3");
-                result.Add("VBRQuality", "2");
+                var result = new SettingsDictionary { { "Quality", "3" }, { "VBRQuality", "2" } };
 
                 // Call the external ReplayGain filter for scaling the input:
-                var replayGainFilterFactory = ExtensionProvider.GetFactories<ISampleFilter>("Name", "ReplayGain").SingleOrDefault();
+                ExportFactory<ISampleFilter> replayGainFilterFactory =
+                    ExtensionProvider.GetFactories<ISampleFilter>("Name", "ReplayGain").SingleOrDefault();
                 if (replayGainFilterFactory != null)
                     using (ExportLifetimeContext<ISampleFilter> replayGainFilterLifetime = replayGainFilterFactory.CreateExport())
                         replayGainFilterLifetime.Value.DefaultSettings.CopyTo(result);
 
                 // Call the external ID3 encoder:
-                var metadataEncoderFactory = ExtensionProvider.GetFactories<IMetadataEncoder>("Extension", "FileExtension").SingleOrDefault();
+                ExportFactory<IMetadataEncoder> metadataEncoderFactory =
+                    ExtensionProvider.GetFactories<IMetadataEncoder>("Extension", "FileExtension").SingleOrDefault();
                 if (metadataEncoderFactory != null)
                     using (ExportLifetimeContext<IMetadataEncoder> metadataEncoderLifetime = metadataEncoderFactory.CreateExport())
                         metadataEncoderLifetime.Value.EncoderInfo.DefaultSettings.CopyTo(result);
@@ -105,26 +100,23 @@ namespace PowerShellAudio.Extensions.Lame
             {
                 Contract.Ensures(Contract.Result<IReadOnlyCollection<string>>() != null);
 
-                var partialResult = new List<string>();
-
-                partialResult.Add("BitRate");
-                partialResult.Add("ForceCBR");
-                partialResult.Add("Quality");
-                partialResult.Add("VBRQuality");
+                var partialResult = new List<string> { "BitRate", "ForceCBR", "Quality", "VBRQuality" };
 
                 // Call the external ReplayGain filter for scaling the input:
-                var replayGainFilterFactory = ExtensionProvider.GetFactories<ISampleFilter>("Name", "ReplayGain").SingleOrDefault();
+                ExportFactory<ISampleFilter> replayGainFilterFactory =
+                    ExtensionProvider.GetFactories<ISampleFilter>("Name", "ReplayGain").SingleOrDefault();
                 if (replayGainFilterFactory != null)
                     using (ExportLifetimeContext<ISampleFilter> replayGainFilterLifetime = replayGainFilterFactory.CreateExport())
                         partialResult = partialResult.Concat(replayGainFilterLifetime.Value.AvailableSettings).ToList();
 
                 // Call the external ID3 encoder:
-                var metadataEncoderFactory = ExtensionProvider.GetFactories<IMetadataEncoder>("Extension", FileExtension).SingleOrDefault();
+                ExportFactory<IMetadataEncoder> metadataEncoderFactory =
+                    ExtensionProvider.GetFactories<IMetadataEncoder>("Extension", FileExtension).SingleOrDefault();
                 if (metadataEncoderFactory != null)
                     using (ExportLifetimeContext<IMetadataEncoder> metadataEncoderLifetime = metadataEncoderFactory.CreateExport())
                         partialResult = partialResult.Concat(metadataEncoderLifetime.Value.EncoderInfo.AvailableSettings).ToList();
 
-                return partialResult.AsReadOnly();
+                return partialResult;
             }
         }
     }

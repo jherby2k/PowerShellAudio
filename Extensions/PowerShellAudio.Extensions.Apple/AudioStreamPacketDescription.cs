@@ -15,8 +15,6 @@
  * <http://www.gnu.org/licenses/>.
  */
 
-using System.Runtime.InteropServices;
-
 #pragma warning disable 0649
 
 namespace PowerShellAudio.Extensions.Apple

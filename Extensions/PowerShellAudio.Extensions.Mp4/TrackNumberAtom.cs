@@ -20,16 +20,13 @@ using System.Diagnostics.Contracts;
 
 namespace PowerShellAudio.Extensions.Mp4
 {
-    class TrackNumberAtom : IWritableAtom
+    class TrackNumberAtom : WritableAtom
     {
         internal byte TrackNumber { get; set; }
 
         internal byte TrackCount { get; set; }
 
-        internal bool IsValid
-        {
-            get { return TrackNumber > 0 ? true : false; }
-        }
+        internal bool IsValid => TrackNumber > 0;
 
         internal TrackNumberAtom()
         { }

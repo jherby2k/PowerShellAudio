@@ -22,7 +22,7 @@ using System.Text;
 
 namespace PowerShellAudio.Extensions.Mp4
 {
-    class TextAtom : IWritableAtom
+    class TextAtom : WritableAtom
     {
         readonly string _fourCC;
 

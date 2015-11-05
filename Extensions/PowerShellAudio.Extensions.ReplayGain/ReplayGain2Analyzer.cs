@@ -24,7 +24,7 @@ namespace PowerShellAudio.Extensions.ReplayGain
     [SampleAnalyzerExport("ReplayGain 2.0")]
     public class ReplayGain2Analyzer : ISampleAnalyzer, IDisposable
     {
-        const int referenceLevel = -18;
+        const int _referenceLevel = -18;
         static readonly SampleAnalyzerInfo _analyzerInfo = new ReplayGain2SampleAnalyzerInfo();
 
         GroupToken _groupToken;
@@ -55,24 +55,22 @@ namespace PowerShellAudio.Extensions.ReplayGain
         {
             Contract.Ensures(Contract.Result<MetadataDictionary>() != null);
 
-            var result = new MetadataDictionary();
-
-            result["TrackPeak"] = ConvertPeakToString(_analyzer.GetSamplePeak());
-            result["TrackGain"] = ConvertGainToString(referenceLevel - _analyzer.GetLoudness());
+            var result = new MetadataDictionary
+            {
+                ["TrackPeak"] = ConvertPeakToString(_analyzer.GetSamplePeak()),
+                ["TrackGain"] = ConvertGainToString(_referenceLevel - _analyzer.GetLoudness())
+            };
 
             _groupToken.CompleteMember();
             _groupToken.WaitForMembers();
             
             result["AlbumPeak"] = ConvertPeakToString(_analyzer.GetSamplePeakMultiple());
-            result["AlbumGain"] = ConvertGainToString(referenceLevel - _analyzer.GetLoudnessMultiple());
+            result["AlbumGain"] = ConvertGainToString(_referenceLevel - _analyzer.GetLoudnessMultiple());
 
             return result;
         }
 
-        public bool ManuallyFreesSamples
-        {
-            get { return false; }
-        }
+        public bool ManuallyFreesSamples => false;
 
         public void Submit(SampleCollection samples)
         {
@@ -82,9 +80,9 @@ namespace PowerShellAudio.Extensions.ReplayGain
                 _buffer = new float[samples.Channels * samples.SampleCount];
 
             // Interlace the samples, and store them in the buffer:
-            int index = 0;
-            for (int sample = 0; sample < samples.SampleCount; sample++)
-                for (int channel = 0; channel < samples.Channels; channel++)
+            var index = 0;
+            for (var sample = 0; sample < samples.SampleCount; sample++)
+                for (var channel = 0; channel < samples.Channels; channel++)
                     _buffer[index++] = samples[channel][sample];
 
             _analyzer.AddFrames(_buffer);
@@ -98,8 +96,8 @@ namespace PowerShellAudio.Extensions.ReplayGain
 
         protected virtual void Dispose(bool disposing)
         {
-            if (disposing && _analyzer != null)
-                _analyzer.Dispose();
+            if (disposing)
+                _analyzer?.Dispose();
         }
 
         static string ConvertGainToString(double gain)

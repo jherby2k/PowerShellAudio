@@ -43,23 +43,26 @@ namespace PowerShellAudio.Extensions.Apple
             Contract.Ensures(_audioFile != null);
             Contract.Ensures(_audioFile == audioFile);
 
-            AudioConverterStatus status = SafeNativeMethods.AudioConverterNew(ref inputDescription, ref outputDescription, out _handle);
-            if (status != AudioConverterStatus.OK)
-                throw new IOException(string.Format(CultureInfo.CurrentCulture, Resources.NativeAudioConverterInitializationError, status));
+            AudioConverterStatus status = SafeNativeMethods.AudioConverterNew(ref inputDescription,
+                ref outputDescription, out _handle);
+            if (status != AudioConverterStatus.Ok)
+                throw new IOException(string.Format(CultureInfo.CurrentCulture,
+                    Resources.NativeAudioConverterInitializationError, status));
 
-            _inputCallback = new SafeNativeMethods.AudioConverterComplexInputCallback(InputCallback);
+            _inputCallback = InputCallback;
 
             _audioFile = audioFile;
         }
 
         internal AudioConverterStatus FillBuffer(ref uint packetSize, ref AudioBufferList outputBuffer, AudioStreamPacketDescription[] packetDescriptions)
         {
-            return SafeNativeMethods.AudioConverterFillComplexBuffer(_handle, _inputCallback, IntPtr.Zero, ref packetSize, ref outputBuffer, packetDescriptions);
+            return SafeNativeMethods.AudioConverterFillComplexBuffer(_handle, _inputCallback, IntPtr.Zero,
+                ref packetSize, ref outputBuffer, packetDescriptions);
         }
 
-        internal AudioConverterStatus SetProperty(AudioConverterPropertyID propertyID, uint size, IntPtr data)
+        internal AudioConverterStatus SetProperty(AudioConverterPropertyId propertyId, uint size, IntPtr data)
         {
-            return SafeNativeMethods.AudioConverterSetProperty(_handle, propertyID, size, data);
+            return SafeNativeMethods.AudioConverterSetProperty(_handle, propertyId, size, data);
         }
 
         public void Dispose()
@@ -87,7 +90,7 @@ namespace PowerShellAudio.Extensions.Apple
 
             if (_buffer == null)
             {
-                _buffer = new byte[numberPackets * _audioFile.GetProperty<uint>(AudioFilePropertyID.PacketSizeUpperBound)];
+                _buffer = new byte[numberPackets * _audioFile.GetProperty<uint>(AudioFilePropertyId.PacketSizeUpperBound)];
                 _bufferHandle = GCHandle.Alloc(_buffer, GCHandleType.Pinned);
             }
 
@@ -96,9 +99,11 @@ namespace PowerShellAudio.Extensions.Apple
 
             uint numBytes;
             var inputDescriptions = new AudioStreamPacketDescription[numberPackets];
-            AudioFileStatus status = _audioFile.ReadPackets(out numBytes, inputDescriptions, _packetIndex, ref numberPackets, _bufferHandle.AddrOfPinnedObject());
-            if (status != AudioFileStatus.OK)
-                throw new IOException(string.Format(CultureInfo.CurrentCulture, Resources.NativeAudioConverterReadError, status));
+            AudioFileStatus status = _audioFile.ReadPackets(out numBytes, inputDescriptions, _packetIndex,
+                ref numberPackets, _bufferHandle.AddrOfPinnedObject());
+            if (status != AudioFileStatus.Ok)
+                throw new IOException(string.Format(CultureInfo.CurrentCulture, Resources.NativeAudioConverterReadError,
+                    status));
 
             _packetIndex += numberPackets;
 
@@ -112,7 +117,7 @@ namespace PowerShellAudio.Extensions.Apple
                 Marshal.WriteIntPtr(packetDescriptions, _descriptionsHandle.AddrOfPinnedObject());
             }
 
-            return AudioConverterStatus.OK;
+            return AudioConverterStatus.Ok;
         }
 
         [ContractInvariantMethod]

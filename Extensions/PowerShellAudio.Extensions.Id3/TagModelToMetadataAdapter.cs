@@ -25,13 +25,15 @@ namespace PowerShellAudio.Extensions.Id3
 {
     class TagModelToMetadataAdapter : MetadataDictionary
     {
-        static readonly Dictionary<string, string> _map = new Dictionary<string, string>(StringComparer.OrdinalIgnoreCase) {
-            { "TALB", "Album"  },
-            { "TPE1", "Artist" },
-            { "TCON", "Genre"  },
-            { "TIT2", "Title"  },
-            { "TYER", "Year"   }
-        };
+        static readonly Dictionary<string, string> _map =
+            new Dictionary<string, string>(StringComparer.OrdinalIgnoreCase)
+            {
+                { "TALB", "Album" },
+                { "TPE1", "Artist" },
+                { "TCON", "Genre" },
+                { "TIT2", "Title" },
+                { "TYER", "Year" }
+            };
 
         internal TagModelToMetadataAdapter(TagModel tagModel)
         {
@@ -68,41 +70,45 @@ namespace PowerShellAudio.Extensions.Id3
                 else
                 {
                     var framePicture = frame as FramePicture;
-                    if (framePicture != null && (framePicture.PictureType == PictureTypeCode.CoverFront || framePicture.PictureType == PictureTypeCode.Other))
+                    if (framePicture != null &&
+                        (framePicture.PictureType == PictureTypeCode.CoverFront ||
+                         framePicture.PictureType == PictureTypeCode.Other))
                     {
                         try
                         {
                             CoverArt = new CoverArt(framePicture.PictureData);
                         }
                         catch (UnsupportedCoverArtException)
-                        { }
+                        {
+                        }
                     }
                     else
                     {
                         var frameFullText = frame as FrameFullText;
-                        if (frameFullText != null && frameFullText.FrameId == "COMM" && frameFullText.Description == null)
+                        if (frameFullText != null && frameFullText.FrameId == "COMM" &&
+                            frameFullText.Description == null)
                             base["Comment"] = frameFullText.Text;
                         else
                         {
                             var frameTextUserDef = frame as FrameTextUserDef;
-                            if (frameTextUserDef != null && frameTextUserDef.FrameId == "TXXX")
-                                switch (frameTextUserDef.Description)
-                                {
-                                    case "REPLAYGAIN_TRACK_GAIN":
-                                        base["TrackGain"] = frameTextUserDef.Text;
-                                        break;
-                                    case "REPLAYGAIN_TRACK_PEAK":
-                                        base["TrackPeak"] = frameTextUserDef.Text;
-                                        break;
-                                    case "REPLAYGAIN_ALBUM_GAIN":
-                                        base["AlbumGain"] = frameTextUserDef.Text;
-                                        break;
-                                    case "REPLAYGAIN_ALBUM_PEAK":
-                                        base["AlbumPeak"] = frameTextUserDef.Text;
-                                        break;
-                                    default:
-                                        break;
-                                }
+                            if (frameTextUserDef == null || frameTextUserDef.FrameId != "TXXX")
+                                continue;
+
+                            switch (frameTextUserDef.Description)
+                            {
+                                case "REPLAYGAIN_TRACK_GAIN":
+                                    base["TrackGain"] = frameTextUserDef.Text;
+                                    break;
+                                case "REPLAYGAIN_TRACK_PEAK":
+                                    base["TrackPeak"] = frameTextUserDef.Text;
+                                    break;
+                                case "REPLAYGAIN_ALBUM_GAIN":
+                                    base["AlbumGain"] = frameTextUserDef.Text;
+                                    break;
+                                case "REPLAYGAIN_ALBUM_PEAK":
+                                    base["AlbumPeak"] = frameTextUserDef.Text;
+                                    break;
+                            }
                         }
                     }
                 }

@@ -49,7 +49,7 @@ namespace PowerShellAudio.Extensions.Flac
         public void Initialize(Stream stream, AudioInfo audioInfo, MetadataDictionary metadata, SettingsDictionary settings)
         {
             Contract.Ensures(_encoder != null);
-            Contract.Ensures(_encoder.GetState() == EncoderState.OK);
+            Contract.Ensures(_encoder.GetState() == EncoderState.Ok);
             Contract.Ensures(_multiplier > 0);
 
             _encoder = InitializeEncoder(audioInfo, stream);
@@ -60,7 +60,8 @@ namespace PowerShellAudio.Extensions.Flac
             if (string.IsNullOrEmpty(settings["CompressionLevel"]))
                 compressionLevel = 5;
             else if (!uint.TryParse(settings["CompressionLevel"], out compressionLevel) || compressionLevel > 8)
-                throw new InvalidSettingException(string.Format(CultureInfo.CurrentCulture, Resources.SampleEncoderBadCompressionLevel, settings["CompressionLevel"]));
+                throw new InvalidSettingException(string.Format(CultureInfo.CurrentCulture,
+                    Resources.SampleEncoderBadCompressionLevel, settings["CompressionLevel"]));
             _encoder.SetCompressionLevel(compressionLevel);
 
             var vorbisCommentBlock = new NativeVorbisCommentBlock();
@@ -73,9 +74,12 @@ namespace PowerShellAudio.Extensions.Flac
             if (string.IsNullOrEmpty(settings["SeekPointInterval"]))
                 seekPointInterval = 10;
             else if (!uint.TryParse(settings["SeekPointInterval"], out seekPointInterval))
-                throw new InvalidSettingException(string.Format(CultureInfo.CurrentCulture, Resources.SampleEncoderBadSeekPointInterval, settings["SeekPointInterval"]));
+                throw new InvalidSettingException(string.Format(CultureInfo.CurrentCulture,
+                    Resources.SampleEncoderBadSeekPointInterval, settings["SeekPointInterval"]));
             if (seekPointInterval > 0)
-                _metadataBlocks.Add(new NativeSeekTableBlock((int)Math.Ceiling(audioInfo.SampleCount / audioInfo.SampleRate / (double)seekPointInterval), audioInfo.SampleCount));
+                _metadataBlocks.Add(new NativeSeekTableBlock(
+                    (int)Math.Ceiling(audioInfo.SampleCount / (double)audioInfo.SampleRate / seekPointInterval),
+                    audioInfo.SampleCount));
 
             // Add a picture block, if cover art is available:
             if (metadata.CoverArt != null)
@@ -84,14 +88,12 @@ namespace PowerShellAudio.Extensions.Flac
             _encoder.SetMetadata(_metadataBlocks);
 
             EncoderInitStatus initStatus = _encoder.Initialize();
-            if (initStatus != EncoderInitStatus.OK)
-                throw new IOException(string.Format(CultureInfo.CurrentCulture, Resources.SampleEncoderInitializationError, initStatus));
+            if (initStatus != EncoderInitStatus.Ok)
+                throw new IOException(string.Format(CultureInfo.CurrentCulture,
+                    Resources.SampleEncoderInitializationError, initStatus));
         }
 
-        public bool ManuallyFreesSamples
-        {
-            get { return false; }
-        }
+        public bool ManuallyFreesSamples => false;
 
         public void Submit(SampleCollection samples)
         {
@@ -103,9 +105,9 @@ namespace PowerShellAudio.Extensions.Flac
                     _buffer = new int[samples.Channels * samples.SampleCount];
 
                 // Interlace the samples in integer format, and store them in the input buffer:
-                int index = 0;
-                for (int sample = 0; sample < samples.SampleCount; sample++)
-                    for (int channel = 0; channel < samples.Channels; channel++)
+                var index = 0;
+                for (var sample = 0; sample < samples.SampleCount; sample++)
+                    for (var channel = 0; channel < samples.Channels; channel++)
                         _buffer[index++] = (int)Math.Round(samples[channel][sample] * _multiplier);
 
                 if (!_encoder.ProcessInterleaved(_buffer, (uint)samples.SampleCount))
@@ -115,7 +117,7 @@ namespace PowerShellAudio.Extensions.Flac
             {
                 _encoder.Finish();
 
-                foreach (var metadataBlock in _metadataBlocks)
+                foreach (NativeMetadataBlock metadataBlock in _metadataBlocks)
                     metadataBlock.Dispose();
                 _metadataBlocks.Clear();
             }
@@ -129,15 +131,16 @@ namespace PowerShellAudio.Extensions.Flac
 
         protected virtual void Dispose(bool disposing)
         {
-            if (disposing)
-            {
-                if (_encoder != null)
-                    _encoder.Dispose();
+            if (!disposing)
+                return;
 
-                if (_metadataBlocks != null)
-                    foreach (var metadataBlock in _metadataBlocks)
-                        metadataBlock.Dispose();
-            }
+            _encoder?.Dispose();
+
+            if (_metadataBlocks == null)
+                return;
+
+            foreach (NativeMetadataBlock metadataBlock in _metadataBlocks)
+                metadataBlock.Dispose();
         }
 
         [ContractInvariantMethod]

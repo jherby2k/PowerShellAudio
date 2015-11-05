@@ -71,10 +71,11 @@ namespace PowerShellAudio.Extensions.Mp4
                     if (DateTime.TryParse(settings["CreationTime"], out creationTime))
                         UpdateCreationTimes(creationTime, tempMp4);
                     else
-                        throw new InvalidSettingException(string.Format(CultureInfo.CurrentCulture, Resources.MetadataEncoderBadCreationTime, settings["CreationTime"]));
+                        throw new InvalidSettingException(string.Format(CultureInfo.CurrentCulture,
+                            Resources.MetadataEncoderBadCreationTime, settings["CreationTime"]));
 
                 // Update the stco atom to reflect the new location of mdat:
-                int mdatOffset = (int)(tempStream.Length - topAtoms.Single(atom => atom.FourCC == "mdat").Start);
+                var mdatOffset = (int)(tempStream.Length - topAtoms.Single(atom => atom.FourCC == "mdat").Start);
                 tempMp4.UpdateStco(mdatOffset);
 
                 // Copy the mdat atom to the temporary stream, after the moov atom:
@@ -101,26 +102,25 @@ namespace PowerShellAudio.Extensions.Mp4
                 var adaptedMetadata = new MetadataToAtomAdapter(metadata, settings);
 
                 // "Reverse DNS" atoms may need to be preserved:
-                foreach (AtomInfo listAtom in originalMp4.GetChildAtomInfo())
+                foreach (ReverseDnsAtom reverseDnsAtom in 
+                    from listAtom in originalMp4.GetChildAtomInfo()
+                    where listAtom.FourCC == "----"
+                    select new ReverseDnsAtom(originalMp4.ReadAtom(listAtom)))
                 {
-                    if (listAtom.FourCC == "----")
+                    switch (reverseDnsAtom.Name)
                     {
-                        var reverseDnsAtom = new ReverseDnsAtom(originalMp4.ReadAtom(listAtom));
-                        switch (reverseDnsAtom.Name)
-                        {
-                            // Always preserve the iTunSMPB (gapless playback) atom:
-                            case "iTunSMPB":
-                                resultStream.Write(reverseDnsAtom.GetBytes(), 0, reverseDnsAtom.GetBytes().Length);
-                                break;
+                        // Always preserve the iTunSMPB (gapless playback) atom:
+                        case "iTunSMPB":
+                            resultStream.Write(reverseDnsAtom.GetBytes(), 0, reverseDnsAtom.GetBytes().Length);
+                            break;
 
-                            // Preserve the existing iTunNORM atom if a new one isn't provided, and AddSoundCheck isn't explicitly False:
-                            case "iTunNORM":
-                                if (!adaptedMetadata.IncludesSoundCheck && string.Compare(settings["AddSoundCheck"], bool.FalseString, StringComparison.OrdinalIgnoreCase) != 0)
-                                    resultStream.Write(reverseDnsAtom.GetBytes(), 0, reverseDnsAtom.GetBytes().Length);
-                                break;
-                            default:
-                                break;
-                        }
+                        // Preserve the existing iTunNORM atom if a new one isn't provided, and AddSoundCheck isn't explicitly False:
+                        case "iTunNORM":
+                            if (!adaptedMetadata.IncludesSoundCheck &&
+                                string.Compare(settings["AddSoundCheck"], bool.FalseString,
+                                    StringComparison.OrdinalIgnoreCase) != 0)
+                                resultStream.Write(reverseDnsAtom.GetBytes(), 0, reverseDnsAtom.GetBytes().Length);
+                            break;
                     }
                 }
 

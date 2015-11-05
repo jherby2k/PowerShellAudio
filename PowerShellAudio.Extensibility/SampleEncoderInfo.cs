@@ -95,7 +95,7 @@ namespace PowerShellAudio
             {
                 Contract.Ensures(Contract.Result<IReadOnlyCollection<string>>() != null);
 
-                return new List<string>(0).AsReadOnly();
+                return new List<string>(0);
             }
         }
     }

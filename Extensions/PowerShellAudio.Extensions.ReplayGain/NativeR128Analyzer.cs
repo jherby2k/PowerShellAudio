@@ -28,7 +28,8 @@ namespace PowerShellAudio.Extensions.ReplayGain
 {
     class NativeR128Analyzer : IDisposable
     {
-        static readonly ConcurrentDictionary<GroupToken, NativeR128GroupState> _globalHandles = new ConcurrentDictionary<GroupToken, NativeR128GroupState>();
+        static readonly ConcurrentDictionary<GroupToken, NativeR128GroupState> _globalHandles =
+            new ConcurrentDictionary<GroupToken, NativeR128GroupState>();
 
         readonly uint _channels;
         readonly GroupToken _groupToken;
@@ -56,9 +57,11 @@ namespace PowerShellAudio.Extensions.ReplayGain
         {
             Contract.Requires(frames != null);
 
-            Ebur128Error result = SafeNativeMethods.AddFrames(_handle, frames, new UIntPtr((uint)frames.Length / _channels));
+            Ebur128Error result = SafeNativeMethods.AddFrames(_handle, frames,
+                new UIntPtr((uint)frames.Length / _channels));
             if (result != Ebur128Error.Success)
-                throw new IOException(string.Format(CultureInfo.CurrentCulture, Resources.NativeAnalyzerAddFramesError, result));
+                throw new IOException(string.Format(CultureInfo.CurrentCulture,
+                    Resources.NativeAnalyzerAddFramesError, result));
         }
 
         internal double GetLoudness()
@@ -66,7 +69,8 @@ namespace PowerShellAudio.Extensions.ReplayGain
             double loudness;
             Ebur128Error result = SafeNativeMethods.GetLoudness(_handle, out loudness);
             if (result != Ebur128Error.Success)
-                throw new IOException(string.Format(CultureInfo.CurrentCulture, Resources.NativeAnalyzerGetLoudnessError, result));
+                throw new IOException(string.Format(CultureInfo.CurrentCulture,
+                    Resources.NativeAnalyzerGetLoudnessError, result));
             return loudness;
         }
 
@@ -76,9 +80,11 @@ namespace PowerShellAudio.Extensions.ReplayGain
             IntPtr[] handles = _groupState.Handles.ToArray().Select(handle => handle.DangerousGetHandle()).ToArray();
 
             double loudness;
-            Ebur128Error result = SafeNativeMethods.GetLoudnessMultiple(handles, new UIntPtr((uint)handles.Length), out loudness);
+            Ebur128Error result = SafeNativeMethods.GetLoudnessMultiple(handles, new UIntPtr((uint)handles.Length),
+                out loudness);
             if (result != Ebur128Error.Success)
-                throw new IOException(string.Format(CultureInfo.CurrentCulture, Resources.NativeAnalyzerGetLoudnessError, result));
+                throw new IOException(string.Format(CultureInfo.CurrentCulture,
+                    Resources.NativeAnalyzerGetLoudnessError, result));
             return loudness;
         }
 
@@ -91,7 +97,8 @@ namespace PowerShellAudio.Extensions.ReplayGain
                 double channelPeak;
                 Ebur128Error result = SafeNativeMethods.GetSamplePeak(_handle, channel, out channelPeak);
                 if (result != Ebur128Error.Success)
-                    throw new IOException(string.Format(CultureInfo.CurrentCulture, Resources.NativeAnalyzerGetLoudnessError, result));
+                    throw new IOException(string.Format(CultureInfo.CurrentCulture,
+                        Resources.NativeAnalyzerGetLoudnessError, result));
                 combinedPeak = Math.Max(combinedPeak, channelPeak);
             }
 
@@ -108,7 +115,8 @@ namespace PowerShellAudio.Extensions.ReplayGain
                     double channelPeak;
                     Ebur128Error result = SafeNativeMethods.GetSamplePeak(handle, channel, out channelPeak);
                     if (result != Ebur128Error.Success)
-                        throw new IOException(string.Format(CultureInfo.CurrentCulture, Resources.NativeAnalyzerGetLoudnessError, result));
+                        throw new IOException(string.Format(CultureInfo.CurrentCulture, 
+                            Resources.NativeAnalyzerGetLoudnessError, result));
                     combinedPeak = Math.Max(combinedPeak, channelPeak);
                 }
 
@@ -123,23 +131,22 @@ namespace PowerShellAudio.Extensions.ReplayGain
 
         protected virtual void Dispose(bool disposing)
         {
-            if (disposing)
-            {
-                _groupState.MemberDisposed();
+            if (!disposing)
+                return;
 
-                // Once all members have been disposed...
-                if (_groupToken.Count == _groupState.MembersDisposed)
-                {
-                    // Dispose all the handles at once:
-                    NativeStateHandle handle;
-                    while (_groupState.Handles.TryTake(out handle))
-                        handle.Dispose();
+            _groupState.MemberDisposed();
 
-                    // Remove the group from the global list:
-                    NativeR128GroupState groupState;
-                    _globalHandles.TryRemove(_groupToken, out groupState);
-                }
-            }
+            if (_groupToken.Count != _groupState.MembersDisposed)
+                return;
+
+            // Dispose all the handles at once:
+            NativeStateHandle handle;
+            while (_groupState.Handles.TryTake(out handle))
+                handle.Dispose();
+
+            // Remove the group from the global list:
+            NativeR128GroupState groupState;
+            _globalHandles.TryRemove(_groupToken, out groupState);
         }
 
         [ContractInvariantMethod]

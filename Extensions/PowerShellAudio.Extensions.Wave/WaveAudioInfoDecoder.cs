@@ -33,7 +33,7 @@ namespace PowerShellAudio.Extensions.Wave
             if (stream.Length < 45) // 12 byte RIFF descriptor + 24 byte fmt chunk + 9 byte data chunk
                 throw new IOException(Resources.AudioInfoDecoderLengthError);
 
-            using (RiffReader reader = new RiffReader(stream))
+            using (var reader = new RiffReader(stream))
             {
                 if (!reader.Validate() || reader.ReadFourCC() != "WAVE")
                     throw new UnsupportedAudioException(Resources.AudioInfoDecoderNotWaveError);
@@ -44,7 +44,7 @@ namespace PowerShellAudio.Extensions.Wave
                 if (fmtChunkSize < 16)
                     throw new IOException(Resources.AudioInfoDecoderFmtLengthError);
 
-                Format format = (Format)reader.ReadUInt16();
+                var format = (Format)reader.ReadUInt16();
                 if (format != Format.Pcm && format != Format.Extensible)
                     throw new UnsupportedAudioException(Resources.AudioInfoDecoderUnsupportedError);
 
@@ -79,7 +79,7 @@ namespace PowerShellAudio.Extensions.Wave
                 if (dataChunkSize == 0)
                     throw new IOException(Resources.AudioInfoDecoderMissingSamplesError);
 
-                return new AudioInfo("LPCM", (int)channels, (int)bitsPerSample, (int)sampleRate, dataChunkSize / blockAlign);
+                return new AudioInfo("LPCM", channels, (int)bitsPerSample, (int)sampleRate, dataChunkSize / blockAlign);
             }
         }
     }

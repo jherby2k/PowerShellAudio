@@ -65,8 +65,7 @@ namespace PowerShellAudio.Extensions.Vorbis
             }
             finally
             {
-                if (stream != null)
-                    stream.Dispose();
+                stream?.Dispose();
             }
         }
 
@@ -113,8 +112,7 @@ namespace PowerShellAudio.Extensions.Vorbis
             }
             finally
             {
-                if (stream != null)
-                    stream.Dispose();
+                stream?.Dispose();
             }
         }
     }

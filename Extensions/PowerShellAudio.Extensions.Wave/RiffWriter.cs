@@ -48,32 +48,32 @@ namespace PowerShellAudio.Extensions.Wave
             Write(_fourCC.ToCharArray());
         }
 
-        internal void BeginChunk(string chunkID)
+        internal void BeginChunk(string chunkId)
         {
-            Contract.Requires(!string.IsNullOrEmpty(chunkID));
+            Contract.Requires(!string.IsNullOrEmpty(chunkId));
 
-            Write(chunkID.ToCharArray());
+            Write(chunkId.ToCharArray());
             _chunkSizePositions.Push(Tuple.Create(false, (uint)BaseStream.Position));
             Write((uint)0);
         }
 
-        internal void BeginChunk(string chunkID, uint chunkSize)
+        internal void BeginChunk(string chunkId, uint chunkSize)
         {
-            Contract.Requires(!string.IsNullOrEmpty(chunkID));
+            Contract.Requires(!string.IsNullOrEmpty(chunkId));
 
-            Write(chunkID.ToCharArray());
+            Write(chunkId.ToCharArray());
             _chunkSizePositions.Push(Tuple.Create(true, (uint)BaseStream.Position));
             Write(chunkSize);
         }
 
         internal void FinishChunk()
         {
-            var chunkSizePosition = _chunkSizePositions.Pop();
+            Tuple<bool, uint> chunkSizePosition = _chunkSizePositions.Pop();
 
             // If the chunk size wasn't known at the beginning, update it now:
             if (!chunkSizePosition.Item1)
             {
-                uint currentPosition = (uint)BaseStream.Position;
+                var currentPosition = (uint)BaseStream.Position;
                 BaseStream.Position = chunkSizePosition.Item2;
                 Write((uint)(currentPosition - BaseStream.Position - 4));
                 BaseStream.Position = currentPosition;

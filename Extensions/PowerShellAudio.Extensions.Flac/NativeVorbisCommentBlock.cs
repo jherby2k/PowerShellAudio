@@ -37,8 +37,10 @@ namespace PowerShellAudio.Extensions.Flac
             Contract.Requires(!string.IsNullOrEmpty(value));
             Contract.Requires(!Handle.IsClosed);
 
-            VorbisCommentEntry comment = new VorbisCommentEntry();
-            if (!SafeNativeMethods.VorbisCommentGet(out comment, Encoding.ASCII.GetBytes(key), Encoding.UTF8.GetBytes(value)))
+            VorbisCommentEntry comment;
+            if (
+                !SafeNativeMethods.VorbisCommentGet(out comment, Encoding.ASCII.GetBytes(key),
+                    Encoding.UTF8.GetBytes(value)))
                 throw new IOException(Resources.NativeVorbisCommentBlockMemoryError);
 
             if (!SafeNativeMethods.VorbisCommentAppend(Handle, comment, false))

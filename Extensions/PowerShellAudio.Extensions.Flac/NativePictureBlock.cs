@@ -36,7 +36,9 @@ namespace PowerShellAudio.Extensions.Flac
         [SuppressMessage("Microsoft.Reliability", "CA2001:AvoidCallingProblematicMethods", MessageId = "System.Runtime.InteropServices.SafeHandle.DangerousGetHandle", Justification = "There is no native method for setting this, so the structure has to be modified directly")]
         internal void SetType(PictureType type)
         {
-            Marshal.WriteInt32(IntPtr.Add(Handle.DangerousGetHandle(), Marshal.OffsetOf<PictureMetadataBlock>("Picture").ToInt32() + Marshal.OffsetOf<Picture>("Type").ToInt32()), (int)type);
+            Marshal.WriteInt32(IntPtr.Add(Handle.DangerousGetHandle(),
+                Marshal.OffsetOf<PictureMetadataBlock>("Picture").ToInt32() +
+                Marshal.OffsetOf<Picture>("Type").ToInt32()), (int)type);
         }
 
         internal void SetMimeType(string mimeType)
@@ -51,19 +53,25 @@ namespace PowerShellAudio.Extensions.Flac
         [SuppressMessage("Microsoft.Reliability", "CA2001:AvoidCallingProblematicMethods", MessageId = "System.Runtime.InteropServices.SafeHandle.DangerousGetHandle", Justification = "There is no native method for setting this, so the structure has to be modified directly")]
         internal void SetWidth(int width)
         {
-            Marshal.WriteInt32(IntPtr.Add(Handle.DangerousGetHandle(), Marshal.OffsetOf<PictureMetadataBlock>("Picture").ToInt32() + Marshal.OffsetOf<Picture>("Width").ToInt32()), width);
+            Marshal.WriteInt32(IntPtr.Add(Handle.DangerousGetHandle(),
+                Marshal.OffsetOf<PictureMetadataBlock>("Picture").ToInt32() +
+                Marshal.OffsetOf<Picture>("Width").ToInt32()), width);
         }
 
         [SuppressMessage("Microsoft.Reliability", "CA2001:AvoidCallingProblematicMethods", MessageId = "System.Runtime.InteropServices.SafeHandle.DangerousGetHandle", Justification = "There is no native method for setting this, so the structure has to be modified directly")]
         internal void SetHeight(int height)
         {
-            Marshal.WriteInt32(IntPtr.Add(Handle.DangerousGetHandle(), Marshal.OffsetOf<PictureMetadataBlock>("Picture").ToInt32() + Marshal.OffsetOf<Picture>("Height").ToInt32()), height);
+            Marshal.WriteInt32(IntPtr.Add(Handle.DangerousGetHandle(),
+                Marshal.OffsetOf<PictureMetadataBlock>("Picture").ToInt32() +
+                Marshal.OffsetOf<Picture>("Height").ToInt32()), height);
         }
 
         [SuppressMessage("Microsoft.Reliability", "CA2001:AvoidCallingProblematicMethods", MessageId = "System.Runtime.InteropServices.SafeHandle.DangerousGetHandle", Justification = "There is no native method for setting this, so the structure has to be modified directly")]
         internal void SetColorDepth(int depth)
         {
-            Marshal.WriteInt32(IntPtr.Add(Handle.DangerousGetHandle(), Marshal.OffsetOf<PictureMetadataBlock>("Picture").ToInt32() + Marshal.OffsetOf<Picture>("ColorDepth").ToInt32()), depth);
+            Marshal.WriteInt32(IntPtr.Add(Handle.DangerousGetHandle(),
+                Marshal.OffsetOf<PictureMetadataBlock>("Picture").ToInt32() +
+                Marshal.OffsetOf<Picture>("ColorDepth").ToInt32()), depth);
         }
 
         internal void SetData(byte[] data)

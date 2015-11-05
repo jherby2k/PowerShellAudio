@@ -29,10 +29,7 @@ namespace PowerShellAudio.Extensions.Vorbis
         [SuppressMessage("Microsoft.Reliability", "CA2006:UseSafeHandleToEncapsulateNativeResources", Justification = "Reference to a structure, not a handle.")]
         readonly IntPtr _state;
 
-        internal int SerialNumber
-        {
-            get { return Marshal.PtrToStructure<OggStreamState>(_state).SerialNumber; }
-        }
+        internal int SerialNumber => Marshal.PtrToStructure<OggStreamState>(_state).SerialNumber;
 
         internal NativeOggStream(int serialNumber)
         {
@@ -51,16 +48,12 @@ namespace PowerShellAudio.Extensions.Vorbis
 
         internal bool PageOut(out OggPage page)
         {
-            if (SafeNativeMethods.OggStreamPageOut(_state, out page) != 0)
-                return true;
-            return false;
+            return SafeNativeMethods.OggStreamPageOut(_state, out page) != 0;
         }
 
         internal bool Flush(out OggPage page)
         {
-            if (SafeNativeMethods.OggStreamFlush(_state, out page) != 0)
-                return true;
-            return false;
+            return SafeNativeMethods.OggStreamFlush(_state, out page) != 0;
         }
 
         internal void PacketIn(ref OggPacket packet)

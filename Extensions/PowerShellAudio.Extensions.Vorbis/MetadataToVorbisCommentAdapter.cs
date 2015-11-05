@@ -24,41 +24,51 @@ namespace PowerShellAudio.Extensions.Vorbis
 {
     class MetadataToVorbisCommentAdapter : SortedDictionary<string, string>
     {
-        static readonly Dictionary<string, string> _map = new Dictionary<string, string>(StringComparer.OrdinalIgnoreCase) {
-            { "Album", "ALBUM"                     },
-            { "AlbumGain", "REPLAYGAIN_ALBUM_GAIN" },
-            { "AlbumPeak", "REPLAYGAIN_ALBUM_PEAK" },
-            { "Artist", "ARTIST"                   },
-            { "Comment", "DESCRIPTION"             },
-            { "Genre", "GENRE"                     },
-            { "Title", "TITLE"                     },
-            { "TrackCount", "TOTALTRACKS"          },
-            { "TrackGain", "REPLAYGAIN_TRACK_GAIN" },
-            { "TrackNumber", "TRACKNUMBER"         },
-            { "TrackPeak", "REPLAYGAIN_TRACK_PEAK" }
-        };
+        static readonly Dictionary<string, string> _map =
+            new Dictionary<string, string>(StringComparer.OrdinalIgnoreCase)
+            {
+                { "Album", "ALBUM" },
+                { "AlbumGain", "REPLAYGAIN_ALBUM_GAIN" },
+                { "AlbumPeak", "REPLAYGAIN_ALBUM_PEAK" },
+                { "Artist", "ARTIST" },
+                { "Comment", "DESCRIPTION" },
+                { "Genre", "GENRE" },
+                { "Title", "TITLE" },
+                { "TrackCount", "TOTALTRACKS" },
+                { "TrackGain", "REPLAYGAIN_TRACK_GAIN" },
+                { "TrackNumber", "TRACKNUMBER" },
+                { "TrackPeak", "REPLAYGAIN_TRACK_PEAK" }
+            };
 
         internal MetadataToVorbisCommentAdapter(MetadataDictionary metadata)
         {
             Contract.Requires(metadata != null);
 
-            int day = 0;
-            int month = 0;
-            int year = 0;
+            var day = 0;
+            var month = 0;
+            var year = 0;
 
             foreach (var item in metadata)
             {
-                if (item.Key == "Day")
-                    day = int.Parse(item.Value, CultureInfo.InvariantCulture);
-                else if (item.Key == "Month")
-                    month = int.Parse(item.Value, CultureInfo.InvariantCulture);
-                else if (item.Key == "Year")
-                    year = int.Parse(item.Value, CultureInfo.InvariantCulture);
-                else
+                switch (item.Key)
                 {
-                    string mappedKey;
-                    if (_map.TryGetValue(item.Key, out mappedKey))
-                        this[mappedKey] = item.Value;
+                    case "Day":
+                        day = int.Parse(item.Value, CultureInfo.InvariantCulture);
+                        break;
+
+                    case "Month":
+                        month = int.Parse(item.Value, CultureInfo.InvariantCulture);
+                        break;
+
+                    case "Year":
+                        year = int.Parse(item.Value, CultureInfo.InvariantCulture);
+                        break;
+
+                    default:
+                        string mappedKey;
+                        if (_map.TryGetValue(item.Key, out mappedKey))
+                            this[mappedKey] = item.Value;
+                        break;
                 }
             }
 

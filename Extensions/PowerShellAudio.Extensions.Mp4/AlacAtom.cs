@@ -22,11 +22,11 @@ namespace PowerShellAudio.Extensions.Mp4
 {
     class AlacAtom
     {
-        internal byte BitsPerSample { get; private set; }
+        internal byte BitsPerSample { get; }
 
-        internal byte Channels { get; private set; }
+        internal byte Channels { get; }
 
-        internal uint SampleRate { get; private set; }
+        internal uint SampleRate { get; }
 
         internal AlacAtom(byte[] data)
         {

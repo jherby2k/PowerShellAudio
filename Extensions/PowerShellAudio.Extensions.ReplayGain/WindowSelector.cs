@@ -39,8 +39,9 @@ namespace PowerShellAudio.Extensions.ReplayGain
         internal float GetResult()
         {
             // Select the best representative value from the 95th percentile:
-            var unsortedWindows = _rmsWindows.ToArray();
-            float averageEnergy = unsortedWindows.OrderBy(item => item).ElementAt((int)Math.Ceiling(unsortedWindows.Length * _rmsPercentile) - 1);
+            float[] unsortedWindows = _rmsWindows.ToArray();
+            float averageEnergy = unsortedWindows.OrderBy(item => item)
+                .ElementAt((int)Math.Ceiling(unsortedWindows.Length * _rmsPercentile) - 1);
 
             // Subtract from the perceived loudness of pink noise at 89dB to get the recommended adjustment:
             return _pinkNoiseReference - averageEnergy;

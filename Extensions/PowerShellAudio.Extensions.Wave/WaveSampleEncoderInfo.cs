@@ -41,9 +41,6 @@ namespace PowerShellAudio.Extensions.Wave
             }
         }
 
-        public override bool IsLossless
-        {
-            get { return true; }
-        }
+        public override bool IsLossless => true;
     }
 }

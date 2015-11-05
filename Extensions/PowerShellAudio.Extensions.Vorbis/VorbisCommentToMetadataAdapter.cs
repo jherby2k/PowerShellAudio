@@ -26,20 +26,22 @@ namespace PowerShellAudio.Extensions.Vorbis
 {
     class VorbisCommentToMetadataAdapter : MetadataDictionary
     {
-        static readonly Dictionary<string, string> _map = new Dictionary<string, string>(StringComparer.OrdinalIgnoreCase) {
-            { "ALBUM", "Album"                     },
-            { "REPLAYGAIN_ALBUM_PEAK", "AlbumPeak" },
-            { "REPLAYGAIN_ALBUM_GAIN", "AlbumGain" },
-            { "ARTIST", "Artist"                   },
-            { "DESCRIPTION", "Comment"             },
-            { "COMMENT", "Comment"                 },
-            { "GENRE", "Genre"                     },
-            { "TITLE", "Title"                     },
-            { "TOTALTRACKS", "TrackCount"          },
-            { "TRACKCOUNT", "TrackCount"           },
-            { "REPLAYGAIN_TRACK_GAIN", "TrackGain" },
-            { "REPLAYGAIN_TRACK_PEAK", "TrackPeak" }
-        };
+        static readonly Dictionary<string, string> _map =
+            new Dictionary<string, string>(StringComparer.OrdinalIgnoreCase)
+            {
+                { "ALBUM", "Album" },
+                { "REPLAYGAIN_ALBUM_PEAK", "AlbumPeak" },
+                { "REPLAYGAIN_ALBUM_GAIN", "AlbumGain" },
+                { "ARTIST", "Artist" },
+                { "DESCRIPTION", "Comment" },
+                { "COMMENT", "Comment" },
+                { "GENRE", "Genre" },
+                { "TITLE", "Title" },
+                { "TOTALTRACKS", "TrackCount" },
+                { "TRACKCOUNT", "TrackCount" },
+                { "REPLAYGAIN_TRACK_GAIN", "TrackGain" },
+                { "REPLAYGAIN_TRACK_PEAK", "TrackPeak" }
+            };
 
         internal VorbisCommentToMetadataAdapter(VorbisComment vorbisComment)
         {
@@ -49,7 +51,7 @@ namespace PowerShellAudio.Extensions.Vorbis
             var commentPtrs = new IntPtr[vorbisComment.Comments];
             Marshal.Copy(vorbisComment.UserComments, commentPtrs, 0, commentPtrs.Length);
 
-            for (int i = 0; i < vorbisComment.Comments; i++)
+            for (var i = 0; i < vorbisComment.Comments; i++)
             {
                 var commentBytes = new byte[commentLengths[i]];
                 Marshal.Copy(commentPtrs[i], commentBytes, 0, commentLengths[i]);
@@ -59,54 +61,58 @@ namespace PowerShellAudio.Extensions.Vorbis
                 Contract.Assert(comment.Length == 2);
 
                 // The track number and count may be packed into the same comment:
-                if (comment[0] == "TRACKNUMBER")
+                switch (comment[0])
                 {
-                    string[] segments = comment[1].Split('/');
-                    base["TrackNumber"] = segments[0];
-                    if (segments.Length > 1)
-                        base["TrackCount"] = segments[1];
-                }
-                else if (comment[0] == "DATE" || comment[0] == "YEAR")
-                {
-                    // The DATE comment may contain a full date, or only the year:
-                    DateTime result;
-                    if (DateTime.TryParse(comment[1], CultureInfo.CurrentCulture, DateTimeStyles.NoCurrentDateDefault, out result) && result.Year >= 1000)
-                    {
-                        base["Day"] = result.Day.ToString(CultureInfo.InvariantCulture);
-                        base["Month"] = result.Month.ToString(CultureInfo.InvariantCulture);
-                        base["Year"] = result.Year.ToString(CultureInfo.InvariantCulture);
-                    }
-                    else
-                        base["Year"] = comment[1];
-                }
-                else if (comment[0] == "METADATA_BLOCK_PICTURE")
-                {
-                    var picture = new MetadataBlockPicture(comment[1]);
-                    if (picture.Type == PictureType.CoverFront || picture.Type == PictureType.Other)
-                    {
+                    case "TRACKNUMBER":
+                        string[] segments = comment[1].Split('/');
+                        base["TrackNumber"] = segments[0];
+                        if (segments.Length > 1)
+                            base["TrackCount"] = segments[1];
+                        break;
+
+                    case "DATE":
+                    case "YEAR":
+                        // The DATE comment may contain a full date, or only the year:
+                        DateTime result;
+                        if (DateTime.TryParse(comment[1], CultureInfo.CurrentCulture,
+                            DateTimeStyles.NoCurrentDateDefault, out result) && result.Year >= 1000)
+                        {
+                            base["Day"] = result.Day.ToString(CultureInfo.InvariantCulture);
+                            base["Month"] = result.Month.ToString(CultureInfo.InvariantCulture);
+                            base["Year"] = result.Year.ToString(CultureInfo.InvariantCulture);
+                        }
+                        else
+                            base["Year"] = comment[1];
+                        break;
+
+                    case "METADATA_BLOCK_PICTURE":
+                        var picture = new MetadataBlockPicture(comment[1]);
+                        if (picture.Type == PictureType.CoverFront || picture.Type == PictureType.Other)
+                        {
+                            try
+                            {
+                                CoverArt = new CoverArt(picture.Data);
+                            }
+                            catch (UnsupportedCoverArtException)
+                            { }
+                        }
+                        break;
+
+                    case "COVERART":
                         try
                         {
-                            CoverArt = new CoverArt(picture.Data);
+                            // Deprecated way to store cover art:
+                            CoverArt = new CoverArt(Convert.FromBase64String(comment[1]));
                         }
                         catch (UnsupportedCoverArtException)
                         { }
-                    }
-                }
-                else if (comment[0] == "COVERART")
-                {
-                    try
-                    {
-                        // Deprecated way to store cover art:
-                        CoverArt = new CoverArt(Convert.FromBase64String(comment[1]));
-                    }
-                    catch (UnsupportedCoverArtException)
-                    { }
-                }
-                else
-                {
-                    string mappedKey;
-                    if (_map.TryGetValue(comment[0], out mappedKey))
-                        base[mappedKey] = comment[1];
+                        break;
+
+                    default:
+                        string mappedKey;
+                        if (_map.TryGetValue(comment[0], out mappedKey))
+                            base[mappedKey] = comment[1];
+                        break;
                 }
             }
         }

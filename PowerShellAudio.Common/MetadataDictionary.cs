@@ -57,7 +57,7 @@ namespace PowerShellAudio
 
                 List<string> result = _acceptedKeys.Keys.ToList();
                 result.Sort();
-                return result.AsReadOnly();
+                return result;
             }
         }
 

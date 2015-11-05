@@ -29,10 +29,7 @@ namespace PowerShellAudio.Extensions.Mp4
         readonly Stream _stream;
         readonly Stack<AtomInfo> _atomInfoStack = new Stack<AtomInfo>();
 
-        public AtomInfo CurrentAtom
-        {
-            get { return _atomInfoStack.Peek(); }
-        }
+        public AtomInfo CurrentAtom => _atomInfoStack.Peek();
 
         internal Mp4(Stream stream)
         {
@@ -60,7 +57,8 @@ namespace PowerShellAudio.Extensions.Mp4
                 {
                     do
                     {
-                        var subAtom = new AtomInfo((uint)_stream.Position, reader.ReadUInt32BigEndian(), reader.ReadFourCC());
+                        var subAtom = new AtomInfo((uint)_stream.Position, reader.ReadUInt32BigEndian(),
+                            reader.ReadFourCC());
                         if (subAtom.Size == 0)
                             throw new IOException(Resources.Mp4AtomNotFoundError);
 
@@ -96,7 +94,7 @@ namespace PowerShellAudio.Extensions.Mp4
         {
             Contract.Ensures(Contract.Result<AtomInfo[]>() != null);
 
-            List<AtomInfo> result = new List<AtomInfo>();
+            var result = new List<AtomInfo>();
 
             using (var reader = new BinaryReader(_stream, Encoding.GetEncoding(1252), true))
             {
@@ -236,12 +234,12 @@ namespace PowerShellAudio.Extensions.Mp4
                     uint count = reader.ReadUInt32BigEndian();
                     long dataStart = _stream.Position;
 
-                    for (int i = 0; i < count; i++)
+                    for (var i = 0; i < count; i++)
                     {
                         _stream.Position = dataStart + i * 4;
-                        int value = (int)reader.ReadUInt32BigEndian();
+                        var value = (int)reader.ReadUInt32BigEndian();
                         _stream.Seek(-4, SeekOrigin.Current);
-                        writer.WriteBigEndian((uint)(value += offset));
+                        writer.WriteBigEndian((uint)(value + offset));
                     }
                 }
             }

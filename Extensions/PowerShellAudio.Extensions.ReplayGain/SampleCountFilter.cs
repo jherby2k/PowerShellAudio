@@ -49,25 +49,22 @@ namespace PowerShellAudio.Extensions.ReplayGain
             // If input is an empty (last) sample collection, return the buffer, then the empty one:
             if (input.IsLast)
             {
-                if (_bufferedSampleCount > 0)
-                {
-                    SampleCollectionFactory.Instance.Resize(_buffer, _bufferedSampleCount);
-                    return new[] { _buffer, input };
-                }
-                else
+                if (_bufferedSampleCount <= 0)
                     return new[] { input };
+                SampleCollectionFactory.Instance.Resize(_buffer, _bufferedSampleCount);
+                return new[] { _buffer, input };
             }
 
             // Otherwise, the result has to be built and then returned:
             var results = new List<SampleCollection>();
-            int inputIndex = 0;
+            var inputIndex = 0;
 
             // While there are enough samples available to return at least one result:
             while (_bufferedSampleCount + input.SampleCount - inputIndex > _buffer.SampleCount)
             {
                 // Copy as much of the input into the buffer as possible:
                 int bufferToFill = _buffer.SampleCount - _bufferedSampleCount;
-                for (int channel = 0; channel < _buffer.Channels; channel++)
+                for (var channel = 0; channel < _buffer.Channels; channel++)
                     Array.Copy(input[channel], inputIndex, _buffer[channel], _bufferedSampleCount, bufferToFill);
 
                 inputIndex += bufferToFill;
@@ -80,7 +77,7 @@ namespace PowerShellAudio.Extensions.ReplayGain
 
             // Copy any remaining samples into the buffer:
             int remainingInputSamples = input.SampleCount - inputIndex;
-            for (int channel = 0; channel < _buffer.Channels; channel++)
+            for (var channel = 0; channel < _buffer.Channels; channel++)
                 Array.Copy(input[channel], inputIndex, _buffer[channel], _bufferedSampleCount, remainingInputSamples);
             _bufferedSampleCount += remainingInputSamples;
 

@@ -35,14 +35,16 @@ namespace PowerShellAudio.Extensions.Flac
                 decoder.SetMetadataRespond(MetadataType.Picture);
 
                 DecoderInitStatus initStatus = decoder.Initialize();
-                if (initStatus != DecoderInitStatus.OK)
+                if (initStatus != DecoderInitStatus.Ok)
                     if (initStatus == DecoderInitStatus.UnsupportedContainer)
                         throw new UnsupportedAudioException(Resources.MetadataDecoderUnsupportedContainerError);
                     else
-                        throw new IOException(string.Format(CultureInfo.CurrentCulture, Resources.MetadataDecoderInitializationError, initStatus));
+                        throw new IOException(string.Format(CultureInfo.CurrentCulture,
+                            Resources.MetadataDecoderInitializationError, initStatus));
 
                 if (!decoder.ProcessMetadata())
-                    throw new IOException(string.Format(CultureInfo.CurrentCulture, Resources.MetadataDecoderDecodingError, decoder.GetState()));
+                    throw new IOException(string.Format(CultureInfo.CurrentCulture,
+                        Resources.MetadataDecoderDecodingError, decoder.GetState()));
 
                 decoder.Finish();
 

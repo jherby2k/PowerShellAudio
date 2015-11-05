@@ -43,10 +43,7 @@ namespace PowerShellAudio.Extensions.Flac
             }
         }
 
-        public override bool IsLossless
-        {
-            get { return true; }
-        }
+        public override bool IsLossless => true;
 
         public override string ExternalLibrary
         {
@@ -60,9 +57,7 @@ namespace PowerShellAudio.Extensions.Flac
                 }
                 catch (TypeInitializationException e)
                 {
-                    if (e.InnerException != null)
-                        return e.InnerException.Message;
-                    return e.Message;
+                    return e.InnerException?.Message ?? e.Message;
                 }
             }
         }
@@ -73,12 +68,7 @@ namespace PowerShellAudio.Extensions.Flac
             {
                 Contract.Ensures(Contract.Result<SettingsDictionary>() != null);
 
-                var result = new SettingsDictionary();
-
-                result.Add("CompressionLevel", "5");
-                result.Add("SeekPointInterval", "10");
-
-                return result;
+                return new SettingsDictionary { { "CompressionLevel", "5" }, { "SeekPointInterval", "10" } };
             }
         }
 
@@ -88,12 +78,7 @@ namespace PowerShellAudio.Extensions.Flac
             {
                 Contract.Ensures(Contract.Result<IReadOnlyCollection<string>>() != null);
 
-                var result = new List<string>(2);
-
-                result.Add("CompressionLevel");
-                result.Add("SeekPointInterval");
-
-                return result.AsReadOnly();
+                return new List<string> { "CompressionLevel", "SeekPointInterval" };
             }
         }
     }

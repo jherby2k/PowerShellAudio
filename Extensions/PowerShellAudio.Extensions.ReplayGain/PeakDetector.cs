@@ -17,7 +17,7 @@
 
 using System;
 using System.Diagnostics.Contracts;
-using System.Threading;
+using System.Linq;
 using System.Threading.Tasks;
 
 namespace PowerShellAudio.Extensions.ReplayGain
@@ -35,12 +35,10 @@ namespace PowerShellAudio.Extensions.ReplayGain
             Contract.Ensures(Peak >= Contract.OldValue<float>(Peak));
 
             // Optimization - Faster when channels are calculated in parallel:
-            Parallel.For<float>(0, input.Channels, () => 0, (int channel, ParallelLoopState loopState, float channelMax) =>
+            Parallel.For(0, input.Channels, () => 0, (int channel, ParallelLoopState loopState, float channelMax) =>
             {
-                foreach (float sample in input[channel])
-                    channelMax = CompareAbsolute(sample, channelMax);
-                return channelMax;
-            }, channelMax => Submit(channelMax));
+                return input[channel].Aggregate(channelMax, (current, sample) => CompareAbsolute(sample, current));
+            }, Submit);
         }
 
         internal void Submit(float input)

@@ -80,8 +80,7 @@ namespace PowerShellAudio.Extensions.Vorbis
                 }
                 finally
                 {
-                    if (oggStream != null)
-                        oggStream.Dispose();
+                    oggStream?.Dispose();
 
                     SafeNativeMethods.VorbisCommentClear(ref vorbisComment);
                 }

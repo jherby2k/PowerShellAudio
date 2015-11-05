@@ -47,13 +47,12 @@ namespace PowerShellAudio.Extensions.ReplayGain
                     int patchVersion;
                     SafeNativeMethods.GetVersion(out majorVersion, out minorVersion, out patchVersion);
 
-                    return string.Format(CultureInfo.CurrentCulture, Resources.SampleAnalyzerDescription, majorVersion, minorVersion, patchVersion);
+                    return string.Format(CultureInfo.CurrentCulture, Resources.SampleAnalyzerDescription, majorVersion,
+                        minorVersion, patchVersion);
                 }
                 catch (TypeInitializationException e)
                 {
-                    if (e.InnerException != null)
-                        return e.InnerException.Message;
-                    return e.Message;
+                    return e.InnerException?.Message ?? e.Message;
                 }
             }
         }

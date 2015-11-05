@@ -51,19 +51,19 @@ namespace PowerShellAudio.Extensions.Flac
             Contract.Assume(frame.Header.BlockSize > 0);
 
             // Initialize the divisor:
-            if (_divisor == 0)
+            if (_divisor < 1)
                 _divisor = (float)Math.Pow(2, frame.Header.BitsPerSample - 1);
 
             // Initialize the output buffer:
             if (_managedBuffer == null)
             {
                 _managedBuffer = new int[frame.Header.Channels][];
-                for (int channel = 0; channel < frame.Header.Channels; channel++)
+                for (var channel = 0; channel < frame.Header.Channels; channel++)
                     _managedBuffer[channel] = new int[frame.Header.BlockSize];
             }
 
             // Copy the samples from unmanaged memory into the output buffer:
-            for (int channel = 0; channel < frame.Header.Channels; channel++)
+            for (var channel = 0; channel < frame.Header.Channels; channel++)
             {
                 IntPtr channelPtr = Marshal.ReadIntPtr(buffer, channel * Marshal.SizeOf(buffer));
                 Marshal.Copy(channelPtr, _managedBuffer[channel], 0, (int)frame.Header.BlockSize);
@@ -72,8 +72,8 @@ namespace PowerShellAudio.Extensions.Flac
             Samples = SampleCollectionFactory.Instance.Create((int)frame.Header.Channels, (int)frame.Header.BlockSize);
 
             // Copy the output buffer into a new sample block, converting to floating point values:
-            for (int channel = 0; channel < (int)frame.Header.Channels; channel++)
-                for (int sample = 0; sample < (int)frame.Header.BlockSize; sample++)
+            for (var channel = 0; channel < (int)frame.Header.Channels; channel++)
+                for (var sample = 0; sample < (int)frame.Header.BlockSize; sample++)
                     Samples[channel][sample] = _managedBuffer[channel][sample] / _divisor;
 
             return DecoderWriteStatus.Continue;

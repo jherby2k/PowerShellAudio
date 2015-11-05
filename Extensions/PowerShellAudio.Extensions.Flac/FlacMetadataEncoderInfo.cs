@@ -48,11 +48,7 @@ namespace PowerShellAudio.Extensions.Flac
             {
                 Contract.Ensures(Contract.Result<SettingsDictionary>() != null);
 
-                var result = new SettingsDictionary();
-
-                result.Add("UsePadding", bool.FalseString);
-
-                return result;
+                return new SettingsDictionary { { "UsePadding", bool.FalseString } };
             }
         }
 
@@ -62,11 +58,7 @@ namespace PowerShellAudio.Extensions.Flac
             {
                 Contract.Ensures(Contract.Result<IReadOnlyCollection<string>>() != null);
 
-                var result = new List<string>(1);
-
-                result.Add("UsePadding");
-
-                return result.AsReadOnly();
+                return new List<string> { "UsePadding" };
             }
         }
     }

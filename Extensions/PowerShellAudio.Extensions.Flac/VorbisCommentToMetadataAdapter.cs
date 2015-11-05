@@ -24,20 +24,22 @@ namespace PowerShellAudio.Extensions.Flac
 {
     class VorbisCommentToMetadataAdapter : MetadataDictionary
     {
-        static readonly Dictionary<string, string> _map = new Dictionary<string, string>(StringComparer.OrdinalIgnoreCase) {
-            { "ALBUM", "Album"                     },
-            { "REPLAYGAIN_ALBUM_PEAK", "AlbumPeak" },
-            { "REPLAYGAIN_ALBUM_GAIN", "AlbumGain" },
-            { "ARTIST", "Artist"                   },
-            { "DESCRIPTION", "Comment"             },
-            { "COMMENT", "Comment"                 },
-            { "GENRE", "Genre"                     },
-            { "TITLE", "Title"                     },
-            { "TOTALTRACKS", "TrackCount"          },
-            { "TRACKCOUNT", "TrackCount"           },
-            { "REPLAYGAIN_TRACK_GAIN", "TrackGain" },
-            { "REPLAYGAIN_TRACK_PEAK", "TrackPeak" }
-        };
+        static readonly Dictionary<string, string> _map =
+            new Dictionary<string, string>(StringComparer.OrdinalIgnoreCase)
+            {
+                { "ALBUM", "Album" },
+                { "REPLAYGAIN_ALBUM_PEAK", "AlbumPeak" },
+                { "REPLAYGAIN_ALBUM_GAIN", "AlbumGain" },
+                { "ARTIST", "Artist" },
+                { "DESCRIPTION", "Comment" },
+                { "COMMENT", "Comment" },
+                { "GENRE", "Genre" },
+                { "TITLE", "Title" },
+                { "TOTALTRACKS", "TrackCount" },
+                { "TRACKCOUNT", "TrackCount" },
+                { "REPLAYGAIN_TRACK_GAIN", "TrackGain" },
+                { "REPLAYGAIN_TRACK_PEAK", "TrackPeak" }
+            };
 
         public override string this[string key]
         {
@@ -50,32 +52,34 @@ namespace PowerShellAudio.Extensions.Flac
                 Contract.Requires(key != null);
                 Contract.Requires(value != null);
 
-                if (key == "TRACKNUMBER")
+                switch (key)
                 {
-                    // The track number and count may be packed into the same comment:
-                    string[] segments = value.Split('/');
-                    base["TrackNumber"] = segments[0];
-                    if (segments.Length > 1)
-                        base["TrackCount"] = segments[1];
-                }
-                else if (key == "DATE" || key == "YEAR")
-                {
-                    // The DATE comment may contain a full date, or only the year:
-                    DateTime result;
-                    if (DateTime.TryParse(value, CultureInfo.CurrentCulture, DateTimeStyles.NoCurrentDateDefault, out result) && result.Year >= 1000)
-                    {
-                        base["Day"] = result.Day.ToString(CultureInfo.InvariantCulture);
-                        base["Month"] = result.Month.ToString(CultureInfo.InvariantCulture);
-                        base["Year"] = result.Year.ToString(CultureInfo.InvariantCulture);
-                    }
-                    else
-                        base["Year"] = value;
-                }
-                else
-                {
-                    string mappedKey;
-                    if (_map.TryGetValue(key, out mappedKey))
-                        base[mappedKey] = value;
+                    case "TRACKNUMBER":
+                        // The track number and count may be packed into the same comment:
+                        string[] segments = value.Split('/');
+                        base["TrackNumber"] = segments[0];
+                        if (segments.Length > 1)
+                            base["TrackCount"] = segments[1];
+                        break;
+                    case "DATE":
+                    case "YEAR":
+                        // The DATE comment may contain a full date, or only the year:
+                        DateTime result;
+                        if (DateTime.TryParse(value, CultureInfo.CurrentCulture, DateTimeStyles.NoCurrentDateDefault,
+                            out result) && result.Year >= 1000)
+                        {
+                            base["Day"] = result.Day.ToString(CultureInfo.InvariantCulture);
+                            base["Month"] = result.Month.ToString(CultureInfo.InvariantCulture);
+                            base["Year"] = result.Year.ToString(CultureInfo.InvariantCulture);
+                        }
+                        else
+                            base["Year"] = value;
+                        break;
+                    default:
+                        string mappedKey;
+                        if (_map.TryGetValue(key, out mappedKey))
+                            base[mappedKey] = value;
+                        break;
                 }
             }
         }

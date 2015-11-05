@@ -21,7 +21,7 @@ namespace PowerShellAudio.Extensions.Flac
 {
     class NativeMetadataBlockHandle : SafeHandleZeroOrMinusOneIsInvalid
     {
-        bool suppressDisposal;
+        bool _suppressDisposal;
 
         NativeMetadataBlockHandle()
             : base(true)
@@ -29,17 +29,17 @@ namespace PowerShellAudio.Extensions.Flac
 
         protected override bool ReleaseHandle()
         {
-            if (!suppressDisposal)
+            if (!_suppressDisposal)
             {
                 SafeNativeMethods.MetadataBlockDelete(handle);
-                suppressDisposal = true;
+                _suppressDisposal = true;
             }
             return true;
         }
 
         internal void SuppressDisposal()
         {
-            suppressDisposal = true;
+            _suppressDisposal = true;
         }
     }
 }

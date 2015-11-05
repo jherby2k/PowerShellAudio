@@ -43,7 +43,7 @@ namespace PowerShellAudio.Extensions.Vorbis
             Result result = SafeNativeMethods.VorbisSynthesisHeaderIn(_info, ref comment, ref packet);
             switch (result)
             {
-                case Result.OK:
+                case Result.Ok:
                     return;
                 case Result.NotVorbisError:
                     throw new UnsupportedAudioException(Resources.NativeVorbisDecoderNotVorbisError);

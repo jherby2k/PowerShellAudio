@@ -54,7 +54,7 @@ namespace PowerShellAudio.Extensions.Wave
             if (fmtChunkSize < 16)
                 throw new IOException(Resources.SampleDecoderFmtLengthError);
 
-            Format format = (Format)_reader.ReadUInt16();
+            var format = (Format)_reader.ReadUInt16();
             if (format != Format.Pcm && format != Format.Extensible)
                 throw new UnsupportedAudioException(Resources.SampleDecoderUnsupportedError);
 
@@ -108,19 +108,20 @@ namespace PowerShellAudio.Extensions.Wave
             if (_samplesRemaining == 0)
                 return SampleCollectionFactory.Instance.Create(_channels, 0);
 
-            SampleCollection result = SampleCollectionFactory.Instance.Create(_channels, (int)Math.Min(_samplesRemaining, _samplesPerResult));
+            SampleCollection result = SampleCollectionFactory.Instance.Create(_channels,
+                (int)Math.Min(_samplesRemaining, _samplesPerResult));
 
             if (_bytesPerSample == 1)
             {
                 // 1-8 bit samples are unsigned:
-                for (int sample = 0; sample < result.SampleCount; sample++)
-                    for (int channel = 0; channel < _channels; channel++)
+                for (var sample = 0; sample < result.SampleCount; sample++)
+                    for (var channel = 0; channel < _channels; channel++)
                         result[channel][sample] = (_reader.ReadByte() - 128) / _divisor;
             }
             else
             {
-                for (int sample = 0; sample < result.SampleCount; sample++)
-                    for (int channel = 0; channel < _channels; channel++)
+                for (var sample = 0; sample < result.SampleCount; sample++)
+                    for (var channel = 0; channel < _channels; channel++)
                     {
                         if (_reader.Read(_buffer, 4 - _bytesPerSample, _bytesPerSample) != _bytesPerSample)
                             throw new IOException(Resources.SampleDecoderEndOfStreamError);
@@ -141,8 +142,8 @@ namespace PowerShellAudio.Extensions.Wave
 
         protected virtual void Dispose(bool disposing)
         {
-            if (disposing && _reader != null)
-                _reader.Dispose();
+            if (disposing)
+                _reader?.Dispose();
         }
 
         [ContractInvariantMethod]

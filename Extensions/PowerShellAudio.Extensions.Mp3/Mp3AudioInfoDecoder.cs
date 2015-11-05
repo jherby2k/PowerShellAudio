@@ -31,7 +31,7 @@ namespace PowerShellAudio.Extensions.Mp3
         {
             Contract.Ensures(Contract.Result<AudioInfo>() != null);
 
-            using (FrameReader reader = new FrameReader(stream))
+            using (var reader = new FrameReader(stream))
             {
                 // Seek to the first valid frame header:
                 FrameHeader frameHeader;
@@ -42,14 +42,16 @@ namespace PowerShellAudio.Extensions.Mp3
                 } while (!reader.VerifyFrameSync(frameHeader));
 
                 if (frameHeader.Layer != "III")
-                    throw new UnsupportedAudioException(string.Format(CultureInfo.InvariantCulture, Resources.AudioInfoDecoderLayerError, frameHeader.Layer));
+                    throw new UnsupportedAudioException(string.Format(CultureInfo.InvariantCulture,
+                        Resources.AudioInfoDecoderLayerError, frameHeader.Layer));
 
                 // Seek past the CRC, if present:
                 if (frameHeader.HasCrc)
                     reader.BaseStream.Seek(2, SeekOrigin.Current);
 
                 // Seek past the side information:
-                reader.BaseStream.Seek(GetSideInfoLength(frameHeader.ChannelMode, frameHeader.MpegVersion), SeekOrigin.Current);
+                reader.BaseStream.Seek(GetSideInfoLength(frameHeader.ChannelMode, frameHeader.MpegVersion),
+                    SeekOrigin.Current);
 
                 // Read the XING header (if present):
                 XingHeader xingHeader = reader.ReadXingHeader();
@@ -59,18 +61,23 @@ namespace PowerShellAudio.Extensions.Mp3
                     xingHeader.ByteCount = (uint)reader.BaseStream.Length;
 
                 // Calculate the (approximate) sample count:
-                uint sampleCount = frameHeader.MpegVersion == "1" ? xingHeader.FrameCount * 1152 : xingHeader.FrameCount * 576;
+                uint sampleCount = frameHeader.MpegVersion == "1"
+                    ? xingHeader.FrameCount * 1152
+                    : xingHeader.FrameCount * 576;
 
                 // Calculate the bitrate from the VBR header, or use the information from the first frame:
-                int bitRate = sampleCount > 0 ? CalculateBitRate(xingHeader.ByteCount, sampleCount, frameHeader.SampleRate) : frameHeader.BitRate;
+                int bitRate = sampleCount > 0
+                    ? CalculateBitRate(xingHeader.ByteCount, sampleCount, frameHeader.SampleRate)
+                    : frameHeader.BitRate;
 
-                StringBuilder format = new StringBuilder(bitRate.ToString(CultureInfo.CurrentCulture));
+                var format = new StringBuilder(bitRate.ToString(CultureInfo.CurrentCulture));
                 format.Append("kbps MPEG ");
                 format.Append(frameHeader.MpegVersion);
                 format.Append(" Layer ");
                 format.Append(frameHeader.Layer);
 
-                return new AudioInfo(format.ToString(), frameHeader.ChannelMode == "Mono" ? 1 : 2, 0, frameHeader.SampleRate, sampleCount);
+                return new AudioInfo(format.ToString(), frameHeader.ChannelMode == "Mono" ? 1 : 2, 0,
+                    frameHeader.SampleRate, sampleCount);
             }
         }
 
@@ -82,8 +89,7 @@ namespace PowerShellAudio.Extensions.Mp3
 
             if (channelMode == "Mono")
                 return mpegVersion == "1" ? 17 : 9;
-            else
-                return mpegVersion == "1" ? 32 : 17;
+            return mpegVersion == "1" ? 32 : 17;
         }
 
         static int CalculateBitRate(uint byteCount, uint sampleCount, int sampleRate)

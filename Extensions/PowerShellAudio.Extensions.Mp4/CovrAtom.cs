@@ -21,7 +21,7 @@ using System.Linq;
 
 namespace PowerShellAudio.Extensions.Mp4
 {
-    class CovrAtom : IWritableAtom
+    class CovrAtom : WritableAtom
     {
         internal CoverType CoverType { get; set; }
 

@@ -41,11 +41,11 @@ namespace PowerShellAudio.Extensions.Vorbis
 
         internal int EofFlag;
 
-        internal int LW;
+        internal int Lw;
 
         internal int W;
 
-        internal int NW;
+        internal int Nw;
 
         internal int CenterW;
 

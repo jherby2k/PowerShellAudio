@@ -40,7 +40,7 @@ namespace PowerShellAudio.Extensions.Flac
         internal ulong TotalSamples;
 
         [MarshalAs(UnmanagedType.ByValArray, SizeConst = 16)]
-        internal byte[] MD5Sum;
+        internal byte[] Md5Sum;
     }
 }
 

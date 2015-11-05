@@ -46,9 +46,9 @@ namespace PowerShellAudio.Extensions.Flac
 
             _output = output;
 
-            _writeCallback = new SafeNativeMethods.StreamEncoderWriteCallback(WriteCallback);
-            _seekCallback = new SafeNativeMethods.StreamEncoderSeekCallback(SeekCallback);
-            _tellCallback = new SafeNativeMethods.StreamEncoderTellCallback(TellCallback);
+            _writeCallback = WriteCallback;
+            _seekCallback = SeekCallback;
+            _tellCallback = TellCallback;
         }
 
         internal void SetChannels(uint channels)
@@ -81,15 +81,16 @@ namespace PowerShellAudio.Extensions.Flac
         {
             Contract.Requires(metadataBlocks != null);
 
-            var blockPointers = metadataBlocks.Select(block => block.Handle.DangerousGetHandle()).ToArray();
+            IntPtr[] blockPointers = metadataBlocks.Select(block => block.Handle.DangerousGetHandle()).ToArray();
             SafeNativeMethods.StreamEncoderSetMetadata(_handle, blockPointers, (uint)blockPointers.Length);
         }
 
         internal EncoderInitStatus Initialize()
         {
-            Contract.Ensures(GetState() == EncoderState.OK);
+            Contract.Ensures(GetState() == EncoderState.Ok);
 
-            return SafeNativeMethods.StreamEncoderInitialize(_handle, _writeCallback, _seekCallback, _tellCallback, null, IntPtr.Zero);
+            return SafeNativeMethods.StreamEncoderInitialize(_handle, _writeCallback, _seekCallback, _tellCallback, null,
+                IntPtr.Zero);
         }
 
         internal bool ProcessInterleaved(int[] buffer, uint sampleCount)
@@ -97,14 +98,14 @@ namespace PowerShellAudio.Extensions.Flac
             Contract.Requires(buffer != null);
             Contract.Requires(buffer.Length > 0);
             Contract.Requires(sampleCount > 0);
-            Contract.Requires(GetState() == EncoderState.OK);
+            Contract.Requires(GetState() == EncoderState.Ok);
 
             return SafeNativeMethods.StreamEncoderProcessInterleaved(_handle, buffer, sampleCount);
         }
 
         internal void Finish()
         {
-            Contract.Requires(GetState() == EncoderState.OK);
+            Contract.Requires(GetState() == EncoderState.Ok);
 
             SafeNativeMethods.StreamEncoderFinish(_handle);
         }
@@ -134,19 +135,19 @@ namespace PowerShellAudio.Extensions.Flac
             Contract.Requires(buffer.Length == bytes);
 
             _output.Write(buffer, 0, bytes);
-            return EncoderWriteStatus.OK;
+            return EncoderWriteStatus.Ok;
         }
 
         EncoderSeekStatus SeekCallback(IntPtr handle, ulong absoluteOffset, IntPtr userData)
         {
             _output.Position = (long)absoluteOffset;
-            return EncoderSeekStatus.OK;
+            return EncoderSeekStatus.Ok;
         }
 
         EncoderTellStatus TellCallback(IntPtr handle, out ulong absoluteOffset, IntPtr userData)
         {
             absoluteOffset = (ulong)_output.Position;
-            return EncoderTellStatus.OK;
+            return EncoderTellStatus.Ok;
         }
 
         [ContractInvariantMethod]

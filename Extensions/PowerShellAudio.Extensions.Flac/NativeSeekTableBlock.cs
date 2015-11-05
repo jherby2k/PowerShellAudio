@@ -16,7 +16,6 @@
  */
 
 using PowerShellAudio.Extensions.Flac.Properties;
-using System.Diagnostics.Contracts;
 using System.Globalization;
 using System.IO;
 
@@ -28,10 +27,12 @@ namespace PowerShellAudio.Extensions.Flac
             : base(MetadataType.SeekTable)
         {
             if (!SafeNativeMethods.SeekTableTemplateAppend(Handle, (uint)count, (ulong)sampleCount))
-                throw new IOException(string.Format(CultureInfo.CurrentCulture, Resources.NativeSeekTableBlockMemoryError));
+                throw new IOException(string.Format(CultureInfo.CurrentCulture,
+                    Resources.NativeSeekTableBlockMemoryError));
 
             if (!SafeNativeMethods.SeekTableTemplateSort(Handle, true))
-                throw new IOException(string.Format(CultureInfo.CurrentCulture, Resources.NativeSeekTableBlockMemoryError));
+                throw new IOException(string.Format(CultureInfo.CurrentCulture,
+                    Resources.NativeSeekTableBlockMemoryError));
         }
     }
 }

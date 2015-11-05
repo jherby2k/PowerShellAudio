@@ -46,10 +46,7 @@ namespace PowerShellAudio.Extensions.Vorbis
             }
         }
 
-        public override bool IsLossless
-        {
-            get { return false; }
-        }
+        public override bool IsLossless => false;
 
         public override string ExternalLibrary
         {
@@ -63,9 +60,7 @@ namespace PowerShellAudio.Extensions.Vorbis
                 }
                 catch (TypeInitializationException e)
                 {
-                    if (e.InnerException != null)
-                        return e.InnerException.Message;
-                    return e.Message;
+                    return e.InnerException?.Message ?? e.Message;
                 }
             }
         }
@@ -76,13 +71,11 @@ namespace PowerShellAudio.Extensions.Vorbis
             {
                 Contract.Ensures(Contract.Result<SettingsDictionary>() != null);
 
-                var result = new SettingsDictionary();
-
-                result.Add("ControlMode", "Variable");
-                result.Add("VBRQuality", "5");
+                var result = new SettingsDictionary { { "ControlMode", "Variable" }, { "VBRQuality", "5" } };
 
                 // Call the external ReplayGain filter for scaling the input:
-                var replayGainFilterFactory = ExtensionProvider.GetFactories<ISampleFilter>("Name", "ReplayGain").SingleOrDefault();
+                ExportFactory<ISampleFilter> replayGainFilterFactory =
+                    ExtensionProvider.GetFactories<ISampleFilter>("Name", "ReplayGain").SingleOrDefault();
                 if (replayGainFilterFactory != null)
                     using (ExportLifetimeContext<ISampleFilter> replayGainFilterLifetime = replayGainFilterFactory.CreateExport())
                         replayGainFilterLifetime.Value.DefaultSettings.CopyTo(result);
@@ -97,20 +90,16 @@ namespace PowerShellAudio.Extensions.Vorbis
             {
                 Contract.Ensures(Contract.Result<IReadOnlyCollection<string>>() != null);
 
-                var partialResult = new List<string>();
-
-                partialResult.Add("BitRate");
-                partialResult.Add("ControlMode");
-                partialResult.Add("SerialNumber");
-                partialResult.Add("VBRQuality");
+                var partialResult = new List<string> { "BitRate", "ControlMode", "SerialNumber", "VBRQuality" };
 
                 // Call the external ReplayGain filter for scaling the input:
-                var replayGainFilterFactory = ExtensionProvider.GetFactories<ISampleFilter>("Name", "ReplayGain").SingleOrDefault();
+                ExportFactory<ISampleFilter> replayGainFilterFactory =
+                    ExtensionProvider.GetFactories<ISampleFilter>("Name", "ReplayGain").SingleOrDefault();
                 if (replayGainFilterFactory != null)
                     using (ExportLifetimeContext<ISampleFilter> replayGainFilterLifetime = replayGainFilterFactory.CreateExport())
                         partialResult = partialResult.Concat(replayGainFilterLifetime.Value.AvailableSettings).ToList();
 
-                return partialResult.AsReadOnly();
+                return partialResult;
             }
         }
     }

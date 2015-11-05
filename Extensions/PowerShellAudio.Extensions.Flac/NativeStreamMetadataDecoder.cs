@@ -25,7 +25,7 @@ namespace PowerShellAudio.Extensions.Flac
 {
     class NativeStreamMetadataDecoder : NativeStreamDecoder
     {
-        internal MetadataDictionary Metadata { get; private set; }
+        internal MetadataDictionary Metadata { get; }
 
         internal NativeStreamMetadataDecoder(Stream input)
             : base(input)
@@ -46,9 +46,10 @@ namespace PowerShellAudio.Extensions.Flac
                 case MetadataType.VorbisComment:
                     var commentAdapter = new VorbisCommentToMetadataAdapter();
                     VorbisComment vorbisComment = Marshal.PtrToStructure<VorbisCommentMetadataBlock>(metadata).VorbisComment;
-                    for (int commentIndex = 0; commentIndex < vorbisComment.Count; commentIndex++)
+                    for (var commentIndex = 0; commentIndex < vorbisComment.Count; commentIndex++)
                     {
-                        VorbisCommentEntry entry = Marshal.PtrToStructure<VorbisCommentEntry>(IntPtr.Add(vorbisComment.Comments, commentIndex * Marshal.SizeOf<VorbisCommentEntry>()));
+                        var entry = Marshal.PtrToStructure<VorbisCommentEntry>(IntPtr.Add(vorbisComment.Comments,
+                                commentIndex * Marshal.SizeOf<VorbisCommentEntry>()));
                         var commentBytes = new byte[entry.Length];
                         Marshal.Copy(entry.Entry, commentBytes, 0, commentBytes.Length);
                         string[] comment = Encoding.UTF8.GetString(commentBytes).Split(new[] { '=' }, 2);

@@ -27,11 +27,11 @@ namespace PowerShellAudio.Extensions.Vorbis
 
         internal OggPackBuffer OggPackBuffer;
 
-        internal int LW;
+        internal int Lw;
 
         internal int W;
 
-        internal int NW;
+        internal int Nw;
 
         internal int PcmEnd;
 

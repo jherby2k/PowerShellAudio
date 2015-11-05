@@ -37,13 +37,14 @@ namespace PowerShellAudio.Extensions.Wave
 
         internal bool Validate()
         {
-            bool result = false;
+            var result = false;
 
             BaseStream.Position = 0;
-            if (new string(base.ReadChars(4)) == "RIFF")
+            if (new string(ReadChars(4)) == "RIFF")
                 result = true;
 
-            _riffChunkSize = ReadUInt32(); // Initialize riffChunkSize now, since it is stored adjacent
+            // Initialize riffChunkSize now, since it is stored adjacent:
+            _riffChunkSize = ReadUInt32();
 
             return result;
         }
@@ -61,9 +62,9 @@ namespace PowerShellAudio.Extensions.Wave
             return result;
         }
 
-        internal uint SeekToChunk(string chunkID)
+        internal uint SeekToChunk(string chunkId)
         {
-            Contract.Requires<ArgumentNullException>(!string.IsNullOrEmpty(chunkID));
+            Contract.Requires<ArgumentNullException>(!string.IsNullOrEmpty(chunkId));
 
             BaseStream.Position = 12;
 
@@ -77,9 +78,10 @@ namespace PowerShellAudio.Extensions.Wave
                 _riffChunkSize = ReadUInt32();
             }
 
-            while (currentChunkId != chunkID)
+            while (currentChunkId != chunkId)
             {
-                BaseStream.Seek(currentChunkLength + currentChunkLength % 2, SeekOrigin.Current); // Chunks are word-aligned
+                // Chunks are word-aligned:
+                BaseStream.Seek(currentChunkLength + currentChunkLength % 2, SeekOrigin.Current);
 
                 if (BaseStream.Position >= _riffChunkSize + 8)
                     return 0;

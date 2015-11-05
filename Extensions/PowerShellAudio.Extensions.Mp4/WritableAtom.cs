@@ -17,7 +17,7 @@
 
 namespace PowerShellAudio.Extensions.Mp4
 {
-    abstract class IWritableAtom
+    abstract class WritableAtom
     {
         internal abstract byte[] GetBytes();
     }

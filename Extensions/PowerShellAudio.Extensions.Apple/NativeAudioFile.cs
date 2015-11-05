@@ -17,14 +17,15 @@
 
 using PowerShellAudio.Extensions.Apple.Properties;
 using System;
+using System.Diagnostics.CodeAnalysis;
 using System.Diagnostics.Contracts;
 using System.Globalization;
 using System.IO;
 using System.Runtime.InteropServices;
-using System.Text;
 
 namespace PowerShellAudio.Extensions.Apple
 {
+    [SuppressMessage("ReSharper", "PrivateFieldCanBeConvertedToLocalVariable", Justification = "Callbacks must be pinned for marshalling")]
     class NativeAudioFile : IDisposable
     {
         readonly Stream _stream;
@@ -51,18 +52,20 @@ namespace PowerShellAudio.Extensions.Apple
             Contract.Ensures(_getSizeCallback != null);
             Contract.Ensures(_setSizeCallback != null);
 
-            _readCallback = new SafeNativeMethods.AudioFileReadCallback(ReadCallback);
-            _writeCallback = new SafeNativeMethods.AudioFileWriteCallback(WriteCallback);
-            _getSizeCallback = new SafeNativeMethods.AudioFileGetSizeCallback(GetSizeCallback);
-            _setSizeCallback = new SafeNativeMethods.AudioFileSetSizeCallback(SetSizeCallback);
+            _readCallback = ReadCallback;
+            _writeCallback = WriteCallback;
+            _getSizeCallback = GetSizeCallback;
+            _setSizeCallback = SetSizeCallback;
 
             _stream = stream;
 
             NativeAudioFileHandle outHandle;
 
-            AudioFileStatus status = SafeNativeMethods.AudioFileInitializeWithCallbacks(IntPtr.Zero, _readCallback, _writeCallback, _getSizeCallback, _setSizeCallback, fileType, ref description, 0, out outHandle);
-            if (status != AudioFileStatus.OK)
-                throw new IOException(string.Format(CultureInfo.CurrentCulture, Resources.NativeAudioFileInitializationError, status));
+            AudioFileStatus status = SafeNativeMethods.AudioFileInitializeWithCallbacks(IntPtr.Zero, _readCallback,
+                _writeCallback, _getSizeCallback, _setSizeCallback, fileType, ref description, 0, out outHandle);
+            if (status != AudioFileStatus.Ok)
+                throw new IOException(string.Format(CultureInfo.CurrentCulture,
+                    Resources.NativeAudioFileInitializationError, status));
 
             Handle = outHandle;
         }
@@ -79,21 +82,23 @@ namespace PowerShellAudio.Extensions.Apple
             Contract.Ensures(_readCallback != null);
             Contract.Ensures(_getSizeCallback != null);
 
-            _readCallback = new SafeNativeMethods.AudioFileReadCallback(ReadCallback);
-            _getSizeCallback = new SafeNativeMethods.AudioFileGetSizeCallback(GetSizeCallback);
+            _readCallback = ReadCallback;
+            _getSizeCallback = GetSizeCallback;
 
             _stream = stream;
 
             NativeAudioFileHandle outHandle;
 
-            AudioFileStatus status = SafeNativeMethods.AudioFileOpenWithCallbacks(IntPtr.Zero, _readCallback, null, _getSizeCallback, null, fileType, out outHandle);
-            if (status != AudioFileStatus.OK)
-                throw new IOException(string.Format(CultureInfo.CurrentCulture, Resources.NativeAudioFileInitializationError, status));
+            AudioFileStatus status = SafeNativeMethods.AudioFileOpenWithCallbacks(IntPtr.Zero, _readCallback, null,
+                _getSizeCallback, null, fileType, out outHandle);
+            if (status != AudioFileStatus.Ok)
+                throw new IOException(string.Format(CultureInfo.CurrentCulture,
+                    Resources.NativeAudioFileInitializationError, status));
 
             Handle = outHandle;
         }
 
-        internal IntPtr GetProperty(AudioFilePropertyID id, uint size)
+        internal IntPtr GetProperty(AudioFilePropertyId id, uint size)
         {
             // Callers must release this!
             IntPtr unmanagedValue = Marshal.AllocHGlobal((int)size);
@@ -101,7 +106,7 @@ namespace PowerShellAudio.Extensions.Apple
             return unmanagedValue;
         }
 
-        internal T GetProperty<T>(AudioFilePropertyID id) where T : struct
+        internal T GetProperty<T>(AudioFilePropertyId id) where T : struct
         {
             uint size = (uint)Marshal.SizeOf(typeof(T));
             IntPtr unmanagedValue = Marshal.AllocHGlobal((int)size);
@@ -116,14 +121,15 @@ namespace PowerShellAudio.Extensions.Apple
             }
         }
 
-        internal AudioFileStatus GetPropertyInfo(AudioFilePropertyID id, out uint dataSize, out uint isWritable)
+        internal AudioFileStatus GetPropertyInfo(AudioFilePropertyId id, out uint dataSize, out uint isWritable)
         {
             return SafeNativeMethods.AudioFileGetPropertyInfo(Handle, id, out dataSize, out isWritable);
         }
 
         internal AudioFileStatus ReadPackets(out uint numBytes, AudioStreamPacketDescription[] packetDescriptions, long startingPacket, ref uint packets, IntPtr data)
         {
-            return SafeNativeMethods.AudioFileReadPackets(Handle, false, out numBytes, packetDescriptions, startingPacket, ref packets, data);
+            return SafeNativeMethods.AudioFileReadPackets(Handle, false, out numBytes, packetDescriptions,
+                startingPacket, ref packets, data);
         }
 
         public void Dispose()
@@ -134,11 +140,11 @@ namespace PowerShellAudio.Extensions.Apple
 
         protected virtual void Dispose(bool disposing)
         {
-            if (disposing)
-            {
-                _isDisposed = true;
-                Handle.Dispose();
-            }
+            if (!disposing)
+                return;
+
+            _isDisposed = true;
+            Handle.Dispose();
         }
 
         AudioFileStatus ReadCallback(IntPtr userData, long position, uint requestCount, byte[] buffer, out uint actualCount)
@@ -151,7 +157,7 @@ namespace PowerShellAudio.Extensions.Apple
             _stream.Position = position;
             actualCount = (uint)_stream.Read(buffer, 0, (int)requestCount);
 
-            return AudioFileStatus.OK;
+            return AudioFileStatus.Ok;
         }
 
         AudioFileStatus WriteCallback(IntPtr userData, long position, uint requestCount, byte[] buffer, out uint actualCount)
@@ -164,7 +170,7 @@ namespace PowerShellAudio.Extensions.Apple
             _stream.Write(buffer, 0, (int)requestCount);
             actualCount = requestCount;
 
-            return AudioFileStatus.OK;
+            return AudioFileStatus.Ok;
         }
 
         long GetSizeCallback(IntPtr userData)
@@ -181,7 +187,7 @@ namespace PowerShellAudio.Extensions.Apple
 
             _stream.SetLength(size);
 
-            return AudioFileStatus.OK;
+            return AudioFileStatus.Ok;
         }
 
         [ContractInvariantMethod]

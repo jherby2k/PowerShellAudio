@@ -72,7 +72,8 @@ namespace PowerShellAudio.Extensions.Vorbis
                                 decoder.HeaderIn(ref vorbisComment, ref packet);
 
                                 VorbisInfo info = decoder.GetInfo();
-                                return new AudioInfo(string.Format(CultureInfo.CurrentCulture, "{0}kbps Ogg Vorbis", info.BitrateNominal / 1000), info.Channels, 0, info.Rate, 0);
+                                return new AudioInfo(string.Format(CultureInfo.CurrentCulture,
+                                    "{0}kbps Ogg Vorbis", info.BitrateNominal / 1000), info.Channels, 0, info.Rate, 0);
                             }
                         } while (SafeNativeMethods.OggPageEndOfStream(ref page) == 0);
 
@@ -81,8 +82,7 @@ namespace PowerShellAudio.Extensions.Vorbis
                 }
                 finally
                 {
-                    if (oggStream != null)
-                        oggStream.Dispose();
+                    oggStream?.Dispose();
 
                     SafeNativeMethods.VorbisCommentClear(ref vorbisComment);
                 }

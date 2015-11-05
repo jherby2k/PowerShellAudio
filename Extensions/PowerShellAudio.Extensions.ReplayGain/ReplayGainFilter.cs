@@ -35,11 +35,7 @@ namespace PowerShellAudio.Extensions.ReplayGain
             {
                 Contract.Ensures(Contract.Result<SettingsDictionary>() != null);
 
-                var result = new SettingsDictionary();
-
-                result.Add("ApplyGain", bool.FalseString);
-
-                return result;
+                return new SettingsDictionary { { "ApplyGain", bool.FalseString } };
             }
         }
 
@@ -49,56 +45,54 @@ namespace PowerShellAudio.Extensions.ReplayGain
             {
                 Contract.Ensures(Contract.Result<IReadOnlyCollection<string>>() != null);
 
-                var result = new List<string>(1);
-
-                result.Add("ApplyGain");
-
-                return result;
+                return new List<string> { "ApplyGain" };
             }
         }
 
         public void Initialize(MetadataDictionary metadata, SettingsDictionary settings)
         {
-            if (!string.IsNullOrEmpty(settings["ApplyGain"]) && string.Compare(settings["ApplyGain"], bool.FalseString, StringComparison.OrdinalIgnoreCase) != 0)
+            if (string.IsNullOrEmpty(settings["ApplyGain"]) ||
+                string.Compare(settings["ApplyGain"], bool.FalseString, StringComparison.OrdinalIgnoreCase) == 0)
+                return;
+
+            if (string.Compare(settings["ApplyGain"], "Album", StringComparison.OrdinalIgnoreCase) == 0)
             {
-                if (string.Compare(settings["ApplyGain"], "Album", StringComparison.OrdinalIgnoreCase) == 0)
-                {
-                    if (string.IsNullOrEmpty(metadata["AlbumGain"]))
-                        throw new InvalidSettingException(Resources.ReplayGainSampleFilterMissingAlbumGain);
-                    if (string.IsNullOrEmpty(metadata["AlbumPeak"]))
-                        throw new InvalidSettingException(Resources.ReplayGainSampleFilterMissingAlbumPeak);
+                if (string.IsNullOrEmpty(metadata["AlbumGain"]))
+                    throw new InvalidSettingException(Resources.ReplayGainSampleFilterMissingAlbumGain);
+                if (string.IsNullOrEmpty(metadata["AlbumPeak"]))
+                    throw new InvalidSettingException(Resources.ReplayGainSampleFilterMissingAlbumPeak);
 
-                    _scale = CalculateScale(metadata["AlbumGain"], metadata["AlbumPeak"]);
-                }
-                else if (string.Compare(settings["ApplyGain"], "Track", StringComparison.OrdinalIgnoreCase) == 0)
-                {
-                    if (string.IsNullOrEmpty(metadata["TrackGain"]))
-                        throw new InvalidSettingException(Resources.ReplayGainSampleFilterMissingTrackGain);
-                    if (string.IsNullOrEmpty(metadata["TrackPeak"]))
-                        throw new InvalidSettingException(Resources.ReplayGainSampleFilterMissingTrackPeak);
-
-                    _scale = CalculateScale(metadata["TrackGain"], metadata["TrackPeak"]);
-                }
-                else
-                    throw new InvalidSettingException(string.Format(CultureInfo.CurrentCulture, Resources.ReplayGainSampleFilterBadApplyGain, settings["ApplyGain"]));
-
-                // Adjust the metadata so that it remains valid:
-                metadata["AlbumGain"] = AdjustGain(metadata["AlbumGain"], _scale);
-                metadata["TrackGain"] = AdjustGain(metadata["TrackGain"], _scale);
-                metadata["AlbumPeak"] = AdjustPeak(metadata["AlbumPeak"], _scale);
-                metadata["TrackPeak"] = AdjustPeak(metadata["TrackPeak"], _scale);
+                _scale = CalculateScale(metadata["AlbumGain"], metadata["AlbumPeak"]);
             }
+            else if (string.Compare(settings["ApplyGain"], "Track", StringComparison.OrdinalIgnoreCase) == 0)
+            {
+                if (string.IsNullOrEmpty(metadata["TrackGain"]))
+                    throw new InvalidSettingException(Resources.ReplayGainSampleFilterMissingTrackGain);
+                if (string.IsNullOrEmpty(metadata["TrackPeak"]))
+                    throw new InvalidSettingException(Resources.ReplayGainSampleFilterMissingTrackPeak);
+
+                _scale = CalculateScale(metadata["TrackGain"], metadata["TrackPeak"]);
+            }
+            else
+                throw new InvalidSettingException(string.Format(CultureInfo.CurrentCulture,
+                    Resources.ReplayGainSampleFilterBadApplyGain, settings["ApplyGain"]));
+
+            // Adjust the metadata so that it remains valid:
+            metadata["AlbumGain"] = AdjustGain(metadata["AlbumGain"], _scale);
+            metadata["TrackGain"] = AdjustGain(metadata["TrackGain"], _scale);
+            metadata["AlbumPeak"] = AdjustPeak(metadata["AlbumPeak"], _scale);
+            metadata["TrackPeak"] = AdjustPeak(metadata["TrackPeak"], _scale);
         }
 
         public void Submit(SampleCollection samples)
         {
-            if (_scale == 1)
+            if (Math.Abs(_scale - 1) < 0.001)
                 return;
 
             // Optimization - Faster when channels are processed in parallel:
             Parallel.ForEach(samples, channel =>
             {
-                for (int sample = 0; sample < channel.Length; sample++)
+                for (var sample = 0; sample < channel.Length; sample++)
                     channel[sample] *= _scale;
             });
         }
@@ -109,21 +103,25 @@ namespace PowerShellAudio.Extensions.ReplayGain
             Contract.Requires(!string.IsNullOrEmpty(peak));
 
             // Return the desired scale, or the closest possible without clipping:
-            return Math.Min((float)Math.Pow(10, float.Parse(gain.Replace(" dB", string.Empty), CultureInfo.InvariantCulture) / 20), 1 / float.Parse(peak, CultureInfo.InvariantCulture));
+            return Math.Min((float)Math.Pow(10, float.Parse(gain.Replace(" dB", string.Empty),
+                CultureInfo.InvariantCulture) / 20), 1 / float.Parse(peak, CultureInfo.InvariantCulture));
         }
 
         static string AdjustGain(string gain, float scale)
         {
-            if (!string.IsNullOrEmpty(gain))
-                return string.Format(CultureInfo.InvariantCulture, "{0:0.00} dB", float.Parse(gain.Replace(" dB", string.Empty), CultureInfo.InvariantCulture) - Math.Log10(scale) * 20);
-            return string.Empty;
+            return !string.IsNullOrEmpty(gain)
+                ? string.Format(CultureInfo.InvariantCulture, "{0:0.00} dB",
+                    float.Parse(gain.Replace(" dB", string.Empty), CultureInfo.InvariantCulture) -
+                    Math.Log10(scale) * 20)
+                : string.Empty;
         }
 
         static string AdjustPeak(string peak, float scale)
         {
-            if (!string.IsNullOrEmpty(peak))
-                return string.Format(CultureInfo.InvariantCulture, "{0:0.000000}", float.Parse(peak, CultureInfo.InvariantCulture) * scale);
-            return string.Empty;
+            return !string.IsNullOrEmpty(peak)
+                ? string.Format(CultureInfo.InvariantCulture, "{0:0.000000}",
+                    float.Parse(peak, CultureInfo.InvariantCulture) * scale)
+                : string.Empty;
         }
     }
 }

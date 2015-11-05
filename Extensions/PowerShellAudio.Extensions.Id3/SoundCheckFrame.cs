@@ -79,7 +79,7 @@ namespace PowerShellAudio.Extensions.Id3
             string convertedBase2500 = ConvertGain(numericGain, 2500);
             string convertedPeak = ConvertPeak(float.Parse(peak, CultureInfo.InvariantCulture));
 
-            StringBuilder result = new StringBuilder();
+            var result = new StringBuilder();
             result.Append(' ');
             result.Append(convertedBase1000);
             result.Append(' ');
@@ -100,7 +100,7 @@ namespace PowerShellAudio.Extensions.Id3
         {
             Contract.Ensures(!string.IsNullOrEmpty(Contract.Result<string>()));
 
-            int numericResult = (int)Math.Round(Math.Pow(10, gain / -10) * reference);
+            var numericResult = (int)Math.Round(Math.Pow(10, gain / -10) * reference);
             return ConvertToAsciiHex(numericResult);
         }
 

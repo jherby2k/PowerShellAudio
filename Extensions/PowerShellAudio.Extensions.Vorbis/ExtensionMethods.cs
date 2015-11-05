@@ -27,14 +27,15 @@ namespace PowerShellAudio.Extensions.Vorbis
         {
             Contract.Requires(reader != null);
 
-            return ((uint)reader.ReadByte() << 24) + ((uint)reader.ReadByte() << 16) + ((uint)reader.ReadByte() << 8) + reader.ReadByte();
+            return ((uint)reader.ReadByte() << 24) + ((uint)reader.ReadByte() << 16) + ((uint)reader.ReadByte() << 8) +
+                   reader.ReadByte();
         }
 
         internal static void WriteBigEndian(this BinaryWriter writer, uint value)
         {
             Contract.Requires(writer != null);
 
-            var buffer = BitConverter.GetBytes(value);
+            byte[] buffer = BitConverter.GetBytes(value);
             Array.Reverse(buffer);
             writer.Write(buffer);
         }
