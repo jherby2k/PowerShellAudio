@@ -22,7 +22,6 @@ You should have received a copy of the GNU Lesser General Public License along w
     
     <ComponentGroup Id="Vorbis">
       <ComponentRef Id="$(var.PowerShellAudio.Extensions.Vorbis.TargetFileName)" />
-      <ComponentRef Id="$(var.PowerShellAudio.Extensions.Vorbis.TargetName).Contracts.dll" />
       <ComponentRef Id="libogg.dll" />
       <ComponentRef Id="libvorbis.dll" />
     </ComponentGroup>
@@ -30,11 +29,6 @@ You should have received a copy of the GNU Lesser General Public License along w
     <DirectoryRef Id="VorbisFolder">
       <Component Guid="{7932EB72-D0C8-4840-8B43-D3DE9AAEAB35}">
         <File Source="$(var.PowerShellAudio.Extensions.Vorbis.TargetPath)" KeyPath="yes" Checksum="yes" />
-      </Component>
-    </DirectoryRef>
-    <DirectoryRef Id="VorbisCodeContractsFolder">
-      <Component Guid="{9EE2F45B-44DE-4376-AADC-270703D49313}">
-        <File Source="$(var.PowerShellAudio.Extensions.Vorbis.TargetDir)CodeContracts\$(var.PowerShellAudio.Extensions.Vorbis.TargetName).Contracts.dll" KeyPath="yes" Checksum="yes" />
       </Component>
     </DirectoryRef>
     <DirectoryRef Id="VorbisX64Folder">
@@ -48,7 +42,6 @@ You should have received a copy of the GNU Lesser General Public License along w
 
     <DirectoryRef Id="ExtensionsFolder">
       <Directory Id="VorbisFolder" Name="Vorbis">
-        <Directory Id="VorbisCodeContractsFolder" Name="CodeContracts" />
         <Directory Id="VorbisX64Folder" Name="x64" />
       </Directory>
     </DirectoryRef>

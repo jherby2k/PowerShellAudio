@@ -22,7 +22,6 @@ You should have received a copy of the GNU Lesser General Public License along w
 
     <ComponentGroup Id="ID3">
       <ComponentRef Id="$(var.PowerShellAudio.Extensions.Id3.TargetFileName)" />
-      <ComponentRef Id="$(var.PowerShellAudio.Extensions.Id3.TargetName).Contracts.dll" />
       <ComponentRef Id="Id3Lib.dll" />
       <ComponentRef Id="ICSharpCode.SharpZipLib.dll" />
     </ComponentGroup>
@@ -38,16 +37,9 @@ You should have received a copy of the GNU Lesser General Public License along w
         <File Source="$(var.PowerShellAudio.Extensions.Id3.TargetDir)ICSharpCode.SharpZipLib.dll" KeyPath="yes" Checksum="yes" />
       </Component>
     </DirectoryRef>
-    <DirectoryRef Id="Id3CodeContractsFolder">
-      <Component Guid="{CAD003EE-7DD1-4E01-B765-6229DB67FF61}">
-        <File Source="$(var.PowerShellAudio.Extensions.Id3.TargetDir)CodeContracts\$(var.PowerShellAudio.Extensions.Id3.TargetName).Contracts.dll" KeyPath="yes" Checksum="yes" />
-      </Component>
-    </DirectoryRef>
 
     <DirectoryRef Id="ExtensionsFolder">
-      <Directory Id="Id3Folder" Name="Id3">
-        <Directory Id="Id3CodeContractsFolder" Name="CodeContracts" />
-      </Directory>
+      <Directory Id="Id3Folder" Name="Id3" />
     </DirectoryRef>
     
 	</Fragment>

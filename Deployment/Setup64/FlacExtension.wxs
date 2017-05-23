@@ -22,18 +22,12 @@ You should have received a copy of the GNU Lesser General Public License along w
 
     <ComponentGroup Id="FLAC">
       <ComponentRef Id="$(var.PowerShellAudio.Extensions.Flac.TargetFileName)" />
-      <ComponentRef Id="$(var.PowerShellAudio.Extensions.Flac.TargetName).Contracts.dll" />
       <ComponentRef Id="libFLAC.dll" />
     </ComponentGroup>
 
     <DirectoryRef Id="FlacFolder">
       <Component Guid="{4E31F5DF-4826-434A-B0AC-53E50B327F71}">
         <File Source="$(var.PowerShellAudio.Extensions.Flac.TargetPath)" KeyPath="yes" Checksum="yes" />
-      </Component>
-    </DirectoryRef>
-    <DirectoryRef Id="FlacCodeContractsFolder">
-      <Component Guid="{0398EA5E-B1DD-42E3-9848-6E5C627488BC}">
-        <File Source="$(var.PowerShellAudio.Extensions.Flac.TargetDir)CodeContracts\$(var.PowerShellAudio.Extensions.Flac.TargetName).Contracts.dll" KeyPath="yes" Checksum="yes" />
       </Component>
     </DirectoryRef>
     <DirectoryRef Id="FlacX64Folder">
@@ -44,7 +38,6 @@ You should have received a copy of the GNU Lesser General Public License along w
 
     <DirectoryRef Id="ExtensionsFolder">
       <Directory Id="FlacFolder" Name="Flac">
-        <Directory Id="FlacCodeContractsFolder" Name="CodeContracts" />
         <Directory Id="FlacX64Folder" Name="x64" />
       </Directory>
     </DirectoryRef>

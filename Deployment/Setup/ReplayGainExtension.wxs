@@ -22,7 +22,6 @@ You should have received a copy of the GNU Lesser General Public License along w
 
     <ComponentGroup Id="ReplayGain">
       <ComponentRef Id="$(var.PowerShellAudio.Extensions.ReplayGain.TargetFileName)" />
-      <ComponentRef Id="$(var.PowerShellAudio.Extensions.ReplayGain.TargetName).Contracts.dll" />
       <ComponentRef Id="System.Threading.Tasks.Dataflow.dll" />
       <ComponentRef Id="ebur128.dll" />
     </ComponentGroup>
@@ -35,11 +34,6 @@ You should have received a copy of the GNU Lesser General Public License along w
         <File Source="$(var.PowerShellAudio.Extensions.ReplayGain.TargetDir)System.Threading.Tasks.Dataflow.dll" KeyPath="yes" Checksum="yes" />
       </Component>
     </DirectoryRef>
-    <DirectoryRef Id="ReplayGainCodeContractsFolder">
-      <Component Guid="{03E730F6-4F49-4AB2-99EB-2CC412D80DA7}">
-        <File Source="$(var.PowerShellAudio.Extensions.ReplayGain.TargetDir)CodeContracts\$(var.PowerShellAudio.Extensions.ReplayGain.TargetName).Contracts.dll" KeyPath="yes" Checksum="yes" />
-      </Component>
-    </DirectoryRef>
     <DirectoryRef Id="ReplayGainX86Folder">
       <Component Guid="{CD4A638E-252D-403B-90B7-3919997DA349}">
         <File Source="$(var.PowerShellAudio.Extensions.ReplayGain.TargetDir)x86\ebur128.dll" KeyPath="yes" Checksum="yes" />
@@ -48,7 +42,6 @@ You should have received a copy of the GNU Lesser General Public License along w
 
     <DirectoryRef Id="ExtensionsFolder">
       <Directory Id="ReplayGainFolder" Name="ReplayGain">
-        <Directory Id="ReplayGainCodeContractsFolder" Name="CodeContracts" />
         <Directory Id="ReplayGainX86Folder" Name="x86" />
       </Directory>
     </DirectoryRef>

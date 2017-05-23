@@ -22,7 +22,6 @@ You should have received a copy of the GNU Lesser General Public License along w
 
     <ComponentGroup Id="MP3">
       <ComponentRef Id="$(var.PowerShellAudio.Extensions.Mp3.TargetFileName)" />
-      <ComponentRef Id="$(var.PowerShellAudio.Extensions.Mp3.TargetName).Contracts.dll" />
     </ComponentGroup>
 
     <DirectoryRef Id="Mp3Folder">
@@ -30,16 +29,9 @@ You should have received a copy of the GNU Lesser General Public License along w
         <File Source="$(var.PowerShellAudio.Extensions.Mp3.TargetPath)" KeyPath="yes" Checksum="yes" />
       </Component>
     </DirectoryRef>
-    <DirectoryRef Id="Mp3CodeContractsFolder">
-      <Component Guid="{12F0BB83-D7D9-4AA8-8E77-71F1E4CA56E8}">
-        <File Source="$(var.PowerShellAudio.Extensions.Mp3.TargetDir)CodeContracts\$(var.PowerShellAudio.Extensions.Mp3.TargetName).Contracts.dll" KeyPath="yes" Checksum="yes" />
-      </Component>
-    </DirectoryRef>
 
     <DirectoryRef Id="ExtensionsFolder">
-      <Directory Id="Mp3Folder" Name="Mp3">
-        <Directory Id="Mp3CodeContractsFolder" Name="CodeContracts" />
-      </Directory>
+      <Directory Id="Mp3Folder" Name="Mp3" />
     </DirectoryRef>
     
 	</Fragment>

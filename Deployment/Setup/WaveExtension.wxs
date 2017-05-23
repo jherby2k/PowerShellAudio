@@ -22,7 +22,6 @@ You should have received a copy of the GNU Lesser General Public License along w
 
     <ComponentGroup Id="Wave">
       <ComponentRef Id="$(var.PowerShellAudio.Extensions.Wave.TargetFileName)" />
-      <ComponentRef Id="$(var.PowerShellAudio.Extensions.Wave.TargetName).Contracts.dll" />
     </ComponentGroup>
 
     <DirectoryRef Id="WaveFolder">
@@ -30,16 +29,9 @@ You should have received a copy of the GNU Lesser General Public License along w
         <File Source="$(var.PowerShellAudio.Extensions.Wave.TargetPath)" KeyPath="yes" Checksum="yes" />
       </Component>
     </DirectoryRef>
-    <DirectoryRef Id="WaveCodeContractsFolder">
-      <Component Guid="{442E4761-6889-489B-97E0-C9399B59C73F}">
-        <File Source="$(var.PowerShellAudio.Extensions.Wave.TargetDir)CodeContracts\$(var.PowerShellAudio.Extensions.Wave.TargetName).Contracts.dll" KeyPath="yes" Checksum="yes" />
-      </Component>
-    </DirectoryRef>
     
     <DirectoryRef Id="ExtensionsFolder">
-      <Directory Id="WaveFolder" Name="Wave">
-        <Directory Id="WaveCodeContractsFolder" Name="CodeContracts" />
-      </Directory>
+      <Directory Id="WaveFolder" Name="Wave" />
     </DirectoryRef>
     
 	</Fragment>

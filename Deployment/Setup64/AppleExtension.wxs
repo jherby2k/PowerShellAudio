@@ -22,7 +22,6 @@ You should have received a copy of the GNU Lesser General Public License along w
 
     <ComponentGroup Id="Apple">
       <ComponentRef Id="$(var.PowerShellAudio.Extensions.Apple.TargetFileName)" />
-      <ComponentRef Id="$(var.PowerShellAudio.Extensions.Apple.TargetName).Contracts.dll" />
     </ComponentGroup>
 
     <DirectoryRef Id="AppleFolder">
@@ -30,16 +29,9 @@ You should have received a copy of the GNU Lesser General Public License along w
         <File Source="$(var.PowerShellAudio.Extensions.Apple.TargetPath)" KeyPath="yes" Checksum="yes" />
       </Component>
     </DirectoryRef>
-    <DirectoryRef Id="AppleCodeContractsFolder">
-      <Component Guid="{D738BA7D-B7D2-4850-AAEB-21E603720BC1}">
-        <File Source="$(var.PowerShellAudio.Extensions.Apple.TargetDir)CodeContracts\$(var.PowerShellAudio.Extensions.Apple.TargetName).Contracts.dll" KeyPath="yes" Checksum="yes" />
-      </Component>
-    </DirectoryRef>
 
     <DirectoryRef Id="ExtensionsFolder">
-      <Directory Id="AppleFolder" Name="Apple">
-        <Directory Id="AppleCodeContractsFolder" Name="CodeContracts" />
-      </Directory>
+      <Directory Id="AppleFolder" Name="Apple" />
     </DirectoryRef>
     
 	</Fragment>

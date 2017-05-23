@@ -22,18 +22,12 @@ You should have received a copy of the GNU Lesser General Public License along w
 
     <ComponentGroup Id="Lame">
       <ComponentRef Id="$(var.PowerShellAudio.Extensions.Lame.TargetFileName)" />
-      <ComponentRef Id="$(var.PowerShellAudio.Extensions.Lame.TargetName).Contracts.dll" />
       <ComponentRef Id="libmp3lame.dll" />
     </ComponentGroup>
 
     <DirectoryRef Id="LameFolder">
       <Component Guid="{47A670AC-DE77-4573-8DAE-91959FC57742}">
         <File Source="$(var.PowerShellAudio.Extensions.Lame.TargetPath)" KeyPath="yes" Checksum="yes" />
-      </Component>
-    </DirectoryRef>
-    <DirectoryRef Id="LameCodeContractsFolder">
-      <Component Guid="{67AB7E3D-FE85-402C-887A-47A018954AA4}">
-        <File Source="$(var.PowerShellAudio.Extensions.Lame.TargetDir)CodeContracts\$(var.PowerShellAudio.Extensions.Lame.TargetName).Contracts.dll" KeyPath="yes" Checksum="yes" />
       </Component>
     </DirectoryRef>
     <DirectoryRef Id="LameX64Folder">
@@ -44,7 +38,6 @@ You should have received a copy of the GNU Lesser General Public License along w
 
     <DirectoryRef Id="ExtensionsFolder">
       <Directory Id="LameFolder" Name="Lame">
-        <Directory Id="LameCodeContractsFolder" Name="CodeContracts" />
         <Directory Id="LameX64Folder" Name="x64" />
       </Directory>
     </DirectoryRef>
