@@ -15,20 +15,10 @@
  * <http://www.gnu.org/licenses/>.
  */
 
-using System.Diagnostics.Contracts;
-
 namespace PowerShellAudio.Extensions.ReplayGain
 {
     class ReplayGainSampleAnalyzerInfo : SampleAnalyzerInfo
     {
-        public override string Name
-        {
-            get
-            {
-                Contract.Ensures(!string.IsNullOrEmpty(Contract.Result<string>()));
-
-                return "ReplayGain";
-            }
-        }
+        public override string Name => "ReplayGain";
     }
 }

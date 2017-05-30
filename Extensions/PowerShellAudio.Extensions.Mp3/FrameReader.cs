@@ -17,9 +17,9 @@
 
 using PowerShellAudio.Extensions.Mp3.Properties;
 using System;
-using System.Diagnostics.Contracts;
 using System.IO;
 using System.Text;
+using JetBrains.Annotations;
 
 namespace PowerShellAudio.Extensions.Mp3
 {
@@ -50,11 +50,9 @@ namespace PowerShellAudio.Extensions.Mp3
                 // A frame begins with the first 11 bits set:
                 while (true)
                 {
-                    if (ReadByte() == 0xff && ReadByte() >= 0xe0)
-                    {
-                        BaseStream.Seek(-2, SeekOrigin.Current);
-                        return;
-                    }
+                    if (ReadByte() != 0xff || ReadByte() < 0xe0) continue;
+                    BaseStream.Seek(-2, SeekOrigin.Current);
+                    return;
                 }
             }
             catch (EndOfStreamException e)
@@ -63,11 +61,8 @@ namespace PowerShellAudio.Extensions.Mp3
             }
         }
 
-        internal bool VerifyFrameSync(FrameHeader header)
+        internal bool VerifyFrameSync([NotNull] FrameHeader header)
         {
-            Contract.Requires(header != null);
-            Contract.Ensures(BaseStream.Position == Contract.OldValue<long>(BaseStream.Position));
-
             try
             {
                 int frameLength = header.SamplesPerFrame / 8 * header.BitRate * 1000 / header.SampleRate +
@@ -92,9 +87,6 @@ namespace PowerShellAudio.Extensions.Mp3
         
         internal uint ReadUInt32BigEndian()
         {
-            Contract.Ensures(_buffer != null);
-            Contract.Ensures(_buffer.Length == 4);
-
             Read(_buffer, 0, 4);
             if (BitConverter.IsLittleEndian)
                 Array.Reverse(_buffer);
@@ -119,13 +111,6 @@ namespace PowerShellAudio.Extensions.Mp3
                 result.ByteCount = ReadUInt32BigEndian();
 
             return result;
-        }
-
-        [ContractInvariantMethod]
-        void ObjectInvariant()
-        {
-            Contract.Invariant(_buffer != null);
-            Contract.Invariant(_buffer.Length == 4);
         }
     }
 }

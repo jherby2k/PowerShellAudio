@@ -16,7 +16,6 @@
  */
 
 using System.Collections.Generic;
-using System.Diagnostics.Contracts;
 
 namespace PowerShellAudio
 {
@@ -27,7 +26,6 @@ namespace PowerShellAudio
     /// To add support for a new filter, an extension should implement this class, then decorate their implementation
     /// with the <see cref="SampleFilterExportAttribute"/> attribute so that it can be discovered at runtime.
     /// </remarks>
-    [ContractClass(typeof(SampleFilterContract))]
     public interface ISampleFilter : ISampleConsumer
     {
         /// <summary>

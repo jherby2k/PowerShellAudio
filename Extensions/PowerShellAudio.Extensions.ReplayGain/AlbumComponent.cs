@@ -16,9 +16,9 @@
  */
 
 using System;
-using System.Diagnostics.Contracts;
 using System.Threading;
 using System.Threading.Tasks.Dataflow;
+using JetBrains.Annotations;
 
 namespace PowerShellAudio.Extensions.ReplayGain
 {
@@ -29,32 +29,14 @@ namespace PowerShellAudio.Extensions.ReplayGain
         TransformBlock<Tuple<float, float>, Tuple<float, float>> _analyzeAlbumPeaksBlock;
         BroadcastBlock<Tuple<float, float>> _broadcastAlbumResultsBlock;
 
-        internal ITargetBlock<Tuple<float, float>> InputBlock
-        {
-            get
-            {
-                Contract.Ensures(Contract.Result<ITargetBlock<Tuple<float, float>>>() != null);
+        [NotNull]
+        internal ITargetBlock<Tuple<float, float>> InputBlock => _analyzeAlbumPeaksBlock;
 
-                return _analyzeAlbumPeaksBlock;
-            }
-        }
-
-        internal ISourceBlock<Tuple<float, float>> OutputBlock
-        {
-            get
-            {
-                Contract.Ensures(Contract.Result<ISourceBlock<Tuple<float, float>>>() != null);
-
-                return _broadcastAlbumResultsBlock;
-            }
-        }
+        [NotNull]
+        internal ISourceBlock<Tuple<float, float>> OutputBlock => _broadcastAlbumResultsBlock;
 
         internal AlbumComponent(int count)
         {
-            Contract.Requires(count > 0);
-            Contract.Ensures(_tracksStillProcessing == count);
-            Contract.Ensures(_tracksNotDisposed == count);
-
             _tracksStillProcessing = count;
             _tracksNotDisposed = count;
             InitializePipeline(count);
@@ -62,14 +44,11 @@ namespace PowerShellAudio.Extensions.ReplayGain
 
         internal bool SetTrackDisposed()
         {
-            return (Interlocked.Decrement(ref _tracksNotDisposed) == 0);
+            return Interlocked.Decrement(ref _tracksNotDisposed) == 0;
         }
 
         void InitializePipeline(int trackCount)
         {
-            Contract.Ensures(_analyzeAlbumPeaksBlock != null);
-            Contract.Ensures(_broadcastAlbumResultsBlock != null);
-
             var propagateLinkOptions = new DataflowLinkOptions { PropagateCompletion = true };
 
             // Calculate the album peak:

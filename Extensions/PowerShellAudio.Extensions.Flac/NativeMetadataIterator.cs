@@ -16,7 +16,7 @@
  */
 
 using System;
-using System.Diagnostics.Contracts;
+using JetBrains.Annotations;
 
 namespace PowerShellAudio.Extensions.Flac
 {
@@ -24,19 +24,13 @@ namespace PowerShellAudio.Extensions.Flac
     {
         readonly NativeMetadataIteratorHandle _handle = SafeNativeMethods.MetadataIteratorNew();
 
-        internal NativeMetadataIterator(NativeMetadataChainHandle chainHandle)
+        internal NativeMetadataIterator([NotNull] NativeMetadataChainHandle chainHandle)
         {
-            Contract.Requires(chainHandle != null);
-            Contract.Requires(!chainHandle.IsClosed);
-            Contract.Ensures(!_handle.IsClosed);
-
             SafeNativeMethods.MetadataIteratorInitialize(_handle, chainHandle);
         }
 
         internal IntPtr GetBlock()
         {
-            Contract.Ensures(Contract.Result<IntPtr>() != IntPtr.Zero);
-
             return SafeNativeMethods.MetadataIteratorGetBlock(_handle);
         }
 
@@ -50,11 +44,8 @@ namespace PowerShellAudio.Extensions.Flac
             return SafeNativeMethods.MetadataIteratorNext(_handle);
         }
 
-        internal bool InsertBlockAfter(NativeMetadataBlockHandle metadataBlock)
+        internal bool InsertBlockAfter([NotNull] NativeMetadataBlockHandle metadataBlock)
         {
-            Contract.Requires(metadataBlock != null);
-            Contract.Requires(!metadataBlock.IsClosed);
-
             return SafeNativeMethods.MetadataIteratorInsertBlockAfter(_handle, metadataBlock);
         }
 
@@ -69,12 +60,5 @@ namespace PowerShellAudio.Extensions.Flac
             if (disposing)
                 _handle.Dispose();
         }
-
-        [ContractInvariantMethod]
-        void ObjectInvariant()
-        {
-            Contract.Invariant(!_handle.IsInvalid);
-        }
-
     }
 }

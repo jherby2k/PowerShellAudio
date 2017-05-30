@@ -18,11 +18,11 @@
 using PowerShellAudio.Extensions.Apple.Properties;
 using System;
 using System.ComponentModel.Composition;
-using System.Diagnostics.Contracts;
 using System.Globalization;
 using System.IO;
 using System.Linq;
 using System.Runtime.InteropServices;
+using JetBrains.Annotations;
 
 namespace PowerShellAudio.Extensions.Apple
 {
@@ -38,26 +38,15 @@ namespace PowerShellAudio.Extensions.Apple
         NativeExtendedAudioFile _audioFile;
         int[] _buffer;
 
-        public SampleEncoderInfo EncoderInfo
+        [NotNull]
+        public SampleEncoderInfo EncoderInfo => _encoderInfo;
+
+        public void Initialize(
+            [NotNull] Stream stream, 
+            [NotNull] AudioInfo audioInfo, 
+            [NotNull] MetadataDictionary metadata,
+            [NotNull] SettingsDictionary settings)
         {
-            get
-            {
-                Contract.Ensures(Contract.Result<SampleEncoderInfo>() != null);
-
-                return _encoderInfo;
-            }
-        }
-
-        public void Initialize(Stream stream, AudioInfo audioInfo, MetadataDictionary metadata, SettingsDictionary settings)
-        {
-            Contract.Ensures(_stream != null);
-            Contract.Ensures(_stream == stream);
-            Contract.Ensures(_metadata != null);
-            Contract.Ensures(_metadata == metadata);
-            Contract.Ensures(_settings != null);
-            Contract.Ensures(_settings == settings);
-            Contract.Ensures(_audioFile != null);
-
             _stream = stream;
             _multiplier = (float)Math.Pow(2, audioInfo.BitsPerSample - 1);
             _metadata = metadata;
@@ -86,10 +75,8 @@ namespace PowerShellAudio.Extensions.Apple
 
         public bool ManuallyFreesSamples => false;
 
-        public void Submit(SampleCollection samples)
+        public void Submit([NotNull] SampleCollection samples)
         {
-            Contract.Ensures(_buffer != null);
-
             if (_buffer == null)
                 _buffer = new int[samples.SampleCount * samples.Channels];
 
@@ -154,10 +141,8 @@ namespace PowerShellAudio.Extensions.Apple
                 _audioFile?.Dispose();
         }
 
-        static AudioStreamBasicDescription GetInputDescription(AudioInfo audioInfo)
+        static AudioStreamBasicDescription GetInputDescription([NotNull] AudioInfo audioInfo)
         {
-            Contract.Requires(audioInfo != null);
-
             return new AudioStreamBasicDescription
             {
                 SampleRate = audioInfo.SampleRate,
@@ -173,7 +158,7 @@ namespace PowerShellAudio.Extensions.Apple
 
         static AudioStreamBasicDescription GetOutputDescription(AudioStreamBasicDescription inputDescription)
         {
-            var result = new AudioStreamBasicDescription()
+            var result = new AudioStreamBasicDescription
             {
                 SampleRate = inputDescription.SampleRate,
                 FramesPerPacket = 4096,

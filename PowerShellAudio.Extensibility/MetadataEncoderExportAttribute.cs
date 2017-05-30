@@ -17,9 +17,11 @@
 
 using System;
 using System.ComponentModel.Composition;
-using System.Diagnostics.Contracts;
+using System.Globalization;
 using System.IO;
 using System.Linq;
+using JetBrains.Annotations;
+using PowerShellAudio.Properties;
 
 namespace PowerShellAudio
 {
@@ -40,6 +42,7 @@ namespace PowerShellAudio
         /// <value>
         /// The file extension supported by the attributed <see cref="IMetadataEncoder"/>.
         /// </value>
+        [NotNull]
         public string Extension { get; }
 
         /// <summary>
@@ -54,27 +57,19 @@ namespace PowerShellAudio
         /// <exception cref="ArgumentException">
         /// Thrown if <paramref name="extension"/> is not a valid file extension.
         /// </exception>
-        public MetadataEncoderExportAttribute(string extension)
+        public MetadataEncoderExportAttribute([NotNull] string extension)
             : base(typeof(IMetadataEncoder))
         {
-            Contract.Requires<ArgumentNullException>(!string.IsNullOrEmpty(extension));
-            Contract.Requires<ArgumentException>(extension.StartsWith(".", StringComparison.OrdinalIgnoreCase));
-            Contract.Requires<ArgumentException>(!extension.Any(char.IsWhiteSpace));
-            Contract.Requires<ArgumentException>(!extension.Any(character => Path.GetInvalidFileNameChars().Contains(character)));
-            Contract.Requires<ArgumentException>(!extension.Any(char.IsUpper));
-            Contract.Ensures(Extension == extension);
+            if (extension == null) throw new ArgumentNullException(nameof(extension));
+            if (!extension.StartsWith(".", StringComparison.OrdinalIgnoreCase)
+                || extension.Any(char.IsWhiteSpace)
+                || extension.Any(character => Path.GetInvalidFileNameChars().Contains(character)))
+                throw new ArgumentException(
+                    string.Format(CultureInfo.CurrentCulture,
+                        Resources.AudioInfoDecoderExportAttributeExtensionIsInvalidError, extension),
+                    nameof(extension));
 
             Extension = extension;
-        }
-
-        [ContractInvariantMethod]
-        void ObjectInvariant()
-        {
-            Contract.Invariant(!string.IsNullOrEmpty(Extension));
-            Contract.Invariant(Extension.StartsWith(".", StringComparison.OrdinalIgnoreCase));
-            Contract.Invariant(!Extension.Any(char.IsWhiteSpace));
-            Contract.Invariant(!Extension.Any(character => Path.GetInvalidFileNameChars().Contains(character)));
-            Contract.Invariant(!Extension.Any(char.IsUpper));
         }
     }
 }

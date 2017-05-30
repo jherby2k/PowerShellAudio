@@ -16,9 +16,9 @@
  */
 
 using System;
-using System.Diagnostics.Contracts;
 using System.IO;
 using System.Runtime.InteropServices;
+using JetBrains.Annotations;
 
 namespace PowerShellAudio.Extensions.Flac
 {
@@ -26,13 +26,9 @@ namespace PowerShellAudio.Extensions.Flac
     {
         internal AudioInfo AudioInfo { get; private set; }
 
-        internal NativeStreamAudioInfoDecoder(Stream input)
+        internal NativeStreamAudioInfoDecoder([NotNull] Stream input)
             : base(input)
         {
-            Contract.Requires(input != null);
-            Contract.Requires(input.CanRead);
-            Contract.Requires(input.CanSeek);
-            Contract.Requires(input.Length > 0);
         }
 
         protected override void MetadataCallback(IntPtr handle, IntPtr metadata, IntPtr userData)

@@ -17,12 +17,14 @@
 
 using System;
 using System.Diagnostics.CodeAnalysis;
-using System.Diagnostics.Contracts;
 using System.Drawing;
 using System.Drawing.Drawing2D;
 using System.Drawing.Imaging;
+using System.Globalization;
 using System.IO;
 using System.Linq;
+using JetBrains.Annotations;
+using PowerShellAudio.Properties;
 
 namespace PowerShellAudio
 {
@@ -64,10 +66,10 @@ namespace PowerShellAudio
         /// <see cref="CoverArt" /> object.
         /// </summary>
         /// <param name="coverArt">The cover art.</param>
-        public ConvertibleCoverArt(CoverArt coverArt)
+        /// <exception cref="ArgumentNullException">Thrown if <paramref name="coverArt" /> is null.</exception>
+        public ConvertibleCoverArt([NotNull] CoverArt coverArt)
             : base(coverArt)
         {
-            Contract.Requires<ArgumentNullException>(coverArt != null);
         }
 
         /// <summary>
@@ -79,12 +81,13 @@ namespace PowerShellAudio
         /// <returns>
         /// The new <see cref="CoverArt" /> object.
         /// </returns>
+        [NotNull]
         public CoverArt Convert(int maxWidth = _defaultMaxWidth, bool convertToLossy = _defaultConvertToLossy, int quality = _defaultQuality)
         {
-            Contract.Requires<ArgumentOutOfRangeException>(maxWidth > 0);
-            Contract.Requires<ArgumentOutOfRangeException>(maxWidth <= 65535);
-            Contract.Requires<ArgumentOutOfRangeException>(quality >= 0);
-            Contract.Requires<ArgumentOutOfRangeException>(quality <= 100);
+            if (maxWidth <= 0 || maxWidth > 65535) throw new ArgumentOutOfRangeException(nameof(maxWidth), maxWidth,
+                string.Format(CultureInfo.CurrentCulture, Resources.ConvertibleCoverArtConvertMaxWidthOutOfRangeError, maxWidth));
+            if (quality < 0 || quality > 100) throw new ArgumentOutOfRangeException(nameof(quality), quality,
+                string.Format(CultureInfo.CurrentCulture, Resources.ConvertibleCoverArtConvertQualityOutOfRangeError, quality));
 
             using (var outputStream = new MemoryStream())
             using (var sourceStream = new MemoryStream(GetData()))
@@ -107,10 +110,8 @@ namespace PowerShellAudio
         }
 
         [SuppressMessage("Microsoft.Reliability", "CA2000:Dispose objects before losing scope", Justification = "Result should be disposed by the calling method")]
-        Image GetResizedImage(int maxWidth, MemoryStream sourceStream)
+        Image GetResizedImage(int maxWidth, [NotNull] MemoryStream sourceStream)
         {
-            Contract.Requires(maxWidth > 0);
-
             // If maxWidth isn't exceeded, just return the original image:
             if (Width <= maxWidth)
                 return Image.FromStream(sourceStream);

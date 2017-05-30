@@ -16,50 +16,23 @@
  */
 
 using System.Collections.Generic;
-using System.Diagnostics.Contracts;
 
 namespace PowerShellAudio.Extensions.Mp4
 {
     class ItunesMetadataEncoderInfo : MetadataEncoderInfo
     {
-        public override string Format
+        public override string Format => "MP4 (iTunes)";
+
+        public override string FileExtension => ".m4a";
+
+        public override SettingsDictionary DefaultSettings => new SettingsDictionary
         {
-            get
-            {
-                Contract.Ensures(!string.IsNullOrEmpty(Contract.Result<string>()));
+            { "AddSoundCheck", bool.FalseString }
+        };
 
-                return "MP4 (iTunes)";
-            }
-        }
-
-        public override string FileExtension
+        public override IReadOnlyCollection<string> AvailableSettings => new List<string>
         {
-            get
-            {
-                Contract.Ensures(!string.IsNullOrEmpty(Contract.Result<string>()));
-
-                return ".m4a";
-            }
-        }
-
-        public override SettingsDictionary DefaultSettings
-        {
-            get
-            {
-                Contract.Ensures(Contract.Result<SettingsDictionary>() != null);
-
-                return new SettingsDictionary { { "AddSoundCheck", bool.FalseString } };
-            }
-        }
-
-        public override IReadOnlyCollection<string> AvailableSettings
-        {
-            get
-            {
-                Contract.Ensures(Contract.Result<IReadOnlyCollection<string>>() != null);
-
-                return new List<string> { "AddSoundCheck", "CreationTime" };
-            }
-        }
+            "AddSoundCheck", "CreationTime"
+        };
     }
 }

@@ -18,7 +18,6 @@
 using PowerShellAudio.Extensions.Vorbis.Properties;
 using System;
 using System.Diagnostics.CodeAnalysis;
-using System.Diagnostics.Contracts;
 using System.Globalization;
 using System.IO;
 using System.Runtime.InteropServices;
@@ -32,8 +31,6 @@ namespace PowerShellAudio.Extensions.Vorbis
 
         internal NativeVorbisDecoder()
         {
-            Contract.Ensures(_info != IntPtr.Zero);
-
             _info = Marshal.AllocHGlobal(Marshal.SizeOf(typeof(VorbisInfo)));
             SafeNativeMethods.VorbisInfoInitialize(_info);
         }

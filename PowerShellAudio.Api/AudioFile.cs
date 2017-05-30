@@ -18,9 +18,10 @@
 using PowerShellAudio.Properties;
 using System;
 using System.ComponentModel.Composition;
-using System.Diagnostics.Contracts;
+using System.Globalization;
 using System.IO;
 using System.Linq;
+using JetBrains.Annotations;
 
 namespace PowerShellAudio
 {
@@ -42,6 +43,7 @@ namespace PowerShellAudio
         /// <value>
         /// The file information.
         /// </value>
+        [NotNull]
         public FileInfo FileInfo { get; private set; }
 
         /// <summary>
@@ -50,6 +52,7 @@ namespace PowerShellAudio
         /// <value>
         /// The audio information.
         /// </value>
+        [NotNull]
         public AudioInfo AudioInfo { get; private set; }
 
         /// <summary>
@@ -57,17 +60,9 @@ namespace PowerShellAudio
         /// </summary>
         /// <param name="audioFile">The audio file to copy.</param>
         /// <exception cref="ArgumentNullException">Thrown if <paramref name="audioFile"/> is null.</exception>
-        /// <exception cref="ArgumentException">Thrown if <paramref name="audioFile"/> does not have a file extension.</exception>
-        /// <exception cref="ArgumentOutOfRangeException">Thrown if <paramref name="audioFile"/> is an empty file.</exception>
-        /// <exception cref="FileNotFoundException">Thrown if <paramref name="audioFile"/> does not exist.</exception>
-        public AudioFile(AudioFile audioFile)
+        public AudioFile([NotNull] AudioFile audioFile)
         {
-            Contract.Requires<ArgumentNullException>(audioFile != null);
-            Contract.Requires<ArgumentException>(audioFile.FileInfo != null);
-            Contract.Requires<ArgumentException>(!string.IsNullOrEmpty(audioFile.FileInfo.Extension));
-            Contract.Requires<FileNotFoundException>(audioFile.FileInfo.Exists);
-            Contract.Requires<ArgumentOutOfRangeException>(audioFile.FileInfo.Length > 0);
-            Contract.Requires<ArgumentException>(audioFile.AudioInfo != null);
+            if (audioFile == null) throw new ArgumentNullException(nameof(audioFile));
 
             FileInfo = audioFile.FileInfo;
             AudioInfo = audioFile.AudioInfo;
@@ -78,39 +73,48 @@ namespace PowerShellAudio
         /// </summary>
         /// <param name="fileInfo">The file information.</param>
         /// <exception cref="ArgumentNullException">Thrown if <paramref name="fileInfo"/> is null.</exception>
-        /// <exception cref="ArgumentException">Thrown if <paramref name="fileInfo"/> does not have an extension.</exception>
-        /// <exception cref="ArgumentOutOfRangeException">Thrown if <paramref name="fileInfo"/> is an empty file.</exception>
-        /// <exception cref="FileNotFoundException">Thrown if <paramref name="fileInfo"/> does not exist.</exception>
+        /// <exception cref="ArgumentException">
+        /// Thrown if <paramref name="fileInfo"/> does not have an extension, the file does not exist, or the file is empty.
+        /// </exception>
         /// <exception cref="UnsupportedAudioException">
         /// Thrown if no available extensions are able to read the file.
         /// </exception>
         /// <exception cref="IOException">Thrown if an error occurs while reading the file stream.</exception>
-        public AudioFile(FileInfo fileInfo)
+        public AudioFile([NotNull] FileInfo fileInfo)
         {
-            Contract.Requires<ArgumentNullException>(fileInfo != null);
-            Contract.Requires<ArgumentException>(!string.IsNullOrEmpty(fileInfo.Extension));
-            Contract.Requires<FileNotFoundException>(fileInfo.Exists);
-            Contract.Requires<ArgumentOutOfRangeException>(fileInfo.Length > 0);
-            Contract.Ensures(FileInfo != null);
-            Contract.Ensures(FileInfo == fileInfo);
-            Contract.Ensures(AudioInfo != null);
+            if (fileInfo == null) throw new ArgumentNullException(nameof(fileInfo));
+            if (string.IsNullOrEmpty(fileInfo.Extension))
+                throw new ArgumentException(
+                    string.Format(CultureInfo.CurrentCulture, Resources.AudioFileEmptyExtensionError, fileInfo),
+                    nameof(fileInfo));
+            if (!fileInfo.Exists)
+                throw new ArgumentException(
+                    string.Format(CultureInfo.CurrentCulture, Resources.AudioFileFileDoesNotExistError, fileInfo),
+                    nameof(fileInfo));
+            if (fileInfo.Length == 0)
+                throw new ArgumentException(
+                    string.Format(CultureInfo.CurrentCulture, Resources.AudioFileFileIsEmptyError, fileInfo),
+                    nameof(fileInfo));
 
             FileInfo = fileInfo;
-            LoadAudioInfo();
+            AudioInfo = LoadAudioInfo(fileInfo);
         }
 
         /// <summary>
         /// Renames the <see cref="AudioFile"/> in it's current directory.
         /// </summary>
         /// <param name="fileName">The new, unqualified name of the file.</param>
-        /// <exception cref="ArgumentNullException">Thrown if <paramref name="fileName"/> is null or empty.</exception>
-        /// <exception cref="ArgumentException">Thrown if <paramref name="fileName"/> contains path information.</exception>
-        public void Rename(string fileName)
+        /// <exception cref="ArgumentNullException">
+        /// Thrown if <paramref name="fileName"/> is null, empty, or contains path information.
+        /// </exception>
+        public void Rename([NotNull] string fileName)
         {
-            Contract.Requires<ArgumentNullException>(!string.IsNullOrEmpty(fileName));
-            Contract.Requires<ArgumentException>(!fileName.Contains(Path.DirectorySeparatorChar));
-            Contract.Ensures(!string.IsNullOrEmpty(FileInfo.Extension));
-            Contract.Ensures(FileInfo.Exists);
+            if (string.IsNullOrEmpty(fileName))
+                throw new ArgumentException(Resources.AudioFileRenameFileNameIsEmptyError, nameof(fileName));
+            if (fileName.Contains(Path.DirectorySeparatorChar))
+                throw new ArgumentException(
+                    string.Format(CultureInfo.CurrentCulture, Resources.AudioFileRenameFileNameContainsPathError, fileName),
+                    nameof(fileName));
 
             string newFileName = Path.Combine(FileInfo.DirectoryName ?? string.Empty, fileName);
 
@@ -119,25 +123,22 @@ namespace PowerShellAudio
                 newFileName += FileInfo.Extension;
 
             FileInfo.MoveTo(newFileName);
-
             FileInfo = new FileInfo(newFileName);
         }
 
-        void LoadAudioInfo()
+        [NotNull]
+        static AudioInfo LoadAudioInfo([NotNull] FileInfo fileInfo)
         {
-            Contract.Ensures(AudioInfo != null);
-
-            using (FileStream fileStream = FileInfo.OpenRead())
+            using (FileStream fileStream = fileInfo.OpenRead())
             {
                 // Try each info decoder that supports this file extension:
                 foreach (ExportFactory<IAudioInfoDecoder> decoderFactory in
-                    ExtensionProvider.GetFactories<IAudioInfoDecoder>("Extension", FileInfo.Extension))
+                    ExtensionProvider.GetFactories<IAudioInfoDecoder>("Extension", fileInfo.Extension))
                 {
                     try
                     {
                         using (ExportLifetimeContext<IAudioInfoDecoder> lifetimeContext = decoderFactory.CreateExport())
-                            AudioInfo = lifetimeContext.Value.ReadAudioInfo(fileStream);
-                        return;
+                            return lifetimeContext.Value.ReadAudioInfo(fileStream);
                     }
                     catch (UnsupportedAudioException)
                     {

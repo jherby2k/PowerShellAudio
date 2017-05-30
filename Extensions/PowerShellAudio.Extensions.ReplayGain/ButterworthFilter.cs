@@ -16,13 +16,13 @@
  */
 
 using System.Diagnostics.CodeAnalysis;
-using System.Diagnostics.Contracts;
 
 namespace PowerShellAudio.Extensions.ReplayGain
 {
     class ButterworthFilter : EqualLoudnessFilter
     {
-        [SuppressMessage("Microsoft.Performance", "CA1814:PreferJaggedArraysOverMultidimensional", MessageId = "Member", Justification = "Does not waste space")] static readonly float[,] _a =
+        [SuppressMessage("Microsoft.Performance", "CA1814:PreferJaggedArraysOverMultidimensional", MessageId = "Member", Justification = "Does not waste space")]
+        static readonly float[,] _a =
         {
             { 0.986211925f, -1.97242385f, 0.986211925f },
             { 0.985001758f, -1.97000352f, 0.985001758f },
@@ -39,7 +39,8 @@ namespace PowerShellAudio.Extensions.ReplayGain
             { 0.945976856f, -1.89195371f, 0.945976856f }
         };
 
-        [SuppressMessage("Microsoft.Performance", "CA1814:PreferJaggedArraysOverMultidimensional", MessageId = "Member", Justification = "Does not waste space")] static readonly float[,] _b =
+        [SuppressMessage("Microsoft.Performance", "CA1814:PreferJaggedArraysOverMultidimensional", MessageId = "Member", Justification = "Does not waste space")]
+        static readonly float[,] _b =
         {
             { -1.97223373f, 0.972613969f },
             { -1.96977856f, 0.970228476f },

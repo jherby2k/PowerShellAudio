@@ -16,8 +16,8 @@
  */
 
 using System;
-using System.Diagnostics.Contracts;
 using System.Runtime.Serialization;
+using JetBrains.Annotations;
 
 namespace PowerShellAudio
 {
@@ -41,12 +41,9 @@ namespace PowerShellAudio
         /// Initializes a new instance of the <see cref="UnsupportedAudioException"/> class.
         /// </summary>
         /// <param name="message">The message that describes the error.</param>
-        /// <exception cref="ArgumentNullException">Thrown if <paramref name="message"/> is null or empty.</exception>
-        public UnsupportedAudioException(string message)
+        public UnsupportedAudioException([CanBeNull] string message)
             : base(message)
         {
-            Contract.Requires<ArgumentNullException>(!string.IsNullOrEmpty(message));
-            Contract.Ensures(base.Message == message);
         }
 
         /// <summary>
@@ -57,13 +54,9 @@ namespace PowerShellAudio
         /// The exception that is the cause of the current exception, or a null reference (Nothing in Visual Basic) if
         /// no inner exception is specified.
         /// </param>
-        /// <exception cref="ArgumentNullException">Thrown if <paramref name="message"/> is null or empty.</exception>
-        public UnsupportedAudioException(string message, Exception innerException)
+        public UnsupportedAudioException([CanBeNull] string message, [CanBeNull] Exception innerException)
             : base(message, innerException)
         {
-            Contract.Requires<ArgumentNullException>(!string.IsNullOrEmpty(message));
-            Contract.Ensures(base.Message == message);
-            Contract.Ensures(base.InnerException == innerException);
         }
 
         /// <summary>
@@ -75,11 +68,9 @@ namespace PowerShellAudio
         /// <param name="context">
         /// The <see cref="StreamingContext"/> that contains contextual information about the source or destination.
         /// </param>
-        /// <exception cref="ArgumentNullException">Thrown if <paramref name="info"/> is null.</exception>
-        protected UnsupportedAudioException(SerializationInfo info, StreamingContext context)
+        protected UnsupportedAudioException([NotNull] SerializationInfo info, StreamingContext context)
             : base(info, context)
         {
-            Contract.Requires<ArgumentNullException>(info != null);
         }
     }
 }

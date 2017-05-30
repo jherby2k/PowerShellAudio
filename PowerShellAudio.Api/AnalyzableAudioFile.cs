@@ -19,11 +19,11 @@ using PowerShellAudio.Properties;
 using System;
 using System.ComponentModel.Composition;
 using System.Diagnostics.CodeAnalysis;
-using System.Diagnostics.Contracts;
 using System.Globalization;
 using System.IO;
 using System.Linq;
 using System.Threading;
+using JetBrains.Annotations;
 
 namespace PowerShellAudio
 {
@@ -45,10 +45,9 @@ namespace PowerShellAudio
         /// </summary>
         /// <param name="audioFile">The audio file to copy.</param>
         /// <exception cref="ArgumentNullException">Thrown if <paramref name="audioFile"/> is null.</exception>
-        public AnalyzableAudioFile(AudioFile audioFile)
+        public AnalyzableAudioFile([NotNull] AudioFile audioFile)
             : base(audioFile)
         {
-            Contract.Requires<ArgumentNullException>(audioFile != null);
         }
 
         /// <summary>
@@ -56,20 +55,16 @@ namespace PowerShellAudio
         /// </summary>
         /// <param name="fileInfo">The file information.</param>
         /// <exception cref="ArgumentNullException">Thrown if <paramref name="fileInfo"/> is null.</exception>
-        /// <exception cref="ArgumentException">Thrown if <paramref name="fileInfo"/> does not have an extension.</exception>
-        /// <exception cref="ArgumentOutOfRangeException">Thrown if <paramref name="fileInfo"/> is an empty file.</exception>
-        /// <exception cref="FileNotFoundException">Thrown if <paramref name="fileInfo"/> does not exist.</exception>
+        /// <exception cref="ArgumentException">
+        /// Thrown if <paramref name="fileInfo"/> does not have an extension, the file does not exist, or the file is empty.
+        /// </exception>
         /// <exception cref="UnsupportedAudioException">
         /// Thrown if no available extensions are able to read the file.
         /// </exception>
         /// <exception cref="IOException">Thrown if an error occurs while reading the file stream.</exception>
-        public AnalyzableAudioFile(FileInfo fileInfo)
+        public AnalyzableAudioFile([NotNull] FileInfo fileInfo)
             : base(fileInfo)
         {
-            Contract.Requires<ArgumentNullException>(fileInfo != null);
-            Contract.Requires<ArgumentException>(!string.IsNullOrEmpty(fileInfo.Extension));
-            Contract.Requires<FileNotFoundException>(fileInfo.Exists);
-            Contract.Requires<ArgumentOutOfRangeException>(fileInfo.Length > 0);
         }
 
         /// <summary>
@@ -84,10 +79,8 @@ namespace PowerShellAudio
         /// </exception>
         /// <exception cref="InvalidOperationException">Thrown if an analyzer with the specified name could not be found.</exception>
         /// <exception cref="UnsupportedAudioException">Thrown if no decoders were able to read this file.</exception>
-        public void Analyze(string analyzer, GroupToken groupToken = null)
+        public void Analyze([NotNull] string analyzer, [CanBeNull] GroupToken groupToken = null)
         {
-            Contract.Requires<ArgumentNullException>(!string.IsNullOrEmpty(analyzer));
-
             Analyze(analyzer, CancellationToken.None, groupToken);
         }
 
@@ -106,9 +99,10 @@ namespace PowerShellAudio
         /// <exception cref="UnsupportedAudioException">Thrown if no decoders were able to read this file.</exception>
         /// <exception cref="OperationCanceledException">Throw if the operation was canceled.</exception>
         [SuppressMessage("Microsoft.Reliability", "CA2000:Dispose objects before losing scope", Justification = "Group token should only be disposed when owned by this method.")]
-        public void Analyze(string analyzer, CancellationToken cancelToken, GroupToken groupToken = null)
+        public void Analyze([NotNull] string analyzer, CancellationToken cancelToken, [CanBeNull] GroupToken groupToken = null)
         {
-            Contract.Requires<ArgumentNullException>(!string.IsNullOrEmpty(analyzer));
+            if (string.IsNullOrEmpty(analyzer))
+                throw new ArgumentException(Resources.AnalyzableAudioFileAnalyzeAnalyzerIsEmptyError, nameof(analyzer));
 
             var groupTokenOwned = false;
             try
@@ -136,11 +130,8 @@ namespace PowerShellAudio
             }
         }
 
-        void DoAnalyze(ISampleAnalyzer sampleAnalyzer, CancellationToken cancelToken, GroupToken groupToken)
+        void DoAnalyze([NotNull] ISampleAnalyzer sampleAnalyzer, CancellationToken cancelToken, [NotNull] GroupToken groupToken)
         {
-            Contract.Requires(sampleAnalyzer != null);
-            Contract.Requires(groupToken != null);
-
             sampleAnalyzer.Initialize(AudioInfo, groupToken);
 
             using (FileStream fileStream = FileInfo.OpenRead())

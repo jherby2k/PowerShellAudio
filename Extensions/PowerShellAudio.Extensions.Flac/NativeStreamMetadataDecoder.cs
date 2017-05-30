@@ -16,26 +16,21 @@
  */
 
 using System;
-using System.Diagnostics.Contracts;
 using System.IO;
 using System.Runtime.InteropServices;
 using System.Text;
+using JetBrains.Annotations;
 
 namespace PowerShellAudio.Extensions.Flac
 {
     class NativeStreamMetadataDecoder : NativeStreamDecoder
     {
+        [NotNull]
         internal MetadataDictionary Metadata { get; }
 
-        internal NativeStreamMetadataDecoder(Stream input)
+        internal NativeStreamMetadataDecoder([NotNull] Stream input)
             : base(input)
         {
-            Contract.Requires(input != null);
-            Contract.Requires(input.CanRead);
-            Contract.Requires(input.CanSeek);
-            Contract.Requires(input.Length > 0);
-            Contract.Ensures(Metadata != null);
-
             Metadata = new MetadataDictionary();
         }
 
@@ -53,7 +48,6 @@ namespace PowerShellAudio.Extensions.Flac
                         var commentBytes = new byte[entry.Length];
                         Marshal.Copy(entry.Entry, commentBytes, 0, commentBytes.Length);
                         string[] comment = Encoding.UTF8.GetString(commentBytes).Split(new[] { '=' }, 2);
-                        Contract.Assert(comment.Length == 2);
                         commentAdapter[comment[0]] = comment[1];
                     }
                     commentAdapter.CopyTo(Metadata);
@@ -74,12 +68,6 @@ namespace PowerShellAudio.Extensions.Flac
                     }
                     break;
             }
-        }
-
-        [ContractInvariantMethod]
-        void ObjectInvariant()
-        {
-            Contract.Invariant(Metadata != null);
         }
     }
 }

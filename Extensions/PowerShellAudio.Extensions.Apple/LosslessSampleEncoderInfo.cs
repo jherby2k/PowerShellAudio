@@ -19,7 +19,6 @@ using PowerShellAudio.Extensions.Apple.Properties;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.Composition;
-using System.Diagnostics.Contracts;
 using System.Globalization;
 using System.Linq;
 
@@ -27,25 +26,9 @@ namespace PowerShellAudio.Extensions.Apple
 {
     class LosslessSampleEncoderInfo : SampleEncoderInfo
     {
-        public override string Name
-        {
-            get
-            {
-                Contract.Ensures(!string.IsNullOrEmpty(Contract.Result<string>()));
+        public override string Name => "Apple Lossless";
 
-                return "Apple Lossless";
-            }
-        }
-
-        public override string FileExtension
-        {
-            get
-            {
-                Contract.Ensures(!string.IsNullOrEmpty(Contract.Result<string>()));
-
-                return ".m4a";
-            }
-        }
+        public override string FileExtension => ".m4a";
 
         public override bool IsLossless => true;
 
@@ -53,8 +36,6 @@ namespace PowerShellAudio.Extensions.Apple
         {
             get
             {
-                Contract.Ensures(Contract.Result<string>() != null);
-
                 try
                 {
                     return string.Format(CultureInfo.CurrentCulture, Resources.SampleEncoderDescription,
@@ -71,16 +52,12 @@ namespace PowerShellAudio.Extensions.Apple
         {
             get
             {
-                Contract.Ensures(Contract.Result<SettingsDictionary>() != null);
-
                 // Call the external MP4 encoder for writing iTunes-compatible atoms:
                 ExportFactory<IMetadataEncoder> metadataEncoderFactory =
                     ExtensionProvider.GetFactories<IMetadataEncoder>("Extension", FileExtension).SingleOrDefault();
-                if (metadataEncoderFactory != null)
-                    using (ExportLifetimeContext<IMetadataEncoder> metadataEncoderLifetime = metadataEncoderFactory.CreateExport())
-                        return metadataEncoderLifetime.Value.EncoderInfo.DefaultSettings;
-
-                return new SettingsDictionary();
+                if (metadataEncoderFactory == null) return new SettingsDictionary();
+                using (ExportLifetimeContext<IMetadataEncoder> metadataEncoderLifetime = metadataEncoderFactory.CreateExport())
+                    return metadataEncoderLifetime.Value.EncoderInfo.DefaultSettings;
             }
         }
 
@@ -88,16 +65,12 @@ namespace PowerShellAudio.Extensions.Apple
         {
             get
             {
-                Contract.Ensures(Contract.Result<IReadOnlyCollection<string>>() != null);
-
                 // Call the external MP4 encoder for writing iTunes-compatible atoms:
                 ExportFactory<IMetadataEncoder> metadataEncoderFactory =
                     ExtensionProvider.GetFactories<IMetadataEncoder>("Extension", FileExtension).SingleOrDefault();
-                if (metadataEncoderFactory != null)
-                    using (ExportLifetimeContext<IMetadataEncoder> metadataEncoderLifetime = metadataEncoderFactory.CreateExport())
-                        return metadataEncoderLifetime.Value.EncoderInfo.AvailableSettings;
-
-                return new List<string>(0);
+                if (metadataEncoderFactory == null) return new List<string>(0);
+                using (ExportLifetimeContext<IMetadataEncoder> metadataEncoderLifetime = metadataEncoderFactory.CreateExport())
+                    return metadataEncoderLifetime.Value.EncoderInfo.AvailableSettings;
             }
         }
     }

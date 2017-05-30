@@ -15,7 +15,7 @@
  * <http://www.gnu.org/licenses/>.
  */
 
-using System.Diagnostics.Contracts;
+using JetBrains.Annotations;
 
 namespace PowerShellAudio.Extensions.ReplayGain
 {
@@ -25,17 +25,12 @@ namespace PowerShellAudio.Extensions.ReplayGain
 
         internal SampleRateConverter(int sampleRate)
         {
-            Contract.Ensures(_divisor > 0);
-
             _divisor = GetDivisor(sampleRate);
         }
 
-        internal SampleCollection Convert(SampleCollection input)
+        [NotNull]
+        internal SampleCollection Convert([NotNull] SampleCollection input)
         {
-            Contract.Requires(input != null);
-            Contract.Ensures(Contract.Result<SampleCollection>() != null);
-            Contract.Ensures(Contract.Result<SampleCollection>().SampleCount == input.SampleCount / _divisor);
-
             if (_divisor == 1 || input.IsLast)
                 return input;
 
@@ -55,8 +50,6 @@ namespace PowerShellAudio.Extensions.ReplayGain
 
         static int GetDivisor(int sampleRate)
         {
-            Contract.Ensures(Contract.Result<int>() > 0);
-
             switch (sampleRate)
             {
                 case 192000:
@@ -75,12 +68,6 @@ namespace PowerShellAudio.Extensions.ReplayGain
                 default:
                     return 1;
             }
-        }
-
-        [ContractInvariantMethod]
-        void ObjectInvariant()
-        {
-            Contract.Invariant(_divisor > 0);
         }
     }
 }

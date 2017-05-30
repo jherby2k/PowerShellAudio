@@ -19,9 +19,9 @@ using PowerShellAudio.Extensions.Flac.Properties;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
-using System.Diagnostics.Contracts;
 using System.Globalization;
 using System.IO;
+using JetBrains.Annotations;
 
 namespace PowerShellAudio.Extensions.Flac
 {
@@ -35,23 +35,16 @@ namespace PowerShellAudio.Extensions.Flac
         float _multiplier;
         int[] _buffer;
 
-        public SampleEncoderInfo EncoderInfo
-        {
-            get
-            {
-                Contract.Ensures(Contract.Result<SampleEncoderInfo>() != null);
-
-                return _encoderInfo;
-            }
-        }
+        [NotNull]
+        public SampleEncoderInfo EncoderInfo => _encoderInfo;
 
         [SuppressMessage("Microsoft.Reliability", "CA2000:Dispose objects before losing scope", Justification = "Native blocks are added to a collection for disposal later.")]
-        public void Initialize(Stream stream, AudioInfo audioInfo, MetadataDictionary metadata, SettingsDictionary settings)
+        public void Initialize(
+            [NotNull] Stream stream,
+            [NotNull] AudioInfo audioInfo,
+            [NotNull] MetadataDictionary metadata,
+            [NotNull] SettingsDictionary settings)
         {
-            Contract.Ensures(_encoder != null);
-            Contract.Ensures(_encoder.GetState() == EncoderState.Ok);
-            Contract.Ensures(_multiplier > 0);
-
             _encoder = InitializeEncoder(audioInfo, stream);
             _metadataBlocks = new List<NativeMetadataBlock>(3); // Assumes one metadata block, one picture and one seek table
             _multiplier = (float)Math.Pow(2, audioInfo.BitsPerSample - 1);
@@ -95,10 +88,8 @@ namespace PowerShellAudio.Extensions.Flac
 
         public bool ManuallyFreesSamples => false;
 
-        public void Submit(SampleCollection samples)
+        public void Submit([NotNull] SampleCollection samples)
         {
-            Contract.Ensures(_buffer != null);
-
             if (!samples.IsLast)
             {
                 if (_buffer == null)
@@ -143,19 +134,9 @@ namespace PowerShellAudio.Extensions.Flac
                 metadataBlock.Dispose();
         }
 
-        [ContractInvariantMethod]
-        void ObjectInvariant()
+        [NotNull]
+        static NativeStreamEncoder InitializeEncoder([NotNull] AudioInfo audioInfo, [NotNull] Stream output)
         {
-            Contract.Invariant(_multiplier >= 0);
-        }
-
-        static NativeStreamEncoder InitializeEncoder(AudioInfo audioInfo, Stream output)
-        {
-            Contract.Requires(audioInfo != null);
-            Contract.Requires(output != null);
-            Contract.Requires(output.CanWrite);
-            Contract.Requires(output.CanSeek);
-
             var result = new NativeStreamEncoder(output);
 
             result.SetChannels((uint)audioInfo.Channels);

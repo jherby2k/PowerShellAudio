@@ -17,10 +17,10 @@
 
 using PowerShellAudio.Extensions.Mp4.Properties;
 using System;
-using System.Diagnostics.Contracts;
 using System.Globalization;
 using System.IO;
 using System.Linq;
+using JetBrains.Annotations;
 
 namespace PowerShellAudio.Extensions.Mp4
 {
@@ -29,17 +29,13 @@ namespace PowerShellAudio.Extensions.Mp4
     {
         static readonly MetadataEncoderInfo _encoderInfo = new ItunesMetadataEncoderInfo();
 
-        public MetadataEncoderInfo EncoderInfo
-        {
-            get
-            {
-                Contract.Ensures(Contract.Result<MetadataEncoderInfo>() != null);
+        [NotNull]
+        public MetadataEncoderInfo EncoderInfo => _encoderInfo;
 
-                return _encoderInfo;
-            }
-        }
-
-        public void WriteMetadata(Stream stream, MetadataDictionary metadata, SettingsDictionary settings)
+        public void WriteMetadata(
+            [NotNull] Stream stream, 
+            [NotNull] MetadataDictionary metadata,
+            [NotNull] SettingsDictionary settings)
         {
             var originalMp4 = new Mp4(stream);
             AtomInfo[] topAtoms = originalMp4.GetChildAtomInfo();
@@ -66,9 +62,8 @@ namespace PowerShellAudio.Extensions.Mp4
                 tempMp4.UpdateAtomSizes((uint)tempStream.Length - tempMp4.CurrentAtom.End);
 
                 // Update the creation times if they're being set explicitly:
-                DateTime creationTime;
                 if (!string.IsNullOrEmpty(settings["CreationTime"]))
-                    if (DateTime.TryParse(settings["CreationTime"], out creationTime))
+                    if (DateTime.TryParse(settings["CreationTime"], out DateTime creationTime))
                         UpdateCreationTimes(creationTime, tempMp4);
                     else
                         throw new InvalidSettingException(string.Format(CultureInfo.CurrentCulture,
@@ -90,13 +85,12 @@ namespace PowerShellAudio.Extensions.Mp4
             }
         }
 
-        static byte[] GenerateIlst(Mp4 originalMp4, MetadataDictionary metadata, SettingsDictionary settings)
+        [NotNull]
+        static byte[] GenerateIlst(
+            [NotNull] Mp4 originalMp4, 
+            [NotNull] MetadataDictionary metadata,
+            [NotNull] SettingsDictionary settings)
         {
-            Contract.Requires(originalMp4 != null);
-            Contract.Requires(metadata != null);
-            Contract.Requires(settings != null);
-            Contract.Ensures(Contract.Result<byte[]>() != null);
-
             using (var resultStream = new MemoryStream())
             {
                 var adaptedMetadata = new MetadataToAtomAdapter(metadata, settings);
@@ -131,10 +125,8 @@ namespace PowerShellAudio.Extensions.Mp4
             }
         }
 
-        static void UpdateCreationTimes(DateTime creationTime, Mp4 mp4)
+        static void UpdateCreationTimes(DateTime creationTime, [NotNull] Mp4 mp4)
         {
-            Contract.Requires(mp4 != null);
-
             mp4.UpdateMvhd(creationTime, creationTime);
             mp4.UpdateTkhd(creationTime, creationTime);
             mp4.UpdateMdhd(creationTime, creationTime);

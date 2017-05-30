@@ -16,8 +16,9 @@
  */
 
 using System;
-using System.Diagnostics.Contracts;
+using System.Globalization;
 using System.Threading;
+using PowerShellAudio.Properties;
 
 namespace PowerShellAudio
 {
@@ -44,9 +45,8 @@ namespace PowerShellAudio
         /// <exception cref="ArgumentOutOfRangeException">Thrown if <paramref name="count"/> is less than 1.</exception>
         public GroupToken(int count)
         {
-            Contract.Requires<ArgumentOutOfRangeException>(count > 0);
-            Contract.Ensures(_remainingMembers == count);
-            Contract.Ensures(Count == count);
+            if (count < 1) throw new ArgumentOutOfRangeException(nameof(count), count,
+                string.Format(CultureInfo.CurrentCulture, Resources.GroupTokenCountIsOutOfRangeError, count));
 
             _remainingMembers = count;
             Count = count;
@@ -58,8 +58,6 @@ namespace PowerShellAudio
         /// </summary>
         public void CompleteMember()
         {
-            Contract.Ensures(_remainingMembers == Contract.OldValue<int>(_remainingMembers) - 1);
-
             if (Interlocked.Decrement(ref _remainingMembers) <= 0)
                 _resetEvent.Set();
         }
@@ -92,12 +90,6 @@ namespace PowerShellAudio
         {
             if (disposing)
                 _resetEvent.Dispose();
-        }
-
-        [ContractInvariantMethod]
-        void ObjectInvariant()
-        {
-            Contract.Invariant(Count > 0);
         }
     }
 }

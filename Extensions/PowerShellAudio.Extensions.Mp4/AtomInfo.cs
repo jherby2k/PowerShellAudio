@@ -15,7 +15,7 @@
  * <http://www.gnu.org/licenses/>.
  */
 
-using System.Diagnostics.Contracts;
+using JetBrains.Annotations;
 
 namespace PowerShellAudio.Extensions.Mp4
 {
@@ -29,24 +29,11 @@ namespace PowerShellAudio.Extensions.Mp4
 
         internal string FourCC { get; }
 
-        internal AtomInfo(uint start, uint size, string fourCC)
+        internal AtomInfo(uint start, uint size, [NotNull] string fourCC)
         {
-            Contract.Requires(!string.IsNullOrEmpty(fourCC));
-            Contract.Requires(fourCC.Length == 4);
-            Contract.Ensures(Start == start);
-            Contract.Ensures(Size == size);
-            Contract.Ensures(FourCC == fourCC);
-
             Start = start;
             Size = size;
             FourCC = fourCC;
-        }
-
-        [ContractInvariantMethod]
-        void ObjectInvariant()
-        {
-            Contract.Invariant(!string.IsNullOrEmpty(FourCC));
-            Contract.Invariant(FourCC.Length == 4);
         }
     }
 }

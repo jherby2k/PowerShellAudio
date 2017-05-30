@@ -16,7 +16,7 @@
  */
 
 using Id3Lib.Frames;
-using System.Diagnostics.Contracts;
+using JetBrains.Annotations;
 
 namespace PowerShellAudio.Extensions.Id3
 {
@@ -25,25 +25,21 @@ namespace PowerShellAudio.Extensions.Id3
         string _day;
         string _month;
 
+        [CanBeNull]
         internal string Day
         {
             set
             {
-                Contract.Requires(!string.IsNullOrEmpty(value));
-                Contract.Requires(value.Length == 2);
-
                 _day = value;
                 Text = GetText();
             }
         }
 
+        [CanBeNull]
         internal string Month
         {
             set
             {
-                Contract.Requires(!string.IsNullOrEmpty(value));
-                Contract.Requires(value.Length == 2);
-
                 _month = value;
                 Text = GetText();
             }
@@ -53,6 +49,7 @@ namespace PowerShellAudio.Extensions.Id3
             : base("TDAT")
         { }
 
+        [NotNull]
         string GetText()
         {
             if (string.IsNullOrEmpty(_day) || string.IsNullOrEmpty(_month))

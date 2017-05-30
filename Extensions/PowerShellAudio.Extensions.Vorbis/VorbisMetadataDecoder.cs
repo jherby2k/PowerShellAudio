@@ -17,19 +17,17 @@
 
 using PowerShellAudio.Extensions.Vorbis.Properties;
 using System;
-using System.Diagnostics.Contracts;
 using System.IO;
 using System.Runtime.InteropServices;
+using JetBrains.Annotations;
 
 namespace PowerShellAudio.Extensions.Vorbis
 {
     [MetadataDecoderExport(".ogg")]
     public class VorbisMetadataDecoder : IMetadataDecoder
     {
-        public MetadataDictionary ReadMetadata(Stream stream)
+        public MetadataDictionary ReadMetadata([NotNull] Stream stream)
         {
-            Contract.Ensures(Contract.Result<MetadataDictionary>() != null);
-
             var buffer = new byte[4096];
 
             using (var decoder = new NativeVorbisDecoder())

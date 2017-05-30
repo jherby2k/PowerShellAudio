@@ -18,12 +18,12 @@
 using PowerShellAudio.Properties;
 using System;
 using System.Diagnostics.CodeAnalysis;
-using System.Diagnostics.Contracts;
 using System.Drawing;
 using System.Drawing.Imaging;
 using System.Globalization;
 using System.IO;
 using System.Security;
+using JetBrains.Annotations;
 
 namespace PowerShellAudio
 {
@@ -41,6 +41,7 @@ namespace PowerShellAudio
         /// <value>
         /// The MIME type.
         /// </value>
+        [NotNull]
         public string MimeType { get; private set; }
 
         /// <summary>
@@ -49,6 +50,7 @@ namespace PowerShellAudio
         /// <value>
         /// The file extension.
         /// </value>
+        [NotNull]
         public string Extension { get; private set; }
 
         /// <summary>
@@ -81,12 +83,9 @@ namespace PowerShellAudio
         /// </summary>
         /// <param name="coverArt">The cover art.</param>
         /// <exception cref="ArgumentNullException">Thrown if <paramref name="coverArt" /> is null.</exception>
-        public CoverArt(CoverArt coverArt)
+        public CoverArt([NotNull] CoverArt coverArt)
         {
-            Contract.Requires<ArgumentNullException>(coverArt != null);
-            Contract.Ensures(_dataReference != null);
-            Contract.Ensures(!string.IsNullOrEmpty(MimeType));
-            Contract.Ensures(!string.IsNullOrEmpty(Extension));
+            if (coverArt == null) throw new ArgumentNullException(nameof(coverArt));
 
             Initialize(coverArt.GetData(), false);
         }
@@ -105,13 +104,10 @@ namespace PowerShellAudio
         /// <exception cref="UnsupportedCoverArtException">
         /// Thrown if <paramref name="data" /> is not in a supported image format.
         /// </exception>
-        public CoverArt(byte[] data)
+        public CoverArt([NotNull] byte[] data)
         {
-            Contract.Requires<ArgumentNullException>(data != null);
-            Contract.Requires<ArgumentOutOfRangeException>(data.Length > 0);
-            Contract.Ensures(_dataReference != null);
-            Contract.Ensures(!string.IsNullOrEmpty(MimeType));
-            Contract.Ensures(!string.IsNullOrEmpty(Extension));
+            if (data == null) throw new ArgumentNullException(nameof(data));
+            if (data.Length == 0) throw new ArgumentException(Resources.CoverArtDataIsEmptyError, nameof(data));
 
             Initialize(data, true);
         }
@@ -134,13 +130,17 @@ namespace PowerShellAudio
         /// <exception cref="UnsupportedCoverArtException">
         /// Thrown if <paramref name="fileInfo" /> is not in a supported image format.
         /// </exception>
-        public CoverArt(FileInfo fileInfo)
+        public CoverArt([NotNull] FileInfo fileInfo)
         {
-            Contract.Requires<ArgumentNullException>(fileInfo != null);
-            Contract.Requires<ArgumentException>(!string.IsNullOrEmpty(fileInfo.FullName));
-            Contract.Requires<FileNotFoundException>(fileInfo.Exists);
-            Contract.Requires<ArgumentOutOfRangeException>(fileInfo.Length > 0);
-            Contract.Ensures(_dataReference != null);
+            if (fileInfo == null) throw new ArgumentNullException(nameof(fileInfo));
+            if (!fileInfo.Exists)
+                throw new ArgumentException(
+                    string.Format(CultureInfo.CurrentCulture, Resources.CoverArtFileDoesNotExistError, fileInfo),
+                    nameof(fileInfo));
+            if (fileInfo.Length == 0)
+                throw new ArgumentException(
+                    string.Format(CultureInfo.CurrentCulture, Resources.CoverArtFileIsEmptyError, fileInfo),
+                    nameof(fileInfo));
 
             Initialize(File.ReadAllBytes(fileInfo.FullName), false);
         }
@@ -149,10 +149,9 @@ namespace PowerShellAudio
         /// Gets a copy of the raw image data.
         /// </summary>
         /// <returns>A copy of the data.</returns>
+        [NotNull]
         public byte[] GetData()
         {
-            Contract.Ensures(Contract.Result<byte[]>() != null);
-
             byte[] result;
 
             // If the reference is still valid, return a clone of the data:
@@ -181,10 +180,11 @@ namespace PowerShellAudio
         /// Thrown if <paramref name="directory" /> does not exist.
         /// </exception>
         [SuppressMessage("Microsoft.Design", "CA1011:ConsiderPassingBaseTypesAsParameters", Justification = "Only a directory object makes sense here")]
-        public void Export(DirectoryInfo directory, string fileName, bool replaceExisting = false)
+        public void Export([NotNull] DirectoryInfo directory, [NotNull] string fileName, bool replaceExisting = false)
         {
-            Contract.Requires<ArgumentNullException>(directory != null);
-            Contract.Requires<ArgumentNullException>(!string.IsNullOrEmpty(fileName));
+            if (directory == null) throw new ArgumentNullException(nameof(directory));
+            if (string.IsNullOrEmpty(fileName))
+                throw new ArgumentException(Resources.CoverArtExportFileNameIsEmptyError, nameof(fileName));
 
             string outputName = Path.Combine(directory.FullName, fileName + Extension);
 
@@ -209,14 +209,8 @@ namespace PowerShellAudio
             { }
         }
 
-        void Initialize(byte[] data, bool copy)
+        void Initialize([NotNull] byte[] data, bool copy)
         {
-            Contract.Requires(data != null);
-            Contract.Requires(data.Length > 0);
-            Contract.Ensures(_dataReference != null);
-            Contract.Ensures(!string.IsNullOrEmpty(MimeType));
-            Contract.Ensures(!string.IsNullOrEmpty(Extension));
-
             // This will throw an exception if it isn't a valid image:
             using (var memoryStream = new MemoryStream(data))
             using (Image image = Image.FromStream(memoryStream))
@@ -249,7 +243,7 @@ namespace PowerShellAudio
                         Extension = ".jpg";
                     }
                     else
-                        throw new UnsupportedCoverArtException(Resources.CoverArtUnsupportedImageFormat);
+                        throw new UnsupportedCoverArtException(Resources.CoverArtUnsupportedImageFormatError);
                 }
 
                 Width = image.Width;
@@ -287,13 +281,8 @@ namespace PowerShellAudio
             }
         }
 
-        void SetData(byte[] data)
+        void SetData([NotNull] byte[] data)
         {
-            Contract.Requires(data != null);
-            Contract.Ensures(_dataReference != null);
-            Contract.Ensures(_tempFile != null);
-            Contract.Ensures(_tempFile.Exists);
-
             // To limit memory usage store a weak reference, and cache the data in a temporary file:
             if (_dataReference == null)
                 _dataReference = new WeakReference<byte[]>(data);
@@ -302,14 +291,6 @@ namespace PowerShellAudio
             _tempFile = new FileInfo(Path.Combine(Path.GetTempPath(), "AudioShell", Path.GetRandomFileName()));
             _tempFile.Directory?.Create();
             File.WriteAllBytes(_tempFile.FullName, data);
-        }
-
-        [ContractInvariantMethod]
-        void ObjectInvariant()
-        {
-            Contract.Invariant(_dataReference != null);
-            Contract.Invariant(!string.IsNullOrEmpty(MimeType));
-            Contract.Invariant(!string.IsNullOrEmpty(Extension));
         }
     }
 }

@@ -16,7 +16,7 @@
  */
 
 using System;
-using System.Diagnostics.Contracts;
+using JetBrains.Annotations;
 
 namespace PowerShellAudio.Extensions.Mp4
 {
@@ -28,25 +28,14 @@ namespace PowerShellAudio.Extensions.Mp4
 
         internal uint SampleRate { get; }
 
-        internal AlacAtom(byte[] data)
+        internal AlacAtom([NotNull] byte[] data)
         {
-            Contract.Requires(data != null);
-            Contract.Requires(data.Length >= 72);
-
             BitsPerSample = data[53];
 
             Channels = data[57];
 
             Array.Reverse(data, 68, 4);
             SampleRate = BitConverter.ToUInt32(data, 68);
-        }
-
-        [ContractInvariantMethod]
-        void ObjectInvariant()
-        {
-            Contract.Invariant(BitsPerSample > 0);
-            Contract.Invariant(Channels > 0);
-            Contract.Invariant(SampleRate > 0);
         }
     }
 }

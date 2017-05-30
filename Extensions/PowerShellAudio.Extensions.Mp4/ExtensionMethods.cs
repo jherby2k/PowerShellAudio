@@ -16,23 +16,15 @@
  */
 
 using System;
-using System.Diagnostics.Contracts;
 using System.IO;
+using JetBrains.Annotations;
 
 namespace PowerShellAudio.Extensions.Mp4
 {
     static class ExtensionMethods
     {
-        internal static void CopyRangeTo(this Stream input, Stream output, long count)
+        internal static void CopyRangeTo([NotNull] this Stream input, [NotNull] Stream output, long count)
         {
-            Contract.Requires(input != null);
-            Contract.Requires(input.CanRead);
-            Contract.Requires(input.Length - input.Position >= count);
-            Contract.Requires(output != null);
-            Contract.Requires(output.CanSeek);
-            Contract.Requires(count > 0);
-            Contract.Ensures(output.Length >= Contract.OldValue<long>(count));
-
             var buffer = new byte[1024];
             do
             {
@@ -42,19 +34,16 @@ namespace PowerShellAudio.Extensions.Mp4
             } while (count > 0);
         }
 
-        internal static uint ReadUInt32BigEndian(this BinaryReader reader)
+        internal static uint ReadUInt32BigEndian([NotNull] this BinaryReader reader)
         {
-            Contract.Requires(reader != null);
-
-            return ((uint)reader.ReadByte() << 24) + ((uint)reader.ReadByte() << 16) + ((uint)reader.ReadByte() << 8) + reader.ReadByte();
+            return ((uint)reader.ReadByte() << 24) 
+                + ((uint)reader.ReadByte() << 16) 
+                + ((uint)reader.ReadByte() << 8) 
+                + reader.ReadByte();
         }
 
-        internal static string ReadFourCC(this BinaryReader reader)
+        internal static string ReadFourCC([NotNull] this BinaryReader reader)
         {
-            Contract.Requires(reader != null);
-            Contract.Ensures(!string.IsNullOrEmpty(Contract.Result<string>()));
-            Contract.Ensures(Contract.Result<string>().Length == 4);
-            
             char[] buffer = reader.ReadChars(4);
             if (buffer.Length < 4)
                 throw new EndOfStreamException();
@@ -62,10 +51,8 @@ namespace PowerShellAudio.Extensions.Mp4
             return new string(buffer);
         }
 
-        internal static uint ReadDescriptorLength(this BinaryReader reader)
+        internal static uint ReadDescriptorLength([NotNull] this BinaryReader reader)
         {
-            Contract.Requires(reader != null);
-
             uint result = 0;
 
             byte currentByte;
@@ -78,19 +65,15 @@ namespace PowerShellAudio.Extensions.Mp4
             return result;
         }
 
-        internal static void WriteBigEndian(this BinaryWriter writer, uint value)
+        internal static void WriteBigEndian([NotNull] this BinaryWriter writer, uint value)
         {
-            Contract.Requires(writer != null);
-
             byte[] buffer = BitConverter.GetBytes(value);
             Array.Reverse(buffer);
             writer.Write(buffer);
         }
 
-        internal static void WriteBigEndian(this BinaryWriter writer, ulong value)
+        internal static void WriteBigEndian([NotNull] this BinaryWriter writer, ulong value)
         {
-            Contract.Requires(writer != null);
-
             byte[] buffer = BitConverter.GetBytes(value);
             Array.Reverse(buffer);
             writer.Write(buffer);

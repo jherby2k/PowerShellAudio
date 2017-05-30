@@ -17,10 +17,10 @@
 
 using PowerShellAudio.Extensions.Apple.Properties;
 using System;
-using System.Diagnostics.Contracts;
 using System.Globalization;
 using System.IO;
 using System.Runtime.InteropServices;
+using JetBrains.Annotations;
 
 namespace PowerShellAudio.Extensions.Apple
 {
@@ -34,15 +34,11 @@ namespace PowerShellAudio.Extensions.Apple
         GCHandle _bufferHandle;
         GCHandle _descriptionsHandle;
 
-        internal NativeAudioConverter(ref AudioStreamBasicDescription inputDescription, ref AudioStreamBasicDescription outputDescription, NativeAudioFile audioFile)
+        internal NativeAudioConverter(
+            ref AudioStreamBasicDescription inputDescription,
+            ref AudioStreamBasicDescription outputDescription,
+            [NotNull] NativeAudioFile audioFile)
         {
-            Contract.Requires(audioFile != null);
-            Contract.Ensures(_handle != null);
-            Contract.Ensures(!_handle.IsClosed);
-            Contract.Ensures(_inputCallback != null);
-            Contract.Ensures(_audioFile != null);
-            Contract.Ensures(_audioFile == audioFile);
-
             AudioConverterStatus status = SafeNativeMethods.AudioConverterNew(ref inputDescription,
                 ref outputDescription, out _handle);
             if (status != AudioConverterStatus.Ok)
@@ -54,7 +50,10 @@ namespace PowerShellAudio.Extensions.Apple
             _audioFile = audioFile;
         }
 
-        internal AudioConverterStatus FillBuffer(ref uint packetSize, ref AudioBufferList outputBuffer, AudioStreamPacketDescription[] packetDescriptions)
+        internal AudioConverterStatus FillBuffer(
+            ref uint packetSize,
+            ref AudioBufferList outputBuffer,
+            [NotNull] AudioStreamPacketDescription[] packetDescriptions)
         {
             return SafeNativeMethods.AudioConverterFillComplexBuffer(_handle, _inputCallback, IntPtr.Zero,
                 ref packetSize, ref outputBuffer, packetDescriptions);
@@ -86,8 +85,6 @@ namespace PowerShellAudio.Extensions.Apple
 
         AudioConverterStatus InputCallback(IntPtr handle, ref uint numberPackets, ref AudioBufferList data, IntPtr packetDescriptions, IntPtr userData)
         {
-            Contract.Requires(data.Buffers.Length > 0);
-
             if (_buffer == null)
             {
                 _buffer = new byte[numberPackets * _audioFile.GetProperty<uint>(AudioFilePropertyId.PacketSizeUpperBound)];
@@ -97,9 +94,8 @@ namespace PowerShellAudio.Extensions.Apple
             if (_descriptionsHandle.IsAllocated)
                 _descriptionsHandle.Free();
 
-            uint numBytes;
             var inputDescriptions = new AudioStreamPacketDescription[numberPackets];
-            AudioFileStatus status = _audioFile.ReadPackets(out numBytes, inputDescriptions, _packetIndex,
+            AudioFileStatus status = _audioFile.ReadPackets(out uint numBytes, inputDescriptions, _packetIndex,
                 ref numberPackets, _bufferHandle.AddrOfPinnedObject());
             if (status != AudioFileStatus.Ok)
                 throw new IOException(string.Format(CultureInfo.CurrentCulture, Resources.NativeAudioConverterReadError,
@@ -118,14 +114,6 @@ namespace PowerShellAudio.Extensions.Apple
             }
 
             return AudioConverterStatus.Ok;
-        }
-
-        [ContractInvariantMethod]
-        void ObjectInvariant()
-        {
-            Contract.Invariant(!_handle.IsInvalid);
-            Contract.Invariant(_inputCallback != null);
-            Contract.Invariant(_audioFile != null);
         }
     }
 }

@@ -16,50 +16,23 @@
  */
 
 using System.Collections.Generic;
-using System.Diagnostics.Contracts;
 
 namespace PowerShellAudio.Extensions.Flac
 {
     class FlacMetadataEncoderInfo : MetadataEncoderInfo
     {
-        public override string Format
+        public override string Format => "Vorbis Comments";
+
+        public override string FileExtension => ".flac";
+
+        public override SettingsDictionary DefaultSettings => new SettingsDictionary
         {
-            get
-            {
-                Contract.Ensures(!string.IsNullOrEmpty(Contract.Result<string>()));
+            { "UsePadding", bool.FalseString }
+        };
 
-                return "Vorbis Comments";
-            }
-        }
-
-        public override string FileExtension
+        public override IReadOnlyCollection<string> AvailableSettings => new List<string>
         {
-            get
-            {
-                Contract.Ensures(!string.IsNullOrEmpty(Contract.Result<string>()));
-
-                return ".flac";
-            }
-        }
-
-        public override SettingsDictionary DefaultSettings
-        {
-            get
-            {
-                Contract.Ensures(Contract.Result<SettingsDictionary>() != null);
-
-                return new SettingsDictionary { { "UsePadding", bool.FalseString } };
-            }
-        }
-
-        public override IReadOnlyCollection<string> AvailableSettings
-        {
-            get
-            {
-                Contract.Ensures(Contract.Result<IReadOnlyCollection<string>>() != null);
-
-                return new List<string> { "UsePadding" };
-            }
-        }
+            "UsePadding"
+        };
     }
 }

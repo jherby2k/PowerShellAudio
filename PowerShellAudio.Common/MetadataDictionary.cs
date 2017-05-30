@@ -18,10 +18,10 @@
 using PowerShellAudio.Properties;
 using System;
 using System.Collections.Generic;
-using System.Diagnostics.Contracts;
 using System.Globalization;
 using System.Linq;
 using System.Text.RegularExpressions;
+using JetBrains.Annotations;
 
 namespace PowerShellAudio
 {
@@ -43,18 +43,18 @@ namespace PowerShellAudio
         /// <value>
         /// The cover art.
         /// </value>
+        [CanBeNull, CollectionAccess(CollectionAccessType.None)]
         public CoverArt CoverArt { get; set; }
 
         /// <summary>
         /// Gets the accepted keys.
         /// </summary>
         /// <value>The accepted keys.</value>
+        [NotNull, ItemNotNull, CollectionAccess(CollectionAccessType.None)]
         public static IReadOnlyCollection<string> AcceptedKeys
         {
             get
             {
-                Contract.Ensures(Contract.Result<IReadOnlyCollection<string>>() != null);
-
                 List<string> result = _acceptedKeys.Keys.ToList();
                 result.Sort();
                 return result;
@@ -67,23 +67,23 @@ namespace PowerShellAudio
         /// <param name="key">The key.</param>
         /// <returns>
         /// The value associated with the specified key. If the specified key is not found, returns
-        /// <see cref="String.Empty"/>.
+        /// <see cref="String.Empty"/>. Setting a null or empty value will clear the element.
         /// </returns>
-        /// <exception cref="ArgumentException">The specified key is not supported.</exception>
-        /// <exception cref="ArgumentNullException">
-        /// Thrown if either <paramref name="key"/> or <paramref name="value"/> are null or empty.
-        /// </exception>
+        /// <exception cref="ArgumentException">The specified key is not supported, or the key is null or empty.</exception>
+        [CollectionAccess(CollectionAccessType.UpdatedContent)]
         public override string this[string key]
         {
             get
             {
-                Contract.Ensures(Contract.Result<string>() != null);
+                if (string.IsNullOrEmpty(key))
+                    throw new ArgumentException(Resources.MetadataDictionaryItemKeyIsEmptyError, nameof(key));
 
                 return base[key];
             }
             set
             {
-                Contract.Requires<ArgumentNullException>(!string.IsNullOrEmpty(key));
+                if (string.IsNullOrEmpty(key))
+                    throw new ArgumentException(Resources.MetadataDictionaryItemKeyIsEmptyError, nameof(key));
 
                 if (!string.IsNullOrEmpty(value))
                 {
@@ -105,24 +105,16 @@ namespace PowerShellAudio
         /// <summary>
         /// Removes all items from the <see cref="SettingsDictionary" />.
         /// </summary>
+        [CollectionAccess(CollectionAccessType.ModifyExistingContent)]
         public override void Clear()
         {
             CoverArt = null;
             base.Clear();
         }
 
-        [ContractInvariantMethod]
-        void ObjectInvariant()
-        {
-            Contract.Invariant(_acceptedKeys != null);
-            Contract.Invariant(Contract.ForAll<string>(this.Keys, key => _acceptedKeys.Keys.Contains(key)));
-        }
-
+        [NotNull]
         static Dictionary<string, Func<string, string>> InitializeAcceptedKeys()
         {
-            Contract.Ensures(Contract.Result<Dictionary<string, Func<string, string>>>() != null);
-            Contract.Ensures(Contract.Result<Dictionary<string, Func<string, string>>>().Count > 0);
-
             var result = new Dictionary<string, Func<string, string>>(12);
 
             var validateDefault = new Func<string, string>(value => value);
@@ -144,9 +136,6 @@ namespace PowerShellAudio
                     Convert.ToInt32(value, CultureInfo.InvariantCulture) > 31)
                     throw new ArgumentException(string.Format(CultureInfo.CurrentCulture,
                         Resources.MetadataDictionaryDayError, value));
-
-                Contract.EndContractBlock();
-
                 return Convert.ToInt32(value, CultureInfo.InvariantCulture).ToString("00", CultureInfo.InvariantCulture);
             });
 
@@ -156,9 +145,6 @@ namespace PowerShellAudio
                     Convert.ToInt32(value, CultureInfo.InvariantCulture) > 12)
                     throw new ArgumentException(string.Format(CultureInfo.CurrentCulture,
                         Resources.MetadataDictionaryMonthError, value));
-
-                Contract.EndContractBlock();
-
                 return Convert.ToInt32(value, CultureInfo.InvariantCulture).ToString("00", CultureInfo.InvariantCulture);
             });
 
@@ -168,9 +154,6 @@ namespace PowerShellAudio
                 if (!Regex.IsMatch(value, "^[12][0-9]{3}$"))
                     throw new ArgumentException(string.Format(CultureInfo.CurrentCulture,
                         Resources.MetadataDictionaryYearError, value));
-
-                Contract.EndContractBlock();
-
                 return value;
             });
 

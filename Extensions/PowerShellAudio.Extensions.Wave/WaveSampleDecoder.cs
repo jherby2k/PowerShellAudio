@@ -17,8 +17,8 @@
 
 using PowerShellAudio.Extensions.Wave.Properties;
 using System;
-using System.Diagnostics.Contracts;
 using System.IO;
+using JetBrains.Annotations;
 
 namespace PowerShellAudio.Extensions.Wave
 {
@@ -34,15 +34,8 @@ namespace PowerShellAudio.Extensions.Wave
         int _bytesPerSample;
         float _divisor;
 
-        public void Initialize(Stream stream)
+        public void Initialize([NotNull] Stream stream)
         {
-            Contract.Ensures(_reader != null);
-            Contract.Ensures(_reader.BaseStream == stream);
-            Contract.Ensures(_channels > 0);
-            Contract.Ensures(_samplesRemaining >= 0);
-            Contract.Ensures(_bytesPerSample > 0);
-            Contract.Ensures(_divisor > 0);
-
             _reader = new RiffReader(stream);
 
             if (!_reader.Validate() || _reader.ReadFourCC() != "WAVE")
@@ -100,11 +93,9 @@ namespace PowerShellAudio.Extensions.Wave
                 _samplesRemaining = dataChunkSize / blockAlign;
         }
 
+        [NotNull]
         public SampleCollection DecodeSamples()
         {
-            Contract.Ensures(Contract.Result<SampleCollection>() != null);
-            Contract.Ensures(Contract.Result<SampleCollection>().SampleCount <= _samplesPerResult);
-
             if (_samplesRemaining == 0)
                 return SampleCollectionFactory.Instance.Create(_channels, 0);
 
@@ -144,17 +135,6 @@ namespace PowerShellAudio.Extensions.Wave
         {
             if (disposing)
                 _reader?.Dispose();
-        }
-
-        [ContractInvariantMethod]
-        void ObjectInvariant()
-        {
-            Contract.Invariant(_buffer != null);
-            Contract.Invariant(_buffer.Length == 4);
-            Contract.Invariant(_channels >= 0);
-            Contract.Invariant(_samplesRemaining >= 0);
-            Contract.Invariant(_bytesPerSample >= 0);
-            Contract.Invariant(_divisor >= 0);
         }
     }
 }

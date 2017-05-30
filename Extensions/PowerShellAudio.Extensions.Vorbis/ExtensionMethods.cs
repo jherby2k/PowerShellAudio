@@ -16,25 +16,23 @@
  */
 
 using System;
-using System.Diagnostics.Contracts;
 using System.IO;
+using JetBrains.Annotations;
 
 namespace PowerShellAudio.Extensions.Vorbis
 {
     static class ExtensionMethods
     {
-        internal static uint ReadUInt32BigEndian(this BinaryReader reader)
+        internal static uint ReadUInt32BigEndian([NotNull] this BinaryReader reader)
         {
-            Contract.Requires(reader != null);
-
-            return ((uint)reader.ReadByte() << 24) + ((uint)reader.ReadByte() << 16) + ((uint)reader.ReadByte() << 8) +
-                   reader.ReadByte();
+            return ((uint)reader.ReadByte() << 24)
+                   + ((uint)reader.ReadByte() << 16)
+                   + ((uint)reader.ReadByte() << 8)
+                   + reader.ReadByte();
         }
 
-        internal static void WriteBigEndian(this BinaryWriter writer, uint value)
+        internal static void WriteBigEndian([NotNull] this BinaryWriter writer, uint value)
         {
-            Contract.Requires(writer != null);
-
             byte[] buffer = BitConverter.GetBytes(value);
             Array.Reverse(buffer);
             writer.Write(buffer);

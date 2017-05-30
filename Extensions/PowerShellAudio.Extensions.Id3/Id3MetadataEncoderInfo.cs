@@ -16,56 +16,29 @@
  */
 
 using System.Collections.Generic;
-using System.Diagnostics.Contracts;
 
 namespace PowerShellAudio.Extensions.Id3
 {
     class Id3MetadataEncoderInfo : MetadataEncoderInfo
     {
-        public override string Format
+        public override string Format => "ID3v2";
+
+        public override string FileExtension => ".mp3";
+
+        public override SettingsDictionary DefaultSettings => new SettingsDictionary
         {
-            get
-            {
-                Contract.Ensures(!string.IsNullOrEmpty(Contract.Result<string>()));
+            { "AddSoundCheck", bool.FalseString },
+            { "ID3Version", "2.3" },
+            { "PaddingSize", "0" },
+            { "UsePadding", bool.FalseString }
+        };
 
-                return "ID3v2";
-            }
-        }
-
-        public override string FileExtension
+        public override IReadOnlyCollection<string> AvailableSettings => new List<string>
         {
-            get
-            {
-                Contract.Ensures(!string.IsNullOrEmpty(Contract.Result<string>()));
-
-                return ".mp3";
-            }
-        }
-
-        public override SettingsDictionary DefaultSettings
-        {
-            get
-            {
-                Contract.Ensures(Contract.Result<SettingsDictionary>() != null);
-
-                return new SettingsDictionary
-                {
-                    { "AddSoundCheck", bool.FalseString },
-                    { "ID3Version", "2.3" },
-                    { "PaddingSize", "0" },
-                    { "UsePadding", bool.FalseString }
-                };
-            }
-        }
-
-        public override IReadOnlyCollection<string> AvailableSettings
-        {
-            get
-            {
-                Contract.Ensures(Contract.Result<IReadOnlyCollection<string>>() != null);
-
-                return new List<string> { "AddSoundCheck", "ID3Version", "PaddingSize", "UsePadding" };
-            }
-        }
+            "AddSoundCheck",
+            "ID3Version",
+            "PaddingSize",
+            "UsePadding"
+        };
     }
 }

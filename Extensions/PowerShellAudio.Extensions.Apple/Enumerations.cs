@@ -19,7 +19,7 @@ using System;
 
 namespace PowerShellAudio.Extensions.Apple
 {
-    internal enum AudioFileStatus
+    enum AudioFileStatus
     {
         Ok                              = 0,
         UnspecifiedError                = 0x7768743f, // 'wht?'
@@ -38,16 +38,16 @@ namespace PowerShellAudio.Extensions.Apple
         EndOfFileError                  = -39,
         PositionError                   = -40,
         FileNotFoundError               = -43
-    };
+    }
 
-    internal enum AudioFilePropertyId
+    enum AudioFilePropertyId
     {
         DataFormat              = 0x64666d74, // 'dfmt'
         MagicCookieData         = 0x6d676963, // 'mgic'
         PacketSizeUpperBound    = 0x706b7562  // 'pkub'
-    };
+    }
 
-    internal enum ExtendedAudioFileStatus
+    enum ExtendedAudioFileStatus
     {
         Ok                          = 0,
         InvalidProperty             = -66561,
@@ -60,16 +60,16 @@ namespace PowerShellAudio.Extensions.Apple
         InvalidSeek                 = -66568,
         AsyncWriteTooLarge          = -66569,
         AsyncWriteBufferOverflow    = -66570
-    };
+    }
 
-    internal enum ExtendedAudioFilePropertyId
+    enum ExtendedAudioFilePropertyId
     {
         AudioConverter      = 0x61636e76, // 'acnv'
         ClientDataFormat    = 0x63666d74, // 'cfmt'
         ConverterConfig     = 0x61636366 // 'accf'
-    };
+    }
 
-    internal enum AudioConverterStatus
+    enum AudioConverterStatus
     {
         Ok                              = 0,
         FormatNotSupported              = 0x666d743f, // 'fmt?'
@@ -82,9 +82,9 @@ namespace PowerShellAudio.Extensions.Apple
         RequiresPacketDescriptionsError = 0x21706b64, // '!pkd'
         InputSampleRateOutOfRange       = 0x21697372, // '!isr'
         OutputSampleRateOutOfRange      = 0x216f7372  // '!osr'
-    };
+    }
 
-    internal enum AudioFormat : uint
+    enum AudioFormat : uint
     {
         AacLowComplexity    = 0x61616320, // "aac "
         AppleLossless       = 0x616c6163, // "alac"
@@ -92,7 +92,7 @@ namespace PowerShellAudio.Extensions.Apple
     }
 
     [Flags]
-    internal enum AudioFormatFlags : uint
+    enum AudioFormatFlags : uint
     {
         PcmIsSignedInteger  = 0x4,
         PcmIsPacked         = 0x8,
@@ -103,32 +103,32 @@ namespace PowerShellAudio.Extensions.Apple
         Alac32BitSourceData = 4
     }
 
-    internal enum AudioConverterPropertyId : uint
+    enum AudioConverterPropertyId : uint
     {
         CodecQuality                = 0x63647175, // 'cdqu'
         DecompressionMagicCookie    = 0x646d6763, // 'dmgc'
         BitRate                     = 0x62726174, // 'brat'
         BitRateControlMode          = 0x61636266, // 'acbf'
         VbrQuality                  = 0x76627271, // 'vbrq'
-    };
+    }
 
-    internal enum BitrateControlMode : uint
+    enum BitrateControlMode : uint
     {
         Constant            = 0,
         LongTermAverage     = 1,
         VariableConstrained = 2,
         Variable            = 3
-    };
+    }
 
-    internal enum Quality : uint
+    enum Quality : uint
     {
         Low     = 0x20,
         Medium  = 0x40,
         High    = 0x60,
-    };
+    }
 
-    internal enum AudioFileType : uint
+    enum AudioFileType : uint
     {
         M4A = 0x6d346166 // 'm4af'
-    };
+    }
 }

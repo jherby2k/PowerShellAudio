@@ -16,19 +16,18 @@
  */
 
 using PowerShellAudio.Extensions.Flac.Properties;
-using System.Diagnostics.Contracts;
 using System.Globalization;
 using System.IO;
+using JetBrains.Annotations;
 
 namespace PowerShellAudio.Extensions.Flac
 {
     [MetadataDecoderExport(".flac")]
     public class FlacMetadataDecoder : IMetadataDecoder
     {
-        public MetadataDictionary ReadMetadata(Stream stream)
+        [NotNull]
+        public MetadataDictionary ReadMetadata([NotNull] Stream stream)
         {
-            Contract.Ensures(Contract.Result<MetadataDictionary>() != null);
-
             using (var decoder = new NativeStreamMetadataDecoder(stream))
             {
                 decoder.SetMetadataRespond(MetadataType.VorbisComment);

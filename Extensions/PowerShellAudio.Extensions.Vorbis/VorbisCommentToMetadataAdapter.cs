@@ -17,7 +17,6 @@
 
 using System;
 using System.Collections.Generic;
-using System.Diagnostics.Contracts;
 using System.Globalization;
 using System.Runtime.InteropServices;
 using System.Text;
@@ -57,8 +56,6 @@ namespace PowerShellAudio.Extensions.Vorbis
                 Marshal.Copy(commentPtrs[i], commentBytes, 0, commentLengths[i]);
 
                 string[] comment = Encoding.UTF8.GetString(commentBytes).Split(new[] { '=' }, 2);
-
-                Contract.Assert(comment.Length == 2);
 
                 // The track number and count may be packed into the same comment:
                 switch (comment[0])

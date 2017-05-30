@@ -17,20 +17,19 @@
 
 using PowerShellAudio.Extensions.Mp3.Properties;
 using System;
-using System.Diagnostics.Contracts;
 using System.Globalization;
 using System.IO;
 using System.Text;
+using JetBrains.Annotations;
 
 namespace PowerShellAudio.Extensions.Mp3
 {
     [AudioInfoDecoderExport(".mp3")]
     public class Mp3AudioInfoDecoder : IAudioInfoDecoder
     {
-        public AudioInfo ReadAudioInfo(Stream stream)
+        [NotNull]
+        public AudioInfo ReadAudioInfo([NotNull] Stream stream)
         {
-            Contract.Ensures(Contract.Result<AudioInfo>() != null);
-
             using (var reader = new FrameReader(stream))
             {
                 // Seek to the first valid frame header:
@@ -81,12 +80,8 @@ namespace PowerShellAudio.Extensions.Mp3
             }
         }
 
-        static int GetSideInfoLength(string channelMode, string mpegVersion)
+        static int GetSideInfoLength([NotNull] string channelMode, [NotNull] string mpegVersion)
         {
-            Contract.Requires(!string.IsNullOrEmpty(channelMode));
-            Contract.Requires(!string.IsNullOrEmpty(mpegVersion));
-            Contract.Ensures(Contract.Result<int>() >= 0);
-
             if (channelMode == "Mono")
                 return mpegVersion == "1" ? 17 : 9;
             return mpegVersion == "1" ? 32 : 17;
@@ -94,10 +89,6 @@ namespace PowerShellAudio.Extensions.Mp3
 
         static int CalculateBitRate(uint byteCount, uint sampleCount, int sampleRate)
         {
-            Contract.Requires(sampleCount > 0);
-            Contract.Requires(sampleRate > 0);
-            Contract.Ensures(Contract.Result<int>() >= 0);
-
             return (int)Math.Round(byteCount * 8 / (sampleCount / (double)sampleRate) / 1000);
         }
     }

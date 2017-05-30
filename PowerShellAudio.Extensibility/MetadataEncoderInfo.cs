@@ -17,14 +17,14 @@
 
 using System;
 using System.Collections.Generic;
-using System.Diagnostics.Contracts;
+using JetBrains.Annotations;
 
 namespace PowerShellAudio
 {
     /// <summary>
     /// Contains information about an <see cref="IMetadataEncoder"/> implementation.
     /// </summary>
-    [Serializable, ContractClass(typeof(MetadataEncoderInfoContract))]
+    [Serializable]
     public abstract class MetadataEncoderInfo
     {
         /// <summary>
@@ -33,6 +33,7 @@ namespace PowerShellAudio
         /// <value>
         /// The format.
         /// </value>
+        [NotNull]
         public abstract string Format { get; }
 
         /// <summary>
@@ -41,6 +42,7 @@ namespace PowerShellAudio
         /// <value>
         /// The file extension.
         /// </value>
+        [NotNull]
         public abstract string FileExtension { get; }
 
         /// <summary>
@@ -49,15 +51,8 @@ namespace PowerShellAudio
         /// <value>
         /// The default settings.
         /// </value>
-        public virtual SettingsDictionary DefaultSettings
-        {
-            get
-            {
-                Contract.Ensures(Contract.Result<SettingsDictionary>() != null);
-
-                return new SettingsDictionary();
-            }
-        }
+        [NotNull]
+        public virtual SettingsDictionary DefaultSettings => new SettingsDictionary();
 
         /// <summary>
         /// Gets the available settings.
@@ -65,14 +60,7 @@ namespace PowerShellAudio
         /// <value>
         /// The available settings.
         /// </value>
-        public virtual IReadOnlyCollection<string> AvailableSettings
-        {
-            get
-            {
-                Contract.Ensures(Contract.Result<IReadOnlyCollection<string>>() != null);
-
-                return new List<string>(0);
-            }
-        }
+        [NotNull, ItemNotNull]
+        public virtual IReadOnlyCollection<string> AvailableSettings => new List<string>(0);
     }
 }

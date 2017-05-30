@@ -19,7 +19,7 @@ using Id3Lib;
 using Id3Lib.Frames;
 using System;
 using System.Collections.Generic;
-using System.Diagnostics.Contracts;
+using JetBrains.Annotations;
 
 namespace PowerShellAudio.Extensions.Id3
 {
@@ -35,14 +35,11 @@ namespace PowerShellAudio.Extensions.Id3
                 { "TYER", "Year" }
             };
 
-        internal TagModelToMetadataAdapter(TagModel tagModel)
+        internal TagModelToMetadataAdapter([NotNull] TagModel tagModel)
         {
-            Contract.Requires(tagModel != null);
-
             foreach (FrameBase frame in tagModel)
             {
-                var frameText = frame as FrameText;
-                if (frameText != null)
+                if (frame is FrameText frameText)
                 {
                     switch (frameText.FrameId)
                     {
@@ -69,8 +66,7 @@ namespace PowerShellAudio.Extensions.Id3
                 }
                 else
                 {
-                    var framePicture = frame as FramePicture;
-                    if (framePicture != null &&
+                    if (frame is FramePicture framePicture &&
                         (framePicture.PictureType == PictureTypeCode.CoverFront ||
                          framePicture.PictureType == PictureTypeCode.Other))
                     {
@@ -84,9 +80,8 @@ namespace PowerShellAudio.Extensions.Id3
                     }
                     else
                     {
-                        var frameFullText = frame as FrameFullText;
-                        if (frameFullText != null && frameFullText.FrameId == "COMM" &&
-                            frameFullText.Description == null)
+                        if (frame is FrameFullText frameFullText &&
+                            frameFullText.FrameId == "COMM" && frameFullText.Description == null)
                             base["Comment"] = frameFullText.Text;
                         else
                         {

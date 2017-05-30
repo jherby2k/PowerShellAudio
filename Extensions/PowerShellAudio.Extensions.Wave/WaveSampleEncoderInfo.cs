@@ -15,31 +15,13 @@
  * <http://www.gnu.org/licenses/>.
  */
 
-using System.Diagnostics.Contracts;
-
 namespace PowerShellAudio.Extensions.Wave
 {
     class WaveSampleEncoderInfo : SampleEncoderInfo
     {
-        public override string Name
-        {
-            get
-            {
-                Contract.Ensures(!string.IsNullOrEmpty(Contract.Result<string>()));
+        public override string Name => "Wave";
 
-                return "Wave";
-            }
-        }
-
-        public override string FileExtension
-        {
-            get
-            {
-                Contract.Ensures(!string.IsNullOrEmpty(Contract.Result<string>()));
-
-                return ".wav";
-            }
-        }
+        public override string FileExtension => ".wav";
 
         public override bool IsLossless => true;
     }

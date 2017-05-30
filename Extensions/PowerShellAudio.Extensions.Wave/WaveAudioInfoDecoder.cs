@@ -16,20 +16,16 @@
  */
 
 using PowerShellAudio.Extensions.Wave.Properties;
-using System.Diagnostics.Contracts;
 using System.IO;
+using JetBrains.Annotations;
 
 namespace PowerShellAudio.Extensions.Wave
 {
     [AudioInfoDecoderExport(".wav")]
     public class WaveAudioInfoDecoder : IAudioInfoDecoder
     {
-        public AudioInfo ReadAudioInfo(Stream stream)
+        public AudioInfo ReadAudioInfo([NotNull] Stream stream)
         {
-            Contract.Ensures(stream.CanRead);
-            Contract.Ensures(stream.CanSeek);
-            Contract.Ensures(Contract.Result<AudioInfo>() != null);
-
             if (stream.Length < 45) // 12 byte RIFF descriptor + 24 byte fmt chunk + 9 byte data chunk
                 throw new IOException(Resources.AudioInfoDecoderLengthError);
 

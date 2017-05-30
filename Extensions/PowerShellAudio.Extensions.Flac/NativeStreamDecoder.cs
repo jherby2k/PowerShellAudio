@@ -16,8 +16,8 @@
  */
 
 using System;
-using System.Diagnostics.Contracts;
 using System.IO;
+using JetBrains.Annotations;
 
 namespace PowerShellAudio.Extensions.Flac
 {
@@ -36,24 +36,8 @@ namespace PowerShellAudio.Extensions.Flac
 
         internal DecoderErrorStatus? Error { get; private set; }
 
-        internal NativeStreamDecoder(Stream input)
+        internal NativeStreamDecoder([NotNull] Stream input)
         {
-            Contract.Requires(input != null);
-            Contract.Requires(input.CanRead);
-            Contract.Requires(input.CanSeek);
-            Contract.Requires(input.Length > 0);
-            Contract.Ensures(!_handle.IsClosed);
-            Contract.Ensures(_input != null);
-            Contract.Ensures(_input == input);
-            Contract.Ensures(_readCallback != null);
-            Contract.Ensures(_seekCallback != null);
-            Contract.Ensures(_tellCallback != null);
-            Contract.Ensures(_lengthCallback != null);
-            Contract.Ensures(_eofCallback != null);
-            Contract.Ensures(_writeCallback != null);
-            Contract.Ensures(_metadataCallback != null);
-            Contract.Ensures(_errorCallback != null);
-
             _input = input;
 
             _readCallback = ReadCallback;
@@ -110,12 +94,8 @@ namespace PowerShellAudio.Extensions.Flac
                 _handle.Dispose();
         }
 
-        DecoderReadStatus ReadCallback(IntPtr handle, byte[] buffer, ref int bytes, IntPtr userData)
+        DecoderReadStatus ReadCallback(IntPtr handle, [NotNull] byte[] buffer, ref int bytes, IntPtr userData)
         {
-            Contract.Requires(buffer != null);
-            Contract.Requires(bytes > 0);
-            Contract.Requires(buffer.Length >= bytes);
-
             try
             {
                 bytes = _input.Read(buffer, 0, bytes);
@@ -184,28 +164,16 @@ namespace PowerShellAudio.Extensions.Flac
 
         protected virtual DecoderWriteStatus WriteCallback(IntPtr handle, ref Frame frame, IntPtr buffer, IntPtr userData)
         {
-            Contract.Requires(buffer != IntPtr.Zero);
-
             return DecoderWriteStatus.Continue;
         }
 
         protected virtual void MetadataCallback(IntPtr handle, IntPtr metadataBlock, IntPtr userData)
         {
-            Contract.Requires(metadataBlock != IntPtr.Zero);
         }
 
         void ErrorCallback(IntPtr handle, DecoderErrorStatus error, IntPtr userData)
         {
             Error = error;
-        }
-
-        [ContractInvariantMethod]
-        void ObjectInvariant()
-        {
-            Contract.Invariant(!_handle.IsInvalid);
-            Contract.Invariant(_input.CanRead);
-            Contract.Invariant(_input.CanSeek);
-            Contract.Invariant(_input.Length > 0);
         }
     }
 }

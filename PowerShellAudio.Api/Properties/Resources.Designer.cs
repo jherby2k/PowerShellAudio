@@ -61,6 +61,15 @@ namespace PowerShellAudio.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to The analyzer is null or empty.
+        /// </summary>
+        internal static string AnalyzableAudioFileAnalyzeAnalyzerIsEmptyError {
+            get {
+                return ResourceManager.GetString("AnalyzableAudioFileAnalyzeAnalyzerIsEmptyError", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to There is no analyzer named &apos;{0}&apos; available.
         /// </summary>
         internal static string AnalyzableAudioFileFactoryError {
@@ -75,6 +84,60 @@ namespace PowerShellAudio.Properties {
         internal static string AudioFileDecodeError {
             get {
                 return ResourceManager.GetString("AudioFileDecodeError", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to The file &apos;{0}&apos; does not have an extension.
+        /// </summary>
+        internal static string AudioFileEmptyExtensionError {
+            get {
+                return ResourceManager.GetString("AudioFileEmptyExtensionError", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to The file &apos;{0}&apos; does not exist.
+        /// </summary>
+        internal static string AudioFileFileDoesNotExistError {
+            get {
+                return ResourceManager.GetString("AudioFileFileDoesNotExistError", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to The file &apos;{0}&apos; contains no data.
+        /// </summary>
+        internal static string AudioFileFileIsEmptyError {
+            get {
+                return ResourceManager.GetString("AudioFileFileIsEmptyError", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to The file name &apos;{0}&apos; contains path information.
+        /// </summary>
+        internal static string AudioFileRenameFileNameContainsPathError {
+            get {
+                return ResourceManager.GetString("AudioFileRenameFileNameContainsPathError", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to The file name is null or empty.
+        /// </summary>
+        internal static string AudioFileRenameFileNameIsEmptyError {
+            get {
+                return ResourceManager.GetString("AudioFileRenameFileNameIsEmptyError", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to The encoder is null or empty.
+        /// </summary>
+        internal static string ExportableAudioFileExportEncoderIsEmptyError {
+            get {
+                return ResourceManager.GetString("ExportableAudioFileExportEncoderIsEmptyError", resourceCulture);
             }
         }
         

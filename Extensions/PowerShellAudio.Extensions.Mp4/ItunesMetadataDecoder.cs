@@ -16,13 +16,15 @@
  */
 
 using System.IO;
+using JetBrains.Annotations;
 
 namespace PowerShellAudio.Extensions.Mp4
 {
     [MetadataDecoderExport(".m4a")]
     public class ItunesMetadataDecoder : IMetadataDecoder
     {
-        public MetadataDictionary ReadMetadata(Stream stream)
+        [NotNull]
+        public MetadataDictionary ReadMetadata([NotNull] Stream stream)
         {
             var mp4 = new Mp4(stream);
             mp4.DescendToAtom("moov", "udta", "meta", "ilst");

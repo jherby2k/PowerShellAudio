@@ -17,9 +17,9 @@
 
 namespace PowerShellAudio.Extensions.Mp4
 {
-    internal enum CoverType : uint
+    enum CoverType : uint
     {
         Jpeg = 0xd,
         Png = 0xe
-    };
+    }
 }

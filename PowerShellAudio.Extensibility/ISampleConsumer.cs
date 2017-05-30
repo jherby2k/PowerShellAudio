@@ -15,14 +15,11 @@
  * <http://www.gnu.org/licenses/>.
  */
 
-using System.Diagnostics.Contracts;
-
 namespace PowerShellAudio
 {
     /// <summary>
     /// Represents any extension that consumes <see cref="SampleCollection"/>s.
     /// </summary>
-    [ContractClass(typeof(SampleConsumerContract))]
     public interface ISampleConsumer
     {
         /// <summary>

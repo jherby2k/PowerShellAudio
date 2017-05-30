@@ -17,9 +17,9 @@
 
 using PowerShellAudio.Extensions.Flac.Properties;
 using System;
-using System.Diagnostics.Contracts;
 using System.Globalization;
 using System.IO;
+using JetBrains.Annotations;
 
 namespace PowerShellAudio.Extensions.Flac
 {
@@ -28,26 +28,26 @@ namespace PowerShellAudio.Extensions.Flac
     {
         NativeStreamSampleDecoder _decoder;
 
-        public void Initialize(Stream stream)
+        public void Initialize([NotNull] Stream stream)
         {
-            Contract.Ensures(_decoder != null);
-
             _decoder = new NativeStreamSampleDecoder(stream);
 
             DecoderInitStatus initStatus = _decoder.Initialize();
-            if (initStatus == DecoderInitStatus.Ok)
-                return;
+            switch (initStatus)
+            {
+                case DecoderInitStatus.Ok:
+                    return;
+                case DecoderInitStatus.UnsupportedContainer:
+                    throw new UnsupportedAudioException(Resources.SampleDecoderUnsupportedContainerError);
+            }
 
-            if (initStatus == DecoderInitStatus.UnsupportedContainer)
-                throw new UnsupportedAudioException(Resources.SampleDecoderUnsupportedContainerError);
             throw new IOException(string.Format(CultureInfo.CurrentCulture, Resources.SampleDecoderInitializationError,
                 initStatus));
         }
 
+        [NotNull]
         public SampleCollection DecodeSamples()
         {
-            Contract.Ensures(Contract.Result<SampleCollection>() != null);
-
             while (_decoder.GetState() != DecoderState.EndOfStream)
             {
                 if (!_decoder.ProcessSingle())

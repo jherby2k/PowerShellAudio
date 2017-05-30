@@ -19,7 +19,6 @@ using PowerShellAudio.Extensions.Lame.Properties;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.Composition;
-using System.Diagnostics.Contracts;
 using System.Globalization;
 using System.Linq;
 using System.Runtime.InteropServices;
@@ -28,25 +27,9 @@ namespace PowerShellAudio.Extensions.Lame
 {
     class LameSampleEncoderInfo : SampleEncoderInfo
     {
-        public override string Name
-        {
-            get
-            {
-                Contract.Ensures(!string.IsNullOrEmpty(Contract.Result<string>()));
+        public override string Name => "Lame MP3";
 
-                return "Lame MP3";
-            }
-        }
-
-        public override string FileExtension
-        {
-            get
-            {
-                Contract.Ensures(!string.IsNullOrEmpty(Contract.Result<string>()));
-
-                return ".mp3";
-            }
-        }
+        public override string FileExtension => ".mp3";
 
         public override bool IsLossless => false;
 
@@ -54,8 +37,6 @@ namespace PowerShellAudio.Extensions.Lame
         {
             get
             {
-                Contract.Ensures(Contract.Result<string>() != null);
-
                 try
                 {
                     return string.Format(CultureInfo.CurrentCulture, Resources.SampleEncoderDescription,
@@ -72,8 +53,6 @@ namespace PowerShellAudio.Extensions.Lame
         {
             get
             {
-                Contract.Ensures(Contract.Result<SettingsDictionary>() != null);
-
                 var result = new SettingsDictionary { { "Quality", "3" }, { "VBRQuality", "2" } };
 
                 // Call the external ReplayGain filter for scaling the input:
@@ -98,8 +77,6 @@ namespace PowerShellAudio.Extensions.Lame
         {
             get
             {
-                Contract.Ensures(Contract.Result<IReadOnlyCollection<string>>() != null);
-
                 var partialResult = new List<string> { "BitRate", "ForceCBR", "Quality", "VBRQuality" };
 
                 // Call the external ReplayGain filter for scaling the input:

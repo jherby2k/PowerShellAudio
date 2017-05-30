@@ -61,6 +61,96 @@ namespace PowerShellAudio.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to &apos;{0}&apos; bits per sample is not supported.
+        /// </summary>
+        internal static string AudioInfoBitsPerSampleIsOutOfRangeError {
+            get {
+                return ResourceManager.GetString("AudioInfoBitsPerSampleIsOutOfRangeError", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to &apos;{0}&apos; is not a supported channel count.
+        /// </summary>
+        internal static string AudioInfoChannelsOutOfRangeError {
+            get {
+                return ResourceManager.GetString("AudioInfoChannelsOutOfRangeError", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to The format is null or empty.
+        /// </summary>
+        internal static string AudioInfoFormatIsEmptyError {
+            get {
+                return ResourceManager.GetString("AudioInfoFormatIsEmptyError", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to &apos;{0}&apos; is not a valid sample count.
+        /// </summary>
+        internal static string AudioInfoSampleCountIsOutOfRangeError {
+            get {
+                return ResourceManager.GetString("AudioInfoSampleCountIsOutOfRangeError", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to &apos;{0}&apos; is not a supported sample rate.
+        /// </summary>
+        internal static string AudioInfoSampleRateIsOutOfRangeError {
+            get {
+                return ResourceManager.GetString("AudioInfoSampleRateIsOutOfRangeError", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to &apos;{0}&apos; is not a valid maximum width.
+        /// </summary>
+        internal static string ConvertibleCoverArtConvertMaxWidthOutOfRangeError {
+            get {
+                return ResourceManager.GetString("ConvertibleCoverArtConvertMaxWidthOutOfRangeError", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to &apos;{0}&apos; is not a valid quality index.
+        /// </summary>
+        internal static string ConvertibleCoverArtConvertQualityOutOfRangeError {
+            get {
+                return ResourceManager.GetString("ConvertibleCoverArtConvertQualityOutOfRangeError", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to The data array is empty.
+        /// </summary>
+        internal static string CoverArtDataIsEmptyError {
+            get {
+                return ResourceManager.GetString("CoverArtDataIsEmptyError", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to The file name is null or empty.
+        /// </summary>
+        internal static string CoverArtExportFileNameIsEmptyError {
+            get {
+                return ResourceManager.GetString("CoverArtExportFileNameIsEmptyError", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to The file &apos;{0}&apos; does not exist.
+        /// </summary>
+        internal static string CoverArtFileDoesNotExistError {
+            get {
+                return ResourceManager.GetString("CoverArtFileDoesNotExistError", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to The file &apos;{0}&apos; already exists.
         /// </summary>
         internal static string CoverArtFileExistsError {
@@ -70,11 +160,29 @@ namespace PowerShellAudio.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to The file &apos;{0}&apos; contains no data.
+        /// </summary>
+        internal static string CoverArtFileIsEmptyError {
+            get {
+                return ResourceManager.GetString("CoverArtFileIsEmptyError", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Only bitmap, JPEG and PNG images are supported as cover art.
         /// </summary>
-        internal static string CoverArtUnsupportedImageFormat {
+        internal static string CoverArtUnsupportedImageFormatError {
             get {
-                return ResourceManager.GetString("CoverArtUnsupportedImageFormat", resourceCulture);
+                return ResourceManager.GetString("CoverArtUnsupportedImageFormatError", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to The count &apos;{0}&apos; must be 1 or greater.
+        /// </summary>
+        internal static string GroupTokenCountIsOutOfRangeError {
+            get {
+                return ResourceManager.GetString("GroupTokenCountIsOutOfRangeError", resourceCulture);
             }
         }
         
@@ -84,6 +192,15 @@ namespace PowerShellAudio.Properties {
         internal static string MetadataDictionaryDayError {
             get {
                 return ResourceManager.GetString("MetadataDictionaryDayError", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to The key is null or empty.
+        /// </summary>
+        internal static string MetadataDictionaryItemKeyIsEmptyError {
+            get {
+                return ResourceManager.GetString("MetadataDictionaryItemKeyIsEmptyError", resourceCulture);
             }
         }
         
@@ -106,11 +223,47 @@ namespace PowerShellAudio.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to The Key and/or Value property should not be null or empty.
+        ///   Looks up a localized string similar to The channel count &apos;{0}&apos; must be 1 or greater.
         /// </summary>
-        internal static string SettingsDictionaryItemError {
+        internal static string SampleCollectionFactoryCreateChannelsIsOutOfRangeError {
             get {
-                return ResourceManager.GetString("SettingsDictionaryItemError", resourceCulture);
+                return ResourceManager.GetString("SampleCollectionFactoryCreateChannelsIsOutOfRangeError", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to The sample count &apos;{0}&apos; must be 0 or greater.
+        /// </summary>
+        internal static string SampleCollectionFactoryCreateSampleCountIsOutOfRangeError {
+            get {
+                return ResourceManager.GetString("SampleCollectionFactoryCreateSampleCountIsOutOfRangeError", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to The sample count &apos;{0}&apos; must be 1 or greater.
+        /// </summary>
+        internal static string SampleCollectionFactoryResizeSampleCountIsOutOfRangeError {
+            get {
+                return ResourceManager.GetString("SampleCollectionFactoryResizeSampleCountIsOutOfRangeError", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to The key is null or empty.
+        /// </summary>
+        internal static string SettingsDictionaryKeyIsEmptyError {
+            get {
+                return ResourceManager.GetString("SettingsDictionaryKeyIsEmptyError", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to The value is null or empty.
+        /// </summary>
+        internal static string SettingsDictionaryValueIsEmptyError {
+            get {
+                return ResourceManager.GetString("SettingsDictionaryValueIsEmptyError", resourceCulture);
             }
         }
     }

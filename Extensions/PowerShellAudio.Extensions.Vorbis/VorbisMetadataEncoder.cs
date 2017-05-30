@@ -17,10 +17,10 @@
 
 using PowerShellAudio.Extensions.Vorbis.Properties;
 using System;
-using System.Diagnostics.Contracts;
 using System.IO;
 using System.Runtime.InteropServices;
 using System.Text;
+using JetBrains.Annotations;
 
 namespace PowerShellAudio.Extensions.Vorbis
 {
@@ -29,17 +29,12 @@ namespace PowerShellAudio.Extensions.Vorbis
     {
         static readonly MetadataEncoderInfo _encoderInfo = new VorbisMetadataEncoderInfo();
 
-        public MetadataEncoderInfo EncoderInfo
-        {
-            get
-            {
-                Contract.Ensures(Contract.Result<MetadataEncoderInfo>() != null);
+        public MetadataEncoderInfo EncoderInfo => _encoderInfo;
 
-                return _encoderInfo;
-            }
-        }
-
-        public void WriteMetadata(Stream stream, MetadataDictionary metadata, SettingsDictionary settings)
+        public void WriteMetadata(
+            [NotNull] Stream stream,
+            [NotNull] MetadataDictionary metadata,
+            [CanBeNull] SettingsDictionary settings)
         {
             // This buffer is used for both reading and writing:
             var buffer = new byte[4096];
@@ -113,10 +108,8 @@ namespace PowerShellAudio.Extensions.Vorbis
             }
         }
 
-        static OggPacket GetCommentPacket(MetadataDictionary metadata)
+        static OggPacket GetCommentPacket([NotNull] MetadataDictionary metadata)
         {
-            Contract.Requires(metadata != null);
-
             var comment = new VorbisComment();
             try
             {
@@ -146,23 +139,14 @@ namespace PowerShellAudio.Extensions.Vorbis
             }
         }
 
-        static void WritePage(OggPage page, Stream stream, byte[] buffer)
+        static void WritePage(OggPage page, [NotNull] Stream stream, [NotNull] byte[] buffer)
         {
-            Contract.Requires(stream != null);
-            Contract.Requires(stream.CanWrite);
-            Contract.Requires(buffer != null);
-
             WritePointer(page.Header, page.HeaderLength, stream, buffer);
             WritePointer(page.Body, page.BodyLength, stream, buffer);
         }
 
-        static void WritePointer(IntPtr location, int length, Stream stream, byte[] buffer)
+        static void WritePointer(IntPtr location, int length, [NotNull] Stream stream, [NotNull] byte[] buffer)
         {
-            Contract.Requires(location != IntPtr.Zero);
-            Contract.Requires(stream != null);
-            Contract.Requires(stream.CanWrite);
-            Contract.Requires(buffer != null);
-
             var offset = 0;
             while (offset < length)
             {
@@ -173,16 +157,8 @@ namespace PowerShellAudio.Extensions.Vorbis
             }
         }
 
-        static void Overwrite(Stream originalStream, Stream newStream)
+        static void Overwrite([NotNull] Stream originalStream, [NotNull] Stream newStream)
         {
-            Contract.Requires(originalStream != null);
-            Contract.Requires(originalStream.CanWrite);
-            Contract.Requires(originalStream.CanSeek);
-            Contract.Requires(newStream != null);
-            Contract.Requires(newStream.CanRead);
-            Contract.Requires(newStream.CanSeek);
-            Contract.Ensures(originalStream.Length == newStream.Length);
-
             originalStream.SetLength(newStream.Length);
             originalStream.Position = 0;
             newStream.Position = 0;

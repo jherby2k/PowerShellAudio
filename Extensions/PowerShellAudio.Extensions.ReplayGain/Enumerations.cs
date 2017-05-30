@@ -26,10 +26,10 @@ namespace PowerShellAudio.Extensions.ReplayGain
         InvalidMode,
         InvalidChannelIndex,
         NoChange
-    };
+    }
 
     [Flags]
-    internal enum Mode
+    enum Mode
     {
         Momentary = 0x1,    // (1 << 0)
         ShortTerm = 0x3,    // (1 << 1) | Mode.Momentary
@@ -38,5 +38,5 @@ namespace PowerShellAudio.Extensions.ReplayGain
         SamplePeak = 0x11,  // (1 << 4) | Mode.Momentary
         TruePeak = 0x31,    // (1 << 5) | Mode.SamplePeak
         Histogram = 0x40    // (1 << 6)
-    };
+    }
 }

@@ -15,7 +15,6 @@
  * <http://www.gnu.org/licenses/>.
  */
 
-using System.Diagnostics.Contracts;
 using System.IO;
 
 namespace PowerShellAudio
@@ -28,7 +27,6 @@ namespace PowerShellAudio
     /// implementation with the <see cref="AudioInfoDecoderExportAttribute"/> attribute so that it can be discovered at
     /// runtime.
     /// </remarks>
-    [ContractClass(typeof(AudioInfoDecoderContract))]
     public interface IAudioInfoDecoder
     {
         /// <summary>

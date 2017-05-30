@@ -117,14 +117,53 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
+  <data name="AudioInfoBitsPerSampleIsOutOfRangeError" xml:space="preserve">
+    <value>'{0}' bits per sample is not supported</value>
+  </data>
+  <data name="AudioInfoChannelsOutOfRangeError" xml:space="preserve">
+    <value>'{0}' is not a supported channel count</value>
+  </data>
+  <data name="AudioInfoFormatIsEmptyError" xml:space="preserve">
+    <value>The format is null or empty</value>
+  </data>
+  <data name="AudioInfoSampleCountIsOutOfRangeError" xml:space="preserve">
+    <value>'{0}' is not a valid sample count</value>
+  </data>
+  <data name="AudioInfoSampleRateIsOutOfRangeError" xml:space="preserve">
+    <value>'{0}' is not a supported sample rate</value>
+  </data>
+  <data name="ConvertibleCoverArtConvertMaxWidthOutOfRangeError" xml:space="preserve">
+    <value>'{0}' is not a valid maximum width</value>
+  </data>
+  <data name="ConvertibleCoverArtConvertQualityOutOfRangeError" xml:space="preserve">
+    <value>'{0}' is not a valid quality index</value>
+  </data>
+  <data name="CoverArtDataIsEmptyError" xml:space="preserve">
+    <value>The data array is empty</value>
+  </data>
+  <data name="CoverArtExportFileNameIsEmptyError" xml:space="preserve">
+    <value>The file name is null or empty</value>
+  </data>
+  <data name="CoverArtFileDoesNotExistError" xml:space="preserve">
+    <value>The file '{0}' does not exist</value>
+  </data>
   <data name="CoverArtFileExistsError" xml:space="preserve">
     <value>The file '{0}' already exists</value>
   </data>
-  <data name="CoverArtUnsupportedImageFormat" xml:space="preserve">
+  <data name="CoverArtFileIsEmptyError" xml:space="preserve">
+    <value>The file '{0}' contains no data</value>
+  </data>
+  <data name="CoverArtUnsupportedImageFormatError" xml:space="preserve">
     <value>Only bitmap, JPEG and PNG images are supported as cover art</value>
+  </data>
+  <data name="GroupTokenCountIsOutOfRangeError" xml:space="preserve">
+    <value>The count '{0}' must be 1 or greater</value>
   </data>
   <data name="MetadataDictionaryDayError" xml:space="preserve">
     <value>'{0}' is not a valid day of the month</value>
+  </data>
+  <data name="MetadataDictionaryItemKeyIsEmptyError" xml:space="preserve">
+    <value>The key is null or empty</value>
   </data>
   <data name="MetadataDictionaryMonthError" xml:space="preserve">
     <value>'{0}' is not a valid month</value>
@@ -132,7 +171,19 @@
   <data name="MetadataDictionaryYearError" xml:space="preserve">
     <value>'{0}' is not a valid year</value>
   </data>
-  <data name="SettingsDictionaryItemError" xml:space="preserve">
-    <value>The Key and/or Value property should not be null or empty</value>
+  <data name="SampleCollectionFactoryCreateChannelsIsOutOfRangeError" xml:space="preserve">
+    <value>The channel count '{0}' must be 1 or greater</value>
+  </data>
+  <data name="SampleCollectionFactoryCreateSampleCountIsOutOfRangeError" xml:space="preserve">
+    <value>The sample count '{0}' must be 0 or greater</value>
+  </data>
+  <data name="SampleCollectionFactoryResizeSampleCountIsOutOfRangeError" xml:space="preserve">
+    <value>The sample count '{0}' must be 1 or greater</value>
+  </data>
+  <data name="SettingsDictionaryKeyIsEmptyError" xml:space="preserve">
+    <value>The key is null or empty</value>
+  </data>
+  <data name="SettingsDictionaryValueIsEmptyError" xml:space="preserve">
+    <value>The value is null or empty</value>
   </data>
 </root>

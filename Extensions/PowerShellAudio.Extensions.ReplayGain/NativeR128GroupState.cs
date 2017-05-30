@@ -16,8 +16,8 @@
  */
 
 using System.Collections.Concurrent;
-using System.Diagnostics.Contracts;
 using System.Threading;
+using JetBrains.Annotations;
 
 namespace PowerShellAudio.Extensions.ReplayGain
 {
@@ -27,27 +27,12 @@ namespace PowerShellAudio.Extensions.ReplayGain
 
         internal int MembersDisposed => _membersDisposed;
 
-        internal ConcurrentBag<NativeStateHandle> Handles { get; }
-
-        internal NativeR128GroupState()
-        {
-            Contract.Ensures(Handles != null);
-
-            Handles = new ConcurrentBag<NativeStateHandle>();
-        }
+        [NotNull]
+        internal ConcurrentBag<NativeStateHandle> Handles { get; } = new ConcurrentBag<NativeStateHandle>();
 
         internal void MemberDisposed()
         {
-            Contract.Ensures(_membersDisposed == Contract.OldValue<int>(_membersDisposed) + 1);
-
             Interlocked.Increment(ref _membersDisposed);
-        }
-
-        [ContractInvariantMethod]
-        void ObjectInvariant()
-        {
-            Contract.Invariant(_membersDisposed >= 0);
-            Contract.Invariant(Handles != null);
         }
     }
 }

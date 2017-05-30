@@ -16,9 +16,9 @@
  */
 
 using System;
-using System.Diagnostics.Contracts;
 using System.Linq;
 using System.Text;
+using JetBrains.Annotations;
 
 namespace PowerShellAudio.Extensions.Mp4
 {
@@ -26,36 +26,23 @@ namespace PowerShellAudio.Extensions.Mp4
     {
         readonly string _fourCC;
 
+        [NotNull]
         internal string Value { get; set; }
 
-        internal TextAtom(string fourCC, string value)
+        internal TextAtom([NotNull] string fourCC, [NotNull] string value)
         {
-            Contract.Requires(!string.IsNullOrEmpty(fourCC));
-            Contract.Requires(fourCC.Length == 4);
-            Contract.Requires(value != null);
-            Contract.Ensures(_fourCC != null);
-            Contract.Ensures(_fourCC == fourCC);
-            Contract.Ensures(Value != null);
-            Contract.Ensures(Value == value);
-
             _fourCC = fourCC;
             Value = value;
         }
 
-        internal TextAtom(byte[] data)
+        internal TextAtom([NotNull] byte[] data)
         {
-            Contract.Requires(data != null);
-            Contract.Requires(data.Length >= 24);
-
             _fourCC = ConvertToString(data.Take(4).ToArray());
             Value = new string(Encoding.UTF8.GetChars(data.Skip(24).Take(data.Length - 24).ToArray()));
         }
 
         internal override byte[] GetBytes()
         {
-            Contract.Ensures(Contract.Result<byte[]>() != null);
-            Contract.Ensures(Contract.Result<byte[]>().Length >= 24);
-
             byte[] contents = Encoding.UTF8.GetBytes(Value);
 
             var result = new byte[contents.Length + 24];
@@ -77,29 +64,16 @@ namespace PowerShellAudio.Extensions.Mp4
             return result;
         }
 
-        [ContractInvariantMethod]
-        void ObjectInvariant()
+        [Pure, NotNull]
+        static string ConvertToString([NotNull] byte[] value)
         {
-            Contract.Invariant(!string.IsNullOrEmpty(_fourCC));
-            Contract.Invariant(_fourCC.Length == 4);
-            Contract.Invariant(Value != null);
-        }
-
-        static string ConvertToString(byte[] value)
-        {
-            Contract.Requires(value != null);
-            Contract.Ensures(!string.IsNullOrEmpty(Contract.Result<string>()));
-            Contract.Ensures(Contract.Result<string>().Length == value.Length);
-
             Array.Reverse(value);
             return new string(Encoding.GetEncoding(1252).GetChars(value));
         }
 
+        [Pure, NotNull]
         static byte[] ConvertToBigEndianBytes(uint value)
         {
-            Contract.Ensures(Contract.Result<byte[]>() != null);
-            Contract.Ensures(Contract.Result<byte[]>().Length == 4);
-
             byte[] result = BitConverter.GetBytes(value);
             Array.Reverse(result);
             return result;

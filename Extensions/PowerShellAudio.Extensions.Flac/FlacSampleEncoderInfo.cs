@@ -17,31 +17,14 @@
 
 using System;
 using System.Collections.Generic;
-using System.Diagnostics.Contracts;
 
 namespace PowerShellAudio.Extensions.Flac
 {
     class FlacSampleEncoderInfo : SampleEncoderInfo
     {
-        public override string Name
-        {
-            get
-            {
-                Contract.Ensures(!string.IsNullOrEmpty(Contract.Result<string>()));
+        public override string Name => "FLAC";
 
-                return "FLAC";
-            }
-        }
-
-        public override string FileExtension
-        {
-            get
-            {
-                Contract.Ensures(!string.IsNullOrEmpty(Contract.Result<string>()));
-
-                return ".flac";
-            }
-        }
+        public override string FileExtension => ".flac";
 
         public override bool IsLossless => true;
 
@@ -49,8 +32,6 @@ namespace PowerShellAudio.Extensions.Flac
         {
             get
             {
-                Contract.Ensures(Contract.Result<string>() != null);
-
                 try
                 {
                     return SafeNativeMethods.GetVersion();
@@ -62,24 +43,16 @@ namespace PowerShellAudio.Extensions.Flac
             }
         }
 
-        public override SettingsDictionary DefaultSettings
+        public override SettingsDictionary DefaultSettings => new SettingsDictionary
         {
-            get
-            {
-                Contract.Ensures(Contract.Result<SettingsDictionary>() != null);
+            { "CompressionLevel", "5" },
+            { "SeekPointInterval", "10" }
+        };
 
-                return new SettingsDictionary { { "CompressionLevel", "5" }, { "SeekPointInterval", "10" } };
-            }
-        }
-
-        public override IReadOnlyCollection<string> AvailableSettings
+        public override IReadOnlyCollection<string> AvailableSettings => new List<string>
         {
-            get
-            {
-                Contract.Ensures(Contract.Result<IReadOnlyCollection<string>>() != null);
-
-                return new List<string> { "CompressionLevel", "SeekPointInterval" };
-            }
-        }
+            "CompressionLevel",
+            "SeekPointInterval"
+        };
     }
 }

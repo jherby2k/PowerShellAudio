@@ -16,9 +16,9 @@
  */
 
 using System;
-using System.Diagnostics.Contracts;
 using System.IO;
 using System.Text;
+using JetBrains.Annotations;
 
 namespace PowerShellAudio.Extensions.Vorbis
 {
@@ -26,8 +26,10 @@ namespace PowerShellAudio.Extensions.Vorbis
     {
         internal PictureType Type { get; set; }
 
+        [NotNull]
         internal string MimeType { get; set; }
 
+        [NotNull]
         internal string Description { get; set; }
 
         internal uint Width { get; set; }
@@ -36,15 +38,11 @@ namespace PowerShellAudio.Extensions.Vorbis
 
         internal uint ColorDepth { get; set; }
 
+        [NotNull]
         internal byte[] Data { get; set; }
 
-        internal MetadataBlockPicture(string encodedData)
+        internal MetadataBlockPicture([NotNull] string encodedData)
         {
-            Contract.Requires(!string.IsNullOrEmpty(encodedData));
-            Contract.Ensures(MimeType != null);
-            Contract.Ensures(Description != null);
-            Contract.Ensures(Data != null);
-
             Stream stream = null;
             try
             {
@@ -69,7 +67,7 @@ namespace PowerShellAudio.Extensions.Vorbis
             }
         }
 
-        internal MetadataBlockPicture(CoverArt coverArt)
+        internal MetadataBlockPicture([NotNull] CoverArt coverArt)
         {
             Type = PictureType.CoverFront;
             MimeType = coverArt.MimeType;

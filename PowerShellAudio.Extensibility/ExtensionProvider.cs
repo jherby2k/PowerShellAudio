@@ -19,6 +19,7 @@ using System;
 using System.Collections.Generic;
 using System.ComponentModel.Composition;
 using System.Linq;
+using JetBrains.Annotations;
 
 namespace PowerShellAudio
 {
@@ -32,6 +33,7 @@ namespace PowerShellAudio
         /// </summary>
         /// <typeparam name="T">The extension type.</typeparam>
         /// <returns>The factories.</returns>
+        [NotNull]
         public static IEnumerable<ExportFactory<T>> GetFactories<T>() where T : class
         {
             return ExtensionContainer<T>.Instance.Factories;
@@ -44,6 +46,7 @@ namespace PowerShellAudio
         /// <param name="key">The key.</param>
         /// <param name="value">The value.</param>
         /// <returns>The factories.</returns>
+        [NotNull]
         public static IEnumerable<ExportFactory<T>> GetFactories<T>(string key, string value) where T : class
         {
             return ExtensionContainer<T>.Instance.Factories.Where(factory =>

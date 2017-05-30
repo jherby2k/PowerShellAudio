@@ -17,8 +17,8 @@
 
 using System;
 using System.Collections.Generic;
-using System.Diagnostics.Contracts;
 using System.Globalization;
+using JetBrains.Annotations;
 
 namespace PowerShellAudio.Extensions.Mp4
 {
@@ -34,11 +34,8 @@ namespace PowerShellAudio.Extensions.Mp4
                 { "©nam", "Title" }
             };
 
-        internal AtomToMetadataAdapter(Mp4 mp4, AtomInfo[] atoms)
+        internal AtomToMetadataAdapter([NotNull] Mp4 mp4, [NotNull, ItemNotNull] AtomInfo[] atoms)
         {
-            Contract.Requires(mp4 != null);
-            Contract.Requires(atoms != null);
-
             foreach (AtomInfo atom in atoms)
             {
                 byte[] atomData = mp4.ReadAtom(atom);

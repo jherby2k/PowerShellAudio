@@ -20,9 +20,9 @@ using System.Collections.Generic;
 using System.ComponentModel.Composition;
 using System.ComponentModel.Composition.Hosting;
 using System.Diagnostics.CodeAnalysis;
-using System.Diagnostics.Contracts;
 using System.IO;
 using System.Reflection;
+using JetBrains.Annotations;
 
 namespace PowerShellAudio
 {
@@ -30,32 +30,21 @@ namespace PowerShellAudio
     {
         static readonly Lazy<ExtensionContainer<T>> _lazyInstance = new Lazy<ExtensionContainer<T>>(() => new ExtensionContainer<T>());
 
-        internal static ExtensionContainer<T> Instance
-        {
-            get
-            {
-                Contract.Ensures(Contract.Result<ExtensionContainer<T>>() != null);
+        [NotNull]
+        internal static ExtensionContainer<T> Instance => _lazyInstance.Value;
 
-                return _lazyInstance.Value;
-            }
-        }
-
+        [NotNull, UsedImplicitly]
         [ImportMany]
-        // ReSharper disable once UnusedAutoPropertyAccessor.Local
         internal IEnumerable<ExportFactory<T, IDictionary<string, object>>> Factories { get; private set; }
 
         ExtensionContainer()
         {
-            Contract.Ensures(Factories != null);
-
             Initialize();
         }
 
         [SuppressMessage("Microsoft.Reliability", "CA2000:Dispose objects before losing scope", Justification = "The CompositionContainer can't be disposed unless the ExtensionProvider is, and it's a singleton.")]
         void Initialize()
         {
-            Contract.Ensures(Factories != null);
-
             string mainDir = Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location) ?? string.Empty;
             using (var catalog = new AggregateCatalog())
             {
@@ -69,12 +58,6 @@ namespace PowerShellAudio
                 // Compose the parts:
                 new CompositionContainer(catalog, CompositionOptions.IsThreadSafe | CompositionOptions.DisableSilentRejection).ComposeParts(this);
             }
-        }
-
-        [ContractInvariantMethod]
-        void ObjectInvariant()
-        {
-            Contract.Invariant(Factories != null);
         }
     }
 }

@@ -15,16 +15,14 @@
  * <http://www.gnu.org/licenses/>.
  */
 
-using System.Diagnostics.Contracts;
+using JetBrains.Annotations;
 
 namespace PowerShellAudio.Extensions.Flac
 {
     class CoverArtToPictureBlockAdapter : NativePictureBlock
     {
-        internal CoverArtToPictureBlockAdapter(CoverArt coverArt)
+        internal CoverArtToPictureBlockAdapter([NotNull] CoverArt coverArt)
         {
-            Contract.Requires(coverArt != null);
-
             SetData(coverArt.GetData());
             SetType(PictureType.CoverFront);
             SetMimeType(coverArt.MimeType);

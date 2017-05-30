@@ -19,7 +19,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
-using System.Diagnostics.Contracts;
+using JetBrains.Annotations;
 
 namespace PowerShellAudio
 {
@@ -38,14 +38,8 @@ namespace PowerShellAudio
     {
         readonly float[][] _samples;
 
-        internal SampleCollection(float[][] samples)
+        internal SampleCollection([NotNull] float[][] samples)
         {
-            Contract.Requires(samples != null);
-            Contract.Requires(samples.Length > 0);
-            Contract.Requires(Contract.ForAll(samples, channel => channel != null));
-            Contract.Ensures(_samples != null);
-            Contract.Ensures(_samples == samples);
-
             _samples = samples;
         }
 
@@ -61,24 +55,12 @@ namespace PowerShellAudio
         /// <param name="channel">The channel index.</param>
         /// <returns>The array of <see cref="Single"/>s containing samples for the specified channel.</returns>
         /// <exception cref="ArgumentOutOfRangeException">Throw if <paramref name="channel"/> is negative.</exception>
+        [NotNull, CollectionAccess(CollectionAccessType.ModifyExistingContent)]
         [SuppressMessage("Microsoft.Performance", "CA1819:PropertiesShouldNotReturnArrays", Justification = "The array is intended to be modifiable, and cannot be wrapped in a collection for performance reasons.")]
         public float[] this[int channel]
         {
-            get
-            {
-                Contract.Requires(channel >= 0);
-                Contract.Ensures(Contract.Result<float[]>() != null);
-
-                return _samples[channel];
-            }
-            internal set
-            {
-                Contract.Requires(channel >= 0);
-                Contract.Requires(value != null);
-                Contract.Ensures(_samples[channel] == value);
-
-                _samples[channel] = value;
-            }
+            get => _samples[channel];
+            internal set => _samples[channel] = value;
         }
 
         /// <summary>
@@ -87,15 +69,8 @@ namespace PowerShellAudio
         /// <value>
         /// The number of channels.
         /// </value>
-        public int Channels
-        {
-            get
-            {
-                Contract.Ensures(Contract.Result<int>() > 0);
-
-                return _samples.Length;
-            }
-        }
+        [CollectionAccess(CollectionAccessType.Read)]
+        public int Channels => _samples.Length;
 
         /// <summary>
         /// Gets the sample count.
@@ -103,21 +78,15 @@ namespace PowerShellAudio
         /// <value>
         /// The sample count.
         /// </value>
-        public int SampleCount
-        {
-            get
-            {
-                Contract.Ensures(Contract.Result<int>() >= 0);
-
-                return _samples[0].Length;
-            }
-        }
+        [CollectionAccess(CollectionAccessType.Read)]
+        public int SampleCount => _samples[0].Length;
 
         /// <summary>
         /// Gets a value indicating whether this is the last <see cref="SampleCollection"/> in the stream. This is
         /// equivalent to checking if SampleCount equals 0.
         /// </summary>
         /// <value>True if this instance is last; otherwise, false.</value>
+        [CollectionAccess(CollectionAccessType.Read)]
         public bool IsLast => _samples[0].Length == 0;
 
         /// <summary>
@@ -126,6 +95,7 @@ namespace PowerShellAudio
         /// <returns>
         /// An <see cref="IEnumerator{T}"/> that can be used to iterate through the collection.
         /// </returns>
+        [CollectionAccess(CollectionAccessType.Read)]
         public IEnumerator<float[]> GetEnumerator()
         {
             return ((IEnumerable<float[]>)_samples).GetEnumerator();
@@ -137,16 +107,10 @@ namespace PowerShellAudio
         /// <returns>
         /// An <see cref="IEnumerator"/> object that can be used to iterate through the collection.
         /// </returns>
+        [CollectionAccess(CollectionAccessType.Read)]
         IEnumerator IEnumerable.GetEnumerator()
         {
             return _samples.GetEnumerator();
-        }
-
-        [ContractInvariantMethod]
-        void ObjectInvariant()
-        {
-            Contract.Invariant(_samples.Length > 0);
-            Contract.Invariant(Contract.ForAll(_samples, channel => channel != null));
         }
     }
 }

@@ -19,7 +19,6 @@ using PowerShellAudio.Extensions.Apple.Properties;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.Composition;
-using System.Diagnostics.Contracts;
 using System.Globalization;
 using System.Linq;
 
@@ -27,25 +26,9 @@ namespace PowerShellAudio.Extensions.Apple
 {
     class AacSampleEncoderInfo : SampleEncoderInfo
     {
-        public override string Name
-        {
-            get
-            {
-                Contract.Ensures(!string.IsNullOrEmpty(Contract.Result<string>()));
+        public override string Name => "Apple AAC";
 
-                return "Apple AAC";
-            }
-        }
-
-        public override string FileExtension
-        {
-            get
-            {
-                Contract.Ensures(!string.IsNullOrEmpty(Contract.Result<string>()));
-
-                return ".m4a";
-            }
-        }
+        public override string FileExtension => ".m4a";
 
         public override bool IsLossless => false;
 
@@ -53,8 +36,6 @@ namespace PowerShellAudio.Extensions.Apple
         {
             get
             {
-                Contract.Ensures(Contract.Result<string>() != null);
-
                 try
                 {
                     return string.Format(CultureInfo.CurrentCulture, Resources.SampleEncoderDescription,
@@ -71,8 +52,6 @@ namespace PowerShellAudio.Extensions.Apple
         {
             get
             {
-                Contract.Ensures(Contract.Result<SettingsDictionary>() != null);
-
                 var result = new SettingsDictionary
                 {
                     { "ControlMode", "Variable" },
@@ -102,8 +81,6 @@ namespace PowerShellAudio.Extensions.Apple
         {
             get
             {
-                Contract.Ensures(Contract.Result<IReadOnlyCollection<string>>() != null);
-
                 var partialResult = new List<string> { "BitRate", "ControlMode", "Quality", "VBRQuality" };
 
                 // Call the external ReplayGain filter for scaling the input:

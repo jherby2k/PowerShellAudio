@@ -18,30 +18,22 @@
 using PowerShellAudio.Extensions.ReplayGain.Properties;
 using System;
 using System.Diagnostics.CodeAnalysis;
-using System.Diagnostics.Contracts;
 using System.Globalization;
+using JetBrains.Annotations;
 
 namespace PowerShellAudio.Extensions.ReplayGain
 {
     abstract class EqualLoudnessFilter : IirFilter
     {
-        internal EqualLoudnessFilter(int sampleRate, float[,] a, float[,] b)
+        internal EqualLoudnessFilter(int sampleRate, [NotNull] float[,] a, [NotNull] float[,] b)
             : base(GetCoefficients(a, sampleRate), GetCoefficients(b, sampleRate))
         {
-            Contract.Requires(a != null);
-            Contract.Requires(a.Length > 0);
-            Contract.Requires(b != null);
-            Contract.Requires(b.Length > 0);
         }
 
+        [NotNull]
         [SuppressMessage("Microsoft.Performance", "CA1814:PreferJaggedArraysOverMultidimensional", MessageId = "0#")]
-        static float[] GetCoefficients(float[,] coefficientMap, int sampleRate)
+        static float[] GetCoefficients([NotNull] float[,] coefficientMap, int sampleRate)
         {
-            Contract.Requires(coefficientMap != null);
-            Contract.Requires(coefficientMap.GetLength(1) > 0);
-            Contract.Ensures(Contract.Result<float[]>() != null);
-            Contract.Ensures(Contract.Result<float[]>().Length > 0);
-
             int sampleRateIndex = GetSampleRateIndex(sampleRate);
             int coefficientCount = coefficientMap.GetLength(1);
             var result = new float[coefficientCount];
@@ -55,8 +47,6 @@ namespace PowerShellAudio.Extensions.ReplayGain
         [SuppressMessage("Microsoft.Maintainability", "CA1502:AvoidExcessiveComplexity", Justification = "Switch statement is simple and easy to maintain.")]
         static int GetSampleRateIndex(int sampleRate)
         {
-            Contract.Ensures(Contract.Result<int>() >= 0);
-
             switch (sampleRate)
             {
                 case 192000:

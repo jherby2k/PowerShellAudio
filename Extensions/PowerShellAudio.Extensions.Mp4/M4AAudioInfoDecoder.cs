@@ -16,20 +16,19 @@
  */
 
 using System;
-using System.Diagnostics.Contracts;
 using System.Globalization;
 using System.IO;
 using System.Linq;
+using JetBrains.Annotations;
 
 namespace PowerShellAudio.Extensions.Mp4
 {
     [AudioInfoDecoderExport(".m4a")]
     public class M4AAudioInfoDecoder : IAudioInfoDecoder
     {
-        public AudioInfo ReadAudioInfo(Stream stream)
+        [NotNull]
+        public AudioInfo ReadAudioInfo([NotNull] Stream stream)
         {
-            Contract.Ensures(Contract.Result<AudioInfo>() != null);
-
             var mp4 = new Mp4(stream);
 
             uint dataSize = mp4.GetChildAtomInfo().Single(atom => atom.FourCC == "mdat").Size;
@@ -57,10 +56,6 @@ namespace PowerShellAudio.Extensions.Mp4
 
         static int CalculateBitRate(uint byteCount, uint sampleCount, uint sampleRate)
         {
-            Contract.Requires(sampleCount > 0);
-            Contract.Requires(sampleRate > 0);
-            Contract.Ensures(Contract.Result<int>() >= 0);
-
             return (int)Math.Round(byteCount * 8 / (sampleCount / (double)sampleRate) / 1000);
         }
     }

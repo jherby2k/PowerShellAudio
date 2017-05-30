@@ -18,7 +18,6 @@
 using PowerShellAudio.Extensions.Vorbis.Properties;
 using System;
 using System.Diagnostics.CodeAnalysis;
-using System.Diagnostics.Contracts;
 using System.IO;
 using System.Runtime.InteropServices;
 
@@ -31,8 +30,6 @@ namespace PowerShellAudio.Extensions.Vorbis
 
         internal NativeOggSync()
         {
-            Contract.Ensures(_state != IntPtr.Zero);
-
             _state = Marshal.AllocHGlobal(Marshal.SizeOf(typeof(OggSyncState)));
             if (SafeNativeMethods.OggSyncInitialize(_state) != 0)
                 throw new IOException(Resources.NativeOggSyncInitializationError);

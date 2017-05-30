@@ -16,8 +16,8 @@
  */
 
 using System;
-using System.Diagnostics.Contracts;
 using System.Linq;
+using JetBrains.Annotations;
 
 namespace PowerShellAudio.Extensions.Mp4
 {
@@ -25,23 +25,17 @@ namespace PowerShellAudio.Extensions.Mp4
     {
         internal CoverType CoverType { get; set; }
 
+        [NotNull]
         internal byte[] Value { get; set; }
 
-        internal CovrAtom(CoverArt coverArt)
+        internal CovrAtom([NotNull] CoverArt coverArt)
         {
-            Contract.Requires(coverArt != null);
-            Contract.Ensures(Value != null);
-
             CoverType = coverArt.MimeType == "image/png" ? CoverType.Png : CoverType.Jpeg;
             Value = coverArt.GetData();
         }
 
-        internal CovrAtom(byte[] data)
+        internal CovrAtom([NotNull] byte[] data)
         {
-            Contract.Requires(data != null);
-            Contract.Requires(data.Length >= 24);
-            Contract.Ensures(Value != null);
-
             // There could be more than one data atom. Ignore all but the first:
             CoverType = (CoverType)data[19];
             Value = new byte[BitConverter.ToUInt32(data.Skip(8).Take(4).Reverse().ToArray(), 0) - 16];
@@ -50,9 +44,6 @@ namespace PowerShellAudio.Extensions.Mp4
 
         internal override byte[] GetBytes()
         {
-            Contract.Ensures(Contract.Result<byte[]>() != null);
-            Contract.Ensures(Contract.Result<byte[]>().Length >= 24);
-
             var result = new byte[Value.Length + 24];
 
             // Write the atom header:
@@ -72,17 +63,9 @@ namespace PowerShellAudio.Extensions.Mp4
             return result;
         }
 
-        [ContractInvariantMethod]
-        void ObjectInvariant()
-        {
-            Contract.Invariant(Value != null);
-        }
-
+        [NotNull]
         static byte[] ConvertToBigEndianBytes(uint value)
         {
-            Contract.Ensures(Contract.Result<byte[]>() != null);
-            Contract.Ensures(Contract.Result<byte[]>().Length == 4);
-
             byte[] result = BitConverter.GetBytes(value);
             Array.Reverse(result);
             return result;

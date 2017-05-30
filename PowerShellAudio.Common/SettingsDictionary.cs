@@ -19,7 +19,7 @@ using PowerShellAudio.Properties;
 using System;
 using System.Collections;
 using System.Collections.Generic;
-using System.Diagnostics.Contracts;
+using JetBrains.Annotations;
 
 namespace PowerShellAudio
 {
@@ -45,12 +45,13 @@ namespace PowerShellAudio
         /// <exception cref="ArgumentNullException">
         /// Thrown if either <paramref name="key"/> or <paramref name="value"/> is null or empty.
         /// </exception>
-        public void Add(string key, string value)
+        [CollectionAccess(CollectionAccessType.UpdatedContent)]
+        public void Add([NotNull] string key, [NotNull] string value)
         {
             if (string.IsNullOrEmpty(key))
-                throw new ArgumentNullException(nameof(key));
+                throw new ArgumentException(Resources.SettingsDictionaryKeyIsEmptyError, nameof(key));
             if (string.IsNullOrEmpty(value))
-                throw new ArgumentNullException(nameof(value));
+                throw new ArgumentException(Resources.SettingsDictionaryValueIsEmptyError, nameof(value));
 
             this[key] = value;
         }
@@ -63,10 +64,11 @@ namespace PowerShellAudio
         /// true if the <see cref="SettingsDictionary"/> contains an element with the key; otherwise, false.
         /// </returns>
         /// <exception cref="ArgumentNullException">Thrown if <paramref name="key"/> is null or empty.</exception>
-        public bool ContainsKey(string key)
+        [CollectionAccess(CollectionAccessType.Read)]
+        public bool ContainsKey([NotNull] string key)
         {
             if (string.IsNullOrEmpty(key))
-                throw new ArgumentNullException(nameof(key));
+                throw new ArgumentException(Resources.SettingsDictionaryKeyIsEmptyError, nameof(key));
 
             return _internalDictionary.ContainsKey(key);
         }
@@ -77,15 +79,8 @@ namespace PowerShellAudio
         /// <returns>
         /// An <see cref="ICollection{T}"/> containing the keys in the <see cref="SettingsDictionary"/>.
         /// </returns>
-        public ICollection<string> Keys
-        {
-            get
-            {
-                Contract.Ensures(Contract.Result<ICollection<string>>() != null);
-
-                return _internalDictionary.Keys;
-            }
-        }
+        [ItemNotNull, CollectionAccess(CollectionAccessType.Read)]
+        public ICollection<string> Keys => _internalDictionary.Keys;
 
         /// <summary>
         /// Removes the element with the specified key from the <see cref="SettingsDictionary"/>.
@@ -96,10 +91,11 @@ namespace PowerShellAudio
         /// <paramref name="key"/> was not found in the <see cref="SettingsDictionary"/>.
         /// </returns>
         /// <exception cref="ArgumentNullException">Thrown if <paramref name="key"/> is null or empty.</exception>
-        public bool Remove(string key)
+        [CollectionAccess(CollectionAccessType.ModifyExistingContent)]
+        public bool Remove([NotNull] string key)
         {
             if (string.IsNullOrEmpty(key))
-                throw new ArgumentNullException(nameof(key));
+                throw new ArgumentException(Resources.SettingsDictionaryKeyIsEmptyError, nameof(key));
 
             return _internalDictionary.Remove(key);
         }
@@ -116,11 +112,9 @@ namespace PowerShellAudio
         /// true if the <see cref="SettingsDictionary"/> contains an element with the specified key; otherwise, false.
         /// </returns>
         /// <exception cref="ArgumentNullException">Thrown if <paramref name="key"/> is null or empty.</exception>
-        public bool TryGetValue(string key, out string value)
+        [CollectionAccess(CollectionAccessType.Read)]
+        public bool TryGetValue(string key, [CanBeNull] out string value)
         {
-            if (string.IsNullOrEmpty(key))
-                throw new ArgumentNullException(nameof(key));
-
             return _internalDictionary.TryGetValue(key, out value);
         }
 
@@ -130,34 +124,27 @@ namespace PowerShellAudio
         /// <returns>
         /// An <see cref="ICollection{T}"/> containing the values in the <see cref="SettingsDictionary"/>.
         /// </returns>
-        public ICollection<string> Values
-        {
-            get
-            {
-                Contract.Ensures(Contract.Result<ICollection<string>>() != null);
-
-                return _internalDictionary.Values;
-            }
-        }
+        [ItemNotNull, CollectionAccess(CollectionAccessType.Read)]
+        public ICollection<string> Values => _internalDictionary.Values;
 
         /// <summary>
         /// Gets or sets the element with the specified key.
         /// </summary>
         /// <param name="key">The key.</param>
         /// <returns>
-        /// The value associated with the specified key. If the key is not found, returns <see cref="String.Empty"/>.
+        /// The value associated with the specified key. If the key is not found, returns
+        /// <see cref="String.Empty"/>. Setting a null or empty value will clear the element.
         /// </returns>
         /// <exception cref="ArgumentNullException">
-        /// Thrown if either <paramref name="key"/> or <paramref name="value"/> are null or empty.
+        /// Thrown if <paramref name="key"/> is null or empty.
         /// </exception>
-        public virtual string this[string key]
+        [NotNull, CollectionAccess(CollectionAccessType.UpdatedContent)]
+        public virtual string this[[NotNull] string key]
         {
             get
             {
-                Contract.Ensures(Contract.Result<string>() != null);
-
                 if (string.IsNullOrEmpty(key))
-                    throw new ArgumentNullException(nameof(key));
+                    throw new ArgumentException(Resources.SettingsDictionaryKeyIsEmptyError, nameof(key));
 
                 string result;
                 return _internalDictionary.TryGetValue(key, out result) ? result : string.Empty;
@@ -165,7 +152,7 @@ namespace PowerShellAudio
             set
             {
                 if (string.IsNullOrEmpty(key))
-                    throw new ArgumentNullException(nameof(key));
+                    throw new ArgumentException(Resources.SettingsDictionaryKeyIsEmptyError, nameof(key));
 
                 if (_internalDictionary.ContainsKey(key))
                 {
@@ -188,17 +175,19 @@ namespace PowerShellAudio
         /// <exception cref="ArgumentNullException">
         /// Thrown if either of <paramref name="item"/>'s Key or Value properties are null or empty.
         /// </exception>
+        [CollectionAccess(CollectionAccessType.UpdatedContent)]
         public void Add(KeyValuePair<string, string> item)
         {
             if (string.IsNullOrEmpty(item.Key) || string.IsNullOrEmpty(item.Value))
-                throw new ArgumentException(Resources.SettingsDictionaryItemError, nameof(item));
+                throw new ArgumentException(Resources.SettingsDictionaryValueIsEmptyError, nameof(item));
 
-            this[item.Key] = item.Value;
+            _internalDictionary.Add(item);
         }
 
         /// <summary>
         /// Removes all items from the <see cref="SettingsDictionary"/>.
         /// </summary>
+        [CollectionAccess(CollectionAccessType.ModifyExistingContent)]
         public virtual void Clear()
         {
             _internalDictionary.Clear();
@@ -213,15 +202,10 @@ namespace PowerShellAudio
         /// <returns>
         /// true if <paramref name="item"/> is found in the <see cref="SettingsDictionary"/>; otherwise, false.
         /// </returns>
-        /// <exception cref="ArgumentNullException">
-        /// Thrown if either of <paramref name="item"/>'s Key or Value properties are null or empty.
-        /// </exception>
+        [CollectionAccess(CollectionAccessType.Read)]
 
         public bool Contains(KeyValuePair<string, string> item)
         {
-            if (string.IsNullOrEmpty(item.Key) || string.IsNullOrEmpty(item.Value))
-                throw new ArgumentException(Resources.SettingsDictionaryItemError, nameof(item));
-
             return _internalDictionary.Contains(item);
         }
 
@@ -242,10 +226,9 @@ namespace PowerShellAudio
         /// The number of elements in the source <see cref="MetadataDictionary"/> is greater than the available space
         /// from index to the end of the destination array.
         /// </exception>
+        [CollectionAccess(CollectionAccessType.Read)]
         public void CopyTo(KeyValuePair<string, string>[] array, int arrayIndex)
         {
-            Contract.Ensures(array != null);
-
             _internalDictionary.CopyTo(array, arrayIndex);
         }
 
@@ -254,9 +237,10 @@ namespace PowerShellAudio
         /// </summary>
         /// <param name="settings">The <see cref="SettingsDictionary"/> instance being copied to.</param>
         /// <exception cref="ArgumentNullException"><paramref name="settings"/> is null.</exception>
-        public void CopyTo(SettingsDictionary settings)
+        [CollectionAccess(CollectionAccessType.Read)]
+        public void CopyTo([NotNull] SettingsDictionary settings)
         {
-            Contract.Requires<ArgumentNullException>(settings != null);
+            if (settings == null) throw new ArgumentNullException(nameof(settings));
 
             foreach (var item in _internalDictionary)
                 settings[item.Key] = item.Value;
@@ -266,12 +250,14 @@ namespace PowerShellAudio
         /// Gets the number of elements contained in the <see cref="SettingsDictionary"/>.
         /// </summary>
         /// <returns>The number of elements contained in the <see cref="SettingsDictionary"/>.</returns>
+        [CollectionAccess(CollectionAccessType.Read)]
         public int Count => _internalDictionary.Count;
 
         /// <summary>
         /// Gets a value indicating whether the <see cref="SettingsDictionary"/> is read-only.
         /// </summary>
         /// <returns>true if the <see cref="SettingsDictionary"/> is read-only; otherwise, false.</returns>
+        [CollectionAccess(CollectionAccessType.None)]
         public bool IsReadOnly => false;
 
         /// <summary>
@@ -289,11 +275,9 @@ namespace PowerShellAudio
         /// <exception cref="ArgumentNullException">
         /// Thrown if either of <paramref name="item"/>'s Key or Value properties are null or empty.
         /// </exception>
+        [CollectionAccess(CollectionAccessType.ModifyExistingContent)]
         public bool Remove(KeyValuePair<string, string> item)
         {
-            if (string.IsNullOrEmpty(item.Key) || string.IsNullOrEmpty(item.Value))
-                throw new ArgumentException(Resources.SettingsDictionaryItemError, nameof(item));
-
             return _internalDictionary.Remove(item.Key);
         }
 
@@ -303,24 +287,16 @@ namespace PowerShellAudio
         /// <returns>
         /// An <see cref="IEnumerator{T}"/> that can be used to iterate through the collection.
         /// </returns>
+        [CollectionAccess(CollectionAccessType.Read)]
         public IEnumerator<KeyValuePair<string, string>> GetEnumerator()
         {
-            Contract.Ensures(Contract.Result<IEnumerator<KeyValuePair<string, string>>>() != null);
-
             return _internalDictionary.GetEnumerator();
         }
 
+        [CollectionAccess(CollectionAccessType.Read)]
         IEnumerator IEnumerable.GetEnumerator()
         {
-            Contract.Ensures(Contract.Result<IEnumerator>() != null);
-
             return _internalDictionary.GetEnumerator();
-        }
-
-        [ContractInvariantMethod]
-        void ObjectInvariant()
-        {
-            Contract.Invariant(_internalDictionary != null);
         }
     }
 }

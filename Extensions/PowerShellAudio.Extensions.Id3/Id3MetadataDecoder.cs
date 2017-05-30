@@ -17,18 +17,17 @@
 
 using Id3Lib;
 using Id3Lib.Exceptions;
-using System.Diagnostics.Contracts;
 using System.IO;
+using JetBrains.Annotations;
 
 namespace PowerShellAudio.Extensions.Id3
 {
     [MetadataDecoderExport(".mp3")]
     public class Id3MetadataDecoder : IMetadataDecoder
     {
-        public MetadataDictionary ReadMetadata(Stream stream)
+        [NotNull]
+        public MetadataDictionary ReadMetadata([NotNull] Stream stream)
         {
-            Contract.Ensures(Contract.Result<MetadataDictionary>() != null);
-
             try
             {
                 return new TagModelToMetadataAdapter(TagManager.Deserialize(stream));

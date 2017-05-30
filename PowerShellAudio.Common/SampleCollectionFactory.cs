@@ -17,7 +17,9 @@
 
 using System;
 using System.Collections.Concurrent;
-using System.Diagnostics.Contracts;
+using System.Globalization;
+using JetBrains.Annotations;
+using PowerShellAudio.Properties;
 
 namespace PowerShellAudio
 {
@@ -40,17 +42,11 @@ namespace PowerShellAudio
         /// <value>
         /// The singleton instance.
         /// </value>
-        public static SampleCollectionFactory Instance
-        {
-            get
-            {
-                Contract.Ensures(Contract.Result<SampleCollectionFactory>() != null);
+        [NotNull]
+        public static SampleCollectionFactory Instance => _lazyInstance.Value;
 
-                return _lazyInstance.Value;
-            }
-        }
-
-        readonly ConcurrentDictionary<int, ConcurrentBag<WeakReference<float[]>>> _cachedArrayDictionary = new ConcurrentDictionary<int, ConcurrentBag<WeakReference<float[]>>>();
+        readonly ConcurrentDictionary<int, ConcurrentBag<WeakReference<float[]>>> _cachedArrayDictionary =
+            new ConcurrentDictionary<int, ConcurrentBag<WeakReference<float[]>>>();
 
         SampleCollectionFactory()
         { }
@@ -64,12 +60,15 @@ namespace PowerShellAudio
         /// <exception cref="ArgumentOutOfRangeException">
         /// Thrown if either <paramref name="channels"/> is less than 1, or <paramref name="sampleCount"/> is negative.
         /// </exception>
+        [NotNull]
         public SampleCollection Create(int channels, int sampleCount)
         {
-            Contract.Requires<ArgumentOutOfRangeException>(channels > 0);
-            Contract.Requires<ArgumentOutOfRangeException>(sampleCount >= 0);
-            Contract.Ensures(Contract.Result<SampleCollection>() != null);
-            Contract.Ensures(Contract.Result<SampleCollection>().SampleCount == sampleCount);
+            if (channels <= 0)
+                throw new ArgumentOutOfRangeException(nameof(channels), channels,
+                    string.Format(CultureInfo.CurrentCulture, Resources.SampleCollectionFactoryCreateChannelsIsOutOfRangeError, channels));
+            if (sampleCount < 0)
+                throw new ArgumentOutOfRangeException(nameof(sampleCount), sampleCount,
+                    string.Format(CultureInfo.CurrentCulture, Resources.SampleCollectionFactoryCreateSampleCountIsOutOfRangeError, sampleCount));
 
             var samples = new float[channels][];
             for (var channel = 0; channel < channels; channel++)
@@ -83,9 +82,9 @@ namespace PowerShellAudio
         /// </summary>
         /// <param name="samples">The <see cref="SampleCollection"/> to free.</param>
         /// <exception cref="ArgumentNullException">Thrown if <paramref name="samples"/> is null.</exception>
-        public void Free(SampleCollection samples)
+        public void Free([NotNull] SampleCollection samples)
         {
-            Contract.Requires<ArgumentNullException>(samples != null);
+            if (samples == null) throw new ArgumentNullException(nameof(samples));
 
             if (samples.SampleCount == 0)
                 return;
@@ -102,11 +101,12 @@ namespace PowerShellAudio
         /// <param name="sampleCount">The new sample count.</param>
         /// <exception cref="ArgumentNullException">Thrown if <paramref name="samples"/> is null.</exception>
         /// <exception cref="ArgumentOutOfRangeException">Thrown if <paramref name="sampleCount"/> is less than 1.</exception>
-        public void Resize(SampleCollection samples, int sampleCount)
+        public void Resize([NotNull] SampleCollection samples, int sampleCount)
         {
-            Contract.Requires<ArgumentNullException>(samples != null);
-            Contract.Requires<ArgumentOutOfRangeException>(sampleCount > 0);
-            Contract.Ensures(samples.SampleCount == sampleCount);
+            if (samples == null) throw new ArgumentNullException(nameof(samples));
+            if (sampleCount <= 0)
+                throw new ArgumentOutOfRangeException(nameof(sampleCount), sampleCount,
+                    string.Format(CultureInfo.CurrentCulture, Resources.SampleCollectionFactoryResizeSampleCountIsOutOfRangeError, sampleCount));
 
             for (var channel = 0; channel < samples.Channels; channel++)
             {
@@ -117,25 +117,19 @@ namespace PowerShellAudio
             }
         }
 
+        [NotNull]
         float[] CreateOrGetCachedArray(int sampleCount)
         {
-            Contract.Requires(sampleCount >= 0);
-            Contract.Ensures(Contract.Result<float[]>() != null);
-            Contract.Ensures(Contract.Result<float[]>().Length == sampleCount);
-
             if (sampleCount == 0)
                 return new float[0];
 
             // Check the dictionary for arrays of the same length:
-            ConcurrentBag<WeakReference<float[]>> cachedArrays;
-            if (_cachedArrayDictionary.TryGetValue(sampleCount, out cachedArrays))
+            if (_cachedArrayDictionary.TryGetValue(sampleCount, out ConcurrentBag<WeakReference<float[]>> cachedArrays))
             {
                 // Check arrays one at a time, until we get one that hasn't been disposed yet:
-                WeakReference<float[]> weakReference;
-                while (cachedArrays.TryTake(out weakReference))
+                while (cachedArrays.TryTake(out WeakReference<float[]> weakReference))
                 {
-                    float[] target;
-                    if (weakReference.TryGetTarget(out target))
+                    if (weakReference.TryGetTarget(out float[] target))
                         return target;
                 }
             }
@@ -144,22 +138,13 @@ namespace PowerShellAudio
             return new float[sampleCount];
         }
 
-        void CacheArray(float[] array)
+        void CacheArray([NotNull] float[] array)
         {
-            Contract.Requires(array != null);
-            Contract.Requires(array.Length > 0);
-
             _cachedArrayDictionary.AddOrUpdate(array.Length, new ConcurrentBag<WeakReference<float[]>>(), (i, bag) =>
             {
                 bag.Add(new WeakReference<float[]>(array));
                 return bag;
             });
-        }
-
-        [ContractInvariantMethod]
-        void ObjectInvariant()
-        {
-            Contract.Invariant(_cachedArrayDictionary != null);
         }
     }
 }

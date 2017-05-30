@@ -17,10 +17,11 @@
 
 using System;
 using System.Collections.Generic;
-using System.Diagnostics.Contracts;
 using System.Globalization;
 using System.Linq;
 using System.Text;
+using JetBrains.Annotations;
+using PowerShellAudio.Properties;
 
 namespace PowerShellAudio
 {
@@ -33,8 +34,19 @@ namespace PowerShellAudio
     [Serializable]
     public class AudioInfo
     {
-        static readonly IReadOnlyCollection<int> _supportedChannels = new[] { 1, 2 };
-        static readonly IReadOnlyCollection<int> _supportedSampleRates = new[]
+        /// <summary>
+        /// Gets an <see cref="IReadOnlyCollection{T}"/> of supported channel configurations.
+        /// </summary>
+        /// <value>An <see cref="IReadOnlyCollection{T}"/> of supported channel configurations.</value>
+        [NotNull]
+        public static IReadOnlyCollection<int> SupportedChannels { get; } = new[] { 1, 2 };
+
+        /// <summary>
+        /// Gets an <see cref="IReadOnlyCollection{T}"/> of supported sample rates.
+        /// </summary>
+        /// <value>An <see cref="IReadOnlyCollection{T}"/> of supported sample rates.</value>
+        [NotNull]
+        public static IReadOnlyCollection<int> SupportedSampleRates { get; } = new[]
         {
             8000,
             11025,
@@ -59,39 +71,12 @@ namespace PowerShellAudio
         };
 
         /// <summary>
-        /// Gets an <see cref="IReadOnlyCollection{T}"/> of supported channel configurations.
-        /// </summary>
-        /// <value>An <see cref="IReadOnlyCollection{T}"/> of supported channel configurations.</value>
-        public static IReadOnlyCollection<int> SupportedChannels
-        {
-            get
-            {
-                Contract.Ensures(Contract.Result<IReadOnlyCollection<int>>() != null);
-
-                return _supportedChannels;
-            }
-        }
-
-        /// <summary>
-        /// Gets an <see cref="IReadOnlyCollection{T}"/> of supported sample rates.
-        /// </summary>
-        /// <value>An <see cref="IReadOnlyCollection{T}"/> of supported sample rates.</value>
-        public static IReadOnlyCollection<int> SupportedSampleRates
-        {
-            get
-            {
-                Contract.Ensures(Contract.Result<IReadOnlyCollection<int>>() != null);
-
-                return _supportedSampleRates;
-            }
-        }
-
-        /// <summary>
         /// Gets a description of the audio stream format.
         /// </summary>
         /// <value>
         /// A description of the audio stream format.
         /// </value>
+        [NotNull]
         public string Format { get; }
 
         /// <summary>
@@ -138,19 +123,22 @@ namespace PowerShellAudio
         /// <exception cref="ArgumentOutOfRangeException">
         /// Thrown if one or more parameters are outside the supported range.
         /// </exception>
-        public AudioInfo(string format, int channels, int bitsPerSample, int sampleRate, long sampleCount)
+        public AudioInfo([NotNull] string format, int channels, int bitsPerSample, int sampleRate, long sampleCount)
         {
-            Contract.Requires<ArgumentNullException>(!string.IsNullOrEmpty(format));
-            Contract.Requires<ArgumentOutOfRangeException>(SupportedChannels.Contains(channels));
-            Contract.Requires<ArgumentOutOfRangeException>(bitsPerSample >= 0);
-            Contract.Requires<ArgumentOutOfRangeException>(bitsPerSample <= 32);
-            Contract.Requires<ArgumentOutOfRangeException>(SupportedSampleRates.Contains(sampleRate));
-            Contract.Requires<ArgumentOutOfRangeException>(sampleCount >= 0);
-            Contract.Ensures(Format == format);
-            Contract.Ensures(Channels == channels);
-            Contract.Ensures(BitsPerSample == bitsPerSample);
-            Contract.Ensures(SampleRate == sampleRate);
-            Contract.Ensures(SampleCount == sampleCount);
+            if (string.IsNullOrEmpty(format))
+                throw new ArgumentException(Resources.AudioInfoFormatIsEmptyError, nameof(format));
+            if (!SupportedChannels.Contains(channels))
+                throw new ArgumentOutOfRangeException(nameof(channels), channels,
+                    string.Format(CultureInfo.CurrentCulture, Resources.AudioInfoChannelsOutOfRangeError, channels));
+            if (bitsPerSample < 0 || bitsPerSample > 32)
+                throw new ArgumentOutOfRangeException(nameof(bitsPerSample), bitsPerSample,
+                    string.Format(CultureInfo.CurrentCulture, Resources.AudioInfoBitsPerSampleIsOutOfRangeError, bitsPerSample));
+            if (!SupportedSampleRates.Contains(sampleRate))
+                throw new ArgumentOutOfRangeException(nameof(sampleRate), sampleRate,
+                    string.Format(CultureInfo.CurrentCulture, Resources.AudioInfoSampleRateIsOutOfRangeError, sampleRate));
+            if (sampleCount < 0)
+                throw new ArgumentOutOfRangeException(nameof(sampleCount), sampleCount,
+                    string.Format(CultureInfo.CurrentCulture, Resources.AudioInfoSampleCountIsOutOfRangeError, sampleCount));
 
             Format = format;
             Channels = channels;
@@ -167,8 +155,6 @@ namespace PowerShellAudio
         /// <returns>A <see cref="String"/> that represents this instance.</returns>
         public override string ToString()
         {
-            Contract.Ensures(!string.IsNullOrEmpty(Contract.Result<string>()));
-
             var result = new StringBuilder();
 
             if (BitsPerSample > 0)
@@ -199,17 +185,6 @@ namespace PowerShellAudio
             result.Append("]");
 
             return result.ToString();
-        }
-
-        [ContractInvariantMethod]
-        void ObjectInvariant()
-        {
-            Contract.Invariant(!string.IsNullOrEmpty(Format));
-            Contract.Invariant(_supportedChannels.Contains(Channels));
-            Contract.Invariant(BitsPerSample >= 0);
-            Contract.Invariant(BitsPerSample <= 32);
-            Contract.Invariant(_supportedSampleRates.Contains(SampleRate));
-            Contract.Invariant(SampleCount >= 0);
         }
     }
 }

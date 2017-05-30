@@ -17,7 +17,7 @@
 
 namespace PowerShellAudio.Extensions.Vorbis
 {
-    internal enum Result
+    enum Result
     {
         OkMoreAvailable = 1,
         Ok = 0,
@@ -26,9 +26,9 @@ namespace PowerShellAudio.Extensions.Vorbis
         InValueError = -131,
         NotVorbisError = -132,
         BadHeaderError = -133
-    };
+    }
 
-    internal enum PictureType : uint
+    enum PictureType : uint
     {
         Other,
         PngIcon,
@@ -51,5 +51,5 @@ namespace PowerShellAudio.Extensions.Vorbis
         Illustration,
         ArtistLogo,
         PublisherLogo
-    };
+    }
 }

@@ -15,18 +15,19 @@
  * <http://www.gnu.org/licenses/>.
  */
 
-using System.Diagnostics.Contracts;
 using System.IO;
+using JetBrains.Annotations;
 
 namespace PowerShellAudio.Extensions.Mp3
 {
     static class ExtensionMethods
     {
-        internal static int ReadInt32SyncSafe(this BinaryReader reader)
+        internal static int ReadInt32SyncSafe([NotNull] this BinaryReader reader)
         {
-            Contract.Requires(reader != null);
-
-            return (reader.ReadByte() << 21) + (reader.ReadByte() << 14) + (reader.ReadByte() << 7) + reader.ReadByte();
+            return (reader.ReadByte() << 21) 
+                + (reader.ReadByte() << 14) 
+                + (reader.ReadByte() << 7) 
+                + reader.ReadByte();
         }
     }
 }

@@ -17,35 +17,21 @@
 
 using PowerShellAudio.Extensions.ReplayGain.Properties;
 using System;
-using System.Diagnostics.Contracts;
 using System.Globalization;
 
 namespace PowerShellAudio.Extensions.ReplayGain
 {
     class ReplayGain2SampleAnalyzerInfo : SampleAnalyzerInfo
     {
-        public override string Name
-        {
-            get
-            {
-                Contract.Ensures(!string.IsNullOrEmpty(Contract.Result<string>()));
-
-                return "ReplayGain 2.0";
-            }
-        }
+        public override string Name => "ReplayGain 2.0";
 
         public override string ExternalLibrary
         {
             get
             {
-                Contract.Ensures(Contract.Result<string>() != null);
-
                 try
                 {
-                    int majorVersion;
-                    int minorVersion;
-                    int patchVersion;
-                    SafeNativeMethods.GetVersion(out majorVersion, out minorVersion, out patchVersion);
+                    SafeNativeMethods.GetVersion(out int majorVersion, out int minorVersion, out int patchVersion);
 
                     return string.Format(CultureInfo.CurrentCulture, Resources.SampleAnalyzerDescription, majorVersion,
                         minorVersion, patchVersion);

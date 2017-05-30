@@ -20,10 +20,10 @@ using Id3Lib.Exceptions;
 using Id3Lib.Frames;
 using PowerShellAudio.Extensions.Id3.Properties;
 using System;
-using System.Diagnostics.Contracts;
 using System.Globalization;
 using System.IO;
 using System.Linq;
+using JetBrains.Annotations;
 
 namespace PowerShellAudio.Extensions.Id3
 {
@@ -32,17 +32,13 @@ namespace PowerShellAudio.Extensions.Id3
     {
         static readonly MetadataEncoderInfo _encoderInfo = new Id3MetadataEncoderInfo();
 
-        public MetadataEncoderInfo EncoderInfo
-        {
-            get
-            {
-                Contract.Ensures(Contract.Result<MetadataEncoderInfo>() != null);
+        [NotNull]
+        public MetadataEncoderInfo EncoderInfo => _encoderInfo;
 
-                return _encoderInfo;
-            }
-        }
-
-        public void WriteMetadata(Stream stream, MetadataDictionary metadata, SettingsDictionary settings)
+        public void WriteMetadata(
+            [NotNull] Stream stream, 
+            [NotNull] MetadataDictionary metadata,
+            [NotNull] SettingsDictionary settings)
         {
             TagModel currentTag = GetCurrentTag(stream);
             uint currentTagSizeWithPadding = currentTag?.Header.TagSizeWithHeaderFooter ?? 0;
@@ -91,11 +87,9 @@ namespace PowerShellAudio.Extensions.Id3
             }
         }
 
-        static TagModel GetCurrentTag(Stream stream)
+        [CanBeNull]
+        static TagModel GetCurrentTag([NotNull] Stream stream)
         {
-            Contract.Requires(stream != null);
-            Contract.Requires(stream.CanSeek);
-
             try
             {
                 if (stream.Length == 0)
@@ -111,20 +105,18 @@ namespace PowerShellAudio.Extensions.Id3
             }
         }
 
-        static TagModel GetNewTag(TagModel currentTag, MetadataDictionary metadata, SettingsDictionary settings)
+        static TagModel GetNewTag(
+            [CanBeNull] TagModel currentTag,
+            [NotNull] MetadataDictionary metadata,
+            [NotNull] SettingsDictionary settings)
         {
-            Contract.Requires(metadata != null);
-            Contract.Requires(settings != null);
-
             var result = new MetadataToTagModelAdapter(metadata, settings);
 
             // Preserve an existing iTunNORM frame if a new one isn't provided, and AddSoundCheck isn't explicitly False:
             FrameBase currentSoundCheckFrame = currentTag?.SingleOrDefault(frame =>
             {
                 var fullTextFrame = frame as FrameFullText;
-                if (fullTextFrame != null && fullTextFrame.Description == "iTunNORM")
-                    return true;
-                return false;
+                return fullTextFrame != null && fullTextFrame.Description == "iTunNORM";
             });
             if (currentSoundCheckFrame != null && !result.IncludesSoundCheck &&
                 string.Compare(settings["AddSoundCheck"], bool.FalseString, StringComparison.OrdinalIgnoreCase) != 0)

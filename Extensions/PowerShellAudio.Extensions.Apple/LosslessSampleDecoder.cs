@@ -17,10 +17,10 @@
 
 using PowerShellAudio.Extensions.Apple.Properties;
 using System;
-using System.Diagnostics.Contracts;
 using System.Globalization;
 using System.IO;
 using System.Runtime.InteropServices;
+using JetBrains.Annotations;
 
 namespace PowerShellAudio.Extensions.Apple
 {
@@ -33,12 +33,8 @@ namespace PowerShellAudio.Extensions.Apple
         IntPtr _magicCookie;
         int[] _buffer;
 
-        public void Initialize(Stream stream)
+        public void Initialize([NotNull] Stream stream)
         {
-            Contract.Ensures(_converter != null);
-            Contract.Ensures(_magicCookie != IntPtr.Zero);
-            Contract.Ensures(_divisor > 0);
-
             try
             {
                 var audioFile = new NativeAudioFile(AudioFileType.M4A, stream);
@@ -47,12 +43,10 @@ namespace PowerShellAudio.Extensions.Apple
                 if (_inputDescription.AudioFormat != AudioFormat.AppleLossless)
                     throw new UnsupportedAudioException(Resources.LosslessSampleDecoderFormatError);
 
-                var outputDescription = InitializeOutputDescription(_inputDescription);
+                AudioStreamBasicDescription outputDescription = InitializeOutputDescription(_inputDescription);
 
                 _divisor = (float)Math.Pow(2, outputDescription.BitsPerChannel - 1);
-
                 _converter = new NativeAudioConverter(ref _inputDescription, ref outputDescription, audioFile);
-
                 _magicCookie = InitializeMagicCookie(audioFile, _converter);
             }
             catch (TypeInitializationException e)
@@ -63,11 +57,9 @@ namespace PowerShellAudio.Extensions.Apple
             }
         }
 
+        [NotNull]
         public SampleCollection DecodeSamples()
         {
-            Contract.Ensures(_buffer != null);
-            Contract.Ensures(Contract.Result<SampleCollection>() != null);
-
             uint sampleCount = 4096;
 
             if (_buffer == null)
@@ -158,16 +150,10 @@ namespace PowerShellAudio.Extensions.Apple
             };
         }
 
-        static IntPtr InitializeMagicCookie(NativeAudioFile audioFile, NativeAudioConverter converter)
+        static IntPtr InitializeMagicCookie([NotNull] NativeAudioFile audioFile, [NotNull] NativeAudioConverter converter)
         {
-            Contract.Requires(audioFile != null);
-            Contract.Requires(converter != null);
-
-            uint dataSize;
-            uint isWritable;
-
-            AudioFileStatus getStatus = audioFile.GetPropertyInfo(AudioFilePropertyId.MagicCookieData, out dataSize,
-                out isWritable);
+            AudioFileStatus getStatus = audioFile.GetPropertyInfo(AudioFilePropertyId.MagicCookieData,
+                out uint dataSize, out uint isWritable);
             if (getStatus != AudioFileStatus.Ok)
                 throw new IOException(string.Format(CultureInfo.CurrentCulture,
                     Resources.LosslessSampleDecoderGetCookieInfoError, getStatus));

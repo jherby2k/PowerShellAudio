@@ -17,7 +17,6 @@
 
 using System;
 using System.Collections.Generic;
-using System.Diagnostics.Contracts;
 using System.Globalization;
 
 namespace PowerShellAudio.Extensions.Flac
@@ -43,15 +42,9 @@ namespace PowerShellAudio.Extensions.Flac
 
         public override string this[string key]
         {
-            get
-            {
-                return base[key];
-            }
+            get => base[key];
             set
             {
-                Contract.Requires(key != null);
-                Contract.Requires(value != null);
-
                 switch (key)
                 {
                     case "TRACKNUMBER":

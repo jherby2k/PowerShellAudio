@@ -17,8 +17,8 @@
 
 using System;
 using System.Collections.Generic;
-using System.Diagnostics.Contracts;
 using System.Globalization;
+using JetBrains.Annotations;
 
 namespace PowerShellAudio.Extensions.Flac
 {
@@ -40,10 +40,8 @@ namespace PowerShellAudio.Extensions.Flac
                 { "TrackPeak", "REPLAYGAIN_TRACK_PEAK" }
             };
 
-        internal MetadataToVorbisCommentAdapter(MetadataDictionary metadata)
+        internal MetadataToVorbisCommentAdapter([NotNull] MetadataDictionary metadata)
         {
-            Contract.Requires(metadata != null);
-
             var day = 0;
             var month = 0;
             var year = 0;
@@ -71,11 +69,7 @@ namespace PowerShellAudio.Extensions.Flac
 
             // The DATE field should contain either a full date, or just the year:
             if (day > 0 && month > 0 && year > 0)
-            {
-                Contract.Assume(month <= 12);
-
                 this["DATE"] = new DateTime(year, month, day).ToShortDateString();
-            }
             else if (year > 0)
                 this["DATE"] = year.ToString(CultureInfo.InvariantCulture);
         }

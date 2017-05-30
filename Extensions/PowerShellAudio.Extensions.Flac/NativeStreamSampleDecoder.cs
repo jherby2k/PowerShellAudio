@@ -16,9 +16,9 @@
  */
 
 using System;
-using System.Diagnostics.Contracts;
 using System.IO;
 using System.Runtime.InteropServices;
+using JetBrains.Annotations;
 
 namespace PowerShellAudio.Extensions.Flac
 {
@@ -27,29 +27,16 @@ namespace PowerShellAudio.Extensions.Flac
         float _divisor;
         int[][] _managedBuffer;
 
+        [CanBeNull]
         internal SampleCollection Samples { get; set; }
 
-        internal NativeStreamSampleDecoder(Stream input)
+        internal NativeStreamSampleDecoder([NotNull] Stream input)
             : base(input)
         {
-            Contract.Requires(input != null);
-            Contract.Requires(input.CanRead);
-            Contract.Requires(input.CanSeek);
-            Contract.Requires(input.Length > 0);
-            Contract.Requires(input.Position == 0);
         }
 
         protected override DecoderWriteStatus WriteCallback(IntPtr decoderHandle, ref Frame frame, IntPtr buffer, IntPtr userData)
         {
-            Contract.Ensures(_divisor > 0);
-            Contract.Ensures(_managedBuffer != null);
-            Contract.Ensures(_managedBuffer.Length > 0);
-            Contract.Ensures(_managedBuffer[0].Length > 0);
-            Contract.Ensures(Samples != null);
-
-            Contract.Assume(frame.Header.Channels > 0);
-            Contract.Assume(frame.Header.BlockSize > 0);
-
             // Initialize the divisor:
             if (_divisor < 1)
                 _divisor = (float)Math.Pow(2, frame.Header.BitsPerSample - 1);
@@ -77,12 +64,6 @@ namespace PowerShellAudio.Extensions.Flac
                     Samples[channel][sample] = _managedBuffer[channel][sample] / _divisor;
 
             return DecoderWriteStatus.Continue;
-        }
-
-        [ContractInvariantMethod]
-        void ObjectInvariant()
-        {
-            Contract.Invariant(_divisor >= 0);
         }
     }
 }

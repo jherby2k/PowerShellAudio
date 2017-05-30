@@ -16,7 +16,6 @@
  */
 
 using System.Diagnostics.CodeAnalysis;
-using System.Diagnostics.Contracts;
 
 namespace PowerShellAudio
 {
@@ -27,7 +26,6 @@ namespace PowerShellAudio
     /// To add support for a new analyzer, an extension should implement this class, then decorate their implementation
     /// with the <see cref="SampleAnalyzerExportAttribute"/> attribute so that it can be discovered at runtime.
     /// </remarks>
-    [ContractClass(typeof(SampleAnalyzerContract))]
     public interface ISampleAnalyzer : IFinalSampleConsumer
     {
         /// <summary>

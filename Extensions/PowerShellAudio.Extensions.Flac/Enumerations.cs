@@ -17,7 +17,7 @@
 
 namespace PowerShellAudio.Extensions.Flac
 {
-    internal enum DecoderInitStatus
+    enum DecoderInitStatus
     {
         Ok,
         UnsupportedContainer,
@@ -25,9 +25,9 @@ namespace PowerShellAudio.Extensions.Flac
         ErrorAllocatingMemory,
         ErrorOpeningFile,
         AlreadyInitialized
-    };
+    }
 
-    internal enum DecoderState
+    enum DecoderState
     {
         SearchForMetadata,
         ReadMetadata,
@@ -39,65 +39,65 @@ namespace PowerShellAudio.Extensions.Flac
         Aborted,
         MemoryAllocationError,
         Uninitialized
-    };
+    }
 
-    internal enum DecoderReadStatus
+    enum DecoderReadStatus
     {
         Continue,
         EndOfStream,
         Abort
-    };
+    }
 
-    internal enum DecoderSeekStatus
+    enum DecoderSeekStatus
     {
         Ok,
         Error,
         Unsupported
-    };
+    }
 
-    internal enum DecoderTellStatus
+    enum DecoderTellStatus
     {
         Ok,
         Error,
         Unsupported
-    };
+    }
 
-    internal enum DecoderLengthStatus
+    enum DecoderLengthStatus
     {
         Ok,
         Error,
         Unsupported
-    };
+    }
 
-    internal enum DecoderWriteStatus
+    enum DecoderWriteStatus
     {
         Continue,
         Abort
-    };
+    }
 
-    internal enum DecoderErrorStatus
+    enum DecoderErrorStatus
     {
         LostSync,
         BadHeader,
         FrameCrcMismatch,
         UnparseableStream
-    };
+    }
 
-    internal enum ChannelAssignment
+    enum ChannelAssignment
     {
         Independent,
         LeftAndSide,
         RightAndSide,
         MidAndSide
-    };
+    }
 
-    internal enum FrameNumberType
+    enum FrameNumberType
     {
         FrameNumber,
         SampleNumber
-    };
+    }
 
-    internal enum MetadataType
+    enum MetadataType
     {
         StreamInfo,
         Padding,
@@ -107,9 +107,9 @@ namespace PowerShellAudio.Extensions.Flac
         CueSheet,
         Picture,
         Undefined
-    };
+    }
 
-    internal enum PictureType : uint
+    enum PictureType : uint
     {
         Other,
         PngIcon,
@@ -132,9 +132,9 @@ namespace PowerShellAudio.Extensions.Flac
         Illustration,
         ArtistLogo,
         PublisherLogo
-    };
+    }
 
-    internal enum MetadataChainStatus
+    enum MetadataChainStatus
     {
         Ok,
         IllegalInput,
@@ -152,29 +152,29 @@ namespace PowerShellAudio.Extensions.Flac
         InvalidCallbacks,
         ReadWriteMismatch,
         WrongWriteCall
-    };
+    }
 
-    internal enum EncoderWriteStatus
+    enum EncoderWriteStatus
     {
         Ok,
         FatalError
-    };
+    }
 
-    internal enum EncoderSeekStatus
+    enum EncoderSeekStatus
     {
         Ok,
         Error,
         Unsupported
-    };
+    }
 
-    internal enum EncoderTellStatus
+    enum EncoderTellStatus
     {
         Ok,
         Error,
         Unsupported
-    };
+    }
 
-    internal enum EncoderInitStatus
+    enum EncoderInitStatus
     {
         Ok,
         EncoderError,
@@ -189,9 +189,9 @@ namespace PowerShellAudio.Extensions.Flac
         BlockSizeTooSmallForLpcOrder,
         NotStreamable,
         InvalidMetaData
-    };
+    }
 
-    internal enum EncoderState
+    enum EncoderState
     {
         Ok,
         Uninitialized,
@@ -202,5 +202,5 @@ namespace PowerShellAudio.Extensions.Flac
         IOError,
         FramingError,
         MemoryAllocationError
-    };
+    }
 }

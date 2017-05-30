@@ -17,14 +17,14 @@
 
 using System;
 using System.Collections.Generic;
-using System.Diagnostics.Contracts;
+using JetBrains.Annotations;
 
 namespace PowerShellAudio
 {
     /// <summary>
     /// Contains information about an <see cref="ISampleEncoder"/> implementation.
     /// </summary>
-    [Serializable, ContractClass(typeof(SampleEncoderInfoContract))]
+    [Serializable]
     public abstract class SampleEncoderInfo
     {
         /// <summary>
@@ -33,6 +33,7 @@ namespace PowerShellAudio
         /// <value>
         /// The name.
         /// </value>
+        [NotNull]
         public abstract string Name { get; }
 
         /// <summary>
@@ -41,6 +42,7 @@ namespace PowerShellAudio
         /// <value>
         /// The file extension.
         /// </value>
+        [NotNull]
         public abstract string FileExtension { get; }
 
         /// <summary>
@@ -57,15 +59,8 @@ namespace PowerShellAudio
         /// <value>
         /// The external library.
         /// </value>
-        public virtual string ExternalLibrary
-        {
-            get
-            {
-                Contract.Ensures(Contract.Result<string>() != null);
-
-                return string.Empty;
-            }
-        }
+        [NotNull]
+        public virtual string ExternalLibrary => string.Empty;
 
         /// <summary>
         /// Gets the default settings.
@@ -73,15 +68,8 @@ namespace PowerShellAudio
         /// <value>
         /// The default settings.
         /// </value>
-        public virtual SettingsDictionary DefaultSettings
-        {
-            get
-            {
-                Contract.Ensures(Contract.Result<SettingsDictionary>() != null);
-
-                return new SettingsDictionary();
-            }
-        }
+        [NotNull]
+        public virtual SettingsDictionary DefaultSettings => new SettingsDictionary();
 
         /// <summary>
         /// Gets the available settings.
@@ -89,14 +77,7 @@ namespace PowerShellAudio
         /// <value>
         /// The available settings.
         /// </value>
-        public virtual IReadOnlyCollection<string> AvailableSettings
-        {
-            get
-            {
-                Contract.Ensures(Contract.Result<IReadOnlyCollection<string>>() != null);
-
-                return new List<string>(0);
-            }
-        }
+        [NotNull, ItemNotNull]
+        public virtual IReadOnlyCollection<string> AvailableSettings => new List<string>(0);
     }
 }

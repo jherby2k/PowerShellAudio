@@ -18,7 +18,6 @@
 using PowerShellAudio.Extensions.Vorbis.Properties;
 using System;
 using System.Diagnostics.CodeAnalysis;
-using System.Diagnostics.Contracts;
 using System.Globalization;
 using System.IO;
 using System.Runtime.InteropServices;
@@ -36,17 +35,12 @@ namespace PowerShellAudio.Extensions.Vorbis
 
         internal NativeVorbisEncoder()
         {
-            Contract.Ensures(_info != IntPtr.Zero);
-
             _info = Marshal.AllocHGlobal(Marshal.SizeOf(typeof(VorbisInfo)));
             SafeNativeMethods.VorbisInfoInitialize(_info);
         }
 
         internal void Initialize(int channels, int sampleRate, float baseQuality)
         {
-            Contract.Ensures(_dspState != IntPtr.Zero);
-            Contract.Ensures(_block != IntPtr.Zero);
-
             Result result = SafeNativeMethods.VorbisEncodeInitializeVbr(_info, channels, sampleRate, baseQuality);
             if (result != Result.Ok)
                 throw new IOException(string.Format(CultureInfo.CurrentCulture,
@@ -57,9 +51,6 @@ namespace PowerShellAudio.Extensions.Vorbis
 
         internal void Initialize(int channels, int sampleRate, int minimumBitRate, int nominalBitRate, int maximumBitRate)
         {
-            Contract.Ensures(_dspState != IntPtr.Zero);
-            Contract.Ensures(_block != IntPtr.Zero);
-
             Result result = SafeNativeMethods.VorbisEncodeInitialize(_info, channels, sampleRate, minimumBitRate,
                 nominalBitRate, maximumBitRate);
             if (result != Result.Ok)
@@ -88,9 +79,6 @@ namespace PowerShellAudio.Extensions.Vorbis
 
         internal void SetupInitialize()
         {
-            Contract.Ensures(_dspState != IntPtr.Zero);
-            Contract.Ensures(_block != IntPtr.Zero);
-
             Result result = SafeNativeMethods.VorbisEncodeSetupInitialize(_info);
             if (result != Result.Ok)
                 throw new IOException(string.Format(CultureInfo.CurrentCulture, 
@@ -192,9 +180,6 @@ namespace PowerShellAudio.Extensions.Vorbis
 
         void CompleteInitialization()
         {
-            Contract.Ensures(_dspState != IntPtr.Zero);
-            Contract.Ensures(_block != IntPtr.Zero);
-
             _dspState = Marshal.AllocHGlobal(Marshal.SizeOf(typeof(VorbisDspState)));
             if (SafeNativeMethods.VorbisAnalysisInitialize(_dspState, _info) != Result.Ok)
                 throw new IOException(Resources.NativeVorbisEncoderAnalysisInitialize);

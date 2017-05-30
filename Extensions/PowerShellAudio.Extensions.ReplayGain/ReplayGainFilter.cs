@@ -18,9 +18,9 @@
 using PowerShellAudio.Extensions.ReplayGain.Properties;
 using System;
 using System.Collections.Generic;
-using System.Diagnostics.Contracts;
 using System.Globalization;
 using System.Threading.Tasks;
+using JetBrains.Annotations;
 
 namespace PowerShellAudio.Extensions.ReplayGain
 {
@@ -29,27 +29,19 @@ namespace PowerShellAudio.Extensions.ReplayGain
     {
         float _scale = 1;
 
-        public SettingsDictionary DefaultSettings
+        [NotNull]
+        public SettingsDictionary DefaultSettings => new SettingsDictionary
         {
-            get
-            {
-                Contract.Ensures(Contract.Result<SettingsDictionary>() != null);
+            { "ApplyGain", bool.FalseString }
+        };
 
-                return new SettingsDictionary { { "ApplyGain", bool.FalseString } };
-            }
-        }
-
-        public IReadOnlyCollection<string> AvailableSettings
+        [NotNull]
+        public IReadOnlyCollection<string> AvailableSettings => new List<string>
         {
-            get
-            {
-                Contract.Ensures(Contract.Result<IReadOnlyCollection<string>>() != null);
+            "ApplyGain"
+        };
 
-                return new List<string> { "ApplyGain" };
-            }
-        }
-
-        public void Initialize(MetadataDictionary metadata, SettingsDictionary settings)
+        public void Initialize([NotNull] MetadataDictionary metadata, [NotNull] SettingsDictionary settings)
         {
             if (string.IsNullOrEmpty(settings["ApplyGain"]) ||
                 string.Compare(settings["ApplyGain"], bool.FalseString, StringComparison.OrdinalIgnoreCase) == 0)
@@ -84,7 +76,7 @@ namespace PowerShellAudio.Extensions.ReplayGain
             metadata["TrackPeak"] = AdjustPeak(metadata["TrackPeak"], _scale);
         }
 
-        public void Submit(SampleCollection samples)
+        public void Submit([NotNull] SampleCollection samples)
         {
             if (Math.Abs(_scale - 1) < 0.001)
                 return;
@@ -97,17 +89,15 @@ namespace PowerShellAudio.Extensions.ReplayGain
             });
         }
 
-        static float CalculateScale(string gain, string peak)
+        static float CalculateScale([NotNull] string gain, [NotNull] string peak)
         {
-            Contract.Requires(!string.IsNullOrEmpty(gain));
-            Contract.Requires(!string.IsNullOrEmpty(peak));
-
             // Return the desired scale, or the closest possible without clipping:
             return Math.Min((float)Math.Pow(10, float.Parse(gain.Replace(" dB", string.Empty),
                 CultureInfo.InvariantCulture) / 20), 1 / float.Parse(peak, CultureInfo.InvariantCulture));
         }
 
-        static string AdjustGain(string gain, float scale)
+        [NotNull]
+        static string AdjustGain([NotNull] string gain, float scale)
         {
             return !string.IsNullOrEmpty(gain)
                 ? string.Format(CultureInfo.InvariantCulture, "{0:0.00} dB",
@@ -116,7 +106,7 @@ namespace PowerShellAudio.Extensions.ReplayGain
                 : string.Empty;
         }
 
-        static string AdjustPeak(string peak, float scale)
+        static string AdjustPeak([NotNull] string peak, float scale)
         {
             return !string.IsNullOrEmpty(peak)
                 ? string.Format(CultureInfo.InvariantCulture, "{0:0.000000}",

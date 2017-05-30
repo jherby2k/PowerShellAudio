@@ -17,7 +17,8 @@
 
 using System;
 using System.ComponentModel.Composition;
-using System.Diagnostics.Contracts;
+using JetBrains.Annotations;
+using PowerShellAudio.Properties;
 
 namespace PowerShellAudio
 {
@@ -37,6 +38,7 @@ namespace PowerShellAudio
         /// <value>
         /// The name of the algorithm.
         /// </value>
+        [NotNull]
         public string Name { get; }
 
         /// <summary>
@@ -48,19 +50,13 @@ namespace PowerShellAudio
         /// <exception cref="ArgumentNullException">
         /// Thrown if <paramref name="name"/> is null or empty.
         /// </exception>
-        public SampleFilterExportAttribute(string name)
+        public SampleFilterExportAttribute([NotNull] string name)
             : base(typeof(ISampleFilter))
         {
-            Contract.Requires<ArgumentNullException>(!string.IsNullOrEmpty(name));
-            Contract.Ensures(Name == name);
+            if (string.IsNullOrEmpty(name))
+                throw new ArgumentException(Resources.SampleAnalyzerExportAttributeNameIsEmptyError, nameof(name));
 
             Name = name;
-        }
-
-        [ContractInvariantMethod]
-        void ObjectInvariant()
-        {
-            Contract.Invariant(!string.IsNullOrEmpty(Name));
         }
     }
 }

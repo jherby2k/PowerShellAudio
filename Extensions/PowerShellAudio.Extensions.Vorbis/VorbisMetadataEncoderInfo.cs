@@ -15,30 +15,12 @@
  * <http://www.gnu.org/licenses/>.
  */
 
-using System.Diagnostics.Contracts;
-
 namespace PowerShellAudio.Extensions.Vorbis
 {
     class VorbisMetadataEncoderInfo : MetadataEncoderInfo
     {
-        public override string Format
-        {
-            get
-            {
-                Contract.Ensures(!string.IsNullOrEmpty(Contract.Result<string>()));
+        public override string Format => "Vorbis Comments";
 
-                return "Vorbis Comments";
-            }
-        }
-
-        public override string FileExtension
-        {
-            get
-            {
-                Contract.Ensures(!string.IsNullOrEmpty(Contract.Result<string>()));
-
-                return ".ogg";
-            }
-        }
+        public override string FileExtension => ".ogg";
     }
 }

@@ -15,10 +15,13 @@
  * <http://www.gnu.org/licenses/>.
  */
 
+using JetBrains.Annotations;
+
 namespace PowerShellAudio.Extensions.Mp4
 {
     abstract class WritableAtom
     {
+        [NotNull]
         internal abstract byte[] GetBytes();
     }
 }

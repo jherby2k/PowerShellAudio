@@ -17,12 +17,12 @@
 
 namespace PowerShellAudio.Extensions.Wave
 {
-    internal enum Format : ushort
+    enum Format : ushort
     {
         Pcm = 0x1,
         Float = 0x3,
         ALaw = 0x6,
         MuLaw = 0x7,
         Extensible = 0xfffe
-    };
+    }
 }

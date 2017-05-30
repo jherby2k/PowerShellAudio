@@ -18,10 +18,10 @@
 using PowerShellAudio.Properties;
 using System;
 using System.ComponentModel.Composition;
-using System.Diagnostics.Contracts;
 using System.Globalization;
 using System.IO;
 using System.Linq;
+using JetBrains.Annotations;
 
 namespace PowerShellAudio
 {
@@ -43,12 +43,11 @@ namespace PowerShellAudio
         /// Gets the metadata. If metadata has not been loaded yet, <see cref="LoadMetadata()"/> is automatically called.
         /// </summary>
         /// <value>The metadata.</value>
+        [NotNull]
         public MetadataDictionary Metadata
         {
             get
             {
-                Contract.Ensures(Contract.Result<MetadataDictionary>() != null);
-
                 // Metadata is loaded on demand:
                 if (_metadata == null)
                     LoadMetadata();
@@ -62,12 +61,10 @@ namespace PowerShellAudio
         /// </summary>
         /// <param name="audioFile">The audio file to copy.</param>
         /// <exception cref="ArgumentNullException">Thrown if <paramref name="audioFile"/> is null.</exception>
-        public TaggedAudioFile(AudioFile audioFile)
+        public TaggedAudioFile([NotNull] AudioFile audioFile)
             : base(audioFile)
         {
-            Contract.Requires<ArgumentNullException>(audioFile != null);
-
-            TaggedAudioFile taggedAudioFile = audioFile as TaggedAudioFile;
+            var taggedAudioFile = audioFile as TaggedAudioFile;
             if (taggedAudioFile != null)
                 _metadata = taggedAudioFile.Metadata;
         }
@@ -77,34 +74,16 @@ namespace PowerShellAudio
         /// </summary>
         /// <param name="fileInfo">The file information.</param>
         /// <exception cref="ArgumentNullException">Thrown if <paramref name="fileInfo"/> is null.</exception>
-        /// <exception cref="ArgumentException">Thrown if <paramref name="fileInfo"/> does not have an extension.</exception>
-        /// <exception cref="ArgumentOutOfRangeException">Thrown if <paramref name="fileInfo"/> is an empty file.</exception>
-        /// <exception cref="FileNotFoundException">Thrown if <paramref name="fileInfo"/> does not exist.</exception>
+        /// <exception cref="ArgumentException">
+        /// Thrown if <paramref name="fileInfo"/> does not have an extension, the file does not exist, or the file is empty.
+        /// </exception>
         /// <exception cref="UnsupportedAudioException">
         /// Thrown if no available extensions are able to read the file.
         /// </exception>
         /// <exception cref="IOException">Thrown if an error occurs while reading the file stream.</exception>
-        public TaggedAudioFile(FileInfo fileInfo)
+        public TaggedAudioFile([NotNull] FileInfo fileInfo)
             : base(fileInfo)
         {
-            Contract.Requires<ArgumentNullException>(fileInfo != null);
-            Contract.Requires<ArgumentException>(!string.IsNullOrEmpty(fileInfo.Extension));
-            Contract.Requires<FileNotFoundException>(fileInfo.Exists);
-            Contract.Requires<ArgumentOutOfRangeException>(fileInfo.Length > 0);
-        }
-
-        /// <summary>
-        /// Loads the metadata, using an available <see cref="IMetadataDecoder"/>. If no extensions are able to read
-        /// the file, the <see cref="Metadata"/> property will be initialized to an empty
-        /// <see cref="MetadataDictionary"/>.
-        /// </summary>
-        /// <exception cref="IOException">Thrown if an error occurs while reading the file stream.</exception>
-        public void LoadMetadata()
-        {
-            Contract.Ensures(_metadata != null);
-
-            using (FileStream fileStream = FileInfo.OpenRead())
-                LoadMetadata(fileStream);
         }
 
         /// <summary>
@@ -115,7 +94,7 @@ namespace PowerShellAudio
         /// <exception cref="UnsupportedAudioException">
         /// No metadata encoders are able to save metadata in the required format.
         /// </exception>
-        public void SaveMetadata(SettingsDictionary settings = null)
+        public void SaveMetadata([CanBeNull] SettingsDictionary settings = null)
         {
             if (settings == null)
                 settings = new SettingsDictionary();
@@ -125,7 +104,7 @@ namespace PowerShellAudio
                 // Ensure the existing metadata has been loaded:
                 if (_metadata == null)
                 {
-                    LoadMetadata(fileStream);
+                    _metadata = LoadMetadata(fileStream, FileInfo.Extension);
                     fileStream.Position = 0;
                 }
 
@@ -147,33 +126,29 @@ namespace PowerShellAudio
             throw new UnsupportedAudioException(Resources.TaggedAudioFileUnsupportedError);
         }
 
-        static void ValidateSettings(SettingsDictionary settings, IMetadataEncoder encoder)
+        /// <summary>
+        /// Loads the metadata, using an available <see cref="IMetadataDecoder"/>. If no extensions are able to read
+        /// the file, the <see cref="Metadata"/> property will be initialized to an empty
+        /// <see cref="MetadataDictionary"/>.
+        /// </summary>
+        /// <exception cref="IOException">Thrown if an error occurs while reading the file stream.</exception>
+        public void LoadMetadata()
         {
-            Contract.Requires(settings != null);
-            Contract.Requires(encoder != null);
-
-            foreach (string unsupportedKey in settings.Keys.Where(setting =>
-                !encoder.EncoderInfo.AvailableSettings.Contains(setting, StringComparer.OrdinalIgnoreCase)))
-                throw new ArgumentException(string.Format(CultureInfo.CurrentCulture,
-                    Resources.TaggedAudioFileSettingsError, unsupportedKey));
+            using (FileStream fileStream = FileInfo.OpenRead())
+                _metadata = LoadMetadata(fileStream, FileInfo.Extension);
         }
 
-        void LoadMetadata(Stream stream)
+        [NotNull]
+        static MetadataDictionary LoadMetadata([NotNull] Stream stream, [NotNull] string extension)
         {
-            Contract.Requires(stream != null);
-            Contract.Requires(stream.CanRead);
-            Contract.Requires(stream.CanSeek);
-            Contract.Ensures(_metadata != null);
-
             // Try each decoder that supports this file extension:
             foreach (ExportFactory<IMetadataDecoder> decoderFactory in
-                ExtensionProvider.GetFactories<IMetadataDecoder>("Extension", FileInfo.Extension))
+                ExtensionProvider.GetFactories<IMetadataDecoder>("Extension", extension))
             {
                 try
                 {
                     using (ExportLifetimeContext<IMetadataDecoder> lifetimeContext = decoderFactory.CreateExport())
-                        _metadata = lifetimeContext.Value.ReadMetadata(stream);
-                    return;
+                        return lifetimeContext.Value.ReadMetadata(stream);
                 }
                 catch (UnsupportedAudioException)
                 {
@@ -182,7 +157,15 @@ namespace PowerShellAudio
                 }
             }
 
-            _metadata = new MetadataDictionary();
+            return new MetadataDictionary();
+        }
+
+        static void ValidateSettings([NotNull] SettingsDictionary settings, [NotNull] IMetadataEncoder encoder)
+        {
+            foreach (string unsupportedKey in settings.Keys.Where(setting =>
+                !encoder.EncoderInfo.AvailableSettings.Contains(setting, StringComparer.OrdinalIgnoreCase)))
+                throw new ArgumentException(string.Format(CultureInfo.CurrentCulture,
+                    Resources.TaggedAudioFileSettingsError, unsupportedKey));
         }
     }
 }

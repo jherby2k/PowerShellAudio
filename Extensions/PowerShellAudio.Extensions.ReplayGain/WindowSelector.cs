@@ -17,7 +17,6 @@
 
 using System;
 using System.Collections.Concurrent;
-using System.Diagnostics.Contracts;
 using System.Linq;
 
 namespace PowerShellAudio.Extensions.ReplayGain
@@ -31,8 +30,6 @@ namespace PowerShellAudio.Extensions.ReplayGain
 
         internal void Submit(float rmsWindow)
         {
-            Contract.Ensures(_rmsWindows.Contains(rmsWindow));
-
             _rmsWindows.Add(rmsWindow);
         }
 
@@ -45,12 +42,6 @@ namespace PowerShellAudio.Extensions.ReplayGain
 
             // Subtract from the perceived loudness of pink noise at 89dB to get the recommended adjustment:
             return _pinkNoiseReference - averageEnergy;
-        }
-
-        [ContractInvariantMethod]
-        void ObjectInvariant()
-        {
-            Contract.Invariant(_rmsWindows != null);
         }
     }
 }

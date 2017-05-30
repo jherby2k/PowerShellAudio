@@ -17,10 +17,10 @@
 
 using System;
 using System.Collections.Concurrent;
-using System.Diagnostics.Contracts;
 using System.Globalization;
 using System.Linq;
 using System.Threading.Tasks.Dataflow;
+using JetBrains.Annotations;
 
 namespace PowerShellAudio.Extensions.ReplayGain
 {
@@ -39,23 +39,11 @@ namespace PowerShellAudio.Extensions.ReplayGain
         TransformManyBlock<SampleCollection, SampleCollection> _filterSampleCountBlock;
         BufferBlock<MetadataDictionary> _bufferResultsBlock;
 
-        public SampleAnalyzerInfo AnalyzerInfo
+        [NotNull]
+        public SampleAnalyzerInfo AnalyzerInfo => _analyzerInfo;
+
+        public void Initialize([NotNull] AudioInfo audioInfo, [NotNull] GroupToken groupToken)
         {
-            get
-            {
-                Contract.Ensures(Contract.Result<SampleAnalyzerInfo>() != null);
-
-                return _analyzerInfo;
-            }
-        }
-
-        public void Initialize(AudioInfo audioInfo, GroupToken groupToken)
-        {
-            Contract.Ensures(_groupToken == groupToken);
-            Contract.Ensures(_albumComponent != null);
-            Contract.Ensures(_filterSampleCountBlock != null);
-            Contract.Ensures(_bufferResultsBlock != null);
-
             _groupToken = groupToken;
             _albumComponent = _albumComponents.AddOrUpdate(groupToken, token =>
                 new AlbumComponent(token.Count), (token, result) => result);
@@ -69,10 +57,9 @@ namespace PowerShellAudio.Extensions.ReplayGain
             _filterSampleCountBlock.SendAsync(samples).Wait();
         }
 
+        [NotNull]
         public MetadataDictionary GetResult()
         {
-            Contract.Ensures(Contract.Result<MetadataDictionary>() != null);
-
             try
             {
                 return _bufferResultsBlock.Receive();
@@ -98,16 +85,12 @@ namespace PowerShellAudio.Extensions.ReplayGain
         {
             if (disposing && _albumComponent != null && _albumComponent.SetTrackDisposed())
             {
-                AlbumComponent removedAlbumComponent;
-                _albumComponents.TryRemove(_groupToken, out removedAlbumComponent);
+                _albumComponents.TryRemove(_groupToken, out AlbumComponent removedAlbumComponent);
             }
         }
 
         void InitializePipeline(int channels, int sampleRate)
         {
-            Contract.Requires(channels > 0);
-            Contract.Requires(sampleRate > 0);
-
             var boundedExecutionBlockOptions = new ExecutionDataflowBlockOptions
             {
                 BoundedCapacity = _boundedCapacity,
@@ -224,26 +207,19 @@ namespace PowerShellAudio.Extensions.ReplayGain
             convertToMetadataBlock.LinkTo(_bufferResultsBlock, propogateLinkOptions);
         }
 
-        [ContractInvariantMethod]
-        void ObjectInvariant()
+        static float CalculateRms([NotNull] SampleCollection samples)
         {
-            Contract.Invariant(_albumComponents != null);
-            Contract.Invariant(_groupToken == null || _albumComponents.ContainsKey(_groupToken));
-        }
-
-        static float CalculateRms(SampleCollection samples)
-        {
-            Contract.Requires(samples != null);
-
             float sumOfSquares = samples.SelectMany(channel => channel).Sum(sample => sample * sample);
             return 10 * (float)Math.Log10(sumOfSquares / samples.SampleCount / samples.Channels);
         }
 
+        [NotNull]
         static string ConvertPeakToString(float peak)
         {
             return string.Format(CultureInfo.InvariantCulture, "{0:0.000000}", peak);
         }
 
+        [NotNull]
         static string ConvertGainToString(float gain)
         {
             return string.Format(CultureInfo.InvariantCulture, "{0:0.00} dB", gain);

@@ -16,10 +16,10 @@
  */
 
 using PowerShellAudio.Extensions.Flac.Properties;
-using System.Diagnostics.Contracts;
 using System.Globalization;
 using System.IO;
 using System.Runtime.InteropServices;
+using JetBrains.Annotations;
 
 namespace PowerShellAudio.Extensions.Flac
 {
@@ -28,17 +28,13 @@ namespace PowerShellAudio.Extensions.Flac
     {
         static readonly MetadataEncoderInfo _encoderInfo = new FlacMetadataEncoderInfo();
 
-        public MetadataEncoderInfo EncoderInfo
-        {
-            get
-            {
-                Contract.Ensures(Contract.Result<MetadataEncoderInfo>() != null);
+        [NotNull]
+        public MetadataEncoderInfo EncoderInfo => _encoderInfo;
 
-                return _encoderInfo;
-            }
-        }
-
-        public void WriteMetadata(Stream stream, MetadataDictionary metadata, SettingsDictionary settings)
+        public void WriteMetadata(
+            [NotNull] Stream stream, 
+            [NotNull] MetadataDictionary metadata,
+            [NotNull] SettingsDictionary settings)
         {
             bool usePadding;
             if (string.IsNullOrEmpty(settings["UsePadding"]))
@@ -104,11 +100,11 @@ namespace PowerShellAudio.Extensions.Flac
             }
         }
 
-        static void UpdateMetadata(NativeMetadataIterator iterator, NativeVorbisCommentBlock newComments, NativePictureBlock newPicture)
+        static void UpdateMetadata(
+            [NotNull] NativeMetadataIterator iterator,
+            [NotNull] NativeVorbisCommentBlock newComments,
+            [CanBeNull] NativePictureBlock newPicture)
         {
-            Contract.Requires(iterator != null);
-            Contract.Requires(newComments != null);
-
             var metadataInserted = false;
             var pictureInserted = false;
 

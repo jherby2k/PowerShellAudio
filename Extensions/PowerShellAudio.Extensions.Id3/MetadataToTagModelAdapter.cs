@@ -20,9 +20,9 @@ using Id3Lib;
 using Id3Lib.Frames;
 using System;
 using System.Collections.Generic;
-using System.Diagnostics.Contracts;
 using System.Globalization;
 using System.Linq;
+using JetBrains.Annotations;
 
 namespace PowerShellAudio.Extensions.Id3
 {
@@ -37,11 +37,8 @@ namespace PowerShellAudio.Extensions.Id3
             { "Year", "TYER" }
         };
 
-        internal MetadataToTagModelAdapter(MetadataDictionary metadata, SettingsDictionary settings)
+        internal MetadataToTagModelAdapter([NotNull] MetadataDictionary metadata, [NotNull] SettingsDictionary settings)
         {
-            Contract.Requires(metadata != null);
-            Contract.Requires(settings != null);
-
             var trckFrame = new TrckFrame();
             var tdatFrame = new TdatFrame();
             var trackSoundCheckFrame = new SoundCheckFrame();

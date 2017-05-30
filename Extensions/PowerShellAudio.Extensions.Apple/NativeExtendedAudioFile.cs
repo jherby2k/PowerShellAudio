@@ -17,10 +17,10 @@
 
 using PowerShellAudio.Extensions.Apple.Properties;
 using System;
-using System.Diagnostics.Contracts;
 using System.Globalization;
 using System.IO;
 using System.Runtime.InteropServices;
+using JetBrains.Annotations;
 
 namespace PowerShellAudio.Extensions.Apple
 {
@@ -28,13 +28,12 @@ namespace PowerShellAudio.Extensions.Apple
     {
         readonly NativeExtendedAudioFileHandle _handle;
 
-        internal NativeExtendedAudioFile(AudioStreamBasicDescription description, AudioFileType fileType, Stream stream)
+        internal NativeExtendedAudioFile(
+            AudioStreamBasicDescription description, 
+            AudioFileType fileType,
+            [NotNull] Stream stream)
             : base(description, fileType, stream)
         {
-            Contract.Requires(stream != null);
-            Contract.Ensures(_handle != null);
-            Contract.Ensures(!_handle.IsClosed);
-
             ExtendedAudioFileStatus status = SafeNativeMethods.ExtAudioFileWrapAudioFile(Handle, true, out _handle);
             if (status != ExtendedAudioFileStatus.Ok)
                 throw new IOException(string.Format(CultureInfo.CurrentCulture,
@@ -82,12 +81,6 @@ namespace PowerShellAudio.Extensions.Apple
                 _handle.Dispose();
 
             base.Dispose(disposing);
-        }
-
-        [ContractInvariantMethod]
-        void ObjectInvariant()
-        {
-            Contract.Invariant(!_handle.IsInvalid);
         }
     }
 }

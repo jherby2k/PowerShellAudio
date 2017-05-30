@@ -16,19 +16,17 @@
  */
 
 using System;
-using System.Diagnostics.Contracts;
+using JetBrains.Annotations;
 
 namespace PowerShellAudio.Extensions.Flac
 {
-    internal abstract class NativeMetadataBlock : IDisposable
+    abstract class NativeMetadataBlock : IDisposable
     {
-        internal NativeMetadataBlockHandle Handle { get; private set; }
+        [NotNull]
+        internal NativeMetadataBlockHandle Handle { get; }
 
         internal NativeMetadataBlock(MetadataType metadataType)
         {
-            Contract.Ensures(Handle != null);
-            Contract.Ensures(!Handle.IsClosed);
-
             Handle = SafeNativeMethods.MetadataBlockNew(metadataType);
         }
 
@@ -47,13 +45,6 @@ namespace PowerShellAudio.Extensions.Flac
         {
             if (disposing)
                 Handle.Dispose();
-        }
-
-        [ContractInvariantMethod]
-        void ObjectInvariant()
-        {
-            Contract.Invariant(Handle != null);
-            Contract.Invariant(!Handle.IsInvalid);
         }
     }
 }

@@ -16,8 +16,8 @@
  */
 
 using System;
-using System.Diagnostics.Contracts;
 using System.Globalization;
+using JetBrains.Annotations;
 
 namespace PowerShellAudio.Extensions.ReplayGain
 {
@@ -31,30 +31,18 @@ namespace PowerShellAudio.Extensions.ReplayGain
         NativeR128Analyzer _analyzer;
         float[] _buffer;
 
-        public SampleAnalyzerInfo AnalyzerInfo
+        [NotNull]
+        public SampleAnalyzerInfo AnalyzerInfo => _analyzerInfo;
+
+        public void Initialize([NotNull] AudioInfo audioInfo, [NotNull] GroupToken groupToken)
         {
-            get
-            {
-                Contract.Ensures(Contract.Result<SampleAnalyzerInfo>() != null);
-
-                return _analyzerInfo;
-            }
-        }
-
-        public void Initialize(AudioInfo audioInfo, GroupToken groupToken)
-        {
-            Contract.Ensures(_groupToken != null);
-            Contract.Ensures(_groupToken == groupToken);
-            Contract.Ensures(_analyzer != null);
-
             _groupToken = groupToken;
             _analyzer = new NativeR128Analyzer((uint)audioInfo.Channels, (uint)audioInfo.SampleRate, groupToken);
         }
 
+        [NotNull]
         public MetadataDictionary GetResult()
         {
-            Contract.Ensures(Contract.Result<MetadataDictionary>() != null);
-
             var result = new MetadataDictionary
             {
                 ["TrackPeak"] = ConvertPeakToString(_analyzer.GetSamplePeak()),
@@ -72,10 +60,8 @@ namespace PowerShellAudio.Extensions.ReplayGain
 
         public bool ManuallyFreesSamples => false;
 
-        public void Submit(SampleCollection samples)
+        public void Submit([NotNull] SampleCollection samples)
         {
-            Contract.Ensures(_buffer != null);
-
             if (_buffer == null)
                 _buffer = new float[samples.Channels * samples.SampleCount];
 
@@ -100,17 +86,15 @@ namespace PowerShellAudio.Extensions.ReplayGain
                 _analyzer?.Dispose();
         }
 
+        [NotNull]
         static string ConvertGainToString(double gain)
         {
-            Contract.Ensures(!string.IsNullOrEmpty(Contract.Result<string>()));
-
             return string.Format(CultureInfo.InvariantCulture, "{0:0.00} dB", gain);
         }
 
+        [NotNull]
         static string ConvertPeakToString(double peak)
         {
-            Contract.Ensures(!string.IsNullOrEmpty(Contract.Result<string>()));
-
             return string.Format(CultureInfo.InvariantCulture, "{0:0.000000}", peak);
         }
     }

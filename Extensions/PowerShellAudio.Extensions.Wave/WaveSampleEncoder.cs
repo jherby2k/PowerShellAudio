@@ -16,8 +16,8 @@
  */
 
 using System;
-using System.Diagnostics.Contracts;
 using System.IO;
+using JetBrains.Annotations;
 
 namespace PowerShellAudio.Extensions.Wave
 {
@@ -32,24 +32,15 @@ namespace PowerShellAudio.Extensions.Wave
         int _bytesPerSample;
         float _multiplier;
 
-        public SampleEncoderInfo EncoderInfo
+        [NotNull]
+        public SampleEncoderInfo EncoderInfo => _encoderInfo;
+
+        public void Initialize(
+            [NotNull] Stream stream,
+            [NotNull] AudioInfo audioInfo,
+            [CanBeNull] MetadataDictionary metadata,
+            [CanBeNull] SettingsDictionary settings)
         {
-            get
-            {
-                Contract.Ensures(Contract.Result<SampleEncoderInfo>() != null);
-
-                return _encoderInfo;
-            }
-        }
-
-        public void Initialize(Stream stream, AudioInfo audioInfo, MetadataDictionary metadata, SettingsDictionary settings)
-        {
-            Contract.Ensures(_writer != null);
-            Contract.Ensures(_writer.BaseStream == stream);
-            Contract.Ensures(_channels == audioInfo.Channels);
-            Contract.Ensures(_bytesPerSample > 0);
-            Contract.Ensures(_multiplier > 0);
-
             _writer = new RiffWriter(stream, "WAVE");
             _channels = audioInfo.Channels;
             _bytesPerSample = (int)Math.Ceiling(audioInfo.BitsPerSample / (double)8);
@@ -62,7 +53,7 @@ namespace PowerShellAudio.Extensions.Wave
 
         public bool ManuallyFreesSamples => false;
 
-        public void Submit(SampleCollection samples)
+        public void Submit([NotNull] SampleCollection samples)
         {
             if (!samples.IsLast)
             {
@@ -113,19 +104,8 @@ namespace PowerShellAudio.Extensions.Wave
             }
         }
 
-        [ContractInvariantMethod]
-        void ObjectInvariant()
+        static void WriteFmtChunk([NotNull] RiffWriter writer, [NotNull] AudioInfo audioInfo, int bytesPerSample)
         {
-            Contract.Invariant(_buffer != null);
-            Contract.Invariant(_buffer.Length == 4);
-        }
-
-        static void WriteFmtChunk(RiffWriter writer, AudioInfo audioInfo, int bytesPerSample)
-        {
-            Contract.Requires(writer != null);
-            Contract.Requires(audioInfo != null);
-            Contract.Requires(bytesPerSample > 0);
-
             writer.BeginChunk("fmt ", 16);
             writer.Write((ushort)1);
             writer.Write((ushort)audioInfo.Channels);
@@ -138,9 +118,6 @@ namespace PowerShellAudio.Extensions.Wave
 
         static void ConvertInt32ToBytes(int value, byte[] buffer)
         {
-            Contract.Requires(buffer != null);
-            Contract.Requires(buffer.Length == 4);
-
             buffer[0] = (byte)value;
             buffer[1] = (byte)(value >> 8);
             buffer[2] = (byte)(value >> 16);

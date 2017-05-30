@@ -117,11 +117,32 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
+  <data name="AnalyzableAudioFileAnalyzeAnalyzerIsEmptyError" xml:space="preserve">
+    <value>The analyzer is null or empty</value>
+  </data>
   <data name="AnalyzableAudioFileFactoryError" xml:space="preserve">
     <value>There is no analyzer named '{0}' available</value>
   </data>
   <data name="AudioFileDecodeError" xml:space="preserve">
     <value>No decoders were able to read this file</value>
+  </data>
+  <data name="AudioFileEmptyExtensionError" xml:space="preserve">
+    <value>The file '{0}' does not have an extension</value>
+  </data>
+  <data name="AudioFileFileDoesNotExistError" xml:space="preserve">
+    <value>The file '{0}' does not exist</value>
+  </data>
+  <data name="AudioFileFileIsEmptyError" xml:space="preserve">
+    <value>The file '{0}' contains no data</value>
+  </data>
+  <data name="AudioFileRenameFileNameContainsPathError" xml:space="preserve">
+    <value>The file name '{0}' contains path information</value>
+  </data>
+  <data name="AudioFileRenameFileNameIsEmptyError" xml:space="preserve">
+    <value>The file name is null or empty</value>
+  </data>
+  <data name="ExportableAudioFileExportEncoderIsEmptyError" xml:space="preserve">
+    <value>The encoder is null or empty</value>
   </data>
   <data name="ExportableAudioFileFactoryError" xml:space="preserve">
     <value>There is no encoder named '{0}' available</value>

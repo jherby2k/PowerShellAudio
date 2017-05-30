@@ -18,9 +18,9 @@
 using PowerShellAudio.Extensions.Flac.Properties;
 using System;
 using System.Diagnostics.CodeAnalysis;
-using System.Diagnostics.Contracts;
 using System.IO;
 using System.Runtime.InteropServices;
+using JetBrains.Annotations;
 
 namespace PowerShellAudio.Extensions.Flac
 {
@@ -29,8 +29,6 @@ namespace PowerShellAudio.Extensions.Flac
         internal NativePictureBlock()
             : base(MetadataType.Picture)
         {
-            Contract.Ensures(Handle != null);
-            Contract.Ensures(!Handle.IsClosed);
         }
 
         [SuppressMessage("Microsoft.Reliability", "CA2001:AvoidCallingProblematicMethods", MessageId = "System.Runtime.InteropServices.SafeHandle.DangerousGetHandle", Justification = "There is no native method for setting this, so the structure has to be modified directly")]
@@ -41,11 +39,8 @@ namespace PowerShellAudio.Extensions.Flac
                 Marshal.OffsetOf<Picture>("Type").ToInt32()), (int)type);
         }
 
-        internal void SetMimeType(string mimeType)
+        internal void SetMimeType([NotNull] string mimeType)
         {
-            Contract.Requires(!string.IsNullOrEmpty(mimeType));
-            Contract.Requires(!Handle.IsClosed);
-
             if (!SafeNativeMethods.PictureSetMimeType(Handle, mimeType, true))
                 throw new IOException(Resources.NativePictureBlockMemoryError);
         }
@@ -74,21 +69,10 @@ namespace PowerShellAudio.Extensions.Flac
                 Marshal.OffsetOf<Picture>("ColorDepth").ToInt32()), depth);
         }
 
-        internal void SetData(byte[] data)
+        internal void SetData([NotNull] byte[] data)
         {
-            Contract.Requires(data != null);
-            Contract.Requires(data.Length > 0);
-            Contract.Requires(!Handle.IsClosed);
-
             if (!SafeNativeMethods.PictureSetData(Handle, data, (uint)data.Length, true))
                 throw new IOException(Resources.NativePictureBlockMemoryError);
-        }
-
-        [ContractInvariantMethod]
-        void ObjectInvariant()
-        {
-            Contract.Invariant(Handle != null);
-            Contract.Invariant(!Handle.IsInvalid);
         }
     }
 }

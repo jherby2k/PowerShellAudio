@@ -18,10 +18,10 @@
 using PowerShellAudio.Extensions.Lame.Properties;
 using System;
 using System.ComponentModel.Composition;
-using System.Diagnostics.Contracts;
 using System.Globalization;
 using System.IO;
 using System.Linq;
+using JetBrains.Annotations;
 
 namespace PowerShellAudio.Extensions.Lame
 {
@@ -33,26 +33,20 @@ namespace PowerShellAudio.Extensions.Lame
         NativeEncoder _encoder;
         ExportLifetimeContext<ISampleFilter> _replayGainFilterLifetime;
 
-        public SampleEncoderInfo EncoderInfo
+        [NotNull]
+        public SampleEncoderInfo EncoderInfo => _encoderInfo;
+
+        public void Initialize(
+            [NotNull] Stream stream, 
+            [NotNull] AudioInfo audioInfo, 
+            [NotNull] MetadataDictionary metadata,
+            [NotNull] SettingsDictionary settings)
         {
-            get
-            {
-                Contract.Ensures(Contract.Result<SampleEncoderInfo>() != null);
-
-                return _encoderInfo;
-            }
-        }
-
-        public void Initialize(Stream stream, AudioInfo audioInfo, MetadataDictionary metadata, SettingsDictionary settings)
-        {
-            Contract.Ensures(_encoder != null);
-
             // Load the external gain filter:
             ExportFactory<ISampleFilter> sampleFilterFactory =
                 ExtensionProvider.GetFactories<ISampleFilter>("Name", "ReplayGain").SingleOrDefault();
-            if (sampleFilterFactory == null)
-                throw new ExtensionInitializationException(Resources.SampleEncoderReplayGainFilterError);
-            _replayGainFilterLifetime = sampleFilterFactory.CreateExport();
+            _replayGainFilterLifetime = sampleFilterFactory?.CreateExport()
+                ?? throw new ExtensionInitializationException(Resources.SampleEncoderReplayGainFilterError);
             _replayGainFilterLifetime.Value.Initialize(metadata, settings);
 
             // Call the external ID3 encoder:
@@ -105,14 +99,9 @@ namespace PowerShellAudio.Extensions.Lame
             _replayGainFilterLifetime?.Dispose();
         }
 
-        static NativeEncoder InitializeEncoder(AudioInfo audioInfo, Stream output)
+        [NotNull]
+        static NativeEncoder InitializeEncoder([NotNull] AudioInfo audioInfo, [NotNull] Stream output)
         {
-            Contract.Requires(audioInfo != null);
-            Contract.Requires(output != null);
-            Contract.Requires(output.CanWrite);
-            Contract.Requires(output.CanSeek);
-            Contract.Ensures(Contract.Result<NativeEncoder>() != null);
-
             var result = new NativeEncoder(output);
 
             result.SetSampleCount((uint)audioInfo.SampleCount);
@@ -122,11 +111,8 @@ namespace PowerShellAudio.Extensions.Lame
             return result;
         }
 
-        static void ConfigureEncoder(SettingsDictionary settings, NativeEncoder encoder)
+        static void ConfigureEncoder([NotNull] SettingsDictionary settings, [NotNull] NativeEncoder encoder)
         {
-            Contract.Requires(settings != null);
-            Contract.Requires(encoder != null);
-
             // Set the quality if specified, otherwise select "3":
             uint quality;
             if (string.IsNullOrEmpty(settings["Quality"]))
@@ -143,13 +129,9 @@ namespace PowerShellAudio.Extensions.Lame
                 ConfigureEncoderForQuality(settings, encoder);
         }
 
-        static void ConfigureEncoderForBitRate(SettingsDictionary settings, NativeEncoder encoder)
+        static void ConfigureEncoderForBitRate([NotNull] SettingsDictionary settings, [NotNull] NativeEncoder encoder)
         {
-            Contract.Requires(settings != null);
-            Contract.Requires(encoder != null);
-
-            uint bitRate;
-            if (!uint.TryParse(settings["BitRate"], out bitRate) || bitRate < 8 || bitRate > 320)
+            if (!uint.TryParse(settings["BitRate"], out uint bitRate) || bitRate < 8 || bitRate > 320)
                 throw new InvalidSettingException(string.Format(CultureInfo.CurrentCulture,
                     Resources.SampleEncoderBadBitRate, settings["BitRate"]));
 
@@ -167,11 +149,8 @@ namespace PowerShellAudio.Extensions.Lame
                     Resources.SampleEncoderBadForceCBR, settings["ForceCBR"]));
         }
 
-        static void ConfigureEncoderForQuality(SettingsDictionary settings, NativeEncoder encoder)
+        static void ConfigureEncoderForQuality([NotNull] SettingsDictionary settings, [NotNull] NativeEncoder encoder)
         {
-            Contract.Requires(settings != null);
-            Contract.Requires(encoder != null);
-
             encoder.SetVbr(VbrMode.Mtrh);
 
             if (!string.IsNullOrEmpty(settings["ForceCBR"]))

@@ -16,14 +16,14 @@
  */
 
 using System;
-using System.Diagnostics.Contracts;
+using JetBrains.Annotations;
 
 namespace PowerShellAudio
 {
     /// <summary>
     /// Contains information about an <see cref="ISampleAnalyzer"/> implementation.
     /// </summary>
-    [Serializable, ContractClass(typeof(SampleAnalyzerInfoContract))]
+    [Serializable]
     public abstract class SampleAnalyzerInfo
     {
         /// <summary>
@@ -32,6 +32,7 @@ namespace PowerShellAudio
         /// <value>
         /// The name.
         /// </value>
+        [NotNull]
         public abstract string Name { get; }
 
         /// <summary>
@@ -40,14 +41,7 @@ namespace PowerShellAudio
         /// <value>
         /// The external library.
         /// </value>
-        public virtual string ExternalLibrary
-        {
-            get
-            {
-                Contract.Ensures(Contract.Result<string>() != null);
-
-                return string.Empty;
-            }
-        }
+        [NotNull]
+        public virtual string ExternalLibrary => string.Empty;
     }
 }

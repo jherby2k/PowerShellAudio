@@ -18,11 +18,11 @@
 using PowerShellAudio.Extensions.Apple.Properties;
 using System;
 using System.ComponentModel.Composition;
-using System.Diagnostics.Contracts;
 using System.Globalization;
 using System.IO;
 using System.Linq;
 using System.Runtime.InteropServices;
+using JetBrains.Annotations;
 
 namespace PowerShellAudio.Extensions.Apple
 {
@@ -39,26 +39,15 @@ namespace PowerShellAudio.Extensions.Apple
         NativeExtendedAudioFile _audioFile;
         int[] _buffer;
 
-        public SampleEncoderInfo EncoderInfo
+        [NotNull]
+        public SampleEncoderInfo EncoderInfo => _encoderInfo;
+
+        public void Initialize(
+            [NotNull] Stream stream, 
+            [NotNull] AudioInfo audioInfo, 
+            [NotNull] MetadataDictionary metadata,
+            [NotNull] SettingsDictionary settings)
         {
-            get
-            {
-                Contract.Ensures(Contract.Result<SampleEncoderInfo>() != null);
-
-                return _encoderInfo;
-            }
-        }
-
-        public void Initialize(Stream stream, AudioInfo audioInfo, MetadataDictionary metadata, SettingsDictionary settings)
-        {
-            Contract.Ensures(_stream != null);
-            Contract.Ensures(_stream == stream);
-            Contract.Ensures(_metadata != null);
-            Contract.Ensures(_metadata == metadata);
-            Contract.Ensures(_settings != null);
-            Contract.Ensures(_settings == settings);
-            Contract.Ensures(_audioFile != null);
-
             _stream = stream;
             _metadata = metadata;
             _settings = settings;
@@ -66,9 +55,8 @@ namespace PowerShellAudio.Extensions.Apple
             // Load the external gain filter:
             ExportFactory<ISampleFilter> sampleFilterFactory =
                 ExtensionProvider.GetFactories<ISampleFilter>("Name", "ReplayGain").SingleOrDefault();
-            if (sampleFilterFactory == null)
-                throw new ExtensionInitializationException(Resources.AacSampleEncoderReplayGainFilterError);
-            _replayGainFilterLifetime = sampleFilterFactory.CreateExport();
+            _replayGainFilterLifetime = sampleFilterFactory?.CreateExport()
+                ?? throw new ExtensionInitializationException(Resources.AacSampleEncoderReplayGainFilterError);
             _replayGainFilterLifetime.Value.Initialize(metadata, settings);
 
             AudioStreamBasicDescription inputDescription = GetInputDescription(audioInfo);
@@ -105,10 +93,8 @@ namespace PowerShellAudio.Extensions.Apple
 
         public bool ManuallyFreesSamples => false;
 
-        public void Submit(SampleCollection samples)
+        public void Submit([NotNull] SampleCollection samples)
         {
-            Contract.Ensures(_buffer != null);
-
             if (_buffer == null)
                 _buffer = new int[samples.SampleCount * samples.Channels];
 
@@ -179,10 +165,8 @@ namespace PowerShellAudio.Extensions.Apple
             _audioFile?.Dispose();
         }
 
-        static AudioStreamBasicDescription GetInputDescription(AudioInfo audioInfo)
+        static AudioStreamBasicDescription GetInputDescription([NotNull] AudioInfo audioInfo)
         {
-            Contract.Requires(audioInfo != null);
-
             return new AudioStreamBasicDescription
             {
                 SampleRate = audioInfo.SampleRate,
@@ -239,11 +223,8 @@ namespace PowerShellAudio.Extensions.Apple
             return result;
         }
 
-        static void ConfigureConverter(SettingsDictionary settings, int channels, IntPtr converter)
+        static void ConfigureConverter([NotNull] SettingsDictionary settings, int channels, IntPtr converter)
         {
-            Contract.Requires(settings != null);
-            Contract.Requires(converter != IntPtr.Zero);
-
             // Set the quality if specified, otherwise select "High":
             Quality quality;
             if (string.IsNullOrEmpty(settings["Quality"]) ||
@@ -269,16 +250,12 @@ namespace PowerShellAudio.Extensions.Apple
                 ConfigureConverterForQuality(settings, converter);
         }
 
-        static void ConfigureConverterForBitRate(SettingsDictionary settings, int channels, IntPtr converter)
+        static void ConfigureConverterForBitRate([NotNull] SettingsDictionary settings, int channels, IntPtr converter)
         {
-            Contract.Requires(settings != null);
-            Contract.Requires(converter != IntPtr.Zero);
-
             uint minBitRate = channels == 1 ? 32u : 64u;
             uint maxBitRate = channels == 1 ? 256u : 320u;
 
-            uint bitRate;
-            if (!uint.TryParse(settings["BitRate"], out bitRate) || bitRate < minBitRate || bitRate > maxBitRate)
+            if (!uint.TryParse(settings["BitRate"], out uint bitRate) || bitRate < minBitRate || bitRate > maxBitRate)
                 throw new InvalidSettingException(string.Format(CultureInfo.CurrentCulture,
                     Resources.AacSampleEncoderBadBitRate, settings["BitRate"], minBitRate, maxBitRate));
 
@@ -305,11 +282,8 @@ namespace PowerShellAudio.Extensions.Apple
                     Resources.SampleEncoderConverterControlModeError, status));
         }
 
-        static void ConfigureConverterForQuality(SettingsDictionary settings, IntPtr converter)
+        static void ConfigureConverterForQuality([NotNull] SettingsDictionary settings, IntPtr converter)
         {
-            Contract.Requires(settings != null);
-            Contract.Requires(converter != IntPtr.Zero);
-
             if (!string.IsNullOrEmpty(settings["ControlMode"]) &&
                 string.Compare(settings["ControlMode"], "Variable", StringComparison.OrdinalIgnoreCase) != 0)
                 throw new InvalidSettingException(Resources.AacSampleEncoderBadQualityControlMode);
@@ -336,8 +310,6 @@ namespace PowerShellAudio.Extensions.Apple
 
         static AudioConverterStatus SetConverterProperty<T>(IntPtr converter, AudioConverterPropertyId propertyId, T value) where T : struct
         {
-            Contract.Requires(converter != IntPtr.Zero);
-
             IntPtr unmanagedValue = Marshal.AllocHGlobal(Marshal.SizeOf(typeof(T)));
             try
             {

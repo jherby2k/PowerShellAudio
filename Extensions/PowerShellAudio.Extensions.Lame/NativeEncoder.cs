@@ -17,8 +17,8 @@
 
 using PowerShellAudio.Extensions.Lame.Properties;
 using System;
-using System.Diagnostics.Contracts;
 using System.IO;
+using JetBrains.Annotations;
 
 namespace PowerShellAudio.Extensions.Lame
 {
@@ -29,15 +29,8 @@ namespace PowerShellAudio.Extensions.Lame
         long _beginning;
         byte[] _buffer;
 
-        internal NativeEncoder(Stream output)
+        internal NativeEncoder([NotNull] Stream output)
         {
-            Contract.Requires(output != null);
-            Contract.Requires(output.CanWrite);
-            Contract.Requires(output.CanSeek);
-            Contract.Ensures(!_handle.IsClosed);
-            Contract.Ensures(_output != null);
-            Contract.Ensures(_output == output);
-
             _output = output;
         }
 
@@ -83,19 +76,13 @@ namespace PowerShellAudio.Extensions.Lame
 
         internal int InitializeParams()
         {
-            Contract.Ensures(_beginning >= 0);
-
             _beginning = _output.Position;
 
             return SafeNativeMethods.InitializeParams(_handle);
         }
 
-        internal void Encode(float[] leftSamples, float[] rightSamples)
+        internal void Encode([NotNull] float[] leftSamples, [CanBeNull] float[] rightSamples)
         {
-            Contract.Requires(leftSamples != null);
-            Contract.Ensures(_buffer != null);
-            Contract.Ensures(_buffer.Length >= 7200);
-
             if (_buffer == null)
                 _buffer = new byte[(int)Math.Ceiling(1.25 * leftSamples.Length) + 7200];
 
@@ -137,16 +124,6 @@ namespace PowerShellAudio.Extensions.Lame
         {
             if (disposing)
                 _handle.Dispose();
-        }
-
-        [ContractInvariantMethod]
-        void ObjectInvariant()
-        {
-            Contract.Invariant(!_handle.IsInvalid);
-            Contract.Invariant(_output != null);
-            Contract.Invariant(_output.CanWrite);
-            Contract.Invariant(_output.CanSeek);
-            Contract.Invariant(_beginning >= 0);
         }
     }
 }

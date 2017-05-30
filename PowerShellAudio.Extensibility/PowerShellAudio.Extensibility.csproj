@@ -41,44 +41,40 @@
     <AssemblyOriginatorKeyFile>StrongName.snk</AssemblyOriginatorKeyFile>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="JetBrains.Annotations, Version=10.4.0.0, Culture=neutral, PublicKeyToken=1010a0d8d6380325, processorArchitecture=MSIL">
+      <HintPath>..\packages\JetBrains.Annotations.10.4.0\lib\net\JetBrains.Annotations.dll</HintPath>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="System.ComponentModel.Composition" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="AudioInfoDecoderContract.cs" />
     <Compile Include="AudioInfoDecoderExportAttribute.cs" />
     <Compile Include="MetadataEncoderInfo.cs" />
+    <Compile Include="Properties\Resources.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Resources.resx</DependentUpon>
+    </Compile>
     <Compile Include="SampleAnalyzerInfo.cs" />
     <Compile Include="SampleEncoderInfo.cs" />
-    <Compile Include="MetadataEncoderInfoContract.cs" />
-    <Compile Include="SampleAnalyzerInfoContract.cs" />
-    <Compile Include="SampleEncoderInfoContract.cs" />
     <Compile Include="ExtensionProvider.cs" />
     <Compile Include="ExtensionContainer.cs" />
     <Compile Include="IFinalSampleConsumer.cs" />
     <Compile Include="ISampleConsumer.cs" />
     <Compile Include="ISampleFilter.cs" />
-    <Compile Include="FinalSampleConsumerContract.cs" />
     <Compile Include="SampleFilterExportAttribute.cs" />
-    <Compile Include="SampleConsumerContract.cs" />
-    <Compile Include="SampleEncoderContract.cs" />
     <Compile Include="IAudioInfoDecoder.cs" />
     <Compile Include="ISampleEncoder.cs" />
     <Compile Include="IMetadataDecoder.cs" />
     <Compile Include="IMetadataEncoder.cs" />
     <Compile Include="ISampleDecoder.cs" />
-    <Compile Include="MetadataDecoderContract.cs" />
     <Compile Include="MetadataDecoderExportAttribute.cs" />
-    <Compile Include="MetadataEncoderContract.cs" />
     <Compile Include="MetadataEncoderExportAttribute.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="ISampleAnalyzer.cs" />
-    <Compile Include="SampleAnalyzerContract.cs" />
     <Compile Include="SampleEncoderExportAttribute.cs" />
-    <Compile Include="SampleDecoderContract.cs" />
     <Compile Include="SampleAnalyzerExportAttribute.cs" />
     <Compile Include="SampleDecoderExportAttribute.cs" />
-    <Compile Include="SampleFilterContract.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\PowerShellAudio.Common\PowerShellAudio.Common.csproj">
@@ -96,7 +92,14 @@
     <None Include="CustomRules.ruleset">
       <SubType>Designer</SubType>
     </None>
+    <None Include="packages.config" />
     <None Include="StrongName.snk" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Properties\Resources.resx">
+      <Generator>ResXFileCodeGenerator</Generator>
+      <LastGenOutput>Resources.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

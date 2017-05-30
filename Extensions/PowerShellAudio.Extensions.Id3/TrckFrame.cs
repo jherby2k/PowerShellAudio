@@ -16,7 +16,7 @@
  */
 
 using Id3Lib.Frames;
-using System.Diagnostics.Contracts;
+using JetBrains.Annotations;
 
 namespace PowerShellAudio.Extensions.Id3
 {
@@ -25,23 +25,21 @@ namespace PowerShellAudio.Extensions.Id3
         string _trackNumber;
         string _trackCount;
 
+        [CanBeNull]
         internal string TrackNumber
         {
             set
             {
-                Contract.Requires(!string.IsNullOrEmpty(value));
-
                 _trackNumber = value;
                 Text = GetText();
             }
         }
 
+        [CanBeNull]
         internal string TrackCount
         {
             set
             {
-                Contract.Requires(!string.IsNullOrEmpty(value));
-
                 _trackCount = value;
                 Text = GetText();
             }
@@ -51,6 +49,7 @@ namespace PowerShellAudio.Extensions.Id3
             : base("TRCK")
         { }
 
+        [NotNull]
         string GetText()
         {
             return !string.IsNullOrEmpty(_trackCount) ? _trackNumber + '/' + _trackCount : _trackNumber;

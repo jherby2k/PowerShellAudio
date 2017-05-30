@@ -16,21 +16,18 @@
  */
 
 using System;
-using System.Diagnostics.Contracts;
+using JetBrains.Annotations;
 
 namespace PowerShellAudio.Extensions.Mp4
 {
     class SttsAtom
     {
-        internal uint PacketCount { get; private set; }
+        internal uint PacketCount { get; }
 
-        internal uint PacketSize { get; private set; }
+        internal uint PacketSize { get; }
 
-        internal SttsAtom(byte[] data)
+        internal SttsAtom([NotNull] byte[] data)
         {
-            Contract.Requires(data != null);
-            Contract.Requires(data.Length >= 24);
-
             Array.Reverse(data, 16, 4);
             PacketCount = BitConverter.ToUInt32(data, 16);
 

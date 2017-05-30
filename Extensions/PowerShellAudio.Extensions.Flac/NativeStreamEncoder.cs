@@ -18,9 +18,9 @@
 using System;
 using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
-using System.Diagnostics.Contracts;
 using System.IO;
 using System.Linq;
+using JetBrains.Annotations;
 
 namespace PowerShellAudio.Extensions.Flac
 {
@@ -32,18 +32,8 @@ namespace PowerShellAudio.Extensions.Flac
         readonly SafeNativeMethods.StreamEncoderSeekCallback _seekCallback;
         readonly SafeNativeMethods.StreamEncoderTellCallback _tellCallback;
 
-        internal NativeStreamEncoder(Stream output)
+        internal NativeStreamEncoder([NotNull] Stream output)
         {
-            Contract.Requires(output != null);
-            Contract.Requires(output.CanWrite);
-            Contract.Requires(output.CanSeek);
-            Contract.Ensures(!_handle.IsClosed);
-            Contract.Ensures(_output != null);
-            Contract.Ensures(_output == output);
-            Contract.Ensures(_writeCallback != null);
-            Contract.Ensures(_seekCallback != null);
-            Contract.Ensures(_tellCallback != null);
-
             _output = output;
 
             _writeCallback = WriteCallback;
@@ -77,36 +67,25 @@ namespace PowerShellAudio.Extensions.Flac
         }
 
         [SuppressMessage("Microsoft.Reliability", "CA2001:AvoidCallingProblematicMethods", MessageId = "System.Runtime.InteropServices.SafeHandle.DangerousGetHandle", Justification = "Can't pass an array of SafeHandles")]
-        internal void SetMetadata(IEnumerable<NativeMetadataBlock> metadataBlocks)
+        internal void SetMetadata([NotNull, ItemNotNull] IEnumerable<NativeMetadataBlock> metadataBlocks)
         {
-            Contract.Requires(metadataBlocks != null);
-
             IntPtr[] blockPointers = metadataBlocks.Select(block => block.Handle.DangerousGetHandle()).ToArray();
             SafeNativeMethods.StreamEncoderSetMetadata(_handle, blockPointers, (uint)blockPointers.Length);
         }
 
         internal EncoderInitStatus Initialize()
         {
-            Contract.Ensures(GetState() == EncoderState.Ok);
-
             return SafeNativeMethods.StreamEncoderInitialize(_handle, _writeCallback, _seekCallback, _tellCallback, null,
                 IntPtr.Zero);
         }
 
-        internal bool ProcessInterleaved(int[] buffer, uint sampleCount)
+        internal bool ProcessInterleaved([NotNull] int[] buffer, uint sampleCount)
         {
-            Contract.Requires(buffer != null);
-            Contract.Requires(buffer.Length > 0);
-            Contract.Requires(sampleCount > 0);
-            Contract.Requires(GetState() == EncoderState.Ok);
-
             return SafeNativeMethods.StreamEncoderProcessInterleaved(_handle, buffer, sampleCount);
         }
 
         internal void Finish()
         {
-            Contract.Requires(GetState() == EncoderState.Ok);
-
             SafeNativeMethods.StreamEncoderFinish(_handle);
         }
 
@@ -128,12 +107,8 @@ namespace PowerShellAudio.Extensions.Flac
                 _handle.Dispose();
         }
 
-        EncoderWriteStatus WriteCallback(IntPtr handle, byte[] buffer, int bytes, uint samples, uint currentFrame, IntPtr userData)
+        EncoderWriteStatus WriteCallback(IntPtr handle, [NotNull] byte[] buffer, int bytes, uint samples, uint currentFrame, IntPtr userData)
         {
-            Contract.Requires(buffer != null);
-            Contract.Requires(bytes > 0);
-            Contract.Requires(buffer.Length == bytes);
-
             _output.Write(buffer, 0, bytes);
             return EncoderWriteStatus.Ok;
         }
@@ -148,14 +123,6 @@ namespace PowerShellAudio.Extensions.Flac
         {
             absoluteOffset = (ulong)_output.Position;
             return EncoderTellStatus.Ok;
-        }
-
-        [ContractInvariantMethod]
-        void ObjectInvariant()
-        {
-            Contract.Invariant(!_handle.IsInvalid);
-            Contract.Invariant(_output.CanWrite);
-            Contract.Invariant(_output.CanSeek);
         }
     }
 }

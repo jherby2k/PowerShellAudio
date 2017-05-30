@@ -18,9 +18,9 @@
 using PowerShellAudio.Extensions.Mp4.Properties;
 using System;
 using System.Collections.Generic;
-using System.Diagnostics.Contracts;
 using System.IO;
 using System.Text;
+using JetBrains.Annotations;
 
 namespace PowerShellAudio.Extensions.Mp4
 {
@@ -29,25 +29,16 @@ namespace PowerShellAudio.Extensions.Mp4
         readonly Stream _stream;
         readonly Stack<AtomInfo> _atomInfoStack = new Stack<AtomInfo>();
 
+        [NotNull]
         public AtomInfo CurrentAtom => _atomInfoStack.Peek();
 
-        internal Mp4(Stream stream)
+        internal Mp4([NotNull] Stream stream)
         {
-            Contract.Requires(stream != null);
-            Contract.Requires(stream.CanRead);
-            Contract.Requires(stream.CanSeek);
-            Contract.Ensures(_stream != null);
-            Contract.Ensures(_stream == stream);
-
             _stream = stream;
         }
 
-        internal void DescendToAtom(params string[] hierarchy)
+        internal void DescendToAtom([NotNull] params string[] hierarchy)
         {
-            Contract.Requires(hierarchy != null);
-            Contract.Requires(Contract.ForAll(hierarchy, fourCC => !string.IsNullOrEmpty(fourCC)));
-            Contract.Requires(Contract.ForAll(hierarchy, fourCC => fourCC.Length == 4));
-
             _stream.Position = 0;
             _atomInfoStack.Clear();
 
@@ -90,10 +81,9 @@ namespace PowerShellAudio.Extensions.Mp4
             }
         }
 
+        [NotNull, ItemNotNull]
         internal AtomInfo[] GetChildAtomInfo()
         {
-            Contract.Ensures(Contract.Result<AtomInfo[]>() != null);
-
             var result = new List<AtomInfo>();
 
             using (var reader = new BinaryReader(_stream, Encoding.GetEncoding(1252), true))
@@ -111,39 +101,34 @@ namespace PowerShellAudio.Extensions.Mp4
             return result.ToArray();
         }
 
-        internal byte[] ReadAtom(AtomInfo atom)
+        [NotNull]
+        internal byte[] ReadAtom([NotNull] AtomInfo atom)
         {
-            Contract.Requires(atom != null);
-            Contract.Ensures(Contract.Result<byte[]>() != null);
-
             _stream.Position = atom.Start;
 
             using (var reader = new BinaryReader(_stream, Encoding.Default, true))
                 return reader.ReadBytes((int)atom.Size);
         }
 
-        internal void CopyAtom(AtomInfo atom, Stream output)
+        internal void CopyAtom([NotNull] AtomInfo atom, [NotNull] Stream output)
         {
-            Contract.Requires(atom != null);
-            Contract.Requires(output != null);
-            Contract.Requires(output.CanWrite);
-
             _stream.Position = atom.Start;
             _stream.CopyRangeTo(output, atom.Size);
         }
 
         internal void UpdateAtomSizes(uint increase)
         {
-            if (_atomInfoStack.Count > 0)
-                using (var writer = new BinaryWriter(_stream, Encoding.Default, true))
+            if (_atomInfoStack.Count <= 0) return;
+
+            using (var writer = new BinaryWriter(_stream, Encoding.Default, true))
+            {
+                do
                 {
-                    do
-                    {
-                        var currentAtom = _atomInfoStack.Pop();
-                        _stream.Position = currentAtom.Start;
-                        writer.WriteBigEndian(currentAtom.Size + increase);
-                    } while (_atomInfoStack.Count > 0);
-                }
+                    AtomInfo currentAtom = _atomInfoStack.Pop();
+                    _stream.Position = currentAtom.Start;
+                    writer.WriteBigEndian(currentAtom.Size + increase);
+                } while (_atomInfoStack.Count > 0);
+            }
         }
 
         internal void UpdateMvhd(DateTime creation, DateTime modification)
@@ -243,15 +228,6 @@ namespace PowerShellAudio.Extensions.Mp4
                     }
                 }
             }
-        }
-
-        [ContractInvariantMethod]
-        void ObjectInvariant()
-        {
-            Contract.Invariant(_stream != null);
-            Contract.Invariant(_stream.CanRead);
-            Contract.Invariant(_stream.CanSeek);
-            Contract.Invariant(_atomInfoStack != null);
         }
     }
 }

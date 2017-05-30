@@ -17,7 +17,7 @@
 
 using System;
 using System.Collections.Generic;
-using System.Diagnostics.Contracts;
+using JetBrains.Annotations;
 
 namespace PowerShellAudio.Extensions.ReplayGain
 {
@@ -28,20 +28,12 @@ namespace PowerShellAudio.Extensions.ReplayGain
 
         internal SampleCountFilter(int channels, int sampleCount)
         {
-            Contract.Requires(channels > 0);
-            Contract.Requires(sampleCount > 0);
-            Contract.Ensures(_buffer != null);
-            Contract.Ensures(_buffer.Channels == channels);
-            Contract.Ensures(_buffer.SampleCount == sampleCount);
-
             _buffer = SampleCollectionFactory.Instance.Create(channels, sampleCount);
         }
 
-        internal SampleCollection[] Process(SampleCollection input)
+        [NotNull]
+        internal SampleCollection[] Process([NotNull] SampleCollection input)
         {
-            Contract.Requires(input != null);
-            Contract.Ensures(Contract.Result<SampleCollection[]>() != null);
-
             // If the size matches the input (and the buffer is empty), just pass the input through:
             if (input.SampleCount == _buffer.SampleCount && _bufferedSampleCount == 0)
                 return new[] { input };
@@ -85,14 +77,6 @@ namespace PowerShellAudio.Extensions.ReplayGain
             SampleCollectionFactory.Instance.Free(input);
 
             return results.ToArray();
-        }
-
-        [ContractInvariantMethod]
-        void ObjectInvariant()
-        {
-            Contract.Invariant(_buffer != null);
-            Contract.Invariant(!_buffer.IsLast);
-            Contract.Invariant(_bufferedSampleCount >= 0);
         }
     }
 }

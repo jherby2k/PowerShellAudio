@@ -17,14 +17,15 @@
 
 using PowerShellAudio.Extensions.Mp3.Properties;
 using System.Diagnostics.CodeAnalysis;
-using System.Diagnostics.Contracts;
 using System.IO;
+using JetBrains.Annotations;
 
 namespace PowerShellAudio.Extensions.Mp3
 {
     class FrameHeader
     {
-        [SuppressMessage("Microsoft.Performance", "CA1814:PreferJaggedArraysOverMultidimensional", MessageId = "Member", Justification = "Does not waste space")] static readonly int[,] _bitRates =
+        [SuppressMessage("Microsoft.Performance", "CA1814:PreferJaggedArraysOverMultidimensional", MessageId = "Member", Justification = "Does not waste space")]
+        static readonly int[,] _bitRates =
         {
             { 0, 32, 64, 96, 128, 160, 192, 224, 256, 288, 320, 352, 384, 416, 448 },
             { 0, 32, 48, 56, 64, 80, 96, 112, 128, 160, 192, 224, 256, 320, 384 },
@@ -33,7 +34,8 @@ namespace PowerShellAudio.Extensions.Mp3
             { 0, 8, 16, 24, 32, 40, 48, 56, 64, 80, 96, 112, 128, 144, 160 }
         };
 
-        [SuppressMessage("Microsoft.Performance", "CA1814:PreferJaggedArraysOverMultidimensional", MessageId = "Member", Justification = "Does not waste space")] static readonly int[,] _sampleRates =
+        [SuppressMessage("Microsoft.Performance", "CA1814:PreferJaggedArraysOverMultidimensional", MessageId = "Member", Justification = "Does not waste space")]
+        static readonly int[,] _sampleRates =
         {
             { 44100, 48000, 32000 },
             { 22050, 24000, 16000 },
@@ -42,12 +44,11 @@ namespace PowerShellAudio.Extensions.Mp3
 
         readonly byte[] _headerBytes;
 
+        [NotNull]
         internal string MpegVersion
         {
             get
             {
-                Contract.Ensures(!string.IsNullOrEmpty(Contract.Result<string>()));
-
                 switch ((_headerBytes[1] >> 3) & 0x3)
                 {
                     case 0:
@@ -62,12 +63,11 @@ namespace PowerShellAudio.Extensions.Mp3
             }
         }
 
+        [NotNull]
         internal string Layer
         {
             get
             {
-                Contract.Ensures(!string.IsNullOrEmpty(Contract.Result<string>()));
-
                 switch ((_headerBytes[1] >> 1) & 0x3)
                 {
                     case 1:
@@ -88,8 +88,6 @@ namespace PowerShellAudio.Extensions.Mp3
         {
             get
             {
-                Contract.Ensures(Contract.Result<int>() >= 0);
-
                 int column = (_headerBytes[2] >> 4) & 0xf;
                 if (column == 15)
                     throw new IOException(Resources.FrameHeaderBitRateError);
@@ -122,8 +120,6 @@ namespace PowerShellAudio.Extensions.Mp3
         {
             get
             {
-                Contract.Ensures(Contract.Result<int>() > 0);
-
                 int column = (_headerBytes[2] >> 2) & 0x3;
                 int row;
 
@@ -149,12 +145,11 @@ namespace PowerShellAudio.Extensions.Mp3
 
         internal int Padding => (_headerBytes[2] >> 1) & 0x1;
 
+        [NotNull]
         internal string ChannelMode
         {
             get
             {
-                Contract.Ensures(!string.IsNullOrEmpty(Contract.Result<string>()));
-
                 switch ((_headerBytes[3] >> 6) & 0x3)
                 {
                     case 0:
@@ -181,20 +176,9 @@ namespace PowerShellAudio.Extensions.Mp3
             }
         }
 
-        internal FrameHeader(byte[] headerBytes)
+        internal FrameHeader([NotNull] byte[] headerBytes)
         {
-            Contract.Requires(headerBytes != null);
-            Contract.Requires(headerBytes.Length == 4);
-            Contract.Ensures(_headerBytes == headerBytes);
-
             _headerBytes = headerBytes;
-        }
-
-        [ContractInvariantMethod]
-        void ObjectInvariant()
-        {
-            Contract.Invariant(_headerBytes != null);
-            Contract.Invariant(_headerBytes.Length == 4);
         }
     }
 }

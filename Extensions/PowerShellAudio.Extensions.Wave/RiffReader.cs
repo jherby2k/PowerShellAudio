@@ -15,10 +15,9 @@
  * <http://www.gnu.org/licenses/>.
  */
 
-using System;
-using System.Diagnostics.Contracts;
 using System.IO;
 using System.Text;
+using JetBrains.Annotations;
 
 namespace PowerShellAudio.Extensions.Wave
 {
@@ -26,13 +25,9 @@ namespace PowerShellAudio.Extensions.Wave
     {
         uint _riffChunkSize;
 
-        internal RiffReader(Stream input)
+        internal RiffReader([NotNull] Stream input)
             : base(input, Encoding.ASCII, true)
         {
-            Contract.Requires(input != null);
-            Contract.Requires(input.CanRead);
-            Contract.Requires(input.CanSeek);
-            Contract.Requires(input.Length > 0);
         }
 
         internal bool Validate()
@@ -49,23 +44,17 @@ namespace PowerShellAudio.Extensions.Wave
             return result;
         }
 
+        [NotNull]
         internal string ReadFourCC()
         {
-            Contract.Ensures(!string.IsNullOrEmpty(Contract.Result<string>()));
-            Contract.Ensures(Contract.Result<string>().Length == 4);
-
             BaseStream.Position = 8;
             var result = new string(ReadChars(4));
-
-            Contract.Assert(result.Length == 4);
 
             return result;
         }
 
-        internal uint SeekToChunk(string chunkId)
+        internal uint SeekToChunk([NotNull] string chunkId)
         {
-            Contract.Requires<ArgumentNullException>(!string.IsNullOrEmpty(chunkId));
-
             BaseStream.Position = 12;
 
             var currentChunkId = new string(ReadChars(4));

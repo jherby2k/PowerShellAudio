@@ -18,12 +18,12 @@
 using PowerShellAudio.Extensions.Vorbis.Properties;
 using System;
 using System.ComponentModel.Composition;
-using System.Diagnostics.Contracts;
 using System.Globalization;
 using System.IO;
 using System.Linq;
 using System.Runtime.InteropServices;
 using System.Text;
+using JetBrains.Annotations;
 
 namespace PowerShellAudio.Extensions.Vorbis
 {
@@ -38,19 +38,16 @@ namespace PowerShellAudio.Extensions.Vorbis
         byte[] _buffer;
         Stream _output;
 
-        public SampleEncoderInfo EncoderInfo
-        {
-            get
-            {
-                Contract.Ensures(Contract.Result<SampleEncoderInfo>() != null);
-
-                return _encoderInfo;
-            }
-        }
+        [NotNull]
+        public SampleEncoderInfo EncoderInfo => _encoderInfo;
 
         public bool ManuallyFreesSamples => false;
 
-        public void Initialize(Stream stream, AudioInfo audioInfo, MetadataDictionary metadata, SettingsDictionary settings)
+        public void Initialize(
+            [NotNull] Stream stream,
+            [NotNull] AudioInfo audioInfo,
+            [NotNull] MetadataDictionary metadata,
+            [NotNull] SettingsDictionary settings)
         {
             _encoder = new NativeVorbisEncoder();
             _output = stream;
@@ -74,7 +71,7 @@ namespace PowerShellAudio.Extensions.Vorbis
             WriteHeader(metadata, stream);
         }
 
-        public void Submit(SampleCollection samples)
+        public void Submit([NotNull] SampleCollection samples)
         {
             if (!samples.IsLast)
             {
@@ -124,12 +121,8 @@ namespace PowerShellAudio.Extensions.Vorbis
             }
         }
 
-        void WriteHeader(MetadataDictionary metadata, Stream stream)
+        void WriteHeader([NotNull] MetadataDictionary metadata, [NotNull] Stream stream)
         {
-            Contract.Requires(metadata != null);
-            Contract.Requires(stream != null);
-            Contract.Requires(stream.CanWrite);
-
             var vorbisComment = new VorbisComment();
             try
             {
@@ -166,21 +159,14 @@ namespace PowerShellAudio.Extensions.Vorbis
                 WritePage(page, stream);
         }
 
-        void WritePage(OggPage page, Stream stream)
+        void WritePage(OggPage page, [NotNull] Stream stream)
         {
-            Contract.Requires(stream != null);
-            Contract.Requires(stream.CanWrite);
-
             WritePointer(page.Header, page.HeaderLength, stream);
             WritePointer(page.Body, page.BodyLength, stream);
         }
 
-        void WritePointer(IntPtr location, int length, Stream stream)
+        void WritePointer(IntPtr location, int length, [NotNull] Stream stream)
         {
-            Contract.Requires(location != IntPtr.Zero);
-            Contract.Requires(stream != null);
-            Contract.Requires(stream.CanWrite);
-
             var offset = 0;
             while (offset < length)
             {
@@ -191,10 +177,8 @@ namespace PowerShellAudio.Extensions.Vorbis
             }
         }
 
-        static NativeOggStream IntializeOggStream(SettingsDictionary settings)
+        static NativeOggStream IntializeOggStream([NotNull] SettingsDictionary settings)
         {
-            Contract.Requires(settings != null);
-
             int serialNumber;
             if (string.IsNullOrEmpty(settings["SerialNumber"]))
                 serialNumber = new Random().Next();
@@ -205,12 +189,11 @@ namespace PowerShellAudio.Extensions.Vorbis
             return new NativeOggStream(serialNumber);
         }
 
-        static void ConfigureEncoderForBitRate(SettingsDictionary settings, AudioInfo audioInfo, NativeVorbisEncoder encoder)
+        static void ConfigureEncoderForBitRate(
+            [NotNull] SettingsDictionary settings,
+            [NotNull] AudioInfo audioInfo,
+            [NotNull] NativeVorbisEncoder encoder)
         {
-            Contract.Requires(settings != null);
-            Contract.Requires(audioInfo != null);
-            Contract.Requires(encoder != null);
-
             int bitRate;
             if (!int.TryParse(settings["BitRate"], out bitRate) || bitRate < 32 || bitRate > 500)
                 throw new InvalidSettingException(string.Format(CultureInfo.CurrentCulture,
@@ -233,12 +216,11 @@ namespace PowerShellAudio.Extensions.Vorbis
                     Resources.SampleEncoderBadBitRateControlMode, settings["ControlMode"]));
         }
 
-        static void ConfigureEncoderForQuality(SettingsDictionary settings, AudioInfo audioInfo, NativeVorbisEncoder encoder)
+        static void ConfigureEncoderForQuality(
+            [NotNull] SettingsDictionary settings, 
+            [NotNull] AudioInfo audioInfo,
+            [NotNull] NativeVorbisEncoder encoder)
         {
-            Contract.Requires(settings != null);
-            Contract.Requires(audioInfo != null);
-            Contract.Requires(encoder != null);
-
             if (!string.IsNullOrEmpty(settings["ControlMode"]) &&
                 string.Compare(settings["ControlMode"], "Variable", StringComparison.OrdinalIgnoreCase) != 0)
                 throw new InvalidSettingException(string.Format(CultureInfo.CurrentCulture,

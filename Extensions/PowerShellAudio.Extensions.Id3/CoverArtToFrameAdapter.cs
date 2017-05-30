@@ -16,21 +16,15 @@
  */
 
 using Id3Lib.Frames;
-using System.Diagnostics.Contracts;
+using JetBrains.Annotations;
 
 namespace PowerShellAudio.Extensions.Id3
 {
     class CoverArtToFrameAdapter : FramePicture
     {
-        internal CoverArtToFrameAdapter(CoverArt coverArt)
+        internal CoverArtToFrameAdapter([NotNull] CoverArt coverArt)
             : base("APIC")
         {
-            Contract.Requires(coverArt != null);
-            Contract.Ensures(PictureType == PictureTypeCode.CoverFront);
-            Contract.Ensures(!string.IsNullOrEmpty(Mime));
-            Contract.Ensures(PictureData != null);
-            Contract.Ensures(PictureData.Length > 0);
-
             PictureType = PictureTypeCode.CoverFront;
             Mime = coverArt.MimeType;
             PictureData = coverArt.GetData();

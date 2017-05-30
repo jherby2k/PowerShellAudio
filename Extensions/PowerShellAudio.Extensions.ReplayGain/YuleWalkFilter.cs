@@ -21,7 +21,8 @@ namespace PowerShellAudio.Extensions.ReplayGain
 {
     class YuleWalkFilter : EqualLoudnessFilter
     {
-        [SuppressMessage("Microsoft.Performance", "CA1814:PreferJaggedArraysOverMultidimensional", MessageId = "Member", Justification = "Does not waste space")] static readonly float[,] _a =
+        [SuppressMessage("Microsoft.Performance", "CA1814:PreferJaggedArraysOverMultidimensional", MessageId = "Member", Justification = "Does not waste space")]
+        static readonly float[,] _a =
         {
             {
                 0.0385759944f, -0.0216036718f, -0.00123395317f, -0.0000929167796f, -0.0165526034f, 0.0216152684f,
@@ -77,7 +78,8 @@ namespace PowerShellAudio.Extensions.ReplayGain
             }
         };
 
-        [SuppressMessage("Microsoft.Performance", "CA1814:PreferJaggedArraysOverMultidimensional", MessageId = "Member", Justification = "Does not waste space")] static readonly float[,] _b =
+        [SuppressMessage("Microsoft.Performance", "CA1814:PreferJaggedArraysOverMultidimensional", MessageId = "Member", Justification = "Does not waste space")]
+        static readonly float[,] _b =
         {
             {
                 -3.84664617f, 7.81501653f, -11.3417036f, 13.0550422f, -12.2875990f, 9.48293806f, -5.87257862f,

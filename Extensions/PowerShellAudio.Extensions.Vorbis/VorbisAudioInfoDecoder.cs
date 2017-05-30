@@ -17,20 +17,18 @@
 
 using PowerShellAudio.Extensions.Vorbis.Properties;
 using System;
-using System.Diagnostics.Contracts;
 using System.Globalization;
 using System.IO;
 using System.Runtime.InteropServices;
+using JetBrains.Annotations;
 
 namespace PowerShellAudio.Extensions.Vorbis
 {
     [AudioInfoDecoderExport(".ogg")]
     public class VorbisAudioInfoDecoder : IAudioInfoDecoder
     {
-        public AudioInfo ReadAudioInfo(Stream stream)
+        public AudioInfo ReadAudioInfo([NotNull] Stream stream)
         {
-            Contract.Ensures(Contract.Result<AudioInfo>() != null);
-
             var buffer = new byte[4096];
 
             using (var decoder = new NativeVorbisDecoder())

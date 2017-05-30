@@ -19,11 +19,11 @@ using PowerShellAudio.Properties;
 using System;
 using System.ComponentModel.Composition;
 using System.Diagnostics.CodeAnalysis;
-using System.Diagnostics.Contracts;
 using System.Globalization;
 using System.IO;
 using System.Linq;
 using System.Threading;
+using JetBrains.Annotations;
 
 namespace PowerShellAudio
 {
@@ -45,10 +45,9 @@ namespace PowerShellAudio
         /// </summary>
         /// <param name="audioFile">The audio file to copy.</param>
         /// <exception cref="ArgumentNullException">Thrown if <paramref name="audioFile"/> is null.</exception>
-        public ExportableAudioFile(AudioFile audioFile)
+        public ExportableAudioFile([NotNull] AudioFile audioFile)
             : base(audioFile)
         {
-            Contract.Requires<ArgumentNullException>(audioFile != null);
         }
 
         /// <summary>
@@ -56,20 +55,16 @@ namespace PowerShellAudio
         /// </summary>
         /// <param name="fileInfo">The file information.</param>
         /// <exception cref="ArgumentNullException">Thrown if <paramref name="fileInfo"/> is null.</exception>
-        /// <exception cref="ArgumentException">Thrown if <paramref name="fileInfo"/> does not have an extension.</exception>
-        /// <exception cref="ArgumentOutOfRangeException">Thrown if <paramref name="fileInfo"/> is an empty file.</exception>
-        /// <exception cref="FileNotFoundException">Thrown if <paramref name="fileInfo"/> does not exist.</exception>
+        /// <exception cref="ArgumentException">
+        /// Thrown if <paramref name="fileInfo"/> does not have an extension, the file does not exist, or the file is empty.
+        /// </exception>
         /// <exception cref="UnsupportedAudioException">
         /// Thrown if no available extensions are able to read the file.
         /// </exception>
         /// <exception cref="IOException">Thrown if an error occurs while reading the file stream.</exception>
-        public ExportableAudioFile(FileInfo fileInfo)
+        public ExportableAudioFile([NotNull] FileInfo fileInfo)
             : base(fileInfo)
         {
-            Contract.Requires<ArgumentNullException>(fileInfo != null);
-            Contract.Requires<ArgumentException>(!string.IsNullOrEmpty(fileInfo.Extension));
-            Contract.Requires<FileNotFoundException>(fileInfo.Exists);
-            Contract.Requires<ArgumentOutOfRangeException>(fileInfo.Length > 0);
         }
 
         /// <summary>
@@ -85,11 +80,14 @@ namespace PowerShellAudio
         /// <exception cref="InvalidOperationException">Thrown if an encoder with the specified name could not be found.</exception>
         /// <exception cref="UnsupportedAudioException">Thrown if no decoders were able to read this file.</exception>
         /// <exception cref="InvalidSettingException">Thrown if one of the setting values is invalid.</exception>
-        public ExportableAudioFile Export(string encoder, SettingsDictionary settings = null, DirectoryInfo outputDirectory = null, string outputFileName = null, bool replaceExisting = false)
+        [NotNull]
+        public ExportableAudioFile Export(
+            [NotNull] string encoder,
+            [CanBeNull] SettingsDictionary settings = null,
+            [CanBeNull] DirectoryInfo outputDirectory = null,
+            [CanBeNull] string outputFileName = null, 
+            bool replaceExisting = false)
         {
-            Contract.Requires<ArgumentNullException>(!string.IsNullOrEmpty(encoder));
-            Contract.Ensures(Contract.Result<ExportableAudioFile>() != null);
-
             return Export(encoder, CancellationToken.None, settings, outputDirectory, outputFileName, replaceExisting);
         }
 
@@ -108,11 +106,18 @@ namespace PowerShellAudio
         /// <exception cref="UnsupportedAudioException">Thrown if no decoders were able to read this file.</exception>
         /// <exception cref="InvalidSettingException">Thrown if one of the setting values is invalid.</exception>
         /// <exception cref="OperationCanceledException">Throw if the operation was canceled.</exception>
+        [NotNull]
         [SuppressMessage("Microsoft.Design", "CA1011:ConsiderPassingBaseTypesAsParameters", Justification = "outputDirectory must represent a directory")]
-        public ExportableAudioFile Export(string encoder, CancellationToken cancelToken, SettingsDictionary settings = null, DirectoryInfo outputDirectory = null, string outputFileName = null, bool replaceExisting = false)
+        public ExportableAudioFile Export(
+            [NotNull] string encoder, 
+            CancellationToken cancelToken,
+            [CanBeNull] SettingsDictionary settings = null,
+            [CanBeNull] DirectoryInfo outputDirectory = null,
+            [CanBeNull] string outputFileName = null, 
+            bool replaceExisting = false)
         {
-            Contract.Requires<ArgumentNullException>(!string.IsNullOrEmpty(encoder));
-            Contract.Ensures(Contract.Result<ExportableAudioFile>() != null);
+            if (string.IsNullOrEmpty(encoder))
+                throw new ArgumentException(Resources.ExportableAudioFileExportEncoderIsEmptyError, nameof(encoder));
 
             if (settings == null)
                 settings = new SettingsDictionary();
@@ -177,12 +182,12 @@ namespace PowerShellAudio
             return new ExportableAudioFile(outputFileInfo);
         }
 
-        void DoExport(ISampleEncoder encoder, Stream outputStream, SettingsDictionary settings, CancellationToken cancelToken)
+        void DoExport(
+            [NotNull] ISampleEncoder encoder, 
+            [NotNull] Stream outputStream, 
+            [NotNull] SettingsDictionary settings, 
+            CancellationToken cancelToken)
         {
-            Contract.Requires(encoder != null);
-            Contract.Requires(outputStream != null);
-            Contract.Requires(settings != null);
-
             encoder.Initialize(outputStream, AudioInfo, Metadata, settings);
 
             using (FileStream inputStream = FileInfo.OpenRead())
@@ -214,23 +219,21 @@ namespace PowerShellAudio
             }
         }
 
-        static void ValidateSettings(SettingsDictionary settings, ISampleEncoder encoder)
+        static void ValidateSettings([NotNull] SettingsDictionary settings, [NotNull] ISampleEncoder encoder)
         {
-            Contract.Requires(settings != null);
-            Contract.Requires(encoder != null);
-
             foreach (string unsupportedKey in settings.Keys.Where(setting =>
                 !encoder.EncoderInfo.AvailableSettings.Contains(setting, StringComparer.OrdinalIgnoreCase)))
                 throw new ArgumentException(string.Format(CultureInfo.CurrentCulture,
                     Resources.ExportableAudioFileSettingsError, unsupportedKey));
         }
 
-        static FileInfo GetOutputFileInfo(FileInfo inputFileInfo, DirectoryInfo outputDirectory, string outputFileName, ISampleEncoder sampleEncoder)
+        [NotNull]
+        static FileInfo GetOutputFileInfo(
+            [NotNull] FileInfo inputFileInfo, 
+            [CanBeNull] DirectoryInfo outputDirectory,
+            [CanBeNull] string outputFileName,
+            [NotNull] ISampleEncoder sampleEncoder)
         {
-            Contract.Requires(inputFileInfo != null);
-            Contract.Requires(sampleEncoder != null);
-            Contract.Ensures(Contract.Result<FileInfo>() != null);
-
             // Use the input file name if the output name wasn't specified:
             if (string.IsNullOrEmpty(outputFileName))
                 outputFileName = Path.GetFileNameWithoutExtension(inputFileInfo.Name);

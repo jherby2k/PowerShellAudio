@@ -16,19 +16,20 @@
  */
 
 using System.Collections.Concurrent;
-using System.Diagnostics.Contracts;
 using System.Threading;
 using System.Threading.Tasks;
+using JetBrains.Annotations;
 
 namespace PowerShellAudio
 {
-    internal static class ExtensionMethods
+    static class ExtensionMethods
     {
-        internal static void ReadWriteParallel(this ISampleDecoder decoder, ISampleConsumer consumer, CancellationToken cancelToken, bool samplesAreManuallyFreed)
+        internal static void ReadWriteParallel(
+            [NotNull] this ISampleDecoder decoder, 
+            [NotNull] ISampleConsumer consumer, 
+            CancellationToken cancelToken, 
+            bool samplesAreManuallyFreed)
         {
-            Contract.Requires(decoder != null);
-            Contract.Requires(consumer != null);
-
             using (var outputQueue = new BlockingCollection<SampleCollection>(10))
             {
                 Task decode = Task.Run(() =>

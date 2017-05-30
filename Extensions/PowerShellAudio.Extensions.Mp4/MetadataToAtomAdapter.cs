@@ -18,9 +18,9 @@
 using PowerShellAudio.Extensions.Mp4.Properties;
 using System;
 using System.Collections.Generic;
-using System.Diagnostics.Contracts;
 using System.Globalization;
 using System.Linq;
+using JetBrains.Annotations;
 
 namespace PowerShellAudio.Extensions.Mp4
 {
@@ -36,10 +36,8 @@ namespace PowerShellAudio.Extensions.Mp4
                 { "Title", "©nam" }
             };
 
-        internal MetadataToAtomAdapter(MetadataDictionary metadata, SettingsDictionary settings)
+        internal MetadataToAtomAdapter([NotNull] MetadataDictionary metadata, [NotNull] SettingsDictionary settings)
         {
-            Contract.Requires(metadata != null);
-
             var day = 0;
             var month = 0;
             var year = 0;
@@ -97,10 +95,7 @@ namespace PowerShellAudio.Extensions.Mp4
 
             // The ©day atom should contain either a full date, or just the year:
             if (day > 0 && month > 0 && year > 0)
-            {
-                Contract.Assume(month <= 12);
                 Add(new TextAtom("©day", new DateTime(year, month, day).ToShortDateString()));
-            }
             else if (year > 0)
                 Add(new TextAtom("©day", year.ToString(CultureInfo.InvariantCulture)));
 
@@ -144,6 +139,7 @@ namespace PowerShellAudio.Extensions.Mp4
             get { return this.Any(atom => atom is SoundCheckAtom); }
         }
 
+        [NotNull]
         internal byte[] GetBytes()
         {
             return this.SelectMany(x => x.GetBytes()).ToArray();

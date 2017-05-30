@@ -16,9 +16,9 @@
  */
 
 using System;
-using System.Diagnostics.Contracts;
 using System.IO;
 using System.Runtime.InteropServices;
+using JetBrains.Annotations;
 
 namespace PowerShellAudio.Extensions.Flac
 {
@@ -26,60 +26,39 @@ namespace PowerShellAudio.Extensions.Flac
     {
         readonly IoCallbacks _callbacks;
 
+        [NotNull]
         internal NativeMetadataChainHandle Handle { get; }
 
-        internal NativeMetadataChain(Stream stream)
+        internal NativeMetadataChain([NotNull] Stream stream)
         {
-            Contract.Requires(stream != null);
-            Contract.Requires(stream.CanRead);
-            Contract.Requires(stream.CanWrite);
-            Contract.Requires(stream.CanSeek);
-            Contract.Ensures(Handle != null);
-            Contract.Ensures(!Handle.IsClosed);
-            Contract.Ensures(GetStatus() == MetadataChainStatus.Ok);
-
             _callbacks = InitializeCallbacks(stream);
             Handle = SafeNativeMethods.MetadataChainNew();
         }
 
         internal bool Read()
         {
-            Contract.Requires(!Handle.IsClosed);
-
             return SafeNativeMethods.MetadataChainRead(Handle, IntPtr.Zero, _callbacks);
         }
 
         internal bool CheckIfTempFileNeeded(bool usePadding)
         {
-            Contract.Requires(!Handle.IsClosed);
-
             return SafeNativeMethods.MetadataChainCheckIfTempFileNeeded(Handle, usePadding);
         }
 
-        internal bool WriteWithTempFile(bool usePadding, Stream tempStream)
+        internal bool WriteWithTempFile(bool usePadding, [NotNull] Stream tempStream)
         {
-            Contract.Requires(tempStream != null);
-            Contract.Requires(tempStream.CanRead);
-            Contract.Requires(tempStream.CanWrite);
-            Contract.Requires(tempStream.CanSeek);
-            Contract.Requires(!Handle.IsClosed);
-
             return SafeNativeMethods.MetadataChainWriteWithTempFile(Handle, usePadding, IntPtr.Zero, _callbacks,
                 IntPtr.Zero, InitializeCallbacks(tempStream));
         }
 
         internal bool Write(bool usePadding)
         {
-            Contract.Requires(!Handle.IsClosed);
-
             return SafeNativeMethods.MetadataChainWrite(Handle, usePadding, IntPtr.Zero, _callbacks);
         }
 
         [Pure]
         internal MetadataChainStatus GetStatus()
         {
-            Contract.Requires(!Handle.IsClosed);
-
             return SafeNativeMethods.MetadataChainGetStatus(Handle);
         }
 
@@ -95,7 +74,7 @@ namespace PowerShellAudio.Extensions.Flac
                 Handle.Dispose();
         }
 
-        static IoCallbacks InitializeCallbacks(Stream stream)
+        static IoCallbacks InitializeCallbacks([NotNull] Stream stream)
         {
             return new IoCallbacks
             {
@@ -126,14 +105,6 @@ namespace PowerShellAudio.Extensions.Flac
                 Tell = handle => stream.Position,
                 Eof = handle => stream.Position < stream.Length ? 0 : 1
             };
-        }
-
-        [ContractInvariantMethod]
-        void ObjectInvariant()
-        {
-            Contract.Invariant(Handle != null);
-            Contract.Invariant(!Handle.IsInvalid);
-            Contract.Invariant(GetStatus() == MetadataChainStatus.Ok);
         }
     }
 }

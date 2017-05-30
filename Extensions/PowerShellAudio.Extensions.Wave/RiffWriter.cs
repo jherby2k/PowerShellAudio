@@ -17,9 +17,9 @@
 
 using System;
 using System.Collections.Generic;
-using System.Diagnostics.Contracts;
 using System.IO;
 using System.Text;
+using JetBrains.Annotations;
 
 namespace PowerShellAudio.Extensions.Wave
 {
@@ -28,17 +28,9 @@ namespace PowerShellAudio.Extensions.Wave
         readonly Stack<Tuple<bool, uint>> _chunkSizePositions = new Stack<Tuple<bool, uint>>();
         readonly string _fourCC;
 
-        internal RiffWriter(Stream output, string fourCC)
+        internal RiffWriter([NotNull] Stream output, [NotNull] string fourCC)
             : base(output, Encoding.ASCII, true)
         {
-            Contract.Requires(output != null);
-            Contract.Requires(output.CanWrite);
-            Contract.Requires(output.CanSeek);
-            Contract.Requires(!string.IsNullOrEmpty(fourCC));
-            Contract.Requires(fourCC.Length == 4);
-            Contract.Ensures(!string.IsNullOrEmpty(_fourCC));
-            Contract.Ensures(_fourCC == fourCC);
-
             _fourCC = fourCC;
         }
 
@@ -48,19 +40,15 @@ namespace PowerShellAudio.Extensions.Wave
             Write(_fourCC.ToCharArray());
         }
 
-        internal void BeginChunk(string chunkId)
+        internal void BeginChunk([NotNull] string chunkId)
         {
-            Contract.Requires(!string.IsNullOrEmpty(chunkId));
-
             Write(chunkId.ToCharArray());
             _chunkSizePositions.Push(Tuple.Create(false, (uint)BaseStream.Position));
             Write((uint)0);
         }
 
-        internal void BeginChunk(string chunkId, uint chunkSize)
+        internal void BeginChunk([NotNull] string chunkId, uint chunkSize)
         {
-            Contract.Requires(!string.IsNullOrEmpty(chunkId));
-
             Write(chunkId.ToCharArray());
             _chunkSizePositions.Push(Tuple.Create(true, (uint)BaseStream.Position));
             Write(chunkSize);
@@ -82,14 +70,6 @@ namespace PowerShellAudio.Extensions.Wave
             // Chunks should be word-aligned:
             if (BaseStream.Position % 2 == 1)
                 Write((byte)0);
-        }
-
-        [ContractInvariantMethod]
-        void ObjectInvariant()
-        {
-            Contract.Invariant(_chunkSizePositions != null);
-            Contract.Invariant(!string.IsNullOrEmpty(_fourCC));
-            Contract.Invariant(_fourCC.Length == 4);
         }
     }
 }

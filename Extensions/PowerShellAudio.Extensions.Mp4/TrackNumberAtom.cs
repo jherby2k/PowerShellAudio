@@ -16,7 +16,7 @@
  */
 
 using System;
-using System.Diagnostics.Contracts;
+using JetBrains.Annotations;
 
 namespace PowerShellAudio.Extensions.Mp4
 {
@@ -31,20 +31,14 @@ namespace PowerShellAudio.Extensions.Mp4
         internal TrackNumberAtom()
         { }
 
-        internal TrackNumberAtom(byte[] data)
+        internal TrackNumberAtom([NotNull] byte[] data)
         {
-            Contract.Requires(data != null);
-            Contract.Requires(data.Length == 32);
-
             TrackNumber = data[27];
             TrackCount = data[29];
         }
 
         internal override byte[] GetBytes()
         {
-            Contract.Ensures(Contract.Result<byte[]>() != null);
-            Contract.Ensures(Contract.Result<byte[]>().Length == 0 || Contract.Result<byte[]>().Length == 32);
-
             if (TrackNumber == 0)
                 return new byte[0];
 
@@ -65,11 +59,9 @@ namespace PowerShellAudio.Extensions.Mp4
             return result;
         }
 
+        [Pure, NotNull]
         static byte[] ConvertToBigEndianBytes(uint value)
         {
-            Contract.Ensures(Contract.Result<byte[]>() != null);
-            Contract.Ensures(Contract.Result<byte[]>().Length == 4);
-
             byte[] result = BitConverter.GetBytes(value);
             Array.Reverse(result);
             return result;

@@ -16,19 +16,18 @@
  */
 
 using PowerShellAudio.Extensions.Flac.Properties;
-using System.Diagnostics.Contracts;
 using System.Globalization;
 using System.IO;
+using JetBrains.Annotations;
 
 namespace PowerShellAudio.Extensions.Flac
 {
     [AudioInfoDecoderExport(".flac")]
     public class FlacAudioInfoDecoder : IAudioInfoDecoder
     {
-        public AudioInfo ReadAudioInfo(Stream stream)
+        [NotNull]
+        public AudioInfo ReadAudioInfo([NotNull] Stream stream)
         {
-            Contract.Ensures(Contract.Result<AudioInfo>() != null);
-
             using (var decoder = new NativeStreamAudioInfoDecoder(stream))
             {
                 DecoderInitStatus initStatus = decoder.Initialize();

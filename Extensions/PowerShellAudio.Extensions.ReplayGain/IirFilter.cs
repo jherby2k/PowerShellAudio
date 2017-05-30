@@ -16,8 +16,8 @@
  */
 
 using System;
-using System.Diagnostics.Contracts;
 using System.Threading.Tasks;
+using JetBrains.Annotations;
 
 namespace PowerShellAudio.Extensions.ReplayGain
 {
@@ -29,22 +29,15 @@ namespace PowerShellAudio.Extensions.ReplayGain
         float[][] _inputBuffer;
         float[][] _outputBuffer;
 
-        internal IirFilter(float[] a, float[] b)
+        internal IirFilter([NotNull] float[] a, [NotNull] float[] b)
         {
-            Contract.Requires(a != null);
-            Contract.Requires(a.Length > 1);
-            Contract.Requires(b != null);
-            Contract.Ensures(_order > 0);
-
             _order = a.Length - 1;
             _a = a;
             _b = b;
         }
 
-        internal void Process(SampleCollection input)
+        internal void Process([NotNull] SampleCollection input)
         {
-            Contract.Requires(input != null);
-
             // Optimization - using SampleCollections here is too expensive:
             if (_inputBuffer == null)
                 _inputBuffer = GetBuffer(input.Channels, _order + input.SampleCount);
@@ -76,23 +69,8 @@ namespace PowerShellAudio.Extensions.ReplayGain
             });
         }
 
-        [ContractInvariantMethod]
-        void ObjectInvariant()
-        {
-            Contract.Invariant(_order > 0);
-            Contract.Invariant(_a != null);
-            Contract.Invariant(_b != null);
-        }
-
         static float[][] GetBuffer(int channels, int samples)
         {
-            Contract.Requires(channels > 0);
-            Contract.Requires(samples > 0);
-            Contract.Ensures(Contract.Result<float[][]>() != null);
-            Contract.Ensures(Contract.Result<float[][]>().Length == channels);
-            Contract.Ensures(Contract.ForAll(Contract.Result<float[][]>(), channel => channel != null));
-            Contract.Ensures(Contract.ForAll(Contract.Result<float[][]>(), channel => channel.Length > 0));
-
             var result = new float[channels][];
             for (var channel = 0; channel < channels; channel++)
                 result[channel] = new float[samples];

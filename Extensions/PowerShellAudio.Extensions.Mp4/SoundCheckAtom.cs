@@ -16,23 +16,22 @@
  */
 
 using System;
-using System.Diagnostics.Contracts;
 using System.Globalization;
 using System.Text;
+using JetBrains.Annotations;
 
 namespace PowerShellAudio.Extensions.Mp4
 {
     class SoundCheckAtom : WritableAtom
     {
+        [CanBeNull]
         internal string Gain { get; set; }
 
+        [CanBeNull]
         internal string Peak { get; set; }
 
         internal override byte[] GetBytes()
         {
-            Contract.Ensures(Contract.Result<byte[]>() != null);
-            Contract.Ensures(Contract.Result<byte[]>().Length == 0 || Contract.Result<byte[]>().Length == 162);
-
             string soundCheckValue;
             if (!string.IsNullOrEmpty(Gain) && !string.IsNullOrEmpty(Peak))
                 soundCheckValue = ConvertToSoundCheck(Gain, Peak);
@@ -68,22 +67,17 @@ namespace PowerShellAudio.Extensions.Mp4
             return result;
         }
 
+        [NotNull]
         static byte[] GetBytesBigEndian(uint value)
         {
-            Contract.Ensures(Contract.Result<byte[]>() != null);
-            Contract.Ensures(Contract.Result<byte[]>().Length == 4);
-
             byte[] result = BitConverter.GetBytes(value);
             Array.Reverse(result);
             return result;
         }
 
-        static string ConvertToSoundCheck(string gain, string peak)
+        [NotNull]
+        static string ConvertToSoundCheck([NotNull] string gain, [NotNull] string peak)
         {
-            Contract.Requires(!string.IsNullOrEmpty(gain));
-            Contract.Requires(!string.IsNullOrEmpty(peak));
-            Contract.Ensures(!string.IsNullOrEmpty(Contract.Result<string>()));
-
             float numericGain = float.Parse(gain.Replace(" dB", string.Empty), CultureInfo.InvariantCulture);
             string convertedBase1000 = ConvertGain(numericGain, 1000);
             string convertedBase2500 = ConvertGain(numericGain, 2500);
@@ -106,24 +100,21 @@ namespace PowerShellAudio.Extensions.Mp4
             return result.ToString();
         }
 
+        [NotNull]
         static string ConvertGain(float gain, int reference)
         {
-            Contract.Ensures(!string.IsNullOrEmpty(Contract.Result<string>()));
-
             return ConvertToAsciiHex((int)Math.Round(Math.Pow(10, gain / -10) * reference));
         }
 
+        [NotNull]
         static string ConvertPeak(float peak)
         {
-            Contract.Ensures(!string.IsNullOrEmpty(Contract.Result<string>()));
-
             return ConvertToAsciiHex((int)Math.Abs(peak * 0x8000));
         }
 
+        [NotNull]
         static string ConvertToAsciiHex(int value)
         {
-            Contract.Ensures(!string.IsNullOrEmpty(Contract.Result<string>()));
-
             return value.ToString("x8", CultureInfo.InvariantCulture).ToUpperInvariant();
         }
     }

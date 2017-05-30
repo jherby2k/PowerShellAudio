@@ -15,9 +15,9 @@
  * <http://www.gnu.org/licenses/>.
  */
 
-using System.Diagnostics.Contracts;
 using System.Linq;
 using System.Text;
+using JetBrains.Annotations;
 
 namespace PowerShellAudio.Extensions.Mp4
 {
@@ -25,13 +25,11 @@ namespace PowerShellAudio.Extensions.Mp4
     {
         readonly byte[] _data;
 
+        [NotNull]
         internal string Name => ConvertToString(_data.Skip(48).Take(8).ToArray());
 
-        internal ReverseDnsAtom(byte[] data)
+        internal ReverseDnsAtom([NotNull] byte[] data)
         {
-            Contract.Requires(data != null);
-            Contract.Requires(data.Length >= 56);
-
             _data = data;
         }
 
@@ -40,19 +38,9 @@ namespace PowerShellAudio.Extensions.Mp4
             return _data;
         }
 
-        [ContractInvariantMethod]
-        void ObjectInvariant()
+        [NotNull]
+        static string ConvertToString([NotNull] byte[] value)
         {
-            Contract.Invariant(_data != null);
-            Contract.Invariant(_data.Length >= 56);
-        }
-
-        static string ConvertToString(byte[] value)
-        {
-            Contract.Requires(value != null);
-            Contract.Ensures(!string.IsNullOrEmpty(Contract.Result<string>()));
-            Contract.Ensures(Contract.Result<string>().Length == value.Length);
-
             return new string(Encoding.GetEncoding(1252).GetChars(value));
         }
     }

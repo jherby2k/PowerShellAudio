@@ -16,9 +16,9 @@
  */
 
 using PowerShellAudio.Extensions.Flac.Properties;
-using System.Diagnostics.Contracts;
 using System.IO;
 using System.Text;
+using JetBrains.Annotations;
 
 namespace PowerShellAudio.Extensions.Flac
 {
@@ -27,31 +27,16 @@ namespace PowerShellAudio.Extensions.Flac
         internal NativeVorbisCommentBlock()
             : base(MetadataType.VorbisComment)
         {
-            Contract.Ensures(Handle != null);
-            Contract.Ensures(!Handle.IsClosed);
         }
 
-        internal void Append(string key, string value)
+        internal void Append([NotNull] string key, [NotNull] string value)
         {
-            Contract.Requires(!string.IsNullOrEmpty(key));
-            Contract.Requires(!string.IsNullOrEmpty(value));
-            Contract.Requires(!Handle.IsClosed);
-
-            VorbisCommentEntry comment;
-            if (
-                !SafeNativeMethods.VorbisCommentGet(out comment, Encoding.ASCII.GetBytes(key),
+            if (!SafeNativeMethods.VorbisCommentGet(out VorbisCommentEntry comment, Encoding.ASCII.GetBytes(key),
                     Encoding.UTF8.GetBytes(value)))
                 throw new IOException(Resources.NativeVorbisCommentBlockMemoryError);
 
             if (!SafeNativeMethods.VorbisCommentAppend(Handle, comment, false))
                 throw new IOException(Resources.NativeVorbisCommentBlockMemoryError);
-        }
-
-        [ContractInvariantMethod]
-        void ObjectInvariant()
-        {
-            Contract.Invariant(Handle != null);
-            Contract.Invariant(!Handle.IsInvalid);
         }
     }
 }
