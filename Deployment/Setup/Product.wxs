@@ -54,11 +54,8 @@ You should have received a copy of the GNU Lesser General Public License along w
       <ComponentRef Id="$(var.PowerShellAudio.Commands.TargetFileName)" />
       <ComponentRef Id="$(var.PowerShellAudio.Commands.TargetFileName)_Help.xml" />
       <ComponentRef Id="$(var.PowerShellAudio.Api.TargetFileName)" />
-      <ComponentRef Id="$(var.PowerShellAudio.Api.TargetName).Contracts.dll" />
       <ComponentRef Id="$(var.PowerShellAudio.Common.TargetFileName)" />
-      <ComponentRef Id="$(var.PowerShellAudio.Common.TargetName).Contracts.dll" />
       <ComponentRef Id="$(var.PowerShellAudio.Extensibility.TargetFileName)" />
-      <ComponentRef Id="$(var.PowerShellAudio.Extensibility.TargetName).Contracts.dll" />
     </ComponentGroup>
 
     <DirectoryRef Id="INSTALLFOLDER">
@@ -84,17 +81,6 @@ You should have received a copy of the GNU Lesser General Public License along w
         <File Source="$(var.PowerShellAudio.Extensibility.TargetPath)" KeyPath="yes" Checksum="yes" />
       </Component>
     </DirectoryRef>
-    <DirectoryRef Id="CodeContractsFolder">
-      <Component Guid="{08BE03D3-5F85-410C-96B1-86CF032243AC}">
-        <File Source="$(var.PowerShellAudio.Api.TargetDir)CodeContracts\$(var.PowerShellAudio.Api.TargetName).Contracts.dll" KeyPath="yes" Checksum="yes" />
-      </Component>
-      <Component Guid="{F9024BEF-EFDD-441D-B58A-AB1ADC37B437}">
-        <File Source="$(var.PowerShellAudio.Common.TargetDir)CodeContracts\$(var.PowerShellAudio.Common.TargetName).Contracts.dll" KeyPath="yes" Checksum="yes" />
-      </Component>
-      <Component Guid="{0F06E8D0-1211-43D8-A0A1-230B337F3395}">
-        <File Source="$(var.PowerShellAudio.Extensibility.TargetDir)CodeContracts\$(var.PowerShellAudio.Extensibility.TargetName).Contracts.dll" KeyPath="yes" Checksum="yes" />
-      </Component>
-    </DirectoryRef>
     <DirectoryRef Id="en_USFolder">
       <Component Guid="{C813F493-E95A-4D58-ADFA-1650542BA8D8}">
         <File Id="$(var.PowerShellAudio.Commands.TargetFileName)_Help.xml" Source="$(var.PowerShellAudio.Commands.TargetDir)en-US\$(var.PowerShellAudio.Commands.TargetFileName)-Help.xml" KeyPath="yes" Checksum="yes" />
@@ -106,7 +92,6 @@ You should have received a copy of the GNU Lesser General Public License along w
         <Directory Id="WindowsPowerShell" Name="WindowsPowerShell">
           <Directory Id="ModulesFolder" Name="Modules">
             <Directory Id="INSTALLFOLDER" Name="PowerShellAudio">
-              <Directory Id="CodeContractsFolder" Name="CodeContracts" />
               <Directory Id="en_USFolder" Name="en-US" />
               <Directory Id="ExtensionsFolder" Name="Extensions" />
             </Directory>
