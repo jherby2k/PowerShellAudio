@@ -30,6 +30,7 @@ namespace PowerShellAudio
     /// The attributed <see cref="ISampleFilter"/> with the specified name will be used to analyze the audio stream.
     /// </remarks>
     [MetadataAttribute, AttributeUsage(AttributeTargets.Class)]
+    [PublicAPI]
     public sealed class SampleFilterExportAttribute : ExportAttribute
     {
         /// <summary>

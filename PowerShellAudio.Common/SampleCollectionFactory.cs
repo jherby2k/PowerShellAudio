@@ -32,6 +32,7 @@ namespace PowerShellAudio
     /// excessive number of garbage collection cycles. By calling the Free method once a <see cref="SampleCollection"/>
     /// is no longer required, the internal arrays can be reused by the next call to the Create method.
     /// </remarks>
+    [PublicAPI]
     public class SampleCollectionFactory
     {
         static readonly Lazy<SampleCollectionFactory> _lazyInstance = new Lazy<SampleCollectionFactory>(() => new SampleCollectionFactory());

@@ -25,7 +25,7 @@ namespace PowerShellAudio
     /// <summary>
     /// An object used to indicate membership in a collection (An album or compilation).
     /// </summary>
-    public class GroupToken : IDisposable
+    public sealed class GroupToken : IDisposable
     {
         readonly ManualResetEventSlim _resetEvent = new ManualResetEventSlim();
         int _remainingMembers;
@@ -75,21 +75,7 @@ namespace PowerShellAudio
         /// </summary>
         public void Dispose()
         {
-            Dispose(true);
-            GC.SuppressFinalize(this);
-        }
-
-        /// <summary>
-        /// Releases unmanaged and - optionally - managed resources.
-        /// </summary>
-        /// <param name="disposing">
-        /// <c>true</c> to release both managed and unmanaged resources; <c>false</c> to release only unmanaged
-        /// resources.
-        /// </param>
-        protected virtual void Dispose(bool disposing)
-        {
-            if (disposing)
-                _resetEvent.Dispose();
+            _resetEvent.Dispose();
         }
     }
 }

@@ -31,6 +31,7 @@ namespace PowerShellAudio
     /// <summary>
     /// Represents cover art that can be resized and/or converted to lossy (JPEG) format.
     /// </summary>
+    [PublicAPI]
     public class ConvertibleCoverArt : CoverArt
     {
         const int _defaultMaxWidth = 65535;

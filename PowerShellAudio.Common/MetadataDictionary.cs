@@ -33,6 +33,7 @@ namespace PowerShellAudio
     /// validation on the values that are set.
     /// </remarks>
     [Serializable]
+    [PublicAPI]
     public class MetadataDictionary : SettingsDictionary
     {
         static readonly IDictionary<string, Func<string, string>> _acceptedKeys = InitializeAcceptedKeys();

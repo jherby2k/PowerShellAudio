@@ -37,6 +37,7 @@ namespace PowerShellAudio
     /// and an <see cref="UnsupportedAudioException"/> is thrown.
     /// </remarks>
     [Serializable]
+    [PublicAPI]
     public class AnalyzableAudioFile : TaggedAudioFile
     {
         /// <summary>

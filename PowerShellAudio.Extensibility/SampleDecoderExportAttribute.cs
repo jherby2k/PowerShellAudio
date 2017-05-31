@@ -34,6 +34,7 @@ namespace PowerShellAudio
     /// extension.
     /// </remarks>
     [MetadataAttribute, AttributeUsage(AttributeTargets.Class)]
+    [PublicAPI]
     public sealed class SampleDecoderExportAttribute : ExportAttribute
     {
         /// <summary>

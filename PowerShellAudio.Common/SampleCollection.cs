@@ -34,6 +34,7 @@ namespace PowerShellAudio
     /// <see cref="SampleCollectionFactory"/>'s Free method once the instance is no longer needed, so that the arrays
     /// can be reused.
     /// </remarks>
+    [PublicAPI]
     public class SampleCollection : IEnumerable<float[]>
     {
         readonly float[][] _samples;

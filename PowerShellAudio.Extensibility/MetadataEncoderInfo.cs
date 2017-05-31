@@ -25,6 +25,7 @@ namespace PowerShellAudio
     /// Contains information about an <see cref="IMetadataEncoder"/> implementation.
     /// </summary>
     [Serializable]
+    [PublicAPI]
     public abstract class MetadataEncoderInfo
     {
         /// <summary>

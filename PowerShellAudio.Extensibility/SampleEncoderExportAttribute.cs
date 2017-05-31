@@ -30,6 +30,7 @@ namespace PowerShellAudio
     /// The attributed <see cref="ISampleEncoder"/> with the specified name will be used to analyze the audio stream.
     /// </remarks>
     [MetadataAttribute, AttributeUsage(AttributeTargets.Class)]
+    [PublicAPI]
     public sealed class SampleEncoderExportAttribute : ExportAttribute
     {
         /// <summary>

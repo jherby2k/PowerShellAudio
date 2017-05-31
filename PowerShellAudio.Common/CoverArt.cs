@@ -30,6 +30,7 @@ namespace PowerShellAudio
     /// <summary>
     /// The cover art for an audio file.
     /// </summary>
+    [PublicAPI]
     public class CoverArt
     {
         WeakReference<byte[]> _dataReference;
@@ -152,10 +153,8 @@ namespace PowerShellAudio
         [NotNull]
         public byte[] GetData()
         {
-            byte[] result;
-
             // If the reference is still valid, return a clone of the data:
-            if (_dataReference.TryGetTarget(out result))
+            if (_dataReference.TryGetTarget(out byte[] result))
                 return (byte[])result.Clone();
 
             // Otherwise, load the temporary file and update the reference:

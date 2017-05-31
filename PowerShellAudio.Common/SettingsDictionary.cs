@@ -32,6 +32,7 @@ namespace PowerShellAudio
     /// also case-insensitive.
     /// </remarks>
     [Serializable]
+    [PublicAPI]
     public class SettingsDictionary : IDictionary<string, string>
     {
         readonly IDictionary<string, string> _internalDictionary = new Dictionary<string, string>(StringComparer.OrdinalIgnoreCase);

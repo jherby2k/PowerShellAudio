@@ -32,6 +32,7 @@ namespace PowerShellAudio
     /// Instances of this class are normally created by extensions, in the PowerShellAudio.Extensibility namespace.
     /// </remarks>
     [Serializable]
+    [PublicAPI]
     public class AudioInfo
     {
         /// <summary>

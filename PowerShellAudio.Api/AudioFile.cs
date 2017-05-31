@@ -35,6 +35,8 @@ namespace PowerShellAudio
     /// <see cref="UnsupportedAudioException"/> is thrown.
     /// </remarks>
     [Serializable]
+    [PublicAPI]
+
     public class AudioFile
     {
         /// <summary>
@@ -53,7 +55,7 @@ namespace PowerShellAudio
         /// The audio information.
         /// </value>
         [NotNull]
-        public AudioInfo AudioInfo { get; private set; }
+        public AudioInfo AudioInfo { get; }
 
         /// <summary>
         /// Initializes a new instance of the <see cref="AudioFile"/> class from an existing <see cref="AudioFile"/>.

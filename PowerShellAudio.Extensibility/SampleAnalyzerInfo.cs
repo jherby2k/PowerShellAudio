@@ -24,6 +24,7 @@ namespace PowerShellAudio
     /// Contains information about an <see cref="ISampleAnalyzer"/> implementation.
     /// </summary>
     [Serializable]
+    [PublicAPI]
     public abstract class SampleAnalyzerInfo
     {
         /// <summary>

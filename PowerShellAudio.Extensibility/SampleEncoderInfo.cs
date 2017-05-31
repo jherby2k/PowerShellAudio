@@ -25,6 +25,7 @@ namespace PowerShellAudio
     /// Contains information about an <see cref="ISampleEncoder"/> implementation.
     /// </summary>
     [Serializable]
+    [PublicAPI]
     public abstract class SampleEncoderInfo
     {
         /// <summary>

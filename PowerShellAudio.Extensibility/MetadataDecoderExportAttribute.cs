@@ -34,6 +34,7 @@ namespace PowerShellAudio
     /// which describe a specified stream.
     /// </remarks>
     [MetadataAttribute, AttributeUsage(AttributeTargets.Class)]
+    [PublicAPI]
     public sealed class MetadataDecoderExportAttribute : ExportAttribute
     {
         /// <summary>

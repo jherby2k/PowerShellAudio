@@ -26,6 +26,7 @@ namespace PowerShellAudio
     /// <summary>
     /// Provides discovery of extensions.
     /// </summary>
+    [PublicAPI]
     public static class ExtensionProvider
     {
         /// <summary>

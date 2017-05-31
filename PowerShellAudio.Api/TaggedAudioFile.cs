@@ -35,6 +35,7 @@ namespace PowerShellAudio
     /// <see cref="UnsupportedAudioException"/> is thrown.
     /// </remarks>
     [Serializable]
+    [PublicAPI]
     public class TaggedAudioFile : AudioFile
     {
         MetadataDictionary _metadata;
@@ -64,8 +65,7 @@ namespace PowerShellAudio
         public TaggedAudioFile([NotNull] AudioFile audioFile)
             : base(audioFile)
         {
-            var taggedAudioFile = audioFile as TaggedAudioFile;
-            if (taggedAudioFile != null)
+            if (audioFile is TaggedAudioFile taggedAudioFile)
                 _metadata = taggedAudioFile.Metadata;
         }
 
