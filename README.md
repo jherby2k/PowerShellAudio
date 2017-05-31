@@ -8,10 +8,14 @@ An extensible, multi-format audio conversion and tagging module for Windows Powe
 
 ## Prerequisites for Building
 1. Windows 7, 8.1 or 10.
-2. Visual Studio Community 2015, or any higher version of Visual Studio 2015.
+2. Visual Studio Community 2017, or any higher version of Visual Studio 2017.
 3. Windows Management Framework 4.0 (if you are building on Windows 7).
-4. The Code Contracts extension (http://research.microsoft.com/en-us/projects/contracts)
-5. The WiX Toolset extension v3.10 (http://wixtoolset.org)
+4. ReSharper 2017.1.2 or later
+5. The WiX Toolset v3.11, plus the Visual Studio extension
+
+## Prerequisites for running the unit tests
+1. Microsoft Access Database Engine 2010
+2. Apple Application Support (installed with iTunes)
 
 ## Acknowledgements
 This project uses libraries from several high-quality open source projects.
