@@ -1,5 +1,5 @@
 ﻿/*
- * Copyright © 2014, 2015 Jeremy Herbison
+ * Copyright © 2014-2017 Jeremy Herbison
  * 
  * This file is part of PowerShell Audio.
  * 
