@@ -25,7 +25,7 @@ You should have received a copy of the GNU Lesser General Public License along w
     <BootstrapperApplicationRef Id="WixStandardBootstrapperApplication.HyperlinkSidebarLicense">
       <bal:WixStandardBootstrapperApplication LicenseUrl="http://www.gnu.org/licenses/lgpl.html" LogoFile="Logo.png" LogoSideFile="LogoSide.png" ShowVersion="yes" SuppressOptionsUI="yes" />
     </BootstrapperApplicationRef>
-    <bal:Condition Message="This application requires a minimum of Windows 7 or Windows Server 2008 R2.">
+    <bal:Condition Message="This application requires a minimum of Windows 7 or Server 2008 R2 with Service Pack 1.">
       <![CDATA[Installed OR (VersionNT = v6.1) OR (VersionNT >= v6.3)]]>
     </bal:Condition>
     
@@ -36,18 +36,18 @@ You should have received a copy of the GNU Lesser General Public License along w
     <Chain>
       <PackageGroupRef Id="NetFx46Web" />
       
-      <MsuPackage DisplayName="Windows Management Framework 4.0"
-                  KB="KB2819745"
+      <MsuPackage DisplayName="Windows Management Framework 5.1"
+                  KB="KB3191566"
                   Permanent="yes"
-                  SourceFile="Windows6.1-KB2819745-x86-MultiPkg.msu"
+                  SourceFile="Win7-KB3191566-x86.msu"
                   InstallCondition="VersionNT=v6.1 AND NOT VersionNT64"
-                  DetectCondition="PSVersion&gt;=v4.0" />
-      <MsuPackage DisplayName="Windows Management Framework 4.0"
-                  KB="KB2819745"
+                  DetectCondition="PSVersion&gt;=v5.1" />
+      <MsuPackage DisplayName="Windows Management Framework 5.1"
+                  KB="KB3191566"
                   Permanent="yes"
-                  SourceFile="Windows6.1-KB2819745-x64-MultiPkg.msu"
+                  SourceFile="Win7AndW2K8R2-KB3191566-x64.msu"
                   InstallCondition="VersionNT=v6.1 AND VersionNT64"
-                  DetectCondition="PSVersion&gt;=v4.0" />
+                  DetectCondition="PSVersion&gt;=v5.1" />
       
       <ExePackage DisplayName="Microsoft Visual C++ 2017 Redistributable (x86)"
                   InstallCommand="/quiet /norestart"
