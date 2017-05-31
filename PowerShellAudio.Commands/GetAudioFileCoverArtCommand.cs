@@ -16,10 +16,12 @@
  */
 
 using System.Management.Automation;
+using JetBrains.Annotations;
 
 namespace PowerShellAudio.Commands
 {
     [Cmdlet(VerbsCommon.Get, "AudioFileCoverArt"), OutputType(typeof(CoverArt))]
+    [PublicAPI]
     public class GetAudioFileCoverArtCommand : Cmdlet
     {
         [Parameter(Mandatory = true, Position = 0, ValueFromPipeline = true)]

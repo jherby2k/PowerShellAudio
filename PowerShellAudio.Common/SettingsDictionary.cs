@@ -113,7 +113,7 @@ namespace PowerShellAudio
         /// </returns>
         /// <exception cref="ArgumentNullException">Thrown if <paramref name="key"/> is null or empty.</exception>
         [CollectionAccess(CollectionAccessType.Read)]
-        public bool TryGetValue(string key, [CanBeNull] out string value)
+        public bool TryGetValue(string key, [NotNull] out string value)
         {
             return _internalDictionary.TryGetValue(key, out value);
         }
@@ -146,8 +146,7 @@ namespace PowerShellAudio
                 if (string.IsNullOrEmpty(key))
                     throw new ArgumentException(Resources.SettingsDictionaryKeyIsEmptyError, nameof(key));
 
-                string result;
-                return _internalDictionary.TryGetValue(key, out result) ? result : string.Empty;
+                return _internalDictionary.TryGetValue(key, out string result) ? result : string.Empty;
             }
             set
             {

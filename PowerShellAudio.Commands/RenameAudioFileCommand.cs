@@ -16,10 +16,12 @@
  */
 
 using System.Management.Automation;
+using JetBrains.Annotations;
 
 namespace PowerShellAudio.Commands
 {
     [Cmdlet(VerbsCommon.Rename, "AudioFile", SupportsShouldProcess = true), OutputType(typeof(TaggedAudioFile))]
+    [PublicAPI]
     public class RenameAudioFileCommand : Cmdlet
     {
         [Parameter(Mandatory = true, Position = 0)]

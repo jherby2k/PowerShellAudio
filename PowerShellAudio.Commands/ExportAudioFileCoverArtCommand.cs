@@ -18,10 +18,12 @@
 using System.IO;
 using System.Linq;
 using System.Management.Automation;
+using JetBrains.Annotations;
 
 namespace PowerShellAudio.Commands
 {
     [Cmdlet(VerbsData.Export, "AudioFileCoverArt", DefaultParameterSetName = "ByPath", SupportsShouldProcess = true), OutputType(typeof(AudioFile))]
+    [PublicAPI]
     public class ExportAudioFileCoverArtCommand : PSCmdlet
     {
         [Parameter(Mandatory = true, Position = 0)]

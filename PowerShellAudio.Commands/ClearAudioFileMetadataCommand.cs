@@ -17,10 +17,12 @@
 
 using System.Management.Automation;
 using System.Linq;
+using JetBrains.Annotations;
 
 namespace PowerShellAudio.Commands
 {
     [Cmdlet(VerbsCommon.Clear, "AudioFileMetadata"), OutputType(typeof(TaggedAudioFile))]
+    [PublicAPI]
     public class ClearAudioFileMetadataCommand : Cmdlet
     {
         [Parameter(Position = 0)]

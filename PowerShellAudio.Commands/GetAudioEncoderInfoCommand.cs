@@ -17,10 +17,12 @@
 
 using System.ComponentModel.Composition;
 using System.Management.Automation;
+using JetBrains.Annotations;
 
 namespace PowerShellAudio.Commands
 {
     [Cmdlet(VerbsCommon.Get, "AudioEncoderInfo"), OutputType(typeof(SampleEncoderInfo))]
+    [PublicAPI]
     public class GetAudioEncoderInfoCommand : Cmdlet
     {
         [Parameter(Position = 0)]

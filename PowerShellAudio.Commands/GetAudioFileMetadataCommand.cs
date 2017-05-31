@@ -16,10 +16,12 @@
  */
 
 using System.Management.Automation;
+using JetBrains.Annotations;
 
 namespace PowerShellAudio.Commands
 {
     [Cmdlet(VerbsCommon.Get, "AudioFileMetadata"), OutputType(typeof(MetadataDictionary))]
+    [PublicAPI]
     public class GetAudioFileMetadataCommand : Cmdlet
     {
         [Parameter(Position = 0)]
@@ -37,8 +39,7 @@ namespace PowerShellAudio.Commands
                 var result = new MetadataDictionary();
                 foreach (string key in Key)
                 {
-                    string value;
-                    if (taggedAudioFile.Metadata.TryGetValue(key, out value))
+                    if (taggedAudioFile.Metadata.TryGetValue(key, out string value))
                         result.Add(key, value);
                 }
                 WriteObject(result);

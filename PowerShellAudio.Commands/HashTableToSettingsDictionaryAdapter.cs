@@ -18,12 +18,13 @@
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
+using JetBrains.Annotations;
 
 namespace PowerShellAudio.Commands
 {
     class HashTableToSettingsDictionaryAdapter : SettingsDictionary
     {
-        internal HashTableToSettingsDictionaryAdapter(IEnumerable hashtable)
+        internal HashTableToSettingsDictionaryAdapter([CanBeNull] IEnumerable hashtable)
         {
             if (hashtable == null)
                 return;

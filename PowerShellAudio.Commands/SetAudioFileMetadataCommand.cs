@@ -17,10 +17,12 @@
 
 using System.Collections;
 using System.Management.Automation;
+using JetBrains.Annotations;
 
 namespace PowerShellAudio.Commands
 {
     [Cmdlet(VerbsCommon.Set, "AudioFileMetadata"), OutputType(typeof(TaggedAudioFile))]
+    [PublicAPI]
     public class SetAudioFileMetadataCommand : Cmdlet
     {
         [Parameter(Mandatory = true, Position = 0)]

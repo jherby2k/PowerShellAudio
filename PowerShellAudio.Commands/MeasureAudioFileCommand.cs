@@ -24,11 +24,13 @@ using System.Globalization;
 using System.Management.Automation;
 using System.Threading;
 using System.Threading.Tasks;
+using JetBrains.Annotations;
 
 namespace PowerShellAudio.Commands
 {
     [Cmdlet(VerbsDiagnostic.Measure, "AudioFile"), OutputType(typeof(AnalyzableAudioFile))]
-    public class MeasureAudioFileCommand : Cmdlet, IDisposable
+    [PublicAPI]
+    public sealed class MeasureAudioFileCommand : Cmdlet, IDisposable
     {
         readonly IList<AnalyzableAudioFile> _audioFiles = new List<AnalyzableAudioFile>();
         readonly CancellationTokenSource _cancelSource = new CancellationTokenSource();
@@ -50,48 +52,46 @@ namespace PowerShellAudio.Commands
         [SuppressMessage("Microsoft.Design", "CA1031:DoNotCatchGeneralExceptionTypes", Justification = "Non-terminating Cmdlet exceptions should be written to an ErrorRecord")]
         protected override void EndProcessing()
         {
-            if (_audioFiles.Count > 0)
+            if (_audioFiles.Count <= 0) return;
+            int completed = 0;
+
+            using (var groupToken = new GroupToken(_audioFiles.Count))
+            using (var outputQueue = new BlockingCollection<object>())
             {
-                int completed = 0;
+                outputQueue.Add(new ProgressRecord(0,
+                    string.Format(CultureInfo.CurrentCulture, Resources.MeasureAudioFileCommandActivityMessage,
+                        Analyzer),
+                    string.Format(CultureInfo.CurrentCulture, Resources.MeasureAudioFileCommandStatusMessage,
+                        0, _audioFiles.Count)) {PercentComplete = 0});
 
-                using (var groupToken = new GroupToken(_audioFiles.Count))
-                using (var outputQueue = new BlockingCollection<object>())
+                Task.Run(() => Parallel.ForEach(_audioFiles, new ParallelOptions { CancellationToken = _cancelSource.Token }, audioFile =>
                 {
-                    outputQueue.Add(new ProgressRecord(0,
-                        string.Format(CultureInfo.CurrentCulture, Resources.MeasureAudioFileCommandActivityMessage,
-                            Analyzer),
-                        string.Format(CultureInfo.CurrentCulture, Resources.MeasureAudioFileCommandStatusMessage,
-                            0, _audioFiles.Count)) {PercentComplete = 0});
-
-                    Task.Run(() => Parallel.ForEach(_audioFiles, new ParallelOptions { CancellationToken = _cancelSource.Token }, audioFile =>
+                    try
                     {
-                        try
+                        audioFile.Analyze(Analyzer, _cancelSource.Token, groupToken);
+                        Interlocked.Increment(ref completed);
+
+                        if (PassThru)
+                            outputQueue.Add(audioFile);
+
+                        outputQueue.Add(new ProgressRecord(0,
+                            string.Format(CultureInfo.CurrentCulture, Resources.MeasureAudioFileCommandActivityMessage,
+                                Analyzer),
+                            string.Format(CultureInfo.CurrentCulture, Resources.MeasureAudioFileCommandStatusMessage,
+                                completed, _audioFiles.Count))
                         {
-                            audioFile.Analyze(Analyzer, _cancelSource.Token, groupToken);
-                            Interlocked.Increment(ref completed);
+                            PercentComplete = completed.GetPercent(_audioFiles.Count)
+                        });
+                    }
+                    catch (Exception e)
+                    {
+                        Interlocked.Increment(ref completed);
+                        outputQueue.Add(new ErrorRecord(e, e.HResult.ToString(CultureInfo.CurrentCulture), ErrorCategory.ReadError, audioFile));
+                    }
+                })).ContinueWith(task => outputQueue.CompleteAdding());
 
-                            if (PassThru)
-                                outputQueue.Add(audioFile);
-
-                            outputQueue.Add(new ProgressRecord(0,
-                                string.Format(CultureInfo.CurrentCulture, Resources.MeasureAudioFileCommandActivityMessage,
-                                    Analyzer),
-                                string.Format(CultureInfo.CurrentCulture, Resources.MeasureAudioFileCommandStatusMessage,
-                                    completed, _audioFiles.Count))
-                            {
-                                PercentComplete = completed.GetPercent(_audioFiles.Count)
-                            });
-                        }
-                        catch (Exception e)
-                        {
-                            Interlocked.Increment(ref completed);
-                            outputQueue.Add(new ErrorRecord(e, e.HResult.ToString(CultureInfo.CurrentCulture), ErrorCategory.ReadError, audioFile));
-                        }
-                    })).ContinueWith(task => outputQueue.CompleteAdding());
-
-                    // Process output on the main thread:
-                    this.ProcessOutput(outputQueue, _cancelSource.Token);
-                }
+                // Process output on the main thread:
+                this.ProcessOutput(outputQueue, _cancelSource.Token);
             }
         }
 
@@ -102,14 +102,7 @@ namespace PowerShellAudio.Commands
 
         public void Dispose()
         {
-            Dispose(true);
-            GC.SuppressFinalize(this);
-        }
-
-        protected virtual void Dispose(bool disposing)
-        {
-            if (disposing)
-                _cancelSource.Dispose();
+            _cancelSource.Dispose();
         }
     }
 }

@@ -16,43 +16,29 @@
  */
 
 using System.Management.Automation;
+using JetBrains.Annotations;
 
 namespace PowerShellAudio.Commands
 {
     [Cmdlet(VerbsData.Convert, "AudioCoverArt"), OutputType(typeof(CoverArt))]
+    [PublicAPI]
     public class ConvertAudioCoverArtCommand : Cmdlet
     {
-        int _maxWidth = ConvertibleCoverArt.DefaultMaxWidth;
-        bool _convertToLossy = ConvertibleCoverArt.DefaultConvertToLossy;
-        int _quality = ConvertibleCoverArt.DefaultQuality;
-
         [Parameter(Mandatory = true, Position = 0, ValueFromPipeline = true)]
         public CoverArt CoverArt { get; set; }
 
         [Parameter]
-        public int MaxWidth
-        {
-            get { return _maxWidth; }
-            set { _maxWidth = value; }
-        }
+        public int MaxWidth { get; set; } = ConvertibleCoverArt.DefaultMaxWidth;
 
         [Parameter]
-        public SwitchParameter ConvertToLossy
-        {
-            get { return _convertToLossy; }
-            set { _convertToLossy = value; }
-        }
+        public int Quality { get; set; } = ConvertibleCoverArt.DefaultQuality;
 
         [Parameter]
-        public int Quality
-        {
-            get { return _quality; }
-            set { _quality = value; }
-        }
+        public SwitchParameter ConvertToLossy { get; set; } = ConvertibleCoverArt.DefaultConvertToLossy;
 
         protected override void ProcessRecord()
         {
-            WriteObject(new ConvertibleCoverArt(CoverArt).Convert(_maxWidth, _convertToLossy, _quality));
+            WriteObject(new ConvertibleCoverArt(CoverArt).Convert(MaxWidth, ConvertToLossy, Quality));
         }
     }
 }

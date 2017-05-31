@@ -22,22 +22,21 @@ using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Management.Automation;
 using System.Threading;
+using JetBrains.Annotations;
 
 namespace PowerShellAudio.Commands
 {
-    internal static class ExtensionMethods
+    static class ExtensionMethods
     {
-        internal static void ProcessOutput(this Cmdlet cmdlet, BlockingCollection<object> outputQueue, CancellationToken cancelToken)
+        internal static void ProcessOutput([NotNull] this Cmdlet cmdlet, [NotNull] BlockingCollection<object> outputQueue, CancellationToken cancelToken)
         {
             foreach (object queuedObject in outputQueue.GetConsumingEnumerable(cancelToken))
             {
-                var queuedError = queuedObject as ErrorRecord;
-                if (queuedError != null)
+                if (queuedObject is ErrorRecord queuedError)
                     cmdlet.WriteError(queuedError);
                 else
                 {
-                    var queuedProgress = queuedObject as ProgressRecord;
-                    if (queuedProgress != null)
+                    if (queuedObject is ProgressRecord queuedProgress)
                         cmdlet.WriteProgress(queuedProgress);
                     else
                         cmdlet.WriteObject(queuedObject);
@@ -45,7 +44,10 @@ namespace PowerShellAudio.Commands
             }
         }
 
-        internal static IEnumerable<string> GetFileSystemPaths(this PSCmdlet cmdlet, string path, string literalPath)
+        internal static IEnumerable<string> GetFileSystemPaths(
+            [NotNull] this PSCmdlet cmdlet,
+            [CanBeNull] string path,
+            [CanBeNull] string literalPath)
         {
             ProviderInfo provider;
 
@@ -59,10 +61,9 @@ namespace PowerShellAudio.Commands
 
             if (!string.IsNullOrEmpty(literalPath))
             {
-                PSDriveInfo drive;
 
                 string providerPath = cmdlet.SessionState.Path.GetUnresolvedProviderPathFromPSPath(literalPath,
-                    out provider, out drive);
+                    out provider, out PSDriveInfo drive);
                 if (provider.ImplementingType == typeof(FileSystemProvider))
                     return new[] { providerPath };
             }

@@ -18,10 +18,12 @@
 using System.IO;
 using System.Linq;
 using System.Management.Automation;
+using JetBrains.Annotations;
 
 namespace PowerShellAudio.Commands
 {
     [Cmdlet(VerbsCommon.Copy, "AudioFile", DefaultParameterSetName = "ByPath", SupportsShouldProcess = true), OutputType(typeof(TaggedAudioFile))]
+    [PublicAPI]
     public class CopyAudioFileCommand : PSCmdlet
     {
         [Parameter(ParameterSetName = "ByPath", Mandatory = true, Position = 0)]
@@ -58,7 +60,7 @@ namespace PowerShellAudio.Commands
                 return;
 
             Directory.CreateDirectory(outputDirectory);
-            WriteObject(new TaggedAudioFile(taggedAudioFile.FileInfo.CopyTo(System.IO.Path.Combine(outputDirectory, substituter.Substitute(Name == null ? System.IO.Path.GetFileNameWithoutExtension(taggedAudioFile.FileInfo.Name) : Name) + taggedAudioFile.FileInfo.Extension), Replace)));
+            WriteObject(new TaggedAudioFile(taggedAudioFile.FileInfo.CopyTo(System.IO.Path.Combine(outputDirectory, substituter.Substitute(Name ?? System.IO.Path.GetFileNameWithoutExtension(taggedAudioFile.FileInfo.Name)) + taggedAudioFile.FileInfo.Extension), Replace)));
         }
     }
 }

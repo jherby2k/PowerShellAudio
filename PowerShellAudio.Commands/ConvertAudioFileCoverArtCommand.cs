@@ -16,39 +16,25 @@
  */
 
 using System.Management.Automation;
+using JetBrains.Annotations;
 
 namespace PowerShellAudio.Commands
 {
     [Cmdlet(VerbsData.Convert, "AudioFileCoverArt"), OutputType(typeof(TaggedAudioFile))]
+    [PublicAPI]
     public class ConvertAudioFileCoverArtCommand : Cmdlet
     {
-        int _maxWidth = ConvertibleCoverArt.DefaultMaxWidth;
-        bool _convertToLossy = ConvertibleCoverArt.DefaultConvertToLossy;
-        int _quality = ConvertibleCoverArt.DefaultQuality;
-
         [Parameter(Mandatory = true, Position = 0, ValueFromPipeline = true)]
         public AudioFile AudioFile { get; set; }
 
         [Parameter]
-        public int MaxWidth
-        {
-            get { return _maxWidth; }
-            set { _maxWidth = value; }
-        }
+        public int MaxWidth { get; set; } = ConvertibleCoverArt.DefaultMaxWidth;
 
         [Parameter]
-        public SwitchParameter ConvertToLossy
-        {
-            get { return _convertToLossy; }
-            set { _convertToLossy = value; }
-        }
+        public int Quality { get; set; } = ConvertibleCoverArt.DefaultQuality;
 
         [Parameter]
-        public int Quality
-        {
-            get { return _quality; }
-            set { _quality = value; }
-        }
+        public SwitchParameter ConvertToLossy { get; set; } = ConvertibleCoverArt.DefaultConvertToLossy;
 
         [Parameter]
         public SwitchParameter PassThru { get; set; }
@@ -57,7 +43,7 @@ namespace PowerShellAudio.Commands
         {
             var taggedAudioFile = new TaggedAudioFile(AudioFile);
             if (taggedAudioFile.Metadata.CoverArt != null)
-                taggedAudioFile.Metadata.CoverArt = new ConvertibleCoverArt(taggedAudioFile.Metadata.CoverArt).Convert(_maxWidth, _convertToLossy, _quality);
+                taggedAudioFile.Metadata.CoverArt = new ConvertibleCoverArt(taggedAudioFile.Metadata.CoverArt).Convert(MaxWidth, ConvertToLossy, Quality);
             if (PassThru)
                 WriteObject(taggedAudioFile);
         }

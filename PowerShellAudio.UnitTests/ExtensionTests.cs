@@ -20,12 +20,14 @@ using System;
 using System.IO;
 using System.Security.Cryptography;
 using System.Text;
+using JetBrains.Annotations;
 
 namespace PowerShellAudio.UnitTests
 {
     [TestClass]
     public class ExtensionTests
     {
+        [UsedImplicitly]
         public TestContext TestContext { get; set; }
 
 #if DEBUG
@@ -54,7 +56,7 @@ namespace PowerShellAudio.UnitTests
                     input.Metadata.CoverArt = new CoverArt(new FileInfo(Path.Combine(TestContext.DeploymentDirectory, "TestFiles", coverArt)));
                 var result = input.Export(encoder, settings, new DirectoryInfo(TestContext.DeploymentDirectory), "Export Row " + index);
 
-                Assert.AreEqual<string>(expectedHash, CalculateHash(result));
+                Assert.AreEqual(expectedHash, CalculateHash(result));
             }
         }
 
@@ -68,15 +70,14 @@ namespace PowerShellAudio.UnitTests
         [TestMethod, DataSource("System.Data.Odbc", "Driver={Microsoft Access Text Driver (*.txt, *.csv)};Dbq=|DataDirectory|;Extensions=csv", "AudioFileAnalyzeDataSource#csv", DataAccessMethod.Sequential)]
         public void AudioFileAnalyze()
         {
-            var index = Convert.ToInt32(TestContext.DataRow["Index"]);
             var fileName = Path.Combine(TestContext.DeploymentDirectory, "TestFiles", Convert.ToString(TestContext.DataRow["FileName"]));
             var analyzer = Convert.ToString(TestContext.DataRow["Analyzer"]);
             var expectedMetadata = Convert.ToString(TestContext.DataRow["ExpectedMetadata"]);
 
             var input = new AnalyzableAudioFile(new FileInfo(fileName));
-            input.Analyze(analyzer, null);
+            input.Analyze(analyzer);
 
-            Assert.AreEqual<string>(expectedMetadata, ConvertToString(input.Metadata));
+            Assert.AreEqual(expectedMetadata, ConvertToString(input.Metadata));
         }
 
         #if DEBUG
@@ -102,10 +103,11 @@ namespace PowerShellAudio.UnitTests
                 input.Metadata.CoverArt = new CoverArt(new FileInfo(Path.Combine(TestContext.DeploymentDirectory, "TestFiles", coverArt)));
             input.SaveMetadata(settings);
 
-            Assert.AreEqual<string>(expectedHash, CalculateHash(input));
+            Assert.AreEqual(expectedHash, CalculateHash(input));
         }
 
-        static SettingsDictionary ConvertToDictionary(string settings)
+        [Pure, NotNull]
+        static SettingsDictionary ConvertToDictionary([NotNull] string settings)
         {
             var result = new SettingsDictionary();
 
@@ -119,7 +121,8 @@ namespace PowerShellAudio.UnitTests
             return result;
         }
 
-        static string ConvertToString(SettingsDictionary settings)
+        [Pure, NotNull]
+        static string ConvertToString([NotNull] SettingsDictionary settings)
         {
             var result = new StringBuilder();
 
@@ -135,7 +138,8 @@ namespace PowerShellAudio.UnitTests
             return result.ToString();
         }
 
-        static string CalculateHash(AudioFile audioFile)
+        [Pure, NotNull]
+        static string CalculateHash([NotNull] AudioFile audioFile)
         {
             using (MD5 md5 = MD5.Create())
             using (FileStream fileStream = audioFile.FileInfo.OpenRead())

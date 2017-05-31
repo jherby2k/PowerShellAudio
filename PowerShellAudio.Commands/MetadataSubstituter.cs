@@ -18,6 +18,7 @@
 using System.IO;
 using System.Linq;
 using System.Text.RegularExpressions;
+using JetBrains.Annotations;
 
 namespace PowerShellAudio.Commands
 {
@@ -28,12 +29,13 @@ namespace PowerShellAudio.Commands
 
         readonly MetadataDictionary _metadata;
 
-        internal MetadataSubstituter(MetadataDictionary metadata)
+        internal MetadataSubstituter([NotNull] MetadataDictionary metadata)
         {
             _metadata = metadata;
         }
 
-        internal string Substitute(string path)
+        [ContractAnnotation("null => null")]
+        internal string Substitute([CanBeNull] string path)
         {
             return path != null
                 ? _replacer.Replace(path, match =>

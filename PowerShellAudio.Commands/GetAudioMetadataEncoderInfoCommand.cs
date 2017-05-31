@@ -17,10 +17,12 @@
 
 using System.ComponentModel.Composition;
 using System.Management.Automation;
+using JetBrains.Annotations;
 
 namespace PowerShellAudio.Commands
 {
     [Cmdlet(VerbsCommon.Get, "AudioMetadataEncoderInfo"), OutputType(typeof(MetadataEncoderInfo))]
+    [PublicAPI]
     public class GetAudioMetadataEncoderInfoCommand : Cmdlet
     {
         [Parameter(Position = 0)]

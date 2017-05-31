@@ -17,10 +17,12 @@
 
 using System.IO;
 using System.Management.Automation;
+using JetBrains.Annotations;
 
 namespace PowerShellAudio.Commands
 {
     [Cmdlet(VerbsCommon.Get, "AudioFile", DefaultParameterSetName = "ByPath"), OutputType(typeof(TaggedAudioFile))]
+    [PublicAPI]
     public class GetAudioFileCommand : PSCmdlet
     {
         [Parameter(ParameterSetName = "ByPath", Mandatory = true, Position = 0, ValueFromPipeline = true)]
