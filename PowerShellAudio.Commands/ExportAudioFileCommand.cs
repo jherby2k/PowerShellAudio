@@ -39,6 +39,8 @@ namespace PowerShellAudio.Commands
         readonly CancellationTokenSource _cancelSource = new CancellationTokenSource();
 
         [Parameter(Mandatory = true, Position = 0)]
+        [NotNull]
+        // ReSharper disable once NotNullMemberIsNotInitialized
         public string Encoder { get; set; }
 
         [Parameter(ParameterSetName = "ByPath", Mandatory = true, Position = 1)]
@@ -48,6 +50,8 @@ namespace PowerShellAudio.Commands
         public string LiteralPath { get; set; }
 
         [Parameter(Mandatory = true, Position = 2, ValueFromPipeline = true)]
+        [NotNull]
+        // ReSharper disable once NotNullMemberIsNotInitialized
         public AudioFile AudioFile { get; set; }
 
         [Parameter]
@@ -66,6 +70,7 @@ namespace PowerShellAudio.Commands
         }
 
         [SuppressMessage("Microsoft.Design", "CA1031:DoNotCatchGeneralExceptionTypes", Justification = "Non-terminating Cmdlet exceptions should be written to an ErrorRecord")]
+        [SuppressMessage("ReSharper", "AccessToDisposedClosure")]
         protected override void EndProcessing()
         {
             if (_audioFiles.Count <= 0) return;

@@ -35,7 +35,7 @@ namespace PowerShellAudio.Extensions.Apple
         readonly SafeNativeMethods.AudioFileSetSizeCallback _setSizeCallback;
         bool _isDisposed;
 
-        protected NativeAudioFileHandle Handle { get; set; }
+        protected NativeAudioFileHandle Handle { get; }
 
         internal NativeAudioFile(AudioStreamBasicDescription description, AudioFileType fileType, [NotNull] Stream stream)
         {

@@ -35,12 +35,12 @@ namespace PowerShellAudio.Commands
         }
 
         [ContractAnnotation("null => null")]
-        internal string Substitute([CanBeNull] string path)
+        internal string Substitute(string path)
         {
             return path != null
                 ? _replacer.Replace(path, match =>
-                    new string(_metadata[match.Value.Substring(1, match.Value.Length - 2)].Where(character =>
-                        !_invalidChars.Contains(character)).ToArray()))
+                    new string(_metadata[match.Value.Substring(1, match.Value.Length - 2)]
+                        .Where(character => !_invalidChars.Contains(character)).ToArray()))
                 : null;
         }
     }

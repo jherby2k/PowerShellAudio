@@ -16,13 +16,15 @@
  */
 
 using System;
+using System.Diagnostics.CodeAnalysis;
 using System.IO;
 using JetBrains.Annotations;
 
 namespace PowerShellAudio.Extensions.Wave
 {
     [SampleEncoderExport("Wave")]
-    public class WaveSampleEncoder : ISampleEncoder, IDisposable
+    [SuppressMessage("Microsoft.Performance", "CA1812:AvoidUninstantiatedInternalClasses", Justification = "Loaded via reflection")]
+    sealed class WaveSampleEncoder : ISampleEncoder, IDisposable
     {
         static readonly SampleEncoderInfo _encoderInfo = new WaveSampleEncoderInfo();
 
@@ -86,14 +88,6 @@ namespace PowerShellAudio.Extensions.Wave
 
         public void Dispose()
         {
-            Dispose(true);
-            GC.SuppressFinalize(this);
-        }
-
-        protected virtual void Dispose(bool disposing)
-        {
-            if (!disposing)
-                return;
             try
             {
                 _writer?.Dispose();

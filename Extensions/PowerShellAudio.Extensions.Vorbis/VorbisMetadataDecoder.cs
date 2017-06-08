@@ -17,6 +17,7 @@
 
 using PowerShellAudio.Extensions.Vorbis.Properties;
 using System;
+using System.Diagnostics.CodeAnalysis;
 using System.IO;
 using System.Runtime.InteropServices;
 using JetBrains.Annotations;
@@ -24,7 +25,8 @@ using JetBrains.Annotations;
 namespace PowerShellAudio.Extensions.Vorbis
 {
     [MetadataDecoderExport(".ogg")]
-    public class VorbisMetadataDecoder : IMetadataDecoder
+    [SuppressMessage("Microsoft.Performance", "CA1812:AvoidUninstantiatedInternalClasses", Justification = "Loaded via reflection")]
+    class VorbisMetadataDecoder : IMetadataDecoder
     {
         public MetadataDictionary ReadMetadata([NotNull] Stream stream)
         {
@@ -63,8 +65,7 @@ namespace PowerShellAudio.Extensions.Vorbis
 
                             oggStream.PageIn(ref page);
 
-                            OggPacket packet;
-                            while (oggStream.PacketOut(out packet) == 1)
+                            while (oggStream.PacketOut(out OggPacket packet) == 1)
                             {
                                 decoder.HeaderIn(ref vorbisComment, ref packet);
 

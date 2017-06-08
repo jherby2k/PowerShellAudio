@@ -17,6 +17,8 @@
 
 using System;
 
+#pragma warning disable 169, 649
+
 namespace PowerShellAudio.Extensions.Vorbis
 {
     struct OggPacket
@@ -34,3 +36,5 @@ namespace PowerShellAudio.Extensions.Vorbis
         internal long PacketNumber;
     }
 }
+
+#pragma warning restore 169, 649

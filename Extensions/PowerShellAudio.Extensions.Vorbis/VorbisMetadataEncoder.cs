@@ -17,6 +17,7 @@
 
 using PowerShellAudio.Extensions.Vorbis.Properties;
 using System;
+using System.Diagnostics.CodeAnalysis;
 using System.IO;
 using System.Runtime.InteropServices;
 using System.Text;
@@ -25,7 +26,8 @@ using JetBrains.Annotations;
 namespace PowerShellAudio.Extensions.Vorbis
 {
     [MetadataEncoderExport(".ogg")]
-    public class VorbisMetadataEncoder : IMetadataEncoder
+    [SuppressMessage("Microsoft.Performance", "CA1812:AvoidUninstantiatedInternalClasses", Justification = "Loaded via reflection")]
+    class VorbisMetadataEncoder : IMetadataEncoder
     {
         static readonly MetadataEncoderInfo _encoderInfo = new VorbisMetadataEncoderInfo();
 
@@ -73,8 +75,7 @@ namespace PowerShellAudio.Extensions.Vorbis
 
                             inputOggStream.PageIn(ref inPage);
 
-                            OggPacket packet;
-                            while (inputOggStream.PacketOut(out packet) == 1)
+                            while (inputOggStream.PacketOut(out OggPacket packet) == 1)
                             {
                                 // Substitute the new comment packet:
                                 if (packet.PacketNumber == 1)
@@ -127,8 +128,7 @@ namespace PowerShellAudio.Extensions.Vorbis
                     SafeNativeMethods.VorbisCommentAddTag(ref comment, keyBytes, valueBytes);
                 }
 
-                OggPacket result;
-                if (SafeNativeMethods.VorbisCommentHeaderOut(ref comment, out result) != 0)
+                if (SafeNativeMethods.VorbisCommentHeaderOut(ref comment, out OggPacket result) != 0)
                     throw new IOException(Resources.MetadataEncoderHeaderOutError);
 
                 return result;

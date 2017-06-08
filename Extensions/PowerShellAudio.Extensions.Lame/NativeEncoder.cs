@@ -22,7 +22,7 @@ using JetBrains.Annotations;
 
 namespace PowerShellAudio.Extensions.Lame
 {
-    class NativeEncoder : IDisposable
+    sealed class NativeEncoder : IDisposable
     {
         readonly NativeEncoderHandle _handle = SafeNativeMethods.Initialize();
         readonly Stream _output;
@@ -116,14 +116,7 @@ namespace PowerShellAudio.Extensions.Lame
 
         public void Dispose()
         {
-            Dispose(true);
-            GC.SuppressFinalize(this);
-        }
-
-        protected virtual void Dispose(bool disposing)
-        {
-            if (disposing)
-                _handle.Dispose();
+            _handle.Dispose();
         }
     }
 }

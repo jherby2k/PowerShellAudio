@@ -84,6 +84,7 @@ namespace PowerShellAudio
         /// </summary>
         /// <param name="coverArt">The cover art.</param>
         /// <exception cref="ArgumentNullException">Thrown if <paramref name="coverArt" /> is null.</exception>
+        // ReSharper disable once NotNullMemberIsNotInitialized
         public CoverArt([NotNull] CoverArt coverArt)
         {
             if (coverArt == null) throw new ArgumentNullException(nameof(coverArt));
@@ -105,6 +106,7 @@ namespace PowerShellAudio
         /// <exception cref="UnsupportedCoverArtException">
         /// Thrown if <paramref name="data" /> is not in a supported image format.
         /// </exception>
+        // ReSharper disable once NotNullMemberIsNotInitialized
         public CoverArt([NotNull] byte[] data)
         {
             if (data == null) throw new ArgumentNullException(nameof(data));
@@ -131,6 +133,7 @@ namespace PowerShellAudio
         /// <exception cref="UnsupportedCoverArtException">
         /// Thrown if <paramref name="fileInfo" /> is not in a supported image format.
         /// </exception>
+        // ReSharper disable once NotNullMemberIsNotInitialized
         public CoverArt([NotNull] FileInfo fileInfo)
         {
             if (fileInfo == null) throw new ArgumentNullException(nameof(fileInfo));

@@ -25,6 +25,8 @@ namespace PowerShellAudio.Commands
     public class GetAudioInfoCommand : Cmdlet
     {
         [Parameter(Mandatory = true, Position = 0, ValueFromPipeline = true)]
+        [NotNull]
+        // ReSharper disable once NotNullMemberIsNotInitialized
         public AudioFile AudioFile { get; set; }
 
         protected override void ProcessRecord()

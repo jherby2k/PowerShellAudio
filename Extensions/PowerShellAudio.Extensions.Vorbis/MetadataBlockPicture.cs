@@ -24,22 +24,16 @@ namespace PowerShellAudio.Extensions.Vorbis
 {
     class MetadataBlockPicture
     {
-        internal PictureType Type { get; set; }
+        readonly string _mimeType;
+        readonly string _description;
+        readonly uint _width;
+        readonly uint _height;
+        readonly uint _colorDepth;
+
+        internal PictureType Type { get; }
 
         [NotNull]
-        internal string MimeType { get; set; }
-
-        [NotNull]
-        internal string Description { get; set; }
-
-        internal uint Width { get; set; }
-
-        internal uint Height { get; set; }
-
-        internal uint ColorDepth { get; set; }
-
-        [NotNull]
-        internal byte[] Data { get; set; }
+        internal byte[] Data { get; }
 
         internal MetadataBlockPicture([NotNull] string encodedData)
         {
@@ -52,11 +46,11 @@ namespace PowerShellAudio.Extensions.Vorbis
                     stream = null;
 
                     Type = (PictureType)reader.ReadUInt32BigEndian();
-                    MimeType = Encoding.ASCII.GetString(reader.ReadBytes((int)reader.ReadUInt32BigEndian()));
-                    Description = Encoding.UTF8.GetString(reader.ReadBytes((int)reader.ReadUInt32BigEndian()));
-                    Width = reader.ReadUInt32BigEndian();
-                    Height = reader.ReadUInt32BigEndian();
-                    ColorDepth = reader.ReadUInt32BigEndian();
+                    _mimeType = Encoding.ASCII.GetString(reader.ReadBytes((int)reader.ReadUInt32BigEndian()));
+                    _description = Encoding.UTF8.GetString(reader.ReadBytes((int)reader.ReadUInt32BigEndian()));
+                    _width = reader.ReadUInt32BigEndian();
+                    _height = reader.ReadUInt32BigEndian();
+                    _colorDepth = reader.ReadUInt32BigEndian();
                     reader.BaseStream.Seek(4, SeekOrigin.Current); // Always 0 for PNG and JPEG
                     Data = reader.ReadBytes((int)reader.ReadUInt32BigEndian());
                 }
@@ -70,11 +64,11 @@ namespace PowerShellAudio.Extensions.Vorbis
         internal MetadataBlockPicture([NotNull] CoverArt coverArt)
         {
             Type = PictureType.CoverFront;
-            MimeType = coverArt.MimeType;
-            Description = string.Empty;
-            Width = (uint)coverArt.Width;
-            Height = (uint)coverArt.Height;
-            ColorDepth = (uint)coverArt.ColorDepth;
+            _mimeType = coverArt.MimeType;
+            _description = string.Empty;
+            _width = (uint)coverArt.Width;
+            _height = (uint)coverArt.Height;
+            _colorDepth = (uint)coverArt.ColorDepth;
             Data = coverArt.GetData();
         }
 
@@ -90,17 +84,17 @@ namespace PowerShellAudio.Extensions.Vorbis
 
                     writer.WriteBigEndian((uint)Type);
 
-                    byte[] mimeBytes = Encoding.ASCII.GetBytes(MimeType);
+                    byte[] mimeBytes = Encoding.ASCII.GetBytes(_mimeType);
                     writer.WriteBigEndian((uint)mimeBytes.Length);
                     writer.Write(mimeBytes);
 
-                    byte[] descriptionBytes = Encoding.UTF8.GetBytes(Description);
+                    byte[] descriptionBytes = Encoding.UTF8.GetBytes(_description);
                     writer.WriteBigEndian((uint)descriptionBytes.Length);
                     writer.Write(descriptionBytes);
 
-                    writer.WriteBigEndian(Width);
-                    writer.WriteBigEndian(Height);
-                    writer.WriteBigEndian(ColorDepth);
+                    writer.WriteBigEndian(_width);
+                    writer.WriteBigEndian(_height);
+                    writer.WriteBigEndian(_colorDepth);
                     writer.WriteBigEndian(0); // Always 0 for PNG and JPEG
                     writer.WriteBigEndian((uint)Data.Length);
                     writer.Write(Data);

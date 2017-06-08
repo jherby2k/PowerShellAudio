@@ -27,7 +27,7 @@ namespace PowerShellAudio.Extensions.Mp4
         readonly string _fourCC;
 
         [NotNull]
-        internal string Value { get; set; }
+        internal string Value { get; }
 
         internal TextAtom([NotNull] string fourCC, [NotNull] string value)
         {

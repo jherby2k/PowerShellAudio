@@ -23,16 +23,19 @@ namespace PowerShellAudio.Extensions.Flac
     [StructLayout(LayoutKind.Explicit)]
     struct PictureMetadataBlock
     {
-        [FieldOffset(0), SuppressMessage("Microsoft.Performance", "CA1823:AvoidUnusedPrivateFields", Justification = "P/Invoke signature")]
-        internal MetadataType Type;
+        [FieldOffset(0)]
+        [SuppressMessage("Microsoft.Performance", "CA1823:AvoidUnusedPrivateFields", Justification = "P/Invoke signature")]
+        readonly MetadataType Type;
 
-        [FieldOffset(4), SuppressMessage("Microsoft.Performance", "CA1823:AvoidUnusedPrivateFields", Justification = "P/Invoke signature")]
-        internal bool IsLast;
+        [FieldOffset(4)]
+        [SuppressMessage("Microsoft.Performance", "CA1823:AvoidUnusedPrivateFields", Justification = "P/Invoke signature")]
+        readonly bool IsLast;
 
-        [FieldOffset(8), SuppressMessage("Microsoft.Performance", "CA1823:AvoidUnusedPrivateFields", Justification = "P/Invoke signature")]
-        internal uint Length;
+        [FieldOffset(8)]
+        [SuppressMessage("Microsoft.Performance", "CA1823:AvoidUnusedPrivateFields", Justification = "P/Invoke signature")]
+        readonly uint Length;
 
-        [FieldOffset(16), SuppressMessage("Microsoft.Performance", "CA1823:AvoidUnusedPrivateFields", Justification = "P/Invoke signature")]
+        [FieldOffset(16)]
         internal Picture Picture;
     }
 }

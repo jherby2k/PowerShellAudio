@@ -26,7 +26,8 @@ using JetBrains.Annotations;
 namespace PowerShellAudio.Extensions.Flac
 {
     [SampleEncoderExport("FLAC")]
-    public class FlacSampleEncoder : ISampleEncoder, IDisposable
+    [SuppressMessage("Microsoft.Performance", "CA1812:AvoidUninstantiatedInternalClasses", Justification = "Loaded via reflection")]
+    sealed class FlacSampleEncoder : ISampleEncoder, IDisposable
     {
         static readonly SampleEncoderInfo _encoderInfo = new FlacSampleEncoderInfo();
 
@@ -116,15 +117,6 @@ namespace PowerShellAudio.Extensions.Flac
 
         public void Dispose()
         {
-            Dispose(true);
-            GC.SuppressFinalize(this);
-        }
-
-        protected virtual void Dispose(bool disposing)
-        {
-            if (!disposing)
-                return;
-
             _encoder?.Dispose();
 
             if (_metadataBlocks == null)

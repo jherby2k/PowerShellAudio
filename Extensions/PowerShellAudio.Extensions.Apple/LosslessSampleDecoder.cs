@@ -17,6 +17,7 @@
 
 using PowerShellAudio.Extensions.Apple.Properties;
 using System;
+using System.Diagnostics.CodeAnalysis;
 using System.Globalization;
 using System.IO;
 using System.Runtime.InteropServices;
@@ -25,7 +26,8 @@ using JetBrains.Annotations;
 namespace PowerShellAudio.Extensions.Apple
 {
     [SampleDecoderExport(".m4a")]
-    public class LosslessSampleDecoder : ISampleDecoder, IDisposable
+    [SuppressMessage("Microsoft.Performance", "CA1812:AvoidUninstantiatedInternalClasses", Justification = "Loaded via reflection")]
+    sealed class LosslessSampleDecoder : ISampleDecoder, IDisposable
     {
         AudioStreamBasicDescription _inputDescription;
         float _divisor;
@@ -75,7 +77,7 @@ namespace PowerShellAudio.Extensions.Apple
                     Buffers = new AudioBuffer[1]
                 };
                 bufferList.Buffers[0].NumberChannels = _inputDescription.ChannelsPerFrame;
-                bufferList.Buffers[0].DataByteSize = (uint)(_buffer.Length);
+                bufferList.Buffers[0].DataByteSize = (uint)_buffer.Length;
                 bufferList.Buffers[0].Data = handle.AddrOfPinnedObject();
 
                 AudioConverterStatus status = _converter.FillBuffer(ref sampleCount, ref bufferList, null);
@@ -102,15 +104,6 @@ namespace PowerShellAudio.Extensions.Apple
 
         public void Dispose()
         {
-            Dispose(true);
-            GC.SuppressFinalize(this);
-        }
-
-        protected virtual void Dispose(bool disposing)
-        {
-            if (!disposing)
-                return;
-
             _converter?.Dispose();
             Marshal.FreeHGlobal(_magicCookie);
         }
@@ -153,7 +146,7 @@ namespace PowerShellAudio.Extensions.Apple
         static IntPtr InitializeMagicCookie([NotNull] NativeAudioFile audioFile, [NotNull] NativeAudioConverter converter)
         {
             AudioFileStatus getStatus = audioFile.GetPropertyInfo(AudioFilePropertyId.MagicCookieData,
-                out uint dataSize, out uint isWritable);
+                out uint dataSize, out _);
             if (getStatus != AudioFileStatus.Ok)
                 throw new IOException(string.Format(CultureInfo.CurrentCulture,
                     Resources.LosslessSampleDecoderGetCookieInfoError, getStatus));

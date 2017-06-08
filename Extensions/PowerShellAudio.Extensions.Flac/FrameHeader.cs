@@ -23,31 +23,37 @@ namespace PowerShellAudio.Extensions.Flac
     [StructLayout(LayoutKind.Explicit)]
     struct FrameHeader
     {
-        [FieldOffset(0), SuppressMessage("Microsoft.Performance", "CA1823:AvoidUnusedPrivateFields", Justification = "P/Invoke signature")]
-        internal uint BlockSize;
+        [FieldOffset(0)]
+        internal readonly uint BlockSize;
 
-        [FieldOffset(4), SuppressMessage("Microsoft.Performance", "CA1823:AvoidUnusedPrivateFields", Justification = "P/Invoke signature")]
-        internal uint SampleRate;
+        [FieldOffset(4)]
+        [SuppressMessage("Microsoft.Performance", "CA1823:AvoidUnusedPrivateFields", Justification = "P/Invoke signature")]
+        readonly uint SampleRate;
 
-        [FieldOffset(8), SuppressMessage("Microsoft.Performance", "CA1823:AvoidUnusedPrivateFields", Justification = "P/Invoke signature")]
-        internal uint Channels;
+        [FieldOffset(8)]
+        internal readonly uint Channels;
 
-        [FieldOffset(12), SuppressMessage("Microsoft.Performance", "CA1823:AvoidUnusedPrivateFields", Justification = "P/Invoke signature")]
-        internal ChannelAssignment ChannelAssignment;
+        [FieldOffset(12)]
+        [SuppressMessage("Microsoft.Performance", "CA1823:AvoidUnusedPrivateFields", Justification = "P/Invoke signature")]
+        readonly ChannelAssignment ChannelAssignment;
 
-        [FieldOffset(16), SuppressMessage("Microsoft.Performance", "CA1823:AvoidUnusedPrivateFields", Justification = "P/Invoke signature")]
-        internal uint BitsPerSample;
+        [FieldOffset(16)]
+        internal readonly uint BitsPerSample;
 
-        [FieldOffset(20), SuppressMessage("Microsoft.Performance", "CA1823:AvoidUnusedPrivateFields", Justification = "P/Invoke signature")]
-        internal FrameNumberType NumberType;
+        [FieldOffset(20)]
+        [SuppressMessage("Microsoft.Performance", "CA1823:AvoidUnusedPrivateFields", Justification = "P/Invoke signature")]
+        readonly FrameNumberType NumberType;
 
-        [FieldOffset(24), SuppressMessage("Microsoft.Performance", "CA1823:AvoidUnusedPrivateFields", Justification = "P/Invoke signature")]
-        internal uint FrameNumber;
+        [FieldOffset(24)]
+        [SuppressMessage("Microsoft.Performance", "CA1823:AvoidUnusedPrivateFields", Justification = "P/Invoke signature")]
+        readonly uint FrameNumber;
 
-        [FieldOffset(24), SuppressMessage("Microsoft.Performance", "CA1823:AvoidUnusedPrivateFields", Justification = "P/Invoke signature")]
-        internal ulong SampleNumber;
+        [FieldOffset(24)]
+        [SuppressMessage("Microsoft.Performance", "CA1823:AvoidUnusedPrivateFields", Justification = "P/Invoke signature")]
+        readonly ulong SampleNumber;
 
-        [FieldOffset(32), SuppressMessage("Microsoft.Performance", "CA1823:AvoidUnusedPrivateFields", Justification = "P/Invoke signature")]
-        internal byte Crc;
+        [FieldOffset(32)]
+        [SuppressMessage("Microsoft.Performance", "CA1823:AvoidUnusedPrivateFields", Justification = "P/Invoke signature")]
+        readonly byte Crc;
     }
 }

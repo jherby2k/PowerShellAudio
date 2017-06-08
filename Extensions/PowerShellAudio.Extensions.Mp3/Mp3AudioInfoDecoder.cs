@@ -17,6 +17,7 @@
 
 using PowerShellAudio.Extensions.Mp3.Properties;
 using System;
+using System.Diagnostics.CodeAnalysis;
 using System.Globalization;
 using System.IO;
 using System.Text;
@@ -25,7 +26,8 @@ using JetBrains.Annotations;
 namespace PowerShellAudio.Extensions.Mp3
 {
     [AudioInfoDecoderExport(".mp3")]
-    public class Mp3AudioInfoDecoder : IAudioInfoDecoder
+    [SuppressMessage("Microsoft.Performance", "CA1812:AvoidUninstantiatedInternalClasses", Justification = "Loaded via reflection")]
+    class Mp3AudioInfoDecoder : IAudioInfoDecoder
     {
         [NotNull]
         public AudioInfo ReadAudioInfo([NotNull] Stream stream)

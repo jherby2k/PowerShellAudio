@@ -84,14 +84,6 @@ namespace PowerShellAudio.Extensions.Mp3
                 return false;
             }
         }
-        
-        internal uint ReadUInt32BigEndian()
-        {
-            Read(_buffer, 0, 4);
-            if (BitConverter.IsLittleEndian)
-                Array.Reverse(_buffer);
-            return BitConverter.ToUInt32(_buffer, 0);
-        }
 
         internal XingHeader ReadXingHeader()
         {
@@ -111,6 +103,14 @@ namespace PowerShellAudio.Extensions.Mp3
                 result.ByteCount = ReadUInt32BigEndian();
 
             return result;
+        }
+
+        uint ReadUInt32BigEndian()
+        {
+            Read(_buffer, 0, 4);
+            if (BitConverter.IsLittleEndian)
+                Array.Reverse(_buffer);
+            return BitConverter.ToUInt32(_buffer, 0);
         }
     }
 }

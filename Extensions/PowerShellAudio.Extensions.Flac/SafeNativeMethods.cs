@@ -44,7 +44,7 @@ namespace PowerShellAudio.Extensions.Flac
 
         internal static string GetVersion()
         {
-            bool requiresFreeing = false;
+            var requiresFreeing = false;
             IntPtr module = GetModuleHandle(_flacLibrary);
 
             try
@@ -64,19 +64,6 @@ namespace PowerShellAudio.Extensions.Flac
                     FreeLibrary(module);
             }
         }
-
-        [DllImport(_kernelLibrary, CharSet = CharSet.Unicode)]
-        internal static extern IntPtr GetModuleHandle(string moduleName);
-
-        [DllImport(_kernelLibrary, CharSet = CharSet.Unicode)]
-        internal static extern IntPtr LoadLibrary(string dllToLoad);
-
-        [DllImport(_kernelLibrary)]
-        [return: MarshalAs(UnmanagedType.Bool)]
-        internal static extern bool FreeLibrary(IntPtr module);
-
-        [DllImport(_kernelLibrary, ExactSpelling = true, CharSet = CharSet.Ansi, BestFitMapping = false)]
-        internal static extern IntPtr GetProcAddress(IntPtr module, string name);
 
         #region Stream Decoder
 
@@ -295,5 +282,18 @@ namespace PowerShellAudio.Extensions.Flac
         internal delegate int IOCallbacksCloseCallback(IntPtr handle);
 
         #endregion
+
+        [DllImport(_kernelLibrary, CharSet = CharSet.Unicode)]
+        static extern IntPtr GetModuleHandle(string moduleName);
+
+        [DllImport(_kernelLibrary, CharSet = CharSet.Unicode)]
+        static extern IntPtr LoadLibrary(string dllToLoad);
+
+        [DllImport(_kernelLibrary)]
+        [return: MarshalAs(UnmanagedType.Bool)]
+        static extern bool FreeLibrary(IntPtr module);
+
+        [DllImport(_kernelLibrary, ExactSpelling = true, CharSet = CharSet.Ansi, BestFitMapping = false)]
+        static extern IntPtr GetProcAddress(IntPtr module, string name);
     }
 }

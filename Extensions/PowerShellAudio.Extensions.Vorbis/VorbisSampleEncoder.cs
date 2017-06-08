@@ -18,6 +18,7 @@
 using PowerShellAudio.Extensions.Vorbis.Properties;
 using System;
 using System.ComponentModel.Composition;
+using System.Diagnostics.CodeAnalysis;
 using System.Globalization;
 using System.IO;
 using System.Linq;
@@ -28,7 +29,8 @@ using JetBrains.Annotations;
 namespace PowerShellAudio.Extensions.Vorbis
 {
     [SampleEncoderExport("Ogg Vorbis")]
-    public class VorbisSampleEncoder : ISampleEncoder, IDisposable
+    [SuppressMessage("Microsoft.Performance", "CA1812:AvoidUninstantiatedInternalClasses", Justification = "Loaded via reflection")]
+    sealed class VorbisSampleEncoder : ISampleEncoder, IDisposable
     {
         static readonly SampleEncoderInfo _encoderInfo = new VorbisSampleEncoderInfo();
 
@@ -55,9 +57,8 @@ namespace PowerShellAudio.Extensions.Vorbis
             // Load the external gain filter:
             ExportFactory<ISampleFilter> sampleFilterFactory =
                 ExtensionProvider.GetFactories<ISampleFilter>("Name", "ReplayGain").SingleOrDefault();
-            if (sampleFilterFactory == null)
-                throw new ExtensionInitializationException(Resources.SampleEncoderReplayGainFilterError);
-            _replayGainFilterLifetime = sampleFilterFactory.CreateExport();
+            _replayGainFilterLifetime = sampleFilterFactory?.CreateExport()
+                ?? throw new ExtensionInitializationException(Resources.SampleEncoderReplayGainFilterError);
             _replayGainFilterLifetime.Value.Initialize(metadata, settings);
 
             _oggStream = IntializeOggStream(settings);
@@ -93,13 +94,11 @@ namespace PowerShellAudio.Extensions.Vorbis
                 _encoder.Analysis(IntPtr.Zero);
                 _encoder.AddBlock();
 
-                OggPacket packet;
-                while (_encoder.FlushPacket(out packet))
+                while (_encoder.FlushPacket(out OggPacket packet))
                 {
                     _oggStream.PacketIn(ref packet);
 
-                    OggPage page;
-                    while (_oggStream.PageOut(out page))
+                    while (_oggStream.PageOut(out OggPage page))
                         WritePage(page, _output);
                 }
             }
@@ -107,18 +106,9 @@ namespace PowerShellAudio.Extensions.Vorbis
 
         public void Dispose()
         {
-            Dispose(true);
-            GC.SuppressFinalize(this);
-        }
-
-        protected virtual void Dispose(bool disposing)
-        {
-            if (disposing)
-            {
-                _encoder?.Dispose();
-                _replayGainFilterLifetime?.Dispose();
-                _oggStream?.Dispose();
-            }
+            _encoder?.Dispose();
+            _replayGainFilterLifetime?.Dispose();
+            _oggStream?.Dispose();
         }
 
         void WriteHeader([NotNull] MetadataDictionary metadata, [NotNull] Stream stream)
@@ -140,10 +130,7 @@ namespace PowerShellAudio.Extensions.Vorbis
                     SafeNativeMethods.VorbisCommentAddTag(ref vorbisComment, keyBytes, valueBytes);
                 }
 
-                OggPacket first;
-                OggPacket second;
-                OggPacket third;
-                _encoder.HeaderOut(ref vorbisComment, out first, out second, out third);
+                _encoder.HeaderOut(ref vorbisComment, out OggPacket first, out OggPacket second, out OggPacket third);
 
                 _oggStream.PacketIn(ref first);
                 _oggStream.PacketIn(ref second);
@@ -154,8 +141,7 @@ namespace PowerShellAudio.Extensions.Vorbis
                 SafeNativeMethods.VorbisCommentClear(ref vorbisComment);
             }
 
-            OggPage page;
-            while (_oggStream.Flush(out page))
+            while (_oggStream.Flush(out OggPage page))
                 WritePage(page, stream);
         }
 
@@ -194,8 +180,7 @@ namespace PowerShellAudio.Extensions.Vorbis
             [NotNull] AudioInfo audioInfo,
             [NotNull] NativeVorbisEncoder encoder)
         {
-            int bitRate;
-            if (!int.TryParse(settings["BitRate"], out bitRate) || bitRate < 32 || bitRate > 500)
+            if (!int.TryParse(settings["BitRate"], out int bitRate) || bitRate < 32 || bitRate > 500)
                 throw new InvalidSettingException(string.Format(CultureInfo.CurrentCulture,
                     Resources.SampleEncoderBadBitRate, settings["BitRate"]));
 

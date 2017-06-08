@@ -24,7 +24,7 @@ using JetBrains.Annotations;
 
 namespace PowerShellAudio.Extensions.Flac
 {
-    class NativeStreamEncoder : IDisposable
+    sealed class NativeStreamEncoder : IDisposable
     {
         readonly NativeStreamEncoderHandle _handle = SafeNativeMethods.StreamEncoderNew();
         readonly Stream _output;
@@ -97,14 +97,7 @@ namespace PowerShellAudio.Extensions.Flac
 
         public void Dispose()
         {
-            Dispose(true);
-            GC.SuppressFinalize(this);
-        }
-
-        protected virtual void Dispose(bool disposing)
-        {
-            if (disposing)
-                _handle.Dispose();
+            _handle.Dispose();
         }
 
         EncoderWriteStatus WriteCallback(IntPtr handle, [NotNull] byte[] buffer, int bytes, uint samples, uint currentFrame, IntPtr userData)

@@ -17,6 +17,8 @@
 
 using System;
 
+#pragma warning disable 649
+
 namespace PowerShellAudio.Extensions.Vorbis
 {
     struct OggPage
@@ -30,3 +32,5 @@ namespace PowerShellAudio.Extensions.Vorbis
         internal int BodyLength;
     }
 }
+
+#pragma warning restore 649

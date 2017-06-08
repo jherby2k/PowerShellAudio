@@ -23,21 +23,21 @@ namespace PowerShellAudio.Extensions.Mp4
 {
     class CovrAtom : WritableAtom
     {
-        internal CoverType CoverType { get; set; }
+        readonly CoverType _coverType;
 
         [NotNull]
-        internal byte[] Value { get; set; }
+        internal byte[] Value { get; }
 
         internal CovrAtom([NotNull] CoverArt coverArt)
         {
-            CoverType = coverArt.MimeType == "image/png" ? CoverType.Png : CoverType.Jpeg;
+            _coverType = coverArt.MimeType == "image/png" ? CoverType.Png : CoverType.Jpeg;
             Value = coverArt.GetData();
         }
 
         internal CovrAtom([NotNull] byte[] data)
         {
             // There could be more than one data atom. Ignore all but the first:
-            CoverType = (CoverType)data[19];
+            _coverType = (CoverType)data[19];
             Value = new byte[BitConverter.ToUInt32(data.Skip(8).Take(4).Reverse().ToArray(), 0) - 16];
             Array.Copy(data, 24, Value, 0, Value.Length);
         }
@@ -55,7 +55,7 @@ namespace PowerShellAudio.Extensions.Mp4
             BitConverter.GetBytes(0x61746164).CopyTo(result, 12); // 'atad'
 
             // Set the type flag:
-            result[19] = (byte)CoverType;
+            result[19] = (byte)_coverType;
 
             // Set the atom contents:
             Value.CopyTo(result, 24);

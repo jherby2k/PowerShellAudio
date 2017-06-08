@@ -33,7 +33,7 @@ namespace PowerShellAudio
         [NotNull]
         internal static ExtensionContainer<T> Instance => _lazyInstance.Value;
 
-        [NotNull, UsedImplicitly]
+        [UsedImplicitly]
         [ImportMany]
         internal IEnumerable<ExportFactory<T, IDictionary<string, object>>> Factories { get; private set; }
 

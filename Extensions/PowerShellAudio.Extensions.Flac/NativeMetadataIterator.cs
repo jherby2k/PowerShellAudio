@@ -20,7 +20,7 @@ using JetBrains.Annotations;
 
 namespace PowerShellAudio.Extensions.Flac
 {
-    class NativeMetadataIterator : IDisposable
+    sealed class NativeMetadataIterator : IDisposable
     {
         readonly NativeMetadataIteratorHandle _handle = SafeNativeMethods.MetadataIteratorNew();
 
@@ -51,14 +51,7 @@ namespace PowerShellAudio.Extensions.Flac
 
         public void Dispose()
         {
-            Dispose(true);
-            GC.SuppressFinalize(this);
-        }
-
-        protected virtual void Dispose(bool disposing)
-        {
-            if (disposing)
-                _handle.Dispose();
+            _handle.Dispose();
         }
     }
 }

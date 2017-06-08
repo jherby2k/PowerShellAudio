@@ -15,7 +15,7 @@
  * <http://www.gnu.org/licenses/>.
  */
 
-#pragma warning disable 0649
+#pragma warning disable 169, 649
 
 namespace PowerShellAudio.Extensions.Flac
 {
@@ -25,4 +25,4 @@ namespace PowerShellAudio.Extensions.Flac
     }
 }
 
-#pragma warning restore 0649
+#pragma warning restore 169, 649

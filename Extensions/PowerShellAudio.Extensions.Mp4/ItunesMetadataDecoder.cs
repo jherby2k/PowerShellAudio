@@ -15,13 +15,15 @@
  * <http://www.gnu.org/licenses/>.
  */
 
+using System.Diagnostics.CodeAnalysis;
 using System.IO;
 using JetBrains.Annotations;
 
 namespace PowerShellAudio.Extensions.Mp4
 {
     [MetadataDecoderExport(".m4a")]
-    public class ItunesMetadataDecoder : IMetadataDecoder
+    [SuppressMessage("Microsoft.Performance", "CA1812:AvoidUninstantiatedInternalClasses", Justification = "Loaded via reflection")]
+    class ItunesMetadataDecoder : IMetadataDecoder
     {
         [NotNull]
         public MetadataDictionary ReadMetadata([NotNull] Stream stream)

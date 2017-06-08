@@ -51,18 +51,13 @@ namespace PowerShellAudio.Extensions.Mp4
             return new string(buffer);
         }
 
-        internal static uint ReadDescriptorLength([NotNull] this BinaryReader reader)
+        internal static void SkipDescriptorLength([NotNull] this BinaryReader reader)
         {
-            uint result = 0;
-
             byte currentByte;
             do
             {
                 currentByte = reader.ReadByte();
-                result = (result << 7) | (uint)(currentByte & 0x7f);
             } while ((currentByte & 0x80) == 0x80);
-
-            return result;
         }
 
         internal static void WriteBigEndian([NotNull] this BinaryWriter writer, uint value)

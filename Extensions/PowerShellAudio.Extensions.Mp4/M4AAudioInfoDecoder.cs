@@ -24,7 +24,7 @@ using JetBrains.Annotations;
 namespace PowerShellAudio.Extensions.Mp4
 {
     [AudioInfoDecoderExport(".m4a")]
-    public class M4AAudioInfoDecoder : IAudioInfoDecoder
+    class M4AAudioInfoDecoder : IAudioInfoDecoder
     {
         [NotNull]
         public AudioInfo ReadAudioInfo([NotNull] Stream stream)

@@ -28,7 +28,7 @@ using JetBrains.Annotations;
 namespace PowerShellAudio.Extensions.Id3
 {
     [MetadataEncoderExport(".mp3")]
-    public class Id3MetadataEncoder : IMetadataEncoder
+    class Id3MetadataEncoder : IMetadataEncoder
     {
         static readonly MetadataEncoderInfo _encoderInfo = new Id3MetadataEncoderInfo();
 

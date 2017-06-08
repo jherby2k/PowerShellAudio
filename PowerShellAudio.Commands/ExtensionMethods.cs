@@ -63,7 +63,7 @@ namespace PowerShellAudio.Commands
             {
 
                 string providerPath = cmdlet.SessionState.Path.GetUnresolvedProviderPathFromPSPath(literalPath,
-                    out provider, out PSDriveInfo drive);
+                    out provider, out _);
                 if (provider.ImplementingType == typeof(FileSystemProvider))
                     return new[] { providerPath };
             }

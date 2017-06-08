@@ -16,6 +16,7 @@
  */
 
 using System.Collections.Concurrent;
+using System.Diagnostics.CodeAnalysis;
 using System.Threading;
 using System.Threading.Tasks;
 using JetBrains.Annotations;
@@ -24,6 +25,7 @@ namespace PowerShellAudio
 {
     static class ExtensionMethods
     {
+        [SuppressMessage("ReSharper", "AccessToDisposedClosure")]
         internal static void ReadWriteParallel(
             [NotNull] this ISampleDecoder decoder, 
             [NotNull] ISampleConsumer consumer, 

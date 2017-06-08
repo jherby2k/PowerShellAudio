@@ -18,6 +18,7 @@
 using PowerShellAudio.Extensions.Apple.Properties;
 using System;
 using System.ComponentModel.Composition;
+using System.Diagnostics.CodeAnalysis;
 using System.Globalization;
 using System.IO;
 using System.Linq;
@@ -27,7 +28,8 @@ using JetBrains.Annotations;
 namespace PowerShellAudio.Extensions.Apple
 {
     [SampleEncoderExport("Apple Lossless")]
-    public class LosslessSampleEncoder : ISampleEncoder, IDisposable
+    [SuppressMessage("Microsoft.Performance", "CA1812:AvoidUninstantiatedInternalClasses", Justification = "Loaded via reflection")]
+    sealed class LosslessSampleEncoder : ISampleEncoder, IDisposable
     {
         static readonly SampleEncoderInfo _encoderInfo = new LosslessSampleEncoderInfo();
 
@@ -131,14 +133,7 @@ namespace PowerShellAudio.Extensions.Apple
 
         public void Dispose()
         {
-            Dispose(true);
-            GC.SuppressFinalize(this);
-        }
-
-        protected virtual void Dispose(bool disposing)
-        {
-            if (disposing)
-                _audioFile?.Dispose();
+            _audioFile?.Dispose();
         }
 
         static AudioStreamBasicDescription GetInputDescription([NotNull] AudioInfo audioInfo)

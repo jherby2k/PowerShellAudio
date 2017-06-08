@@ -47,13 +47,13 @@ namespace PowerShellAudio.Extensions.Mp4
                     // This appears to be 0 for Apple Lossless files: 
                     if (reader.ReadByte() != 0x3) return;
 
-                    reader.ReadDescriptorLength(); // Seek past the descriptor length
+                    reader.SkipDescriptorLength();
                     reader.BaseStream.Seek(2, SeekOrigin.Current); // Ignore the ES ID
                     reader.BaseStream.Seek(1, SeekOrigin.Current); // TODO check these flags for possible additional data!
 
                     if (reader.ReadByte() != 0x4)
                         throw new IOException(Resources.EsdsAtomDcdError);
-                    reader.ReadDescriptorLength(); // Seek past the descriptor length
+                    reader.SkipDescriptorLength();
                     if (reader.ReadByte() != 0x40)
                         throw new UnsupportedAudioException(Resources.EsdsAtomTypeError);
                     reader.BaseStream.Seek(8, SeekOrigin.Current); // Seek past the stream type, buffer size and max bitrate
@@ -61,7 +61,7 @@ namespace PowerShellAudio.Extensions.Mp4
 
                     if (reader.ReadByte() != 0x5)
                         throw new IOException(Resources.EsdsAtomDsiError);
-                    reader.ReadDescriptorLength(); // Seek past the descriptor length
+                    reader.SkipDescriptorLength();
                     byte[] dsiBytes = reader.ReadBytes(2);
 
                     SampleRate = _sampleRates[(dsiBytes[0] << 1) & 0xe | (dsiBytes[1] >> 7) & 0x1];

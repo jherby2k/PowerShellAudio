@@ -16,12 +16,13 @@
  */
 
 using System;
+using System.Diagnostics.CodeAnalysis;
 using System.Runtime.InteropServices;
 
-#pragma warning disable 0649
 
 namespace PowerShellAudio.Extensions.Apple
 {
+    [SuppressMessage("ReSharper", "NotAccessedField.Global", Justification = "P/Invoke signature")]
     struct AudioBuffer : IDisposable
     {
         internal uint NumberChannels;
@@ -36,5 +37,3 @@ namespace PowerShellAudio.Extensions.Apple
         }
     }
 }
-
-#pragma warning restore 0649

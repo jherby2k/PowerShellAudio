@@ -25,7 +25,7 @@ using JetBrains.Annotations;
 namespace PowerShellAudio.Extensions.Mp4
 {
     [MetadataEncoderExport(".m4a")]
-    public class ItunesMetadataEncoder : IMetadataEncoder
+    class ItunesMetadataEncoder : IMetadataEncoder
     {
         static readonly MetadataEncoderInfo _encoderInfo = new ItunesMetadataEncoderInfo();
 

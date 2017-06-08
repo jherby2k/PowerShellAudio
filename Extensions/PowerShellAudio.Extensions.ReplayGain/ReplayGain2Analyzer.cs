@@ -16,13 +16,15 @@
  */
 
 using System;
+using System.Diagnostics.CodeAnalysis;
 using System.Globalization;
 using JetBrains.Annotations;
 
 namespace PowerShellAudio.Extensions.ReplayGain
 {
     [SampleAnalyzerExport("ReplayGain 2.0")]
-    public class ReplayGain2Analyzer : ISampleAnalyzer, IDisposable
+    [SuppressMessage("Microsoft.Performance", "CA1812:AvoidUninstantiatedInternalClasses", Justification = "Loaded via reflection")]
+    sealed class ReplayGain2Analyzer : ISampleAnalyzer, IDisposable
     {
         const int _referenceLevel = -18;
         static readonly SampleAnalyzerInfo _analyzerInfo = new ReplayGain2SampleAnalyzerInfo();
@@ -76,14 +78,7 @@ namespace PowerShellAudio.Extensions.ReplayGain
 
         public void Dispose()
         {
-            Dispose(true);
-            GC.SuppressFinalize(this);
-        }
-
-        protected virtual void Dispose(bool disposing)
-        {
-            if (disposing)
-                _analyzer?.Dispose();
+            _analyzer?.Dispose();
         }
 
         [NotNull]

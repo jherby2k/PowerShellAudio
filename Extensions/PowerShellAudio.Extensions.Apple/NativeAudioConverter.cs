@@ -24,7 +24,7 @@ using JetBrains.Annotations;
 
 namespace PowerShellAudio.Extensions.Apple
 {
-    class NativeAudioConverter : IDisposable
+    sealed class NativeAudioConverter : IDisposable
     {
         readonly NativeAudioConverterHandle _handle;
         readonly SafeNativeMethods.AudioConverterComplexInputCallback _inputCallback;
@@ -53,7 +53,7 @@ namespace PowerShellAudio.Extensions.Apple
         internal AudioConverterStatus FillBuffer(
             ref uint packetSize,
             ref AudioBufferList outputBuffer,
-            [NotNull] AudioStreamPacketDescription[] packetDescriptions)
+            [CanBeNull] AudioStreamPacketDescription[] packetDescriptions)
         {
             return SafeNativeMethods.AudioConverterFillComplexBuffer(_handle, _inputCallback, IntPtr.Zero,
                 ref packetSize, ref outputBuffer, packetDescriptions);
@@ -66,21 +66,12 @@ namespace PowerShellAudio.Extensions.Apple
 
         public void Dispose()
         {
-            Dispose(true);
-            GC.SuppressFinalize(this);
-        }
-
-        protected virtual void Dispose(bool disposing)
-        {
-            if (disposing)
-            {
-                if (_bufferHandle.IsAllocated)
-                    _bufferHandle.Free();
-                if (_descriptionsHandle.IsAllocated)
-                    _descriptionsHandle.Free();
-                _handle.Dispose();
-                _audioFile.Dispose();
-            }
+            if (_bufferHandle.IsAllocated)
+                _bufferHandle.Free();
+            if (_descriptionsHandle.IsAllocated)
+                _descriptionsHandle.Free();
+            _handle.Dispose();
+            _audioFile.Dispose();
         }
 
         AudioConverterStatus InputCallback(IntPtr handle, ref uint numberPackets, ref AudioBufferList data, IntPtr packetDescriptions, IntPtr userData)

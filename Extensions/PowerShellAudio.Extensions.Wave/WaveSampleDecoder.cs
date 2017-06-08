@@ -17,13 +17,15 @@
 
 using PowerShellAudio.Extensions.Wave.Properties;
 using System;
+using System.Diagnostics.CodeAnalysis;
 using System.IO;
 using JetBrains.Annotations;
 
 namespace PowerShellAudio.Extensions.Wave
 {
     [SampleDecoderExport(".wav")]
-    public class WaveSampleDecoder : ISampleDecoder, IDisposable
+    [SuppressMessage("Microsoft.Performance", "CA1812:AvoidUninstantiatedInternalClasses", Justification = "Loaded via reflection")]
+    sealed class WaveSampleDecoder : ISampleDecoder, IDisposable
     {
         const int _samplesPerResult = 4096;
 
@@ -127,14 +129,7 @@ namespace PowerShellAudio.Extensions.Wave
 
         public void Dispose()
         {
-            Dispose(true);
-            GC.SuppressFinalize(this);
-        }
-
-        protected virtual void Dispose(bool disposing)
-        {
-            if (disposing)
-                _reader?.Dispose();
+            _reader?.Dispose();
         }
     }
 }

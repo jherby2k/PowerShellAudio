@@ -24,7 +24,7 @@ using System.Runtime.InteropServices;
 
 namespace PowerShellAudio.Extensions.Vorbis
 {
-    class NativeVorbisDecoder : IDisposable
+    sealed class NativeVorbisDecoder : IDisposable
     {
         [SuppressMessage("Microsoft.Reliability", "CA2006:UseSafeHandleToEncapsulateNativeResources", Justification = "Reference to a structure, not a handle.")]
         readonly IntPtr _info;
@@ -56,19 +56,15 @@ namespace PowerShellAudio.Extensions.Vorbis
 
         public void Dispose()
         {
-            Dispose(true);
-            GC.SuppressFinalize(this);
-        }
-
-        protected virtual void Dispose(bool dispoing)
-        {
             SafeNativeMethods.VorbisInfoClear(_info);
             Marshal.FreeHGlobal(_info);
+
+            GC.SuppressFinalize(this);
         }
 
         ~NativeVorbisDecoder()
         {
-            Dispose(false);
+            Dispose();
         }
     }
 }

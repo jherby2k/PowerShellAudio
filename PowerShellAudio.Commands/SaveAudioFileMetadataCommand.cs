@@ -26,6 +26,8 @@ namespace PowerShellAudio.Commands
     public class SaveAudioFileMetadataCommand : Cmdlet
     {
         [Parameter(Mandatory = true, Position = 0, ValueFromPipeline = true)]
+        [NotNull]
+        // ReSharper disable once NotNullMemberIsNotInitialized
         public AudioFile AudioFile { get; set; }
 
         [Parameter]

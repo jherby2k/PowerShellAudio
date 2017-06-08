@@ -30,7 +30,7 @@ namespace PowerShellAudio
     /// The attributed <see cref="ISampleAnalyzer"/> with the specified name will be used to analyze the audio stream.
     /// </remarks>
     [MetadataAttribute, AttributeUsage(AttributeTargets.Class)]
-    [PublicAPI]
+    [PublicAPI, MeansImplicitUse, BaseTypeRequired(typeof(ISampleAnalyzer))]
     public sealed class SampleAnalyzerExportAttribute : ExportAttribute
     {
         /// <summary>

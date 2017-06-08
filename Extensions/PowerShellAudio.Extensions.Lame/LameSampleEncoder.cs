@@ -18,6 +18,7 @@
 using PowerShellAudio.Extensions.Lame.Properties;
 using System;
 using System.ComponentModel.Composition;
+using System.Diagnostics.CodeAnalysis;
 using System.Globalization;
 using System.IO;
 using System.Linq;
@@ -26,7 +27,8 @@ using JetBrains.Annotations;
 namespace PowerShellAudio.Extensions.Lame
 {
     [SampleEncoderExport("Lame MP3")]
-    public class LameSampleEncoder : ISampleEncoder, IDisposable
+    [SuppressMessage("Microsoft.Performance", "CA1812:AvoidUninstantiatedInternalClasses", Justification = "Loaded via reflection")]
+    sealed class LameSampleEncoder : ISampleEncoder, IDisposable
     {
         static readonly SampleEncoderInfo _encoderInfo = new LameSampleEncoderInfo();
 
@@ -86,15 +88,6 @@ namespace PowerShellAudio.Extensions.Lame
 
         public void Dispose()
         {
-            Dispose(true);
-            GC.SuppressFinalize(this);
-        }
-
-        protected virtual void Dispose(bool disposing)
-        {
-            if (!disposing)
-                return;
-
             _encoder?.Dispose();
             _replayGainFilterLifetime?.Dispose();
         }

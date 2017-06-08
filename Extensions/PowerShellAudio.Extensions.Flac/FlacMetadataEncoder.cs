@@ -15,6 +15,7 @@
  * <http://www.gnu.org/licenses/>.
  */
 
+using System.Diagnostics.CodeAnalysis;
 using PowerShellAudio.Extensions.Flac.Properties;
 using System.Globalization;
 using System.IO;
@@ -24,7 +25,8 @@ using JetBrains.Annotations;
 namespace PowerShellAudio.Extensions.Flac
 {
     [MetadataEncoderExport(".flac")]
-    public class FlacMetadataEncoder : IMetadataEncoder
+    [SuppressMessage("Microsoft.Performance", "CA1812:AvoidUninstantiatedInternalClasses", Justification = "Loaded via reflection")]
+    class FlacMetadataEncoder : IMetadataEncoder
     {
         static readonly MetadataEncoderInfo _encoderInfo = new FlacMetadataEncoderInfo();
 

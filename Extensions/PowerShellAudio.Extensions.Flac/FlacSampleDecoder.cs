@@ -17,6 +17,7 @@
 
 using PowerShellAudio.Extensions.Flac.Properties;
 using System;
+using System.Diagnostics.CodeAnalysis;
 using System.Globalization;
 using System.IO;
 using JetBrains.Annotations;
@@ -24,7 +25,8 @@ using JetBrains.Annotations;
 namespace PowerShellAudio.Extensions.Flac
 {
     [SampleDecoderExport(".flac")]
-    public class FlacSampleDecoder : ISampleDecoder, IDisposable
+    [SuppressMessage("Microsoft.Performance", "CA1812:AvoidUninstantiatedInternalClasses", Justification = "Loaded via reflection")]
+    sealed class FlacSampleDecoder : ISampleDecoder, IDisposable
     {
         NativeStreamSampleDecoder _decoder;
 
@@ -72,14 +74,7 @@ namespace PowerShellAudio.Extensions.Flac
 
         public void Dispose()
         {
-            Dispose(true);
-            GC.SuppressFinalize(this);
-        }
-
-        protected virtual void Dispose(bool disposing)
-        {
-            if (disposing)
-                _decoder?.Dispose();
+            _decoder?.Dispose();
         }
     }
 }

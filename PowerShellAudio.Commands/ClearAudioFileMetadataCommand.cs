@@ -29,6 +29,8 @@ namespace PowerShellAudio.Commands
         public string[] Key { get; set; }
 
         [Parameter(Mandatory = true, Position = 1, ValueFromPipeline = true)]
+        [NotNull]
+        // ReSharper disable once NotNullMemberIsNotInitialized
         public AudioFile AudioFile { get; set; }
 
         [Parameter]

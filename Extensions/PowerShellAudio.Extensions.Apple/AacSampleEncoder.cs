@@ -18,6 +18,7 @@
 using PowerShellAudio.Extensions.Apple.Properties;
 using System;
 using System.ComponentModel.Composition;
+using System.Diagnostics.CodeAnalysis;
 using System.Globalization;
 using System.IO;
 using System.Linq;
@@ -27,7 +28,8 @@ using JetBrains.Annotations;
 namespace PowerShellAudio.Extensions.Apple
 {
     [SampleEncoderExport("Apple AAC")]
-    public class AacSampleEncoder : ISampleEncoder, IDisposable
+    [SuppressMessage("Microsoft.Performance", "CA1812:AvoidUninstantiatedInternalClasses", Justification = "Loaded via reflection")]
+    sealed class AacSampleEncoder : ISampleEncoder, IDisposable
     {
         static readonly SampleEncoderInfo _encoderInfo = new AacSampleEncoderInfo();
         static readonly uint[] _vbrQualities = { 0, 5, 14, 23, 32, 41, 50, 59, 69, 78, 87, 96, 105, 114, 123 };
@@ -152,18 +154,10 @@ namespace PowerShellAudio.Extensions.Apple
 
         public void Dispose()
         {
-            Dispose(true);
-            GC.SuppressFinalize(this);
-        }
-
-        protected virtual void Dispose(bool disposing)
-        {
-            if (!disposing)
-                return;
-
             _replayGainFilterLifetime?.Dispose();
             _audioFile?.Dispose();
         }
+
 
         static AudioStreamBasicDescription GetInputDescription([NotNull] AudioInfo audioInfo)
         {

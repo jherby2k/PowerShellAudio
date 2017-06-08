@@ -15,6 +15,7 @@
  * <http://www.gnu.org/licenses/>.
  */
 
+using System.Diagnostics.CodeAnalysis;
 using Id3Lib;
 using Id3Lib.Exceptions;
 using System.IO;
@@ -23,7 +24,8 @@ using JetBrains.Annotations;
 namespace PowerShellAudio.Extensions.Id3
 {
     [MetadataDecoderExport(".mp3")]
-    public class Id3MetadataDecoder : IMetadataDecoder
+    [SuppressMessage("Microsoft.Performance", "CA1812:AvoidUninstantiatedInternalClasses", Justification = "Loaded via reflection")]
+    class Id3MetadataDecoder : IMetadataDecoder
     {
         [NotNull]
         public MetadataDictionary ReadMetadata([NotNull] Stream stream)

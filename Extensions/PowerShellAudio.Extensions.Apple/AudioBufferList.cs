@@ -17,7 +17,7 @@
 
 using System.Runtime.InteropServices;
 
-#pragma warning disable 0649
+#pragma warning disable 414
 
 namespace PowerShellAudio.Extensions.Apple
 {
@@ -30,4 +30,4 @@ namespace PowerShellAudio.Extensions.Apple
     }
 }
 
-#pragma warning restore 0649
+#pragma warning restore 414

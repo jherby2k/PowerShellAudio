@@ -108,9 +108,6 @@ namespace PowerShellAudio.Extensions.Apple
         internal static extern AudioConverterStatus AudioConverterDispose(IntPtr handle);
 
         [UnmanagedFunctionPointer(CallingConvention.Cdecl)]
-        internal delegate IntPtr EncoderFactory();
-
-        [UnmanagedFunctionPointer(CallingConvention.Cdecl)]
         internal delegate AudioFileStatus AudioFileReadCallback(IntPtr userData, long position, uint requestCount, [Out, MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 2)]byte[] buffer, out uint actualCount);
 
         [UnmanagedFunctionPointer(CallingConvention.Cdecl)]

@@ -25,6 +25,8 @@ namespace PowerShellAudio.Commands
     public class ConvertAudioCoverArtCommand : Cmdlet
     {
         [Parameter(Mandatory = true, Position = 0, ValueFromPipeline = true)]
+        [NotNull]
+        // ReSharper disable once NotNullMemberIsNotInitialized
         public CoverArt CoverArt { get; set; }
 
         [Parameter]

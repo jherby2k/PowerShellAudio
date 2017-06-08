@@ -26,7 +26,7 @@ using JetBrains.Annotations;
 
 namespace PowerShellAudio.Extensions.ReplayGain
 {
-    class NativeR128Analyzer : IDisposable
+    sealed class NativeR128Analyzer : IDisposable
     {
         static readonly ConcurrentDictionary<GroupToken, NativeR128GroupState> _globalHandles =
             new ConcurrentDictionary<GroupToken, NativeR128GroupState>();
@@ -111,15 +111,6 @@ namespace PowerShellAudio.Extensions.ReplayGain
 
         public void Dispose()
         {
-            Dispose(true);
-            GC.SuppressFinalize(this);
-        }
-
-        protected virtual void Dispose(bool disposing)
-        {
-            if (!disposing)
-                return;
-
             _groupState.MemberDisposed();
 
             if (_groupToken.Count != _groupState.MembersDisposed)
@@ -130,7 +121,7 @@ namespace PowerShellAudio.Extensions.ReplayGain
                 handle.Dispose();
 
             // Remove the group from the global list:
-            _globalHandles.TryRemove(_groupToken, out NativeR128GroupState groupState);
+            _globalHandles.TryRemove(_groupToken, out _);
         }
     }
 }

@@ -17,6 +17,7 @@
 
 using PowerShellAudio.Extensions.Vorbis.Properties;
 using System;
+using System.Diagnostics.CodeAnalysis;
 using System.Globalization;
 using System.IO;
 using System.Runtime.InteropServices;
@@ -25,7 +26,8 @@ using JetBrains.Annotations;
 namespace PowerShellAudio.Extensions.Vorbis
 {
     [AudioInfoDecoderExport(".ogg")]
-    public class VorbisAudioInfoDecoder : IAudioInfoDecoder
+    [SuppressMessage("Microsoft.Performance", "CA1812:AvoidUninstantiatedInternalClasses", Justification = "Loaded via reflection")]
+    class VorbisAudioInfoDecoder : IAudioInfoDecoder
     {
         public AudioInfo ReadAudioInfo([NotNull] Stream stream)
         {
@@ -64,8 +66,7 @@ namespace PowerShellAudio.Extensions.Vorbis
 
                             oggStream.PageIn(ref page);
 
-                            OggPacket packet;
-                            while (oggStream.PacketOut(out packet) == 1)
+                            while (oggStream.PacketOut(out OggPacket packet) == 1)
                             {
                                 decoder.HeaderIn(ref vorbisComment, ref packet);
 

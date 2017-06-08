@@ -25,7 +25,7 @@ using JetBrains.Annotations;
 namespace PowerShellAudio.Extensions.ReplayGain
 {
     [SampleAnalyzerExport("ReplayGain")]
-    public class ReplayGainAnalyzer : ISampleAnalyzer, IDisposable
+    sealed class ReplayGainAnalyzer : ISampleAnalyzer, IDisposable
     {
         const int _boundedCapacity = 10;
         const float _rmsWindowTime = 0.05f;
@@ -77,16 +77,8 @@ namespace PowerShellAudio.Extensions.ReplayGain
 
         public void Dispose()
         {
-            Dispose(true);
-            GC.SuppressFinalize(this);
-        }
-
-        protected virtual void Dispose(bool disposing)
-        {
-            if (disposing && _albumComponent != null && _albumComponent.SetTrackDisposed())
-            {
-                _albumComponents.TryRemove(_groupToken, out AlbumComponent removedAlbumComponent);
-            }
+            if (_albumComponent != null && _albumComponent.SetTrackDisposed())
+                _albumComponents.TryRemove(_groupToken, out _);
         }
 
         void InitializePipeline(int channels, int sampleRate)

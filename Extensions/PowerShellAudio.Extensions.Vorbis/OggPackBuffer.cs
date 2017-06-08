@@ -17,7 +17,7 @@
 
 using System;
 
-#pragma warning disable 0649
+#pragma warning disable 169, 649
 
 namespace PowerShellAudio.Extensions.Vorbis
 {
@@ -35,4 +35,4 @@ namespace PowerShellAudio.Extensions.Vorbis
     }
 }
 
-#pragma warning restore 0649
+#pragma warning restore 169, 649

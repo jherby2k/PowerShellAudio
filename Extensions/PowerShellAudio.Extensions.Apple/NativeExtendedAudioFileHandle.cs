@@ -15,10 +15,12 @@
  * <http://www.gnu.org/licenses/>.
  */
 
+using JetBrains.Annotations;
 using Microsoft.Win32.SafeHandles;
 
 namespace PowerShellAudio.Extensions.Apple
 {
+    [UsedImplicitly]
     class NativeExtendedAudioFileHandle : SafeHandleZeroOrMinusOneIsInvalid
     {
         NativeExtendedAudioFileHandle()

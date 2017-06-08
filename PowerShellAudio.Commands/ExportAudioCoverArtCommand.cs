@@ -27,6 +27,8 @@ namespace PowerShellAudio.Commands
     public class ExportAudioCoverArtCommand : PSCmdlet
     {
         [Parameter(Mandatory = true, Position = 0)]
+        [NotNull]
+        // ReSharper disable once NotNullMemberIsNotInitialized
         public string Name { get; set; }
 
         [Parameter(ParameterSetName = "ByPath", Mandatory = true, Position = 1)]
@@ -36,6 +38,8 @@ namespace PowerShellAudio.Commands
         public string LiteralPath { get; set; }
 
         [Parameter(Mandatory = true, Position = 2, ValueFromPipeline = true)]
+        [NotNull]
+        // ReSharper disable once NotNullMemberIsNotInitialized
         public CoverArt CoverArt { get; set; }
 
         [Parameter]

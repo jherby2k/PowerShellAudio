@@ -26,9 +26,13 @@ namespace PowerShellAudio.Commands
     public class SetAudioFileMetadataCommand : Cmdlet
     {
         [Parameter(Mandatory = true, Position = 0)]
+        [NotNull]
+        // ReSharper disable once NotNullMemberIsNotInitialized
         public Hashtable Metadata { get; set; }
 
         [Parameter(Mandatory = true, Position = 1, ValueFromPipeline = true)]
+        [NotNull]
+        // ReSharper disable once NotNullMemberIsNotInitialized
         public AudioFile AudioFile { get; set; }
 
         [Parameter]

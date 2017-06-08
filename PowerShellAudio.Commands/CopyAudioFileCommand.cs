@@ -19,6 +19,7 @@ using System.IO;
 using System.Linq;
 using System.Management.Automation;
 using JetBrains.Annotations;
+using IOPath = System.IO.Path;
 
 namespace PowerShellAudio.Commands
 {
@@ -33,6 +34,8 @@ namespace PowerShellAudio.Commands
         public string LiteralPath { get; set; }
 
         [Parameter(Mandatory = true, Position = 1, ValueFromPipeline = true)]
+        [NotNull]
+        // ReSharper disable once NotNullMemberIsNotInitialized
         public AudioFile AudioFile { get; set; }
 
         [Parameter]
@@ -49,7 +52,8 @@ namespace PowerShellAudio.Commands
             string outputDirectory;
             try
             {
-                outputDirectory = this.GetFileSystemPaths(substituter.Substitute(Path), substituter.Substitute(LiteralPath)).First();
+                outputDirectory = this.GetFileSystemPaths(substituter.Substitute(Path),
+                    substituter.Substitute(LiteralPath)).First();
             }
             catch (ItemNotFoundException e)
             {
@@ -60,7 +64,10 @@ namespace PowerShellAudio.Commands
                 return;
 
             Directory.CreateDirectory(outputDirectory);
-            WriteObject(new TaggedAudioFile(taggedAudioFile.FileInfo.CopyTo(System.IO.Path.Combine(outputDirectory, substituter.Substitute(Name ?? System.IO.Path.GetFileNameWithoutExtension(taggedAudioFile.FileInfo.Name)) + taggedAudioFile.FileInfo.Extension), Replace)));
+            WriteObject(new TaggedAudioFile(taggedAudioFile.FileInfo.CopyTo(IOPath.Combine(
+                outputDirectory,
+                substituter.Substitute(Name ?? IOPath.GetFileNameWithoutExtension(taggedAudioFile.FileInfo.Name)) +
+                taggedAudioFile.FileInfo.Extension), Replace)));
         }
     }
 }

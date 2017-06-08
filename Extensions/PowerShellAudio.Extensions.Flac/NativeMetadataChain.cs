@@ -22,7 +22,7 @@ using JetBrains.Annotations;
 
 namespace PowerShellAudio.Extensions.Flac
 {
-    class NativeMetadataChain : IDisposable
+    sealed class NativeMetadataChain : IDisposable
     {
         readonly IoCallbacks _callbacks;
 
@@ -64,14 +64,7 @@ namespace PowerShellAudio.Extensions.Flac
 
         public void Dispose()
         {
-            Dispose(true);
-            GC.SuppressFinalize(this);
-        }
-
-        protected virtual void Dispose(bool disposing)
-        {
-            if (disposing)
-                Handle.Dispose();
+            Handle.Dispose();
         }
 
         static IoCallbacks InitializeCallbacks([NotNull] Stream stream)

@@ -18,6 +18,7 @@
 using PowerShellAudio.Extensions.ReplayGain.Properties;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics.CodeAnalysis;
 using System.Globalization;
 using System.Threading.Tasks;
 using JetBrains.Annotations;
@@ -25,7 +26,8 @@ using JetBrains.Annotations;
 namespace PowerShellAudio.Extensions.ReplayGain
 {
     [SampleFilterExport("ReplayGain")]
-    public class ReplayGainFilter : ISampleFilter
+    [SuppressMessage("Microsoft.Performance", "CA1812:AvoidUninstantiatedInternalClasses", Justification = "Loaded via reflection")]
+    class ReplayGainFilter : ISampleFilter
     {
         float _scale = 1;
 

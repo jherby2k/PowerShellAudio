@@ -15,6 +15,7 @@
  * <http://www.gnu.org/licenses/>.
  */
 
+using System.Diagnostics.CodeAnalysis;
 using PowerShellAudio.Extensions.Wave.Properties;
 using System.IO;
 using JetBrains.Annotations;
@@ -22,7 +23,8 @@ using JetBrains.Annotations;
 namespace PowerShellAudio.Extensions.Wave
 {
     [AudioInfoDecoderExport(".wav")]
-    public class WaveAudioInfoDecoder : IAudioInfoDecoder
+    [SuppressMessage("Microsoft.Performance", "CA1812:AvoidUninstantiatedInternalClasses", Justification = "Loaded via reflection")]
+    class WaveAudioInfoDecoder : IAudioInfoDecoder
     {
         public AudioInfo ReadAudioInfo([NotNull] Stream stream)
         {
