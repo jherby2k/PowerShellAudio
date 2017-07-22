@@ -32,7 +32,7 @@ namespace PowerShellAudio.Extensions.Lame
         static SafeNativeMethods()
         {
             // Select an architecture-appropriate libmp3lame.dll by prefixing the PATH variable:
-            var newPath = new StringBuilder(Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location));
+            var newPath = new StringBuilder(Path.GetDirectoryName(new Uri(Assembly.GetExecutingAssembly().CodeBase).LocalPath));
             newPath.Append(Path.DirectorySeparatorChar);
             newPath.Append(Environment.Is64BitProcess ? "x64" : "x86");
             newPath.Append(Path.PathSeparator);

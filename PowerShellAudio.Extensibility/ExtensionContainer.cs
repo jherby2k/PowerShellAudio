@@ -45,11 +45,11 @@ namespace PowerShellAudio
         [SuppressMessage("Microsoft.Reliability", "CA2000:Dispose objects before losing scope", Justification = "The CompositionContainer can't be disposed unless the ExtensionProvider is, and it's a singleton.")]
         void Initialize()
         {
-            string mainDir = Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location) ?? string.Empty;
+            string mainDir = Path.GetDirectoryName(new Uri(Assembly.GetExecutingAssembly().CodeBase).LocalPath) ?? string.Empty;
             using (var catalog = new AggregateCatalog())
             {
                 // Add the root directory as well, so extension references can be found:
-                catalog.Catalogs.Add(new DirectoryCatalog(mainDir));
+                //catalog.Catalogs.Add(new DirectoryCatalog(mainDir));
 
                 // Add a catalog for each subdirectory under Extensions:
                 foreach (DirectoryInfo directory in new DirectoryInfo(Path.Combine(mainDir, "Extensions")).GetDirectories())
