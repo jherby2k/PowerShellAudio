@@ -9,6 +9,7 @@ namespace PowerShellAudio.UnitTests
 
         public TestFilesFixture()
         {
+            Directory.Delete("TestFiles", true);
             CopyDirectory(Path.Combine(WorkingDirectory, @"..\..\TestFiles"), "TestFiles");
         }
 

@@ -11,6 +11,7 @@ namespace PowerShellAudio.UnitTests
 
         public ExtensionFixture()
         {
+            Directory.Delete("Extensions", true);
 #if DEBUG
             CopyDirectory(Path.Combine(BaseDirectory, @"..\..\..\Extensions\bin\Debug"), "Extensions");
 #else
