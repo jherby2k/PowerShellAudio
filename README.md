@@ -1,7 +1,9 @@
 PowerShell Audio
 ==========
 
-An extensible, multi-format audio conversion and tagging module for Windows PowerShell
+An extensible, multi-format audio conversion and tagging module for Windows PowerShell.
+
+**_PowerShell Audio is being replaced with [AudioWorks](https://github.com/jherby2k/AudioWorks)_**, written to the .NET Standard 2.0 specification. It aims for cross-platform support (via PowerShell Core), and should be released in the same timeframe: Late 2017 / Early 2018.
 
 ## Getting Help
 [Visit the wiki](https://github.com/jherby2k/PowerShellAudio/wiki).
